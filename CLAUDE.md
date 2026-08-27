@@ -34,7 +34,7 @@ Meet Sept 3 2021 · movers-in Oct 2021 · proposal June 2023 · **wedding May 18
 Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, writing). Do not build elaborate cueing inside 7; keep the FaceTime frame and the log; the video content is produced separately.
 
 ## Workflow law
-1. **Verify before delivering.** Playwright harness must pass: state-integrity (all cues), POV/timeline, legibility QC, zero JS errors — plus a screenshot review of anything visually changed. Never hand David anything unverified.
+1. **Verify before delivering.** Playwright harness must pass: state-integrity (all cues), POV/timeline, legibility QC, `audit_teleports.py` (no register appears without navigation), zero JS errors — plus a screenshot review of anything visually changed. Never hand David anything unverified.
 2. Rebuild = splice `cues.js` into `FALLBACK_SHOW`, emit `L5Y-Show-STANDALONE.html`, `node --check` the script.
 3. Regenerate the Cue Bible (`build_bible_data.py` → `build_bible_docx.js` → PDF) whenever cue content changes. The Bible carries: ON SCREEN verbatim, PLAYS mechanics, SOUND, PHONES state, gold dramaturgy notes.
 4. Ship: STANDALONE + Bible PDF; push to this repo so the team URL stays current.
