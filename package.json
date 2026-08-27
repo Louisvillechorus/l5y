@@ -1,0 +1,5 @@
+{
+  "name": "l5y-second-screen",
+  "private": true,
+  "dependencies": { "docx": "^8.5.0" }
+}

@@ -9,5 +9,11 @@ Presenter on the laptop, ⧉ opens the synced projection window. Space = GO · �
 - `CLAUDE.md` — the realism law & canon. Read before proposing changes.
 - `build_bible_*`, `qc_legibility.py` — regeneration & QA tooling.
 - `docs/index.html` — copy of the standalone for GitHub Pages.
+- `ASSETS.md` — every photo/video (M/V code) the team must shoot, with the cues that use it.
+
+**Two-window sync note:** the ⧉ projection window syncs via BroadcastChannel. From a plain double-clicked file some browsers isolate the two windows — if sync fails, use the GitHub Pages URL (or any localhost server); it always works there.
+
+## Development
+Edit `cues.js` (show data) or `index.html` (engine), then: `python3 build.py` → run QA (`python3 qc_legibility.py`, `python3 audit_teleports.py` against a fresh book.json) → regenerate the Bible (`python3 build_bible_data.py && node build_bible_docx.js`; needs `npm i` once for the docx package, and `pip install playwright` for QA). `CLAUDE.md` defines the realism law all changes must satisfy.
 
 **Team URL (once Pages is on):** Settings → Pages → Deploy from branch → `main` / `docs`. The show then lives at `https://<user>.github.io/<repo>/` permanently.
