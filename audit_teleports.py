@@ -23,6 +23,7 @@ for s in book['songs']:
         if any(x in ops for x in ('openapp','notiftap','device','unlock')): continue
         if b=='phone' and any(o.get('op')=='call' and 'incoming' in (o.get('st') or '') for o in c['do']): continue
         if a=='msg' and b in ('phone','ft'): continue          # FaceTime/call from a thread
+        if a=='phone' and b=='ft': continue                     # failed call connects as FaceTime
         if a=='ig' and b=='msg': continue                       # IG request -> IG thread
         if c['dev']=='macbook': continue                        # dock / cmd-tab idiom
         viol.append(f"{c['id']}: {c['preApp']} -> {c['app']} un-navigated")
