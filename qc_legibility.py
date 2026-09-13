@@ -78,9 +78,15 @@ CHECK_JS = r"""() => {
 
 
 def run():
+    # optional WxH arg runs the walk at another projection aspect, e.g. the
+    # vertical TV: python3 qc_legibility.py 1080x1920 (device layout renders at
+    # the same reference scale under the portrait transform, so MIN_PX holds)
+    vp = (1500, 880)
+    if len(sys.argv) > 1 and 'x' in sys.argv[1]:
+        vp = tuple(int(v) for v in sys.argv[1].split('x'))
     with sync_playwright() as p:
         b = p.chromium.launch(executable_path=os.environ.get('CHROMIUM_PATH') or None)
-        pg = b.new_page(viewport={'width': 1500, 'height': 880})
+        pg = b.new_page(viewport={'width': vp[0], 'height': vp[1]})
         errs = []
         pg.on('pageerror', lambda e: errs.append(str(e)))
         pg.goto(FILE); pg.wait_for_timeout(800)

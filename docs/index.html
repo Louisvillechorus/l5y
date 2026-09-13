@@ -3402,22 +3402,23 @@ function paintAll(st){
   const portrait = S.h > S.w;
   document.body.classList.toggle('portrait', portrait);
   // leave headroom for the owner banner + date stamp
-  let h=Math.min(S.h*0.70,860), fit=1;
+  let h=Math.min(S.h*0.70,860), fit=1, mbFit=1;
   if(portrait){
     // vertical TV: render the phone at the tuned reference size, then scale
     // it up uniformly so type and chrome keep their proportions on the glass
     const REF=800;
     fit=Math.min(S.h*0.86, S.w*0.94*19.5/9)/REF;
     h=REF;
+    mbFit=1.25;  // laptop: smaller layout scaled up — its capped type gains 25% on the glass
   }
-  const macW=Math.min(S.w*(portrait?0.96:0.86)/1.55,S.h*0.62);
+  const macW=Math.min(S.w*(portrait?0.96:0.86)/1.55,S.h*0.62)/mbFit;
   const pj=document.getElementById('projDevice');
   if(pj){
     pj.innerHTML = st.black?'' : deviceHTML(st, st.dev==='macbook'?macW:h);
-    projFit = st.dev==='macbook' ? 1 : fit;
+    projFit = st.dev==='macbook' ? mbFit : fit;
     const d=pj.firstElementChild;
-    if(d && st.dev!=='macbook' && fit!==1){
-      d.style.transform='scale('+fit.toFixed(4)+')';
+    if(d && projFit!==1){
+      d.style.transform='scale('+projFit.toFixed(4)+')';
       d.style.transformOrigin='50% 100%';
     }
   }
@@ -3953,22 +3954,29 @@ function prev(){ if(ci>0){ci--; hardRender(); sync();}
 function goSong(d){ si=(si+d+SHOW.length)%SHOW.length; ci=0; hardRender(); sync(); }
 function setView(v){ view=v; document.body.classList.remove('v-presenter','v-projection');
   document.body.classList.add('v-'+v); hardRender(); }
-function startAs(v){ started=true; document.body.classList.add('started'); setView(v);
+function startAs(v){
+  if(v==='projection'&&!bootProj){ bootProj=true;
+    if(!rotExplicit){ try{ const s=+localStorage.getItem('l5y_rot')||0;
+      if(s===90||s===270) rot=s; }catch(e){} }
+    applyRotClass();
+    if(rot) setTimeout(()=>rotNote('FEED ROTATED '+rot+'° · PRESS R TO CHANGE'),700); }
+  started=true; document.body.classList.add('started'); setView(v);
   if(v!=='projection') sync(); }
 
 /* rot — the house TV stands vertical but receives a landscape signal.
    Press R on the projection window to cycle 0° → 90° → 270° (covers both
    mounting directions), or open with ?rot=90 / ?rot=270; remembered per browser. */
-let rot=0; try{ rot = +localStorage.getItem('l5y_rot')||0; }catch(e){}
-if(rot!==90&&rot!==270) rot=0;
+let rot=0, rotExplicit=false, bootProj=false;
 let rotNoteTimer=null;
 function rotNote(msg){ const el=document.getElementById('rotNote'); if(!el) return;
   el.textContent=msg; el.classList.add('on');
   clearTimeout(rotNoteTimer); rotNoteTimer=setTimeout(()=>el.classList.remove('on'),4000); }
-function setRot(deg){ rot=(deg===90||deg===270)?deg:0;
-  document.body.classList.toggle('rot90',rot===90);
-  document.body.classList.toggle('rot270',rot===270);
-  try{ localStorage.setItem('l5y_rot',String(rot)); }catch(e){}
+function applyRotClass(){ document.body.classList.toggle('rot90',rot===90);
+  document.body.classList.toggle('rot270',rot===270); }
+/* only a window that BOOTS as the projection reads or writes the remembered
+   rotation — the presenter can never inherit or clobber the rig's setting */
+function setRot(deg){ rot=(deg===90||deg===270)?deg:0; applyRotClass();
+  if(bootProj){ try{ localStorage.setItem('l5y_rot',String(rot)); }catch(e){} }
   hardRender();
   rotNote(rot?'FEED ROTATED '+rot+'° · R CYCLES':'FEED ROTATION OFF'); }
 
@@ -4046,11 +4054,9 @@ addEventListener('resize',()=>hardRender());
 
 // auto-start when spawned as the projection window
 const params=new URLSearchParams(location.search);
-if(params.has('rot')) rot = (params.get('rot')==='90')?90:(params.get('rot')==='270')?270:0;
-if(rot===90) document.body.classList.add('rot90');
-if(rot===270) document.body.classList.add('rot270');
-if(params.get('view')==='projection'){ startAs('projection');
-  if(rot) setTimeout(()=>rotNote('FEED ROTATED '+rot+'° · PRESS R TO CHANGE'),700); }
+if(params.has('rot')){ rot=(params.get('rot')==='90')?90:(params.get('rot')==='270')?270:0;
+  rotExplicit=true; applyRotClass(); }
+if(params.get('view')==='projection'){ startAs('projection'); }
 else render();
 </script>
 </body>
