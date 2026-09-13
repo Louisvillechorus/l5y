@@ -33,10 +33,10 @@ CHECK_JS = r"""() => {
     if((oy==='hidden'||ox==='hidden')){
       const vy = el.scrollHeight - el.clientHeight;
       const vx = el.scrollWidth  - el.clientWidth;
-      if(vy>6 && el.className && !/memfeed|thread|grid|nstack|mailrows|screenstack|hgrid|kbd|predict|fbfeed|screenstack|deck|layer|mailwrap|mailbody|msglist2/.test(el.className))
+      if(vy>6 && el.className && !/memfeed|thread|grid|nstack|mailrows|screenstack|hgrid|kbd|predict|fbfeed|screenstack|deck|layer|mailwrap|mailbody|msglist2|docsheet/.test(el.className))
         clips.push({cls:String(el.className).slice(0,40), by:Math.round(vy), axis:'y',
                     txt:(el.textContent||'').trim().slice(0,42)});
-      if(vx>4 && el.className && !/memfeed|thread|grid|screenstack|deck|layer|fbfeed|mailwrap|mailbody|msglist2/.test(el.className))
+      if(vx>4 && el.className && !/memfeed|thread|grid|screenstack|deck|layer|fbfeed|mailwrap|mailbody|msglist2|docsheet/.test(el.className))
         clips.push({cls:String(el.className).slice(0,40), by:Math.round(vx), axis:'x',
                     txt:(el.textContent||'').trim().slice(0,42)});
     }
@@ -54,7 +54,7 @@ CHECK_JS = r"""() => {
   });
   // THE CHECK THAT MATTERS: in any scrolling feed, the newest item must be visible.
   const offscreen=[];
-  [['.fbfeed','.post'],['.memfeed','.memscreen'],['.thread','.bub'],['.grid','.thumb']].forEach(function(pair){
+  [['.fbfeed','.post'],['.memfeed','.memscreen'],['.thread','.bub'],['.grid','.thumb'],['.docsheet','div']].forEach(function(pair){
     const feed=root.querySelector(pair[0]); if(!feed) return;
     const items=feed.querySelectorAll(pair[1]); if(!items.length) return;
     const last=items[items.length-1];
