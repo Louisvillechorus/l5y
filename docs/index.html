@@ -33,6 +33,28 @@
     transition:opacity .5s ease}
   body.blk #projDevice,body.blk #projStamp{opacity:0 !important}
 
+  /* ---- VERTICAL TV (portrait) — the phone IS the screen ---- */
+  body.portrait #projection{padding:0 1vw 1vh}
+  body.portrait #projDevice{height:86%}
+  body.portrait #projOwner{font-size:clamp(15px,2.3vh,44px)}
+  body.portrait #projStamp{font-size:clamp(20px,3.1vh,62px)}
+  /* ---- ROTATED FEED (press R on the projection window): the TV stands
+     vertical but the rig sends a landscape signal — we rotate the page.
+     vw here = the physical vertical axis, so defaults mostly hold. ---- */
+  body.rot90 #projection,body.rot270 #projection{inset:auto;top:0;left:0;width:100vh;height:100vw;
+    transform-origin:top left}
+  body.rot90 #projection{transform:rotate(90deg) translateY(-100%)}
+  body.rot270 #projection{transform:rotate(-90deg) translateX(-100%)}
+  body.rot90 #projOwner,body.rot270 #projOwner{font-size:clamp(15px,2.3vw,44px);top:2.2vw}
+  body.rot90 #projStamp,body.rot270 #projStamp{font-size:clamp(20px,3.1vw,62px);top:8.5vw}
+  /* operator toast — rotation state, never a surprise on show night */
+  #rotNote{position:fixed;left:50%;bottom:4vh;transform:translateX(-50%);z-index:99;
+    font-family:'Courier Prime',monospace;font-weight:700;font-size:15px;letter-spacing:.18em;
+    text-transform:uppercase;background:rgba(11,14,24,.92);color:var(--gold);
+    border:1px solid rgba(233,199,102,.4);border-radius:8px;padding:10px 18px;
+    opacity:0;transition:opacity .4s ease;pointer-events:none;white-space:nowrap}
+  #rotNote.on{opacity:1}
+
   /* ================= PRESENTER ================= */
   #presenter{position:fixed;inset:0 0 34px 0;display:none;grid-template-columns:1.15fr .85fr;gap:0}
   body.v-presenter #presenter{display:grid}
@@ -544,7 +566,7 @@
 </div>
 
 <!-- PROJECTION -->
-<div id="projection"><div id="projOwner"></div><div id="projStamp"></div><div id="projDevice"></div></div>
+<div id="projection"><div id="projOwner"></div><div id="projStamp"></div><div id="projDevice"></div><div id="rotNote"></div></div>
 
 <!-- PRESENTER -->
 <div id="presenter">
@@ -3360,12 +3382,45 @@ function stages(){ // every container that shows the device
   return out;
 }
 const stacks=()=>stages().map(s=>s.querySelector('.screenstack')).filter(Boolean);
+/* touch dots are positioned in the stack's LAYOUT space, but rects are VISUAL
+   (post portrait-scale / rotated-feed transform) — map the delta back through */
+let projFit=1;
+function dotPos(k,r){
+  const box=k.getBoundingClientRect();
+  const vdx=r.left-box.left+r.width/2, vdy=r.top-box.top+r.height/2;
+  const proj=!!(k.closest&&k.closest('#projDevice'));
+  const f=proj?projFit:1;
+  if(proj&&rot===90)  return {x:vdy/f, y:k.offsetHeight-vdx/f};
+  if(proj&&rot===270) return {x:k.offsetWidth-vdy/f, y:vdx/f};
+  return {x:vdx/f, y:vdy/f};
+}
+/* the stage the audience actually sees — a rotated feed swaps the axes */
+function stageDims(){ return rot ? {w:window.innerHeight,h:window.innerWidth}
+                                 : {w:window.innerWidth, h:window.innerHeight}; }
 function paintAll(st){
+  const S=stageDims();
+  const portrait = S.h > S.w;
+  document.body.classList.toggle('portrait', portrait);
   // leave headroom for the owner banner + date stamp
-  const h=Math.min(window.innerHeight*0.70,860);
-  const macW=Math.min(window.innerWidth*0.86/1.55,window.innerHeight*0.62);
+  let h=Math.min(S.h*0.70,860), fit=1;
+  if(portrait){
+    // vertical TV: render the phone at the tuned reference size, then scale
+    // it up uniformly so type and chrome keep their proportions on the glass
+    const REF=800;
+    fit=Math.min(S.h*0.86, S.w*0.94*19.5/9)/REF;
+    h=REF;
+  }
+  const macW=Math.min(S.w*(portrait?0.96:0.86)/1.55,S.h*0.62);
   const pj=document.getElementById('projDevice');
-  if(pj) pj.innerHTML = st.black?'' : deviceHTML(st, st.dev==='macbook'?macW:h);
+  if(pj){
+    pj.innerHTML = st.black?'' : deviceHTML(st, st.dev==='macbook'?macW:h);
+    projFit = st.dev==='macbook' ? 1 : fit;
+    const d=pj.firstElementChild;
+    if(d && st.dev!=='macbook' && fit!==1){
+      d.style.transform='scale('+fit.toFixed(4)+')';
+      d.style.transformOrigin='50% 100%';
+    }
+  }
   if(view==='presenter'){
     const pv=document.getElementById('previewInner');
     const ph=Math.min(pv.parentElement.clientHeight-16,620);
@@ -3526,9 +3581,9 @@ async function playCue(cue, st, tok){
       continue; }
     if(o.op==='notiftap'){
       stacks().forEach(k=>{const n=k.querySelector('.nstack .notif'); if(!n) return;
-        const box=k.getBoundingClientRect(), nb=n.getBoundingClientRect();
+        const nb=n.getBoundingClientRect(), pp=dotPos(k,nb);
         const d=document.createElement('div'); d.className='touch dark travel';
-        d.style.left=(nb.left-box.left+nb.width/2)+'px'; d.style.top=(nb.top-box.top+nb.height/2)+'px';
+        d.style.left=pp.x+'px'; d.style.top=pp.y+'px';
         d.style.fontSize=getComputedStyle(k).fontSize; k.appendChild(d);});
       await wait(560); if(tok!==animTok) return;
       stacks().forEach(k=>{const d=k.querySelector('.touch'); if(d){d.classList.add('tap'); setTimeout(()=>d.remove(),320);}});
@@ -3554,9 +3609,9 @@ async function playCue(cue, st, tok){
       }
       // the thumb travels to the icon, presses, and the app opens
       stacks().forEach(k=>{const ic=k.querySelector(`.happ[data-app="${o.icon}"]`); if(!ic) return;
-        const box=k.getBoundingClientRect(), ib=ic.getBoundingClientRect();
+        const ib=ic.getBoundingClientRect(), pp=dotPos(k,ib);
         const d=document.createElement('div'); d.className='touch dark travel';
-        d.style.left=(ib.left-box.left+ib.width/2)+'px'; d.style.top=(ib.top-box.top+ib.height/2)+'px';
+        d.style.left=pp.x+'px'; d.style.top=pp.y+'px';
         d.style.fontSize=getComputedStyle(k).fontSize; k.appendChild(d);});
       await wait(520); if(tok!==animTok) return;
       stacks().forEach(k=>{const ic=k.querySelector(`.happ[data-app="${o.icon}"]`); if(ic) ic.classList.add('tapped');
@@ -3566,9 +3621,9 @@ async function playCue(cue, st, tok){
     if(o.op==='setapp'){ applyOp(st,o); swapLayer(st,'fadeUp'); await wait(150); continue; }
     if(o.op==='hover'){ applyOp(st,o);
       stacks().forEach(k=>{ const row=k.querySelector(`.mrow2[data-row="${o.row}"]`)||k.querySelector('.mrow2');
-        if(!row) return; const box=k.getBoundingClientRect(), rb=row.getBoundingClientRect();
+        if(!row) return; const rb=row.getBoundingClientRect(), pp=dotPos(k,rb);
         const d=document.createElement('div'); d.className='touch dark';
-        d.style.left=(rb.left-box.left+rb.width*0.5)+'px'; d.style.top=(rb.top-box.top+rb.height/2)+'px';
+        d.style.left=pp.x+'px'; d.style.top=pp.y+'px';
         d.style.fontSize=getComputedStyle(k).fontSize; k.appendChild(d); });
       continue; }
     if(o.op==='tap'){ stacks().forEach(k=>{const d=k.querySelector('.touch');
@@ -3691,9 +3746,9 @@ async function playCue(cue, st, tok){
       stacks().forEach(k=>{const t=k.querySelector('.typing'); if(t) t.remove();}); continue; }
     if(o.op==='photoTab'){
       stacks().forEach(k=>{const t=k.querySelector(`.ph-tabs div[data-tab="${o.t}"]`); if(!t) return;
-        const box=k.getBoundingClientRect(), tb=t.getBoundingClientRect();
+        const tb=t.getBoundingClientRect(), pp=dotPos(k,tb);
         const d=document.createElement('div'); d.className='touch dark travel';
-        d.style.left=(tb.left-box.left+tb.width/2)+'px'; d.style.top=(tb.top-box.top+tb.height/2)+'px';
+        d.style.left=pp.x+'px'; d.style.top=pp.y+'px';
         d.style.fontSize=getComputedStyle(k).fontSize; k.appendChild(d);});
       await wait(560); if(tok!==animTok) return;
       stacks().forEach(k=>{const d=k.querySelector('.touch'); if(d){d.classList.add('tap'); setTimeout(()=>d.remove(),320);}});
@@ -3701,9 +3756,9 @@ async function playCue(cue, st, tok){
       applyOp(st,o); swapLayer(st,'fadeUp'); await wait(380); continue; }
     if(o.op==='openMemory'){
       stacks().forEach(k=>{const c=k.querySelector('[data-memcard]'); if(!c) return;
-        const box=k.getBoundingClientRect(), cb=c.getBoundingClientRect();
+        const cb=c.getBoundingClientRect(), pp=dotPos(k,cb);
         const d=document.createElement('div'); d.className='touch dark travel';
-        d.style.left=(cb.left-box.left+cb.width/2)+'px'; d.style.top=(cb.top-box.top+cb.height/2)+'px';
+        d.style.left=pp.x+'px'; d.style.top=pp.y+'px';
         d.style.fontSize=getComputedStyle(k).fontSize; k.appendChild(d);});
       await wait(620); if(tok!==animTok) return;
       stacks().forEach(k=>{const d=k.querySelector('.touch'); if(d){d.classList.add('tap'); setTimeout(()=>d.remove(),320);}});
@@ -3719,9 +3774,9 @@ async function playCue(cue, st, tok){
       await wait(300); applyOp(st,o); swapLayer(st,null); continue; }
     if(o.op==='btnHover'){ applyOp(st,o);
       stacks().forEach(k=>{ const btn=k.querySelector(`[data-btn="${o.b}"]`); if(!btn) return;
-        const box=k.getBoundingClientRect(), bb=btn.getBoundingClientRect();
+        const bb=btn.getBoundingClientRect(), pp=dotPos(k,bb);
         const d=document.createElement('div'); d.className='touch dark travel';
-        d.style.left=(bb.left-box.left+bb.width/2)+'px'; d.style.top=(bb.top-box.top+bb.height/2)+'px';
+        d.style.left=pp.x+'px'; d.style.top=pp.y+'px';
         d.style.fontSize=getComputedStyle(k).fontSize; d.style.zIndex=9; k.appendChild(d); });
       await wait(520); continue; }
     if(o.op==='btnTap'){
@@ -3733,9 +3788,9 @@ async function playCue(cue, st, tok){
       stacks().forEach(k=>{
         let d=k.querySelector('.touch');
         if(!d){ const row=k.querySelector(`.mrow2[data-row="${o.f}"]`)||k.querySelector('.mrow2'); if(!row) return;
-          const box=k.getBoundingClientRect(), rb=row.getBoundingClientRect();
+          const rb=row.getBoundingClientRect(), pp=dotPos(k,rb);
           d=document.createElement('div'); d.className='touch dark';
-          d.style.left=(rb.left-box.left+rb.width*0.5)+'px'; d.style.top=(rb.top-box.top+rb.height/2)+'px';
+          d.style.left=pp.x+'px'; d.style.top=pp.y+'px';
           d.style.fontSize=getComputedStyle(k).fontSize; k.appendChild(d); }
         d.classList.add('tap'); setTimeout(()=>d.remove(),320); });
       await wait(360); if(tok!==animTok) return;
@@ -3901,10 +3956,26 @@ function setView(v){ view=v; document.body.classList.remove('v-presenter','v-pro
 function startAs(v){ started=true; document.body.classList.add('started'); setView(v);
   if(v!=='projection') sync(); }
 
+/* rot — the house TV stands vertical but receives a landscape signal.
+   Press R on the projection window to cycle 0° → 90° → 270° (covers both
+   mounting directions), or open with ?rot=90 / ?rot=270; remembered per browser. */
+let rot=0; try{ rot = +localStorage.getItem('l5y_rot')||0; }catch(e){}
+if(rot!==90&&rot!==270) rot=0;
+let rotNoteTimer=null;
+function rotNote(msg){ const el=document.getElementById('rotNote'); if(!el) return;
+  el.textContent=msg; el.classList.add('on');
+  clearTimeout(rotNoteTimer); rotNoteTimer=setTimeout(()=>el.classList.remove('on'),4000); }
+function setRot(deg){ rot=(deg===90||deg===270)?deg:0;
+  document.body.classList.toggle('rot90',rot===90);
+  document.body.classList.toggle('rot270',rot===270);
+  try{ localStorage.setItem('l5y_rot',String(rot)); }catch(e){}
+  hardRender();
+  rotNote(rot?'FEED ROTATED '+rot+'° · R CYCLES':'FEED ROTATION OFF'); }
+
 let projWin=null;
 function openProjection(){
   if(projWin && !projWin.closed){ projWin.focus(); return; }
-  projWin = window.open(location.href.split('?')[0]+'?view=projection', 'l5y_projection',
+  projWin = window.open(location.href.split('?')[0]+'?view=projection'+(rot?'&rot='+rot:''), 'l5y_projection',
     'width=1280,height=720,menubar=no,toolbar=no,location=no,status=no');
   if(!projWin){ alert('The browser blocked the new window.\n\nAllow pop-ups for this page, or open the file in a second window and choose “Start — Projection only”.'); return; }
   const btn=document.getElementById('openProj');
@@ -3932,6 +4003,7 @@ addEventListener('keydown',e=>{
   else if(e.key==='b'||e.key==='B'){blk=!blk;document.body.classList.toggle('blk',blk||(CUR&&CUR.black));paintChrome();sync();}
   else if(e.key==='v'||e.key==='V'){setView(view==='presenter'?'projection':'presenter');}
   else if(e.key==='f'||e.key==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
+  else if(e.key==='r'||e.key==='R'){if(view==='projection')setRot(rot===0?90:rot===90?270:0);}
   else if(e.key==='Escape'){started=false;document.body.classList.remove('started');}
 });
 document.getElementById('openProj').onclick=openProjection;
@@ -3974,7 +4046,11 @@ addEventListener('resize',()=>hardRender());
 
 // auto-start when spawned as the projection window
 const params=new URLSearchParams(location.search);
-if(params.get('view')==='projection'){ startAs('projection'); }
+if(params.has('rot')) rot = (params.get('rot')==='90')?90:(params.get('rot')==='270')?270:0;
+if(rot===90) document.body.classList.add('rot90');
+if(rot===270) document.body.classList.add('rot270');
+if(params.get('view')==='projection'){ startAs('projection');
+  if(rot) setTimeout(()=>rotNote('FEED ROTATED '+rot+'° · PRESS R TO CHANGE'),700); }
 else render();
 </script>
 </body>

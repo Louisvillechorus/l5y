@@ -7,9 +7,10 @@ Walks every cue of every song in the projection view and reports:
 It renders at the real projection aspect so the numbers mean something.
 """
 from playwright.sync_api import sync_playwright
+import os
 import sys
 
-FILE = 'file:///mnt/user-data/outputs/L5Y-Show-STANDALONE.html'
+FILE = 'file://' + os.path.abspath('L5Y-Show-STANDALONE.html')
 # a phone on a 10ft-tall projection: text under ~1.1% of screen height is unreadable at 50ft
 MIN_PX_AT_880 = 9.0
 
@@ -78,7 +79,7 @@ CHECK_JS = r"""() => {
 
 def run():
     with sync_playwright() as p:
-        b = p.chromium.launch()
+        b = p.chromium.launch(executable_path=os.environ.get('CHROMIUM_PATH') or None)
         pg = b.new_page(viewport={'width': 1500, 'height': 880})
         errs = []
         pg.on('pageerror', lambda e: errs.append(str(e)))

@@ -2,7 +2,9 @@
 Projection cue system: two phones tell the digital life of Jamie & Cathy, 2021–2026.
 
 **▶ Run the show:** open `L5Y-Show-STANDALONE.html` (double-click; no server needed) — or visit the GitHub Pages URL once enabled.
-Presenter on the laptop, ⧉ opens the synced projection window. Space = GO · ← back (crosses songs) · [ ] song · B blackout · F fullscreen.
+Presenter on the laptop, ⧉ opens the synced projection window. Space = GO · ← back (crosses songs) · [ ] song · B blackout · F fullscreen · R rotate feed (projection window).
+
+**▮ Vertical TV (the house rig):** the show is built portrait-first — on a TV stood vertically the phone fills the screen at full projection scale. Preferred setup: rotate the *display output* 90° in the laptop's OS settings (System Settings → Displays → Rotation on macOS; Display settings → Orientation → Portrait on Windows), drag the projection window onto the TV, press F. If the rig can't rotate the signal, press **R** on the projection window instead — it cycles 0° → 90° → 270° (both mounting directions) and is remembered for next time (`?rot=90` in the URL does the same). Landscape projectors keep working exactly as before.
 
 - `L5Y-Cue-Bible.pdf` — every cue: trigger, verbatim screen content, mechanics, sound, dramaturgy.
 - `index.html` + `cues.js` — engine + show data (the standalone is these two fused).
