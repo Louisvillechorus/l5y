@@ -1590,6 +1590,7 @@ function applyOp(st,o){
     case 'hover': st.hover=o.row; break;
     case 'tap': st.hover=null; break;
     case 'device': {
+      st.black=false;   // a device cue puts a screen back on stage — blackout ends
       const newWho = (o.who==='cathy'||o.who==='jamie') ? o.who : st.who;
       if(newWho!==st.who){
         // A DIFFERENT PERSON'S PHONE. Nothing carries over — not the thread,
@@ -2462,6 +2463,18 @@ function dotPos(k,r){
 /* the stage the audience actually sees — a rotated feed swaps the axes */
 function stageDims(){ return rot ? {w:window.innerHeight,h:window.innerWidth}
                                  : {w:window.innerWidth, h:window.innerHeight}; }
+/* portrait: the era stamp must hold ONE line clear of the phone — long stamps
+   shrink to fit rather than wrapping behind the device */
+function fitStamp(){
+  const e=document.getElementById('projStamp'); if(!e) return;
+  e.style.fontSize=''; e.style.whiteSpace='';
+  if(!e.textContent) return;
+  const S=stageDims();
+  if(S.h<=S.w) return;
+  e.style.whiteSpace='nowrap';
+  let f=parseFloat(getComputedStyle(e).fontSize), guard=30;
+  while(guard-- && f>18 && e.scrollWidth>e.clientWidth){ f-=2; e.style.fontSize=f+'px'; }
+}
 function paintAll(st){
   const S=stageDims();
   const portrait = S.h > S.w;
@@ -2497,6 +2510,7 @@ function paintAll(st){
 function setStamp(st){
   ['projStamp','prevStamp'].forEach(id=>{ const e=document.getElementById(id); if(!e) return;
     e.textContent=st.stamp||''; e.classList.toggle('on', !!st.stamp && !st.black); });
+  fitStamp();
   // WHOSE PHONE — the audience must never have to guess
   ['projOwner','prevOwner'].forEach(id=>{ const e=document.getElementById(id); if(!e) return;
     const isC = st.who==='cathy';
