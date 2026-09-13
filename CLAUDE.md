@@ -33,6 +33,22 @@ Meet Sept 3 2021 · movers-in Oct 2021 · proposal June 2023 · **wedding May 18
 ## Song 7 is special
 Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, writing). Do not build elaborate cueing inside 7; keep the FaceTime frame and the log; the video content is produced separately.
 
+## Direction locked Sept 14, 2026 (team call — David, Alonzo, Peyton)
+- **The rig is a 75″ LANDSCAPE TV, audience up to 25 ft.** Readability rules everything:
+  use the close-up system (`{op:'frame', z, at:'top'|'mid'|'bottom'}`) so the region that
+  matters fills the glass — "the upper quadrant of the phone" for notifications, the
+  conversation for texting. Portrait/rot support stays in the engine but is not the rig.
+- **Preshow**: the house card (title + the two-handed clock) renders at song 1 · cue 0.
+- **Non-diegetic is allowed.** The phone plays even when the actor isn't holding it; in
+  those moments the frame may drop away entirely (`dev:'full'` full-bleed stage).
+- **Simplicity**: target one or two screen moments per song; black is the default state
+  while they sing. Songs 3 is deliberately near-empty (post + likes, then Jamie's call).
+- **Song 3 is `who:'both'`** by direction: Jamie's outgoing call appears inside Cathy's song.
+- **LINES LAW (supreme)**: trigger lines come ONLY from the licensed script. Every line
+  not yet checked against it carries a ⚠CONFIRM flag in the cue data and documents.
+  Never write, fix, or fill a script line from memory. `apply_lines.py` +
+  `L5Y-Lines-Worksheet.docx` are the reconciliation path.
+
 ## Workflow law
 1. **Verify before delivering.** Playwright harness must pass: state-integrity (all cues), POV/timeline, legibility QC, `audit_teleports.py` (no register appears without navigation), zero JS errors — plus a screenshot review of anything visually changed. Never hand David anything unverified.
 2. Rebuild = splice `cues.js` into `FALLBACK_SHOW`, emit `L5Y-Show-STANDALONE.html`, `node --check` the script.

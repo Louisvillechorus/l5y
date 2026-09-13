@@ -17,7 +17,7 @@ MIN_PX_AT_880 = 9.0
 CHECK_JS = r"""() => {
   const root = document.querySelector('#projDevice');
   if(!root) return {empty:true, clips:[], tiny:[]};
-  const screen = root.querySelector('.screen, .mb-screen');
+  const screen = root.querySelector('.screen, .mb-screen, .fullstage');
   if(!screen) return {empty:true, clips:[], tiny:[]};
   const clips=[], tiny=[]; const MINPX=%f;
   const H = screen.getBoundingClientRect().height;
@@ -54,7 +54,9 @@ CHECK_JS = r"""() => {
   });
   // THE CHECK THAT MATTERS: in any scrolling feed, the newest item must be visible.
   const offscreen=[];
+  const memNav = (typeof CUR==='object' && CUR && CUR.memAt!=null);  // memgo: deliberately parked on an older card
   [['.fbfeed','.post'],['.memfeed','.memscreen'],['.thread','.bub'],['.grid','.thumb'],['.docsheet','div']].forEach(function(pair){
+    if(pair[0]==='.memfeed' && memNav) return;
     const feed=root.querySelector(pair[0]); if(!feed) return;
     const items=feed.querySelectorAll(pair[1]); if(!items.length) return;
     const last=items[items.length-1];
