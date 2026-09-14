@@ -50,6 +50,10 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   whole screen** under a top info bar (identity left, era right). Preshow and `dev:'full'`
   drop rails/bar entirely. Portrait/rot support (classic floating overlays) stays in the
   engine but is not the rig.
+- **No touch dots (cut by David).** The blue finger circles are gone everywhere. Taps read
+  the way a real screen recording reads: the beat, the control's own pressed state (icon
+  press animation, iOS pressed-gray on rows and buttons via `hover`/`btnHover`), then the
+  transition. The `hover`/`tap`/`btnHover`/`btnTap` ops remain as timing + pressed-state beats.
 - **Preshow**: the house card (title + the two-handed clock) renders at song 1 · cue 0.
 - **Non-diegetic is allowed.** The phone plays even when the actor isn't holding it; in
   those moments the frame may drop away entirely (`dev:'full'` full-bleed stage).

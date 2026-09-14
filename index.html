@@ -362,6 +362,9 @@
   .ml-search{margin:0 .7em .5em;background:#e9e9eb;border-radius:.6em;padding:.3em .6em;color:#8e8e93;
     font-size:.8em;display:flex;align-items:center;gap:.35em}
   .mrow2{display:flex;gap:.6em;padding:.55em .7em .55em 1.15em;border-bottom:.5px solid #e5e5ea;align-items:flex-start;position:relative}
+  /* a finger resting on a control — the real iOS pressed-gray, no overlay */
+  .rowpress{background:rgba(120,120,128,.18) !important}
+  .btnpress{box-shadow:inset 0 0 0 999px rgba(60,60,67,.22)}
   .mrow2 .un{width:.6em;height:.6em;border-radius:50%;background:#007aff;position:absolute;left:.28em;top:50%;transform:translateY(-50%)}
   .mrow2 .av2{width:2.9em;height:2.9em;border-radius:50%;flex:0 0 auto;display:flex;align-items:center;
     justify-content:center;color:#fff;font-weight:600;font-size:.92em}
@@ -454,16 +457,6 @@
     color:#fff;font-size:.52em;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 .3em}
   .happ.tapped .gi{animation:tapPress .34s ease}
   @keyframes tapPress{40%{transform:scale(.84);filter:brightness(1.25)}100%{transform:scale(1)}}
-  /* touch dot */
-  .touch{position:absolute;width:2.4em;height:2.4em;border:.16em solid rgba(255,255,255,.95);
-    background:rgba(255,255,255,.28);border-radius:50%;box-shadow:0 0 0 .35em rgba(255,255,255,.14);
-    transform:translate(-50%,-50%);z-index:60;pointer-events:none;animation:hover 1.3s ease-in-out infinite}
-  .touch.dark{border-color:rgba(20,60,150,.85);background:rgba(47,124,246,.3);box-shadow:0 0 0 .35em rgba(47,124,246,.2)}
-  @keyframes hover{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(.86)}}
-  .touch.travel{animation:hover 1.3s ease-in-out infinite, arrive .42s cubic-bezier(.3,.9,.4,1)}
-  @keyframes arrive{from{transform:translate(-50%,120%) scale(1.5);opacity:0}to{transform:translate(-50%,-50%) scale(1);opacity:1}}
-  .touch.tap{animation:tapGo .3s ease forwards}
-  @keyframes tapGo{45%{transform:translate(-50%,-50%) scale(.55)}100%{transform:translate(-50%,-50%) scale(1.8);opacity:0}}
   /* swipe-up hint on lock */
   .swipehint{margin-top:auto;text-align:center;color:rgba(255,255,255,.6);font-size:.72em;padding-bottom:1.1em}
   .swipehint .grab{width:32%;height:.28em;background:rgba(255,255,255,.8);border-radius:99px;margin:.5em auto 0;
@@ -2306,18 +2299,8 @@ function stages(){ // every container that shows the device
   return out;
 }
 const stacks=()=>stages().map(s=>s.querySelector('.screenstack')).filter(Boolean);
-/* touch dots are positioned in the stack's LAYOUT space, but rects are VISUAL
-   (post portrait-scale / rotated-feed transform) — map the delta back through */
+/* the projection device's current visual scale (portrait fit / laptop / close-up) */
 let projFit=1;
-function dotPos(k,r){
-  const box=k.getBoundingClientRect();
-  const vdx=r.left-box.left+r.width/2, vdy=r.top-box.top+r.height/2;
-  const proj=!!(k.closest&&k.closest('#projDevice'));
-  const f=proj?projFit:1;
-  if(proj&&rot===90)  return {x:vdy/f, y:k.offsetHeight-vdx/f};
-  if(proj&&rot===270) return {x:k.offsetWidth-vdy/f, y:vdx/f};
-  return {x:vdx/f, y:vdy/f};
-}
 /* the stage the audience actually sees — a rotated feed swaps the axes */
 function stageDims(){ return rot ? {w:window.innerHeight,h:window.innerWidth}
                                  : {w:window.innerWidth, h:window.innerHeight}; }
@@ -2606,14 +2589,8 @@ async function playCue(cue, st, tok){
         k.appendChild(d); });
       continue; }
     if(o.op==='notiftap'){
-      stacks().forEach(k=>{const n=k.querySelector('.nstack .notif'); if(!n) return;
-        const nb=n.getBoundingClientRect(), pp=dotPos(k,nb);
-        const d=document.createElement('div'); d.className='touch dark travel';
-        d.style.left=pp.x+'px'; d.style.top=pp.y+'px';
-        d.style.fontSize=getComputedStyle(k).fontSize; k.appendChild(d);});
+      // no touch dot (cut by direction) — the beat, then the notification opens
       await wait(560); if(tok!==animTok) return;
-      stacks().forEach(k=>{const d=k.querySelector('.touch'); if(d){d.classList.add('tap'); setTimeout(()=>d.remove(),320);}});
-      await wait(360); if(tok!==animTok) return;
       applyOp(st,o); swapLayer(st,'appOpen'); await wait(420); continue; }
     if(o.op==='unlock'){
       const hasLock=stacks().some(k=>k.querySelector('.lockL'));
@@ -2633,27 +2610,20 @@ async function playCue(cue, st, tok){
         await wait(420); if(tok!==animTok) return;
         const tmp={...st,app:'home'}; swapLayer(tmp,'fadeUp'); await wait(620);   // a beat on the home screen
       }
-      // the thumb travels to the icon, presses, and the app opens
-      stacks().forEach(k=>{const ic=k.querySelector(`.happ[data-app="${o.icon}"]`); if(!ic) return;
-        const ib=ic.getBoundingClientRect(), pp=dotPos(k,ib);
-        const d=document.createElement('div'); d.className='touch dark travel';
-        d.style.left=pp.x+'px'; d.style.top=pp.y+'px';
-        d.style.fontSize=getComputedStyle(k).fontSize; k.appendChild(d);});
+      // a beat on the home screen, then the icon presses and the app opens
+      // (no touch dot, by direction — the icon's press animation carries the tap)
       await wait(520); if(tok!==animTok) return;
-      stacks().forEach(k=>{const ic=k.querySelector(`.happ[data-app="${o.icon}"]`); if(ic) ic.classList.add('tapped');
-        const d=k.querySelector('.touch'); if(d){d.classList.add('tap'); setTimeout(()=>d.remove(),320);}});
+      stacks().forEach(k=>{const ic=k.querySelector(`.happ[data-app="${o.icon}"]`); if(ic) ic.classList.add('tapped');});
       await wait(380); if(tok!==animTok) return;
       applyOp(st,o); swapLayer(st,'appOpen'); await wait(420); continue; }
     if(o.op==='setapp'){ applyOp(st,o); swapLayer(st,'fadeUp'); await wait(150); continue; }
     if(o.op==='hover'){ applyOp(st,o);
+      // the row shows the real iOS pressed-gray while the finger rests on it
       stacks().forEach(k=>{ const row=k.querySelector(`.mrow2[data-row="${o.row}"]`)||k.querySelector('.mrow2');
-        if(!row) return; const rb=row.getBoundingClientRect(), pp=dotPos(k,rb);
-        const d=document.createElement('div'); d.className='touch dark';
-        d.style.left=pp.x+'px'; d.style.top=pp.y+'px';
-        d.style.fontSize=getComputedStyle(k).fontSize; k.appendChild(d); });
+        if(row) row.classList.add('rowpress'); });
       continue; }
-    if(o.op==='tap'){ stacks().forEach(k=>{const d=k.querySelector('.touch');
-        if(d){d.classList.add('tap'); setTimeout(()=>d.remove(),320);} });
+    if(o.op==='tap'){
+      stacks().forEach(k=>{const r=k.querySelector('.rowpress'); if(r) r.classList.remove('rowpress');});
       applyOp(st,o); await wait(340); continue; }
     if(o.op==='push'){ applyOp(st,o); swapLayer(st,'pushIn'); await wait(430); continue; }
     if(o.op==='history'){ applyOp(st,o); swapLayer(st,null);
@@ -2771,24 +2741,10 @@ async function playCue(cue, st, tok){
     if(o.op==='untyping'){ applyOp(st,o);
       stacks().forEach(k=>{const t=k.querySelector('.typing'); if(t) t.remove();}); continue; }
     if(o.op==='photoTab'){
-      stacks().forEach(k=>{const t=k.querySelector(`.ph-tabs div[data-tab="${o.t}"]`); if(!t) return;
-        const tb=t.getBoundingClientRect(), pp=dotPos(k,tb);
-        const d=document.createElement('div'); d.className='touch dark travel';
-        d.style.left=pp.x+'px'; d.style.top=pp.y+'px';
-        d.style.fontSize=getComputedStyle(k).fontSize; k.appendChild(d);});
       await wait(560); if(tok!==animTok) return;
-      stacks().forEach(k=>{const d=k.querySelector('.touch'); if(d){d.classList.add('tap'); setTimeout(()=>d.remove(),320);}});
-      await wait(300); if(tok!==animTok) return;
       applyOp(st,o); swapLayer(st,'fadeUp'); await wait(380); continue; }
     if(o.op==='openMemory'){
-      stacks().forEach(k=>{const c=k.querySelector('[data-memcard]'); if(!c) return;
-        const cb=c.getBoundingClientRect(), pp=dotPos(k,cb);
-        const d=document.createElement('div'); d.className='touch dark travel';
-        d.style.left=pp.x+'px'; d.style.top=pp.y+'px';
-        d.style.fontSize=getComputedStyle(k).fontSize; k.appendChild(d);});
       await wait(620); if(tok!==animTok) return;
-      stacks().forEach(k=>{const d=k.querySelector('.touch'); if(d){d.classList.add('tap'); setTimeout(()=>d.remove(),320);}});
-      await wait(320); if(tok!==animTok) return;
       applyOp(st,o); swapLayer(st,'appOpen'); await wait(420); continue; }
     if(o.op==='inbox'){ applyOp(st,o); swapLayer(st,null); await wait(80); continue; }
     if(o.op==='sheet'){ applyOp(st,o); swapLayer(st,null);
@@ -2799,26 +2755,16 @@ async function playCue(cue, st, tok){
         const d=k.querySelector('.sheetdim'); if(d) d.style.opacity='0';});
       await wait(300); applyOp(st,o); swapLayer(st,null); continue; }
     if(o.op==='btnHover'){ applyOp(st,o);
-      stacks().forEach(k=>{ const btn=k.querySelector(`[data-btn="${o.b}"]`); if(!btn) return;
-        const bb=btn.getBoundingClientRect(), pp=dotPos(k,bb);
-        const d=document.createElement('div'); d.className='touch dark travel';
-        d.style.left=pp.x+'px'; d.style.top=pp.y+'px';
-        d.style.fontSize=getComputedStyle(k).fontSize; d.style.zIndex=9; k.appendChild(d); });
+      // the button darkens under the resting finger — real pressed state, no overlay
+      stacks().forEach(k=>{ const btn=k.querySelector(`[data-btn="${o.b}"]`);
+        if(btn) btn.classList.add('btnpress'); });
       await wait(520); continue; }
     if(o.op==='btnTap'){
-      stacks().forEach(k=>{const d=k.querySelector('.touch'); if(d){d.classList.add('tap'); setTimeout(()=>d.remove(),320);}});
+      stacks().forEach(k=>{const b=k.querySelector('.btnpress'); if(b) b.classList.remove('btnpress');});
       await wait(340); if(tok!==animTok) return;
       applyOp(st,o); swapLayer(st,null); await wait(200); continue; }
     if(o.op==='vmState'||o.op==='musicBanner'||o.op==='match'){ applyOp(st,o); swapLayer(st,'fadeUp'); await wait(300); continue; }
     if(o.op==='mailopen'){
-      stacks().forEach(k=>{
-        let d=k.querySelector('.touch');
-        if(!d){ const row=k.querySelector(`.mrow2[data-row="${o.f}"]`)||k.querySelector('.mrow2'); if(!row) return;
-          const rb=row.getBoundingClientRect(), pp=dotPos(k,rb);
-          d=document.createElement('div'); d.className='touch dark';
-          d.style.left=pp.x+'px'; d.style.top=pp.y+'px';
-          d.style.fontSize=getComputedStyle(k).fontSize; k.appendChild(d); }
-        d.classList.add('tap'); setTimeout(()=>d.remove(),320); });
       await wait(360); if(tok!==animTok) return;
       applyOp(st,o); swapLayer(st,'pushIn'); await wait(430); continue; }
     if(o.op==='mail'){ // a NEW email arriving live: it lands at the TOP of the inbox, like real mail
