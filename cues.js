@@ -33,7 +33,7 @@ window.L5Y_SHOW = [
        t:'You have memories with Jamie Wellerstein to look back on today'}]},
  {id:'1.3',kind:'music',trig:'Prologue — she gives in',
   what:'She taps it. Face ID, straight into ON THIS DAY — and the screen leans in close so the house reads every card.',
-  do:[{op:'notiftap',to:'memories'},{op:'frame',z:1.9,at:'mid'}]},
+  do:[{op:'notiftap',to:'memories'}]},
  {id:'1.4',kind:'music',trig:'Prologue — the first memory',
   what:'2021 — five years ago today. The first summer.',
   do:[{op:'mem',scroll:'flick',yr:'5 years ago · 2021',who:'Cathy Hiatt',av:'C',col:'#c2447a',when:'June 12, 2021',

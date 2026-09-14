@@ -232,6 +232,9 @@
   .statusbar{flex:0 0 auto;display:flex;justify-content:space-between;align-items:flex-end;
     font-family:var(--sf);font-weight:600;z-index:30;background:var(--chrome,#f9f9f9);color:var(--chrometxt,#000)}
   .iphone .statusbar{height:5.5%;padding:0 8.5% 3px;font-size:clamp(8px,1.3vh,15px)}
+  /* dark full-screen registers (lock/home/call…): the wallpaper runs edge to edge
+     and the status bar floats over it — like the real phone, no black band */
+  .screen.edge .statusbar{position:absolute;top:0;left:0;right:0;height:5.5%}
   .ipad{height:100%;aspect-ratio:3/4.1;background:#0b0b0d;border-radius:min(3.2vh,28px);padding:12px;
     box-shadow:0 0 0 2px #2a2d35,0 0 0 5px #0d0f14,0 34px 80px rgba(0,0,0,.8);position:relative;flex:0 0 auto}
   .ipad .screen{width:100%;height:100%;border-radius:min(2.2vh,19px);overflow:hidden;position:relative;
@@ -530,7 +533,9 @@
   .fb{flex:1;min-height:0;background:#f0f2f5;display:flex;flex-direction:column;overflow:hidden}
   .fbfeed{flex:1;min-height:0;overflow:hidden}
   .fbfeed>.post{min-height:100%;display:flex;flex-direction:column;margin:0 0 8px}
-  .fbfeed>.post .media{flex:1;aspect-ratio:auto;min-height:0}
+  /* feed posts keep a real photo aspect so the like row stays above the fold
+     of the reading window — the counter beats depend on it */
+  .fbfeed>.post .media{aspect-ratio:4/3;min-height:0}
   .fbfeed>.post .body{font-size:1.08em;line-height:1.4}
   .fb .top{flex:0 0 auto;background:#fff;padding:7px 11px;display:flex;align-items:center;border-bottom:1px solid #dadde1}
   .fb .logo{color:#0866ff;font-weight:800;font-size:1.4em;letter-spacing:-.04em}
@@ -696,7 +701,7 @@ const FALLBACK_SHOW = [
        t:'You have memories with Jamie Wellerstein to look back on today'}]},
  {id:'1.3',kind:'music',trig:'Prologue — she gives in',
   what:'She taps it. Face ID, straight into ON THIS DAY — and the screen leans in close so the house reads every card.',
-  do:[{op:'notiftap',to:'memories'},{op:'frame',z:1.9,at:'mid'}]},
+  do:[{op:'notiftap',to:'memories'}]},
  {id:'1.4',kind:'music',trig:'Prologue — the first memory',
   what:'2021 — five years ago today. The first summer.',
   do:[{op:'mem',scroll:'flick',yr:'5 years ago · 2021',who:'Cathy Hiatt',av:'C',col:'#c2447a',when:'June 12, 2021',
@@ -1392,7 +1397,9 @@ function freshState(song){
   return {dev:'iphone',who,app:'lock',stamp:'',tm:song.who==='cathy'?'9:41':'11:38',
     date:song.who==='cathy'?'Friday, June 12, 2026':'Friday, September 3, 2021',
     notifs:[],contact:{n:song.who==='cathy'?'Jamie':'Cathy Hiatt',sub:'mobile'},
-    msgs:[],draft:'',kbd:false,thumbs:[],typing:false,hover:null,black:false,photoTab:'library',
+    // black:true — between songs the stage is dark until the first cue fires
+    // (every song's first cue opens with a device op, which clears it)
+    msgs:[],draft:'',kbd:false,thumbs:[],typing:false,hover:null,black:true,photoTab:'library',
     mails:[],rows:[],call:null,ft:null,cards:[],deck:[],doclines:0,search:'',feed:[],focus:null,
     mem:[],msgrows:null,searchDone:null,mailbox:'Inbox',mailmsg:null,wall:null,
     sheet:null,contact2:null,fm:null,calev:null,setg:null,rem:null,ftrec:null,nav:null,
@@ -1606,7 +1613,7 @@ function lockHTML(st){
   const [w1,w2,w3]=WALL[st.who]||WALL.cathy;
   return `<div class="layer lockL fs" style="background:linear-gradient(160deg,${w1},${w2} 55%,${w3})">
     <div class="wallnote">WALLPAPER — ${st.wall||'abstract gradient (no photo)'}</div>
-    <div style="padding-top:8%">
+    <div style="padding-top:11.5%">
       <div class="lk-date">${st.date}</div>
       <div class="lk-time">${st.tm}</div>
     </div>
@@ -1743,20 +1750,20 @@ function mailReadHTML(st){
 function callHTML(st){
   const c=st.call||{n:'',st:''};
   return `<div class="layer fs" style="background:linear-gradient(180deg,#26303f,#0d1118);color:#fff">
-    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:18% 8% 12%">
-      <div style="text-align:center"><div style="font-size:1.9em;font-weight:500">${c.n}</div>
-        <div style="font-family:'Courier Prime',monospace;font-size:.8em;letter-spacing:.18em;color:#aeb6cc;
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:16% 8% 12%">
+      <div style="text-align:center"><div style="font-size:2.7em;font-weight:500">${c.n}</div>
+        <div style="font-family:'Courier Prime',monospace;font-size:1.05em;letter-spacing:.18em;color:#aeb6cc;
           text-transform:uppercase;margin-top:.5em">${c.st}</div></div>
-      <div style="width:5.5em;height:5.5em;border-radius:50%;background:#3a4568;display:flex;align-items:center;
-        justify-content:center;font-size:2.4em">${(c.n||'?')[0]}</div>
+      <div style="width:7em;height:7em;border-radius:50%;background:#3a4568;display:flex;align-items:center;
+        justify-content:center;font-size:3em">${(c.n||'?')[0]}</div>
       ${/incoming/i.test(c.st||'')
         ? `<div style="display:flex;gap:18%;width:100%;justify-content:center">
-            <div style="width:3.6em;height:3.6em;border-radius:50%;background:#e0483e;display:flex;align-items:center;justify-content:center;font-size:1.4em">✕</div>
-            <div style="width:3.6em;height:3.6em;border-radius:50%;background:#39c26a;display:flex;align-items:center;justify-content:center;font-size:1.4em">✆</div></div>`
+            <div style="width:4.6em;height:4.6em;border-radius:50%;background:#e0483e;display:flex;align-items:center;justify-content:center;font-size:1.8em">✕</div>
+            <div style="width:4.6em;height:4.6em;border-radius:50%;background:#39c26a;display:flex;align-items:center;justify-content:center;font-size:1.8em">✆</div></div>`
         : `<div style="display:flex;gap:12%;width:100%;justify-content:center;align-items:center">
-            <div style="width:3em;height:3em;border-radius:50%;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:1.1em">🔇</div>
-            <div style="width:3.6em;height:3.6em;border-radius:50%;background:#e0483e;display:flex;align-items:center;justify-content:center;font-size:1.4em">✕</div>
-            <div style="width:3em;height:3em;border-radius:50%;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:1.1em">🔊</div></div>`}
+            <div style="width:3.8em;height:3.8em;border-radius:50%;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:1.4em">🔇</div>
+            <div style="width:4.6em;height:4.6em;border-radius:50%;background:#e0483e;display:flex;align-items:center;justify-content:center;font-size:1.8em">✕</div>
+            <div style="width:3.8em;height:3.8em;border-radius:50%;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:1.4em">🔊</div></div>`}
       </div></div>`;
 }
 function ftHTML(st){
@@ -2284,7 +2291,7 @@ function deviceHTML(st,h){
   // neutral graphite case, so close-up window edges look like a real bezel
   const caseCol = '#3d4048';
   return `<div class="${cls}" style="height:${h}px;--case:${caseCol};--chrome:${dark?'transparent':ch};--chrometxt:${dark?'#fff':ct}">${notch}
-    <div class="screen"><div class="statusbar">${statusHTML(st)}</div>
+    <div class="screen${dark?' edge':''}"><div class="statusbar">${statusHTML(st)}</div>
     <div class="app" style="position:relative"><div class="screenstack">${screenHTML(st)}</div></div></div>
     <div class="homebar" style="background:${dark?'rgba(255,255,255,.85)':'rgba(0,0,0,.55)'}"></div></div>`;
 }
@@ -2308,9 +2315,11 @@ function stageDims(){ return rot ? {w:window.innerHeight,h:window.innerWidth}
    screen, CLOSE-UP IS THE DEFAULT — every register auto-zooms to its reading
    region. A cue overrides with {op:'frame',z,at} or {op:'frame',off:true}. */
 const AUTOFRAME={lock:{z:1.9,at:'top'},home:{z:1.6,at:'mid'},msglist:{z:1.9,at:'top'},
-  thread:{z:2.2,at:'bottom'},memories:{z:1.7,at:'mid'},fbpost:{z:1.8,at:'mid'},
-  mail:{z:1.9,at:'top'},mailread:{z:1.9,at:'top'},call:{z:1.6,at:'mid'},
-  facetime:{z:1.5,at:'mid'},photos:{z:1.6,at:'mid'},shot:{z:1.6,at:'mid'},
+  thread:{z:2.2,at:'bottom'},memories:{z:1.45,at:'top'},fbpost:{z:1.4,at:'top'},
+  mail:{z:1.9,at:'top'},mailread:{z:1.9,at:'top'},
+  /* call + facetime run UNCROPPED: their composition spans the whole screen
+     (name top, buttons bottom) — the layer's own type carries 25 ft instead */
+  photos:{z:1.6,at:'mid'},shot:{z:1.6,at:'mid'},
   search:{z:1.8,at:'top'},calevent:{z:1.8,at:'top'},settings2:{z:1.8,at:'top'},
   findmy:{z:1.6,at:'mid'},reminders:{z:1.8,at:'top'},contact:{z:1.8,at:'top'},
   ember:{z:1.6,at:'mid'},vm:{z:1.8,at:'mid'},ftrecents:{z:1.9,at:'top'},
@@ -2535,7 +2544,11 @@ async function playCue(cue, st, tok){
     if(o.op==='device'){ applyOp(st,o);
       const nx=cue.do[cue.do.indexOf(o)+1];
       if(nx && (nx.op==='setapp'||nx.op==='inbox')) applyOp(st,cue.do[cue.do.indexOf(o)+1]);
-      paintAll(st); setStamp(st); await wait(220); continue; }
+      paintAll(st); setStamp(st);
+      // the device op lifts the between-songs black itself, so the rest of
+      // the cue (unlock, app opens) plays in view, not behind the fade
+      document.body.classList.toggle('blk', blk||st.black);
+      await wait(220); continue; }
     if(o.op==='clock'){
       const prevDate=st.date, prevTm=st.tm; applyOp(st,o);
       const rr=document.getElementById('railR');
@@ -2887,7 +2900,8 @@ function hardRender(){          // no animation — scrub, resize, view swap, re
   CUR=buildState(song(), ci);
   paintAll(CUR);
   setStamp(CUR);
-  document.body.classList.toggle('blk', blk||CUR.black);
+  // the preshow house card paints through the between-songs black
+  document.body.classList.toggle('blk', blk||(CUR.black && !(si===0&&ci===0)));
   scrollThreads();
   paintChrome();
 }
