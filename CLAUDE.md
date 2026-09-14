@@ -68,6 +68,6 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
 ## Workflow law
 1. **Verify before delivering.** Playwright harness must pass: state-integrity (all cues), POV/timeline, legibility QC, `audit_teleports.py` (no register appears without navigation), zero JS errors — plus a screenshot review of anything visually changed. Never hand David anything unverified.
 2. Rebuild = splice `cues.js` into `FALLBACK_SHOW`, emit `L5Y-Show-STANDALONE.html`, `node --check` the script.
-3. Regenerate the Cue Bible (`build_bible_data.py` → `build_bible_docx.js` → PDF) whenever cue content changes. The Bible carries: ON SCREEN verbatim, PLAYS mechanics, SOUND, PHONES state, gold dramaturgy notes.
+3. Regenerate the Cue Bible whenever cue content changes: `extract_book.py` → `build_bible_data.py` → `build_bible_docx.js` (DOCX) + `build_bible_pdf.py` (PDF, headless Chromium). Both render the same `bible.json`, so they cannot drift. The Bible carries: ON SCREEN verbatim, PLAYS mechanics, SOUND, PHONES state, gold dramaturgy notes.
 4. Ship: STANDALONE + Bible PDF; push to this repo so the team URL stays current.
 5. David's notes are punch lists: fix **every** item, then QA beyond the list in the same spirit. Proactive taste is expected; sloppiness anywhere invalidates polish everywhere.

@@ -17,13 +17,17 @@ EXTRACT_JS = """() => {
     const s = SHOW[si];
     const cues = [];
     for (let k = 0; k < s.cues.length; k++) {
+      const c = s.cues[k];
       const pre = buildState(s, k), post = buildState(s, k + 1);
-      cues.push({id: s.cues[k].id, dev: post.dev, preApp: pre.app,
-                 app: post.app, do: s.cues[k].do});
+      cues.push({id: c.id, kind: c.kind, trig: c.trig, what: c.what || '',
+                 hold: c.hold || null, cut: c.cut || null,
+                 dev: post.dev, preApp: pre.app, app: post.app,
+                 who: post.who, clock: post.tm, stamp: post.stamp,
+                 black: !!post.black, do: c.do});
     }
-    songs.push({n: s.n, t: s.t, cues});
+    songs.push({n: s.n, t: s.t, who: s.who || 'cathy', cues});
   }
-  return {songs};
+  return {build: BUILD, songs};
 }"""
 
 

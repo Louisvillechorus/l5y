@@ -105,7 +105,7 @@ def onscreen(o):
         return [('ACTION SHEET slides up over the app — ', f"“{o.get('title','')}”"),
                 ('  buttons: ', f"[{o.get('danger','')}] (red) · [{o.get('safe','Cancel')}]")]
     if op=='sheetDismiss': return [('sheet slides away — ', 'nothing chosen')]
-    if op=='btnHover': return [('TOUCH-DOT lands on ', f"[{o['b']}] — hovering, pulsing, not pressing")]
+    if op=='btnHover': return [('FINGER RESTS ON ', f"[{o['b']}] — the button holds its pressed shade. Not pressing.")]
     if op=='btnTap': return [('PRESSES ', f"[{o['b']}]")]
     if op=='contactcard':
         out=[('CONTACT CARD — ', o.get('n','') + (f" · {o['sub']}" if o.get('sub') else ''))]
@@ -162,16 +162,17 @@ def plays(o, cue, songwho):
     """Mechanics: what the engine performs on its own — navigation, sound, timing."""
     op=o['op']
     if op=='device': return f"the {DEV.get(o['dev'],o['dev'])} shell appears — {o['who'].upper()}’s screen"
-    if op=='notiftap': return ("TAP THE NOTIFICATION — the touch-dot lands on the banner, presses, Face ID passes, "
-                               f"and the app opens DIRECTLY onto {APPNAME.get(o['to'],o['to'])}. One motion. No home screen.")
+    if op=='notiftap': return ("TAP THE NOTIFICATION — a beat on the banner, Face ID passes, "
+                               f"and the app opens DIRECTLY onto {APPNAME.get(o['to'],o['to'])}. One motion. No home screen. "
+                               '(No touch dot anywhere in the show — cut by direction; the screen’s own feedback carries every tap.)')
     if op=='unlock': return 'UNLOCK — the lock slides up and away → home screen · sound: unlock swish'
     if op=='openapp': return (f"OPENS {o['icon']} — closes the current app if one is open, a beat on the home screen, "
-                              'the thumb travels to the icon, presses, the app opens · sound: tap')
+                              'then the icon itself presses (its real tap animation) and the app opens · sound: tap')
     if op=='setapp': return f"cut to {APPNAME.get(o['to'],o['to'])} (instant)"
-    if op=='hover': return f"HESITATION — the pulsing touch-dot hovers over “{o['row']}” … and does not commit. Holds until the next cue."
-    if op=='tap': return 'TAP COMMITS — the dot presses through and vanishes · sound: tap'
+    if op=='hover': return f"HESITATION — “{o['row']}” holds the iOS pressed-gray under a resting finger … and does not commit. Holds until the next cue."
+    if op=='tap': return 'TAP COMMITS — the pressed row releases and pushes through · sound: tap'
     if op=='push': return f"thread pushes in from the list — {o.get('contact','')}"
-    if op=='mailopen': return 'the dot presses through — the email pushes in over the inbox'
+    if op=='mailopen': return 'the row presses through — the email pushes in over the inbox'
     if op=='mail': return 'sound: receive ding — the new row fades in above everything already there'
     if op=='inbox': return 'no animation — a real inbox does not populate; it is simply THERE, continuing past the bottom edge'
     if op=='msgrows': return 'no animation — the list is already full; the last rows cut off at the bottom of the glass'
@@ -189,6 +190,24 @@ def plays(o, cue, songwho):
 
 OPS_SILENT={'device','clock'}  # covered inline
 
+# per-song dramaturgy intro — shared by the DOCX and PDF renderers
+INTROS={
+1:'COLD OPEN. Her phone is the first actor on stage. The house learns the grammar wordlessly: a notification is tapped and the app is simply there; a list is already full; only what would truly arrive live ever arrives live. When she puts the phone down, the memories go full-bleed — non-diegetic, the frame gone.',
+2:'THE FIRST NIGHT, FROM HIS SIDE. Three overwrought drafts die under the backspace key before two words survive: “home safe?” — the exact text the finale receives five years later. She answers by calling instead. His hesitation here is the measure for how fast he moves in 13.',
+3:'NEARLY EMPTY, BY DESIGN. One post and its climbing likes are the whole birthday; the screens stay black while she sings. Then his 2021 calls cut in — the agency cold call, the callback, and Rob (an outgoing dial, per the script) — and the house learns the projections can time-travel.',
+4:'THE AVALANCHE, COMPRESSED. Her one professional call, politely deflected — then his lock screen wins five times in the exact order he sings them: the apartment, the Atlantic, the money, Columbia, Sonny. The happy infrastructure of the marriage installs itself so the back half can dismantle it.',
+5:'HIS SILENCE, FROM HER SIDE. The party album has her as “and guest”; the repost crops her out; her texts sit Not Delivered under six hours of his Do Not Disturb. The 6:04 release — everything flips Delivered at once — is the quiet center of the song. Then a stranger’s photo of the dedication page.',
+6:'STILLNESS, BY DIRECTION. One held Christmas image. No animation, no cueing inside the number — the kindest screen of the night, deliberately so; the generosity buys the betrayal its full price later. Not one Elise pixel anywhere in this song.',
+7:'ONE CUE. The prerecorded FaceTime (V2) carries the entire number — Jamie at his desk, half-attending, writing, while Ohio sings to him. The engine draws only the FaceTime frame and the call chrome; everything alive in it is the video.',
+8:'TIME, NOT CONTENT. The phones mark only where we are: June 12, 2023 — then the one date both timelines share, enormous: MAY 18, 2024 — then back again on the rowboat line. The era rail does the traveling; the people do the vows.',
+9:'NOTIFICATIONS ONLY. His married year arrives as a stack he never touches — readers, the growing book, Elise, front row. The phone will not stop, and he never once interacts with it. The attention just lands.',
+10:'HER INTERIOR VS. HIS SCROLL. The bell-tone fragments rhyme with the sung monologue and never transcribe it — protect that rule in every edit.',
+11:'THE FIGHT HAS AN AUDIENCE: HIS PHONE. What the argument is actually about sits unsigned on the other side of the stage all song.',
+12:'HER GHOST REGISTER, USED FOR LOVE. Drafted courage, kept receipts, a shared playlist — the exact mirror of what his register becomes.',
+13:'THE PAYOFF. The same three gestures as the first night, frozen over. Speed that read as charm now reads as practice.',
+14:'THE GRAMMAR RESOLVES. Her firsts fill as his lasts empty — the same thread from both ends, five years apart.'}
+
+
 book={'build':data['build'],'songs':[]}
 for s in data['songs']:
     entries=[]
@@ -205,7 +224,8 @@ for s in data['songs']:
             'who':c['who'].upper(),'app':APPNAME.get(c['app'],c['app']),
             'clock':c['clock'],'stamp':c['stamp'],'black':c['black'],
             'content':content,'plays':mech,'sound':sound_for(c['do'])})
-    book['songs'].append({'n':s['n'],'t':s['t'],'who':s['who'],'fires':len(entries),'cues':entries})
+    book['songs'].append({'n':s['n'],'t':s['t'],'who':s['who'],'intro':INTROS.get(s['n'],''),
+        'fires':len(entries),'cues':entries})
 
 json.dump(book, open('bible.json','w'), ensure_ascii=False)
 print('bible.json:', sum(s['fires'] for s in book['songs']), 'entries across', len(book['songs']), 'songs')
