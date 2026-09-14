@@ -14,10 +14,31 @@
   html,body{height:100%}
   body{background:#05070c;color:var(--paper);font-family:'Archivo',sans-serif;overflow:hidden}
 
-  /* ================= PROJECTION ================= */
-  #projection{position:fixed;inset:0;display:none;align-items:flex-end;justify-content:center;
-    background:#000;padding:0 2vw 2vh}
+  /* ================= PROJECTION — composed 3-zone stage ================= */
+  #projection{position:fixed;inset:0;display:none;align-items:center;justify-content:center;
+    background:#000;padding:0}
   body.v-projection #projection{display:flex}
+
+  /* side rails: identity left, time right — never overlaying the device */
+  #railL,#railR{flex:1 1 0;min-width:0;height:100%;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:2.4vh;opacity:0;transition:opacity .6s ease}
+  #railL.on,#railR.on{opacity:1}
+  body.blk #railL,body.blk #railR{opacity:0 !important}
+  body.railshide #railL,body.railshide #railR{display:none}
+  body.portrait #railL,body.portrait #railR{display:none}
+  #railL .rname{font-family:'Courier Prime',monospace;font-weight:700;
+    font-size:clamp(28px,6.6vh,96px);letter-spacing:.24em;padding-left:.24em}
+  #railL .rname.c{color:var(--cathy);text-shadow:0 0 46px rgba(224,122,158,.3)}
+  #railL .rname.j{color:var(--jamie);text-shadow:0 0 46px rgba(95,184,201,.3)}
+  #railL .rdev{font-family:'Courier Prime',monospace;font-weight:700;
+    font-size:clamp(12px,2vh,26px);letter-spacing:.55em;padding-left:.55em;color:var(--dim);text-transform:uppercase}
+  #railR .rera{font-family:'Courier Prime',monospace;font-weight:700;
+    font-size:clamp(22px,4.4vh,64px);letter-spacing:.14em;color:var(--gold);text-transform:uppercase;
+    text-align:center;line-height:1.2;padding:0 1.5vw;text-shadow:0 0 44px rgba(233,199,102,.28)}
+  #railR .rdate{font-family:'Courier Prime',monospace;font-weight:700;
+    font-size:clamp(12px,2.1vh,27px);letter-spacing:.2em;color:var(--dim);text-transform:uppercase;text-align:center}
+  #railR .rtime{font-family:'Courier Prime',monospace;font-weight:700;
+    font-size:clamp(30px,7.4vh,108px);color:var(--paper);opacity:.92;letter-spacing:.04em}
   #projOwner{position:absolute;top:2.2vh;left:0;right:0;text-align:center;font-family:'Courier Prime',monospace;
     font-weight:700;font-size:clamp(15px,2.3vw,44px);letter-spacing:.34em;text-transform:uppercase;
     opacity:0;transition:opacity .5s ease;z-index:60;
@@ -31,9 +52,43 @@
     text-shadow:0 0 40px rgba(233,199,102,.25),0 2px 16px rgba(0,0,0,.95),0 0 8px rgba(0,0,0,.9);
     padding:0 3vw}
   #projStamp.on{opacity:1}
-  #projDevice{display:flex;align-items:flex-end;justify-content:center;height:80%;width:100%;
-    transition:opacity .5s ease}
+  #projDevice{display:flex;align-items:center;justify-content:center;height:100%;flex:0 1 auto;
+    transition:opacity .5s ease;position:relative}
+  /* close-up mask: the push-in is a clean phone-shaped window, never a chopped bezel */
+  #projDevice.mask{overflow:hidden;background:#000;flex:none}
   body.blk #projDevice,body.blk #projStamp{opacity:0 !important}
+  body.portrait #projDevice{width:100%;align-items:flex-end}
+  /* landscape: the rails/bar own identity + time — nothing overlays the device.
+     (the floating era stamp survives only on full-bleed non-diegetic beats;
+      portrait and the rotated feed keep the classic overlays) */
+  body:not(.portrait) #projOwner{display:none}
+  body:not(.portrait):not(.railshide) #projStamp{display:none}
+
+  /* ---- LAPTOP MODE: the MacBook owns the whole screen; identity + time ride a top bar ---- */
+  #barTop{position:absolute;top:0;left:0;right:0;height:8vh;display:none;align-items:center;
+    justify-content:space-between;padding:0 2.2vw;z-index:60;background:#000;
+    opacity:0;transition:opacity .6s ease}
+  body.laptop #barTop{display:flex}
+  #barTop.on{opacity:1}
+  body.blk #barTop{opacity:0 !important}
+  body.portrait #barTop{display:none}
+  body.laptop #railL,body.laptop #railR{display:none}
+  body.laptop #projDevice{width:100%;height:100%;padding:8.5vh 0 1.2vh;align-items:flex-end}
+  #barTop .bwho,#barTop .bwhen{display:flex;align-items:baseline}
+  #barTop .bwho{gap:1.4vw} #barTop .bwhen{gap:2vw}
+  #barTop .bname{font-family:'Courier Prime',monospace;font-weight:700;
+    font-size:clamp(20px,4.4vh,64px);letter-spacing:.2em}
+  #barTop .bname.c{color:var(--cathy);text-shadow:0 0 40px rgba(224,122,158,.3)}
+  #barTop .bname.j{color:var(--jamie);text-shadow:0 0 40px rgba(95,184,201,.3)}
+  #barTop .bdev{font-family:'Courier Prime',monospace;font-weight:700;
+    font-size:clamp(11px,1.9vh,25px);letter-spacing:.45em;color:var(--dim);text-transform:uppercase}
+  #barTop .bera{font-family:'Courier Prime',monospace;font-weight:700;
+    font-size:clamp(15px,3vh,44px);letter-spacing:.14em;color:var(--gold);text-transform:uppercase;
+    text-shadow:0 0 36px rgba(233,199,102,.28)}
+  #barTop .bdate{font-family:'Courier Prime',monospace;font-weight:700;
+    font-size:clamp(11px,1.9vh,25px);letter-spacing:.2em;color:var(--dim);text-transform:uppercase}
+  #barTop .btime{font-family:'Courier Prime',monospace;font-weight:700;
+    font-size:clamp(20px,4.4vh,64px);color:var(--paper);opacity:.92}
 
   /* ---- PRESHOW house card (si 0 · ci 0) ---- */
   body.preshow #projOwner,body.preshow #projStamp{opacity:0 !important}
@@ -583,7 +638,14 @@
 </div>
 
 <!-- PROJECTION -->
-<div id="projection"><div id="projOwner"></div><div id="projStamp"></div><div id="projDevice"></div><div id="rotNote"></div></div>
+<div id="projection">
+  <div id="barTop"><div class="bwho"><span class="bname"></span><span class="bdev"></span></div>
+    <div class="bwhen"><span class="bera"></span><span class="bdate"></span><span class="btime"></span></div></div>
+  <div id="railL"><div class="rname"></div><div class="rdev"></div></div>
+  <div id="projDevice"></div>
+  <div id="railR"><div class="rera"></div><div class="rdate"></div><div class="rtime"></div></div>
+  <div id="projOwner"></div><div id="projStamp"></div><div id="rotNote"></div>
+</div>
 
 <!-- PRESENTER -->
 <div id="presenter">
@@ -2293,8 +2355,14 @@ function paintAll(st){
   const S=stageDims();
   const portrait = S.h > S.w;
   document.body.classList.toggle('portrait', portrait);
-  // leave headroom for the owner banner + date stamp
-  let h=Math.min(S.h*0.80,1160), fit=1, mbFit=1;
+  const preshow = (si===0 && ci===0);
+  document.body.classList.toggle('preshow', preshow);
+  // landscape stage modes: rails flank the phone; the laptop takes the whole
+  // screen under a top info bar; preshow/full-bleed drop the chrome entirely
+  const laptop = !portrait && !preshow && !st.black && st.dev==='macbook';
+  document.body.classList.toggle('laptop', laptop);
+  document.body.classList.toggle('railshide', !portrait && (preshow || st.dev==='full'));
+  let h=S.h*0.94, fit=1, mbFit=1;
   if(portrait){
     // vertical TV: render the phone at the tuned reference size, then scale
     // it up uniformly so type and chrome keep their proportions on the glass
@@ -2302,29 +2370,48 @@ function paintAll(st){
     fit=Math.min(S.h*0.86, S.w*0.94*19.5/9)/REF;
     h=REF;
     mbFit=1.7;   // laptop: smaller layout scaled up — its capped type reaches the 10-ft floor
+  }else if(st.dev==='macbook'){
+    mbFit=1.32;  // full-screen laptop: upscale the layout so its capped type carries 25 ft
   }
-  const macW=Math.min(S.w*(portrait?0.96:0.86)/1.55,S.h*0.62)/mbFit;
-  const preshow = (si===0 && ci===0);
-  document.body.classList.toggle('preshow', preshow);
+  const macW = (!portrait)
+    ? Math.min(S.w*0.96/1.55, S.h*0.87)/mbFit
+    : Math.min(S.w*0.96/1.55, S.h*0.62)/mbFit;
   const pj=document.getElementById('projDevice');
   if(pj){
     pj.innerHTML = preshow ? houseHTML()
                  : st.black ? '' : deviceHTML(st, st.dev==='macbook'?macW:h);
     projFit = st.dev==='macbook' ? mbFit : (st.dev==='full' ? 1 : fit);
     const d=pj.firstElementChild;
+    let maskOn=false, maskW=0;
     if(d && !preshow && st.dev!=='full'){
       if(projFit!==1){
         d.style.transform='scale('+projFit.toFixed(4)+')';
         d.style.transformOrigin='50% 100%';
-      }else if(!portrait && st.dev!=='macbook'){
-        // 75" landscape close-up — DEFAULT ON: cue frame wins, else the register's auto zoom
+      }else if(!portrait && st.dev==='iphone'){
+        // 75" landscape close-up — DEFAULT ON: cue frame wins, else the register's auto zoom.
+        // The push-in renders inside a WIDE READING WINDOW: the window grows to the
+        // scaled content width, so text is never chopped mid-line — the crop is
+        // vertical only, to the register's reading region. A camera insert, not a
+        // bezel spilling off the stage.
         const fr = st.frame==='off' ? null : (st.frame && st.frame.z ? st.frame : AUTOFRAME[st.app]);
         if(fr){
-          d.style.transform='scale('+(+fr.z).toFixed(3)+')';
+          const phW=h*9/19.5, maxW=S.w*0.54;
+          const z=Math.min(+fr.z, maxW/phW);   // never wider than the rails allow
+          d.style.transform='scale('+z.toFixed(3)+')';
           d.style.transformOrigin = fr.at==='top' ? '50% 0%' : fr.at==='bottom' ? '50% 100%' : '50% 50%';
-          projFit=fr.z;
+          projFit=z;
+          maskOn=true; maskW=Math.round(phW*z);
         }
       }
+    }
+    pj.classList.toggle('mask', maskOn);
+    if(maskOn){
+      pj.style.width=maskW+'px';
+      pj.style.height=Math.round(h)+'px';
+      pj.style.borderRadius=Math.min(h*0.05,44)+'px';
+    }else{
+      pj.style.width=(!portrait && !laptop && (preshow || st.dev==='full' || st.black))?'100%':'';
+      pj.style.height=''; pj.style.borderRadius='';
     }
   }
   if(view==='presenter'){
@@ -2345,7 +2432,37 @@ function setStamp(st){
     e.textContent = (isC?'CATHY’S ':'JAMIE’S ') + (st.dev==='macbook'?'LAPTOP':'PHONE');
     e.className = (isC?'c':'j') + (st.black?'':' on');
   });
+  // landscape rails + laptop top bar: identity left, time right — off the device
+  const isC = st.who==='cathy';
+  const name = isC?'CATHY':'JAMIE';
+  const devLbl = (isC?'HER ':'HIS ') + (st.dev==='macbook'?'LAPTOP':'PHONE');
+  const dateLbl = railDate(st.date);
+  const on = !st.black && !(si===0&&ci===0) && st.dev!=='full';
+  const rl=document.getElementById('railL'), rr=document.getElementById('railR'),
+        bt=document.getElementById('barTop');
+  if(rl){ const n=rl.querySelector('.rname'); n.textContent=name; n.className='rname '+(isC?'c':'j');
+    rl.querySelector('.rdev').textContent=devLbl; rl.classList.toggle('on',on); }
+  if(rr){ const era=rr.querySelector('.rera');
+    // the ' · ' separators become designed line breaks; long lines size down
+    const parts=(st.stamp||'').split(' · ');
+    const longest=parts.reduce((m,p)=>Math.max(m,p.length),0);
+    era.innerHTML=parts.map(escTxt).join('<br>');
+    era.style.fontSize = longest>16?'clamp(15px,2.8vh,40px)':longest>10?'clamp(18px,3.6vh,52px)':'';
+    rr.querySelector('.rdate').textContent=dateLbl;
+    rr.querySelector('.rtime').textContent=st.tm||'';
+    rr.classList.toggle('on',on); }
+  if(bt){ const n=bt.querySelector('.bname'); n.textContent=name; n.className='bname '+(isC?'c':'j');
+    bt.querySelector('.bdev').textContent=devLbl;
+    const bera=bt.querySelector('.bera'); bera.textContent=st.stamp||'';
+    bera.style.fontSize = (st.stamp||'').length>24?'clamp(13px,2.4vh,34px)':'';
+    bt.querySelector('.bdate').textContent=dateLbl;
+    bt.querySelector('.btime').textContent=st.tm||'';
+    bt.classList.toggle('on',on); }
 }
+/* "Friday, June 12, 2026" → "Friday · June 12" — the era stamp owns the year
+   (the clock-roll passes interstitial dates through here too) */
+function railDate(d){ return d ? d.replace(/,\s*\d{4}\s*$/,'').replace(',',' ·') : ''; }
+function escTxt(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
 function sPopSafe(){ }
 
 function prng(seedStr){ let h=1779033703^seedStr.length;
@@ -2445,7 +2562,7 @@ async function playCue(cue, st, tok){
     if(o.op==='device'){ applyOp(st,o);
       const nx=cue.do[cue.do.indexOf(o)+1];
       if(nx && (nx.op==='setapp'||nx.op==='inbox')) applyOp(st,cue.do[cue.do.indexOf(o)+1]);
-      paintAll(st); await wait(220); continue; }
+      paintAll(st); setStamp(st); await wait(220); continue; }
     if(o.op==='clock'){
       const prevDate=st.date, prevTm=st.tm; applyOp(st,o);
       const canRoll = o.d && prevDate!==o.d && stacks().some(k=>k.querySelector('.lk-date'));
@@ -2454,13 +2571,18 @@ async function playCue(cue, st, tok){
         if(!isNaN(A)&&!isNaN(B)){
           const steps=16, WD=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
                 MO=['January','February','March','April','May','June','July','August','September','October','November','December'];
+          const rr=document.getElementById('railR');
           for(let i=1;i<=steps;i++){
             if(tok!==animTok) break;
             const d=new Date(A.getTime()+(B-A)*(i/steps));
             const txt=`${WD[d.getDay()]}, ${MO[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
             const hh=Math.floor(Math.random()*12)+1, mm=String(Math.floor(Math.random()*60)).padStart(2,'0');
+            const itm=(i===steps?st.tm:hh+':'+mm);
             stacks().forEach(k=>{ const ld=k.querySelector('.lk-date'); if(ld) ld.textContent=txt;
-              const lt=k.querySelector('.lk-time'); if(lt) lt.textContent=(i===steps?st.tm:hh+':'+mm); });
+              const lt=k.querySelector('.lk-time'); if(lt) lt.textContent=itm; });
+            // the rail clock rolls with it — the readable face of the time travel
+            if(rr){ rr.querySelector('.rdate').textContent=railDate(txt);
+                    rr.querySelector('.rtime').textContent=itm; }
             await wait(i<4?40:(i<12?70:130));   // accelerate, then brake into the new era
           }
         }
@@ -2469,6 +2591,7 @@ async function playCue(cue, st, tok){
         const sb=shell.querySelector('.statusbar span'); if(sb) sb.textContent=st.tm;
         const lt=k.querySelector('.lk-time'); if(lt) lt.textContent=st.tm;
         const ld=k.querySelector('.lk-date'); if(ld&&o.d) ld.textContent=st.date; });
+      setStamp(st);
       continue; }
     if(o.op==='stamp'){ applyOp(st,o); setStamp(st); continue; }
     if(o.op==='notif'){ applyOp(st,o);

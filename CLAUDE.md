@@ -38,8 +38,15 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   and **CLOSE-UP IS THE DEFAULT, not an option**: every register auto-zooms to its reading
   region (`AUTOFRAME` in the engine — thread 2.2×, lock/notifications 1.9× top, posts 1.8×…).
   A cue overrides with `{op:'frame', z, at:'top'|'mid'|'bottom'}` or `{op:'frame', off:true}`.
-  The owner banner and era stamp float above the zoomed phone with a dark scrim.
-  Portrait/rot support stays in the engine but is not the rig.
+- **The composed stage (revised Sept 14 evening — nothing ever overlays the phone).**
+  Landscape is a three-zone stage: **left rail = identity** (CATHY/JAMIE in their color +
+  HER PHONE/HIS LAPTOP), **center = the device**, **right rail = time** (era stamp in gold,
+  stacked on its `·` separators; weekday · date; the in-world clock, large — it rolls with
+  era changes). The close-up renders in a **wide reading window**: the window grows to the
+  scaled content width so text is never chopped mid-line — the crop is vertical only, to
+  the reading region. **The MacBook takes the whole screen** under a top info bar (identity
+  left, era · date · clock right). Preshow and `dev:'full'` drop rails/bar entirely.
+  Portrait/rot support (classic floating overlays) stays in the engine but is not the rig.
 - **Preshow**: the house card (title + the two-handed clock) renders at song 1 · cue 0.
 - **Non-diegetic is allowed.** The phone plays even when the actor isn't holding it; in
   those moments the frame may drop away entirely (`dev:'full'` full-bleed stage).
