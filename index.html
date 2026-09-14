@@ -35,10 +35,6 @@
   #railR .rera{font-family:'Courier Prime',monospace;font-weight:700;
     font-size:clamp(22px,4.4vh,64px);letter-spacing:.14em;color:var(--gold);text-transform:uppercase;
     text-align:center;line-height:1.2;padding:0 1.5vw;text-shadow:0 0 44px rgba(233,199,102,.28)}
-  #railR .rdate{font-family:'Courier Prime',monospace;font-weight:700;
-    font-size:clamp(12px,2.1vh,27px);letter-spacing:.2em;color:var(--dim);text-transform:uppercase;text-align:center}
-  #railR .rtime{font-family:'Courier Prime',monospace;font-weight:700;
-    font-size:clamp(30px,7.4vh,108px);color:var(--paper);opacity:.92;letter-spacing:.04em}
   #projOwner{position:absolute;top:2.2vh;left:0;right:0;text-align:center;font-family:'Courier Prime',monospace;
     font-weight:700;font-size:clamp(15px,2.3vw,44px);letter-spacing:.34em;text-transform:uppercase;
     opacity:0;transition:opacity .5s ease;z-index:60;
@@ -85,10 +81,6 @@
   #barTop .bera{font-family:'Courier Prime',monospace;font-weight:700;
     font-size:clamp(15px,3vh,44px);letter-spacing:.14em;color:var(--gold);text-transform:uppercase;
     text-shadow:0 0 36px rgba(233,199,102,.28)}
-  #barTop .bdate{font-family:'Courier Prime',monospace;font-weight:700;
-    font-size:clamp(11px,1.9vh,25px);letter-spacing:.2em;color:var(--dim);text-transform:uppercase}
-  #barTop .btime{font-family:'Courier Prime',monospace;font-weight:700;
-    font-size:clamp(20px,4.4vh,64px);color:var(--paper);opacity:.92}
 
   /* ---- PRESHOW house card (si 0 · ci 0) ---- */
   body.preshow #projOwner,body.preshow #projStamp{opacity:0 !important}
@@ -640,10 +632,10 @@
 <!-- PROJECTION -->
 <div id="projection">
   <div id="barTop"><div class="bwho"><span class="bname"></span><span class="bdev"></span></div>
-    <div class="bwhen"><span class="bera"></span><span class="bdate"></span><span class="btime"></span></div></div>
+    <div class="bwhen"><span class="bera"></span></div></div>
   <div id="railL"><div class="rname"></div><div class="rdev"></div></div>
   <div id="projDevice"></div>
-  <div id="railR"><div class="rera"></div><div class="rdate"></div><div class="rtime"></div></div>
+  <div id="railR"><div class="rera"></div></div>
   <div id="projOwner"></div><div id="projStamp"></div><div id="rotNote"></div>
 </div>
 
@@ -2295,7 +2287,9 @@ function deviceHTML(st,h){
   }
   const cls=st.dev==='ipad'?'ipad':'iphone';
   const notch=st.dev==='ipad'?'<div class="cam"></div>':'<div class="island"></div>';
-  const caseCol = st.who==='cathy' ? '#c2447a' : '#2f7f92';
+  // identity lives on the rails/owner banner — the hardware reads as an iPhone:
+  // neutral graphite case, so close-up window edges look like a real bezel
+  const caseCol = '#3d4048';
   return `<div class="${cls}" style="height:${h}px;--case:${caseCol};--chrome:${dark?'transparent':ch};--chrometxt:${dark?'#fff':ct}">${notch}
     <div class="screen"><div class="statusbar">${statusHTML(st)}</div>
     <div class="app" style="position:relative"><div class="screenstack">${screenHTML(st)}</div></div></div>
@@ -2436,32 +2430,28 @@ function setStamp(st){
   const isC = st.who==='cathy';
   const name = isC?'CATHY':'JAMIE';
   const devLbl = (isC?'HER ':'HIS ') + (st.dev==='macbook'?'LAPTOP':'PHONE');
-  const dateLbl = railDate(st.date);
   const on = !st.black && !(si===0&&ci===0) && st.dev!=='full';
   const rl=document.getElementById('railL'), rr=document.getElementById('railR'),
         bt=document.getElementById('barTop');
   if(rl){ const n=rl.querySelector('.rname'); n.textContent=name; n.className='rname '+(isC?'c':'j');
     rl.querySelector('.rdev').textContent=devLbl; rl.classList.toggle('on',on); }
-  if(rr){ const era=rr.querySelector('.rera');
-    // the ' · ' separators become designed line breaks; long lines size down
-    const parts=(st.stamp||'').split(' · ');
-    const longest=parts.reduce((m,p)=>Math.max(m,p.length),0);
-    era.innerHTML=parts.map(escTxt).join('<br>');
-    era.style.fontSize = longest>16?'clamp(15px,2.8vh,40px)':longest>10?'clamp(18px,3.6vh,52px)':'';
-    rr.querySelector('.rdate').textContent=dateLbl;
-    rr.querySelector('.rtime').textContent=st.tm||'';
+  if(rr){ setEraText(rr.querySelector('.rera'), st.stamp||'');
     rr.classList.toggle('on',on); }
   if(bt){ const n=bt.querySelector('.bname'); n.textContent=name; n.className='bname '+(isC?'c':'j');
     bt.querySelector('.bdev').textContent=devLbl;
     const bera=bt.querySelector('.bera'); bera.textContent=st.stamp||'';
     bera.style.fontSize = (st.stamp||'').length>24?'clamp(13px,2.4vh,34px)':'';
-    bt.querySelector('.bdate').textContent=dateLbl;
-    bt.querySelector('.btime').textContent=st.tm||'';
     bt.classList.toggle('on',on); }
 }
-/* "Friday, June 12, 2026" → "Friday · June 12" — the era stamp owns the year
-   (the clock-roll passes interstitial dates through here too) */
-function railDate(d){ return d ? d.replace(/,\s*\d{4}\s*$/,'').replace(',',' ·') : ''; }
+/* era display: ' · ' separators become designed line breaks; long lines size down.
+   The clock-roll drives interstitial MONTH YEAR frames through here too. */
+function setEraText(el, txt){
+  if(!el) return;
+  const parts=String(txt).split(' · ');
+  const longest=parts.reduce((m,p)=>Math.max(m,p.length),0);
+  el.innerHTML=parts.map(escTxt).join('<br>');
+  el.style.fontSize = longest>16?'clamp(15px,2.8vh,40px)':longest>10?'clamp(18px,3.6vh,52px)':'';
+}
 function escTxt(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
 function sPopSafe(){ }
 
@@ -2565,13 +2555,16 @@ async function playCue(cue, st, tok){
       paintAll(st); setStamp(st); await wait(220); continue; }
     if(o.op==='clock'){
       const prevDate=st.date, prevTm=st.tm; applyOp(st,o);
-      const canRoll = o.d && prevDate!==o.d && stacks().some(k=>k.querySelector('.lk-date'));
+      const rr=document.getElementById('railR');
+      const railOn = rr && rr.classList.contains('on') && !document.body.classList.contains('portrait');
+      const canRoll = o.d && prevDate!==o.d
+        && (railOn || stacks().some(k=>k.querySelector('.lk-date')));
       if(canRoll){
         const A=new Date(prevDate), B=new Date(o.d);
         if(!isNaN(A)&&!isNaN(B)){
           const steps=16, WD=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
                 MO=['January','February','March','April','May','June','July','August','September','October','November','December'];
-          const rr=document.getElementById('railR');
+          const era=railOn?rr.querySelector('.rera'):null;
           for(let i=1;i<=steps;i++){
             if(tok!==animTok) break;
             const d=new Date(A.getTime()+(B-A)*(i/steps));
@@ -2580,9 +2573,9 @@ async function playCue(cue, st, tok){
             const itm=(i===steps?st.tm:hh+':'+mm);
             stacks().forEach(k=>{ const ld=k.querySelector('.lk-date'); if(ld) ld.textContent=txt;
               const lt=k.querySelector('.lk-time'); if(lt) lt.textContent=itm; });
-            // the rail clock rolls with it — the readable face of the time travel
-            if(rr){ rr.querySelector('.rdate').textContent=railDate(txt);
-                    rr.querySelector('.rtime').textContent=itm; }
+            // the rail era rolls with it — the audience watches the months spin
+            // forward or backward, then the stamp op names where we landed
+            if(era) setEraText(era, MO[d.getMonth()]+' '+d.getFullYear());
             await wait(i<4?40:(i<12?70:130));   // accelerate, then brake into the new era
           }
         }
