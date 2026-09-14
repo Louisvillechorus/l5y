@@ -26,6 +26,11 @@ CHECK = """(() => {
     const scr=dev.querySelector('.screen');
     if(scr && scr.classList.contains('edge')!==want.dark) out.push('edge mismatch');
   }
+  const mac=pj && pj.querySelector('.macbook');
+  if(mac){
+    const mb=mac.querySelector('.menubar b');
+    if(mb && mb.textContent!==mbMenuFor(st)) out.push(`mac menu ${mb.textContent} != ${mbMenuFor(st)}`);
+  }
   if(st.dev==='iphone'){
     const fr = st.frame==='off' ? null : (st.frame && st.frame.z ? st.frame : AUTOFRAME[st.app]);
     const hasMask=pj.classList.contains('mask');

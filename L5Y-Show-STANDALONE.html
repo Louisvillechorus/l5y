@@ -34,7 +34,17 @@
     font-size:clamp(12px,2vh,26px);letter-spacing:.55em;padding-left:.55em;color:var(--dim);text-transform:uppercase}
   #railR .rera{font-family:'Courier Prime',monospace;font-weight:700;
     font-size:clamp(22px,4.4vh,64px);letter-spacing:.14em;color:var(--gold);text-transform:uppercase;
-    text-align:center;line-height:1.2;padding:0 1.5vw;text-shadow:0 0 44px rgba(233,199,102,.28)}
+    text-align:center;line-height:1.2;padding:0 1.5vw;text-shadow:0 0 44px rgba(233,199,102,.28);
+    transition:font-size .5s ease}
+  #railR .rera[data-tier="mid"]{font-size:clamp(18px,3.6vh,52px)}
+  #railR .rera[data-tier="long"]{font-size:clamp(15px,2.8vh,40px)}
+  /* ---- ERA-CENTER: the phone rests, the timeline takes the stage ---- */
+  body.erastage #railL{display:none}
+  body.erastage #projDevice{display:none}
+  body.erastage #railR .rera{text-shadow:0 0 70px rgba(233,199,102,.4)}
+  body.erastage #railR .rera[data-tier="short"]{font-size:clamp(44px,11vh,168px)}
+  body.erastage #railR .rera[data-tier="mid"]{font-size:clamp(36px,8.8vh,132px)}
+  body.erastage #railR .rera[data-tier="long"]{font-size:clamp(28px,6.6vh,100px)}
   #projOwner{position:absolute;top:2.2vh;left:0;right:0;text-align:center;font-family:'Courier Prime',monospace;
     font-weight:700;font-size:clamp(15px,2.3vw,44px);letter-spacing:.34em;text-transform:uppercase;
     opacity:0;transition:opacity .5s ease;z-index:60;
@@ -465,6 +475,7 @@
     color:#fff;font-size:.52em;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 .3em}
   .happ.tapped .gi{animation:tapPress .34s ease}
   @keyframes tapPress{40%{transform:scale(.84);filter:brightness(1.25)}100%{transform:scale(1)}}
+  @keyframes ftpulse{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.25)}50%{box-shadow:0 0 0 .8em rgba(255,255,255,0)}}
   /* swipe-up hint on lock */
   .swipehint{margin-top:auto;text-align:center;color:rgba(255,255,255,.6);font-size:.72em;padding-bottom:1.1em}
   .swipehint .grab{width:32%;height:.28em;background:rgba(255,255,255,.8);border-radius:99px;margin:.5em auto 0;
@@ -874,8 +885,8 @@ window.L5Y_SHOW = [
   what:'It connects. The conversation runs.',
   do:[{op:'callState',st:'connected · 00:08'}]},
  {id:'3.6',kind:'stage',trig:'Through “what’s your address” — he hangs up',
-  what:'Black. Time returns to her.',
-  do:[{op:'black'}]},
+  what:'The phone goes; the timeline takes the stage and ROLLS HOME — 2021 spins forward to her July 2025, big and center.',
+  do:[{op:'black'},{op:'clock',t:'6:31',d:'Saturday, July 19, 2025'},{op:'stamp',t:'JULY 2025 · OHIO'}]},
  {id:'3.7',kind:'lyric',trig:'“It’s all right — We’ll have tonight.” — the agency calls HIM back',
   what:'HIS phone again, 2021 — an INCOMING call from Miss Whitfield.',
   do:[{op:'device',dev:'iphone',who:'jamie'},{op:'stamp',t:'SEPTEMBER 2021'},
@@ -885,8 +896,8 @@ window.L5Y_SHOW = [
   what:'Connected. It runs until the thank-you.',
   do:[{op:'callState',st:'connected · 00:21'}]},
  {id:'3.9',kind:'stage',trig:'Through “thank you — this is great” — it ends',
-  what:'Black again.',
-  do:[{op:'black'}]},
+  what:'Again: the call goes, the centered timeline rolls forward to her evening.',
+  do:[{op:'black'},{op:'clock',t:'6:47',d:'Saturday, July 19, 2025'},{op:'stamp',t:'JULY 2025 · OHIO'}]},
  {id:'3.10',kind:'lyric',trig:'After Cathy’s “And not do anything at all” — JAMIE DIALS ROB',
   what:'SCRIPT: he dials — “perplexed but not unhappy.” The lease is up; an apartment WITH Cathy. 2021, pre-move-in — the era question answers itself.',
   do:[{op:'device',dev:'iphone',who:'jamie'},{op:'stamp',t:'SEPTEMBER 2021'},
@@ -896,8 +907,8 @@ window.L5Y_SHOW = [
   what:'Connected — visible through the very end of the vamp.',
   do:[{op:'callState',st:'connected · 01:02'}]},
  {id:'3.12',kind:'music',trig:'DOWNBEAT of Moving Too Fast — he hangs up',
-  what:'Black. Song 4 takes over.',
-  do:[{op:'black'}]},
+  what:'The Rob call goes; time rolls home to her July 2025 one last time, centered — song 4 will spin it back.',
+  do:[{op:'black'},{op:'clock',t:'7:04',d:'Saturday, July 19, 2025'},{op:'stamp',t:'JULY 2025 · OHIO'}]},
 ]},
 
 /* ============ 4 · MOVING TOO FAST — JAMIE (with Cathy’s gig call) ============ */
@@ -907,17 +918,17 @@ window.L5Y_SHOW = [
   do:[{op:'device',dev:'iphone',who:'jamie'},{op:'stamp',t:'OCTOBER 2021'},
       {op:'clock',t:'2:14',d:'Friday, October 8, 2021'}]},
  {id:'4.2',kind:'lyric',trig:'“But oh, oh — what else am I s’pposed to do?” — CATHY DIALS',
-  what:'HER phone — the gig-hunting era (2024, per the show’s structure; script gives no date) — dialing Mike Stelmyer. Script fact: his agency is never named.',
-  do:[{op:'device',dev:'iphone',who:'cathy'},{op:'stamp',t:'2024'},
-      {op:'clock',t:'10:10'},
+  what:'HER phone — MAY 2025, pinned by David (her backward line: between the pier and the party). Time ROLLS FORWARD from his October 2021 as she cuts in. Dialing Mike Stelmyer. Script fact: his agency is never named.',
+  do:[{op:'device',dev:'iphone',who:'cathy'},
+      {op:'clock',t:'10:10',d:'Friday, May 9, 2025'},{op:'stamp',t:'MAY 2025'},
       {op:'call',n:'Mike Stelmyer',st:'calling…',dir:'out'}]},
  {id:'4.3',kind:'lyric',trig:'On her “Hello, this is Catherine Hiatt, I’m calling for Mike Stelmyer” — it connects',
   what:'We see the dial AND the connect.',
   do:[{op:'callState',st:'connected · 00:15'}]},
  {id:'4.4',kind:'lyric',trig:'“I’ll call you soon!” — the call ends',
-  what:'Back to HIS phone, October 2021, locked — ready for the run of wins.',
-  do:[{op:'device',dev:'iphone',who:'jamie'},{op:'stamp',t:'OCTOBER 2021'},
-      {op:'clock',t:'2:14',d:'Friday, October 8, 2021'}]},
+  what:'Back to HIS phone — time ROLLS BACK May 2025 → October 2021, locked, ready for the run of wins.',
+  do:[{op:'device',dev:'iphone',who:'jamie'},
+      {op:'clock',t:'2:14',d:'Friday, October 8, 2021'},{op:'stamp',t:'OCTOBER 2021'}]},
  {id:'4.5',kind:'lyric',trig:'“Found an apartment on Seventy-Third!”',
   what:'Move-in day pops up, both names on the day.',
   do:[{op:'notif',app:'Calendar',w:'now',title:'MOVE-IN DAY 🚚 — W 73rd St',
@@ -1011,14 +1022,20 @@ window.L5Y_SHOW = [
 
 /* ============ 7 · A SUMMER IN OHIO — CATHY’s laptop · ONE CUE ============ */
 {n:7,t:'A Summer in Ohio',who:'cathy',cues:[
- {id:'7.1',kind:'music',trig:'TOP OF THE SONG — one cue fires the whole number',
-  what:'Cathy’s laptop, full screen: the prerecorded FaceTime plays with the FaceTime overlays on. We see ONLY Jamie — no self-view of Cathy — reacting to her words for the entire song. Video produced separately (V2).',
-  hold:'Nothing else to fire until the cutoff. The video carries the number.',
-  do:[{op:'device',dev:'macbook',who:'cathy'},{op:'stamp',t:'JUNE 2024 · OHIO'},
-      {op:'clock',t:'9:38',d:'Friday, June 21, 2024'},
-      {op:'facetime',n:'Jamie',st:'FaceTime Video',main:'V2 — JAMIE AT HIS DESK · the prerecorded FaceTime plays here'}]},
- {id:'7.2',kind:'music',trig:'End of the song',
-  what:'Black.',
+ {id:'7.1',kind:'music',trig:'TOP OF THE SONG — intro vamp (anchor adjustable, Alonzo)',
+  what:'Cathy’s laptop, June 2024, Ohio. She places the FaceTime call — the RINGING screen: his initial pulsing, “FaceTime…”, no video yet.',
+  do:[{op:'device',dev:'macbook',who:'cathy'},
+      {op:'clock',t:'9:38',d:'Friday, June 21, 2024'},{op:'stamp',t:'JUNE 2024 · OHIO'},
+      {op:'facetime',n:'Jamie',st:'FaceTime…'}]},
+ {id:'7.2',kind:'music',trig:'A few bars in — where he should appear (anchor adjustable, Alonzo)',
+  what:'He answers. The prerecorded FaceTime (V2) plays for the entire number — only Jamie, no Cathy self-view — with the real FaceTime overlays and a ticking call duration. Video produced separately.',
+  hold:'Nothing else to fire until the final button. The video carries the number.',
+  do:[{op:'ftState',st:'connected',main:'V2 — JAMIE AT HIS DESK · the prerecorded FaceTime plays here'}]},
+ {id:'7.3',kind:'music',trig:'FINAL BUTTON of the song',
+  what:'The call ends — Call Ended card, his initial dimmed. The whole song was one call.',
+  do:[{op:'ftState',st:'Call Ended'}]},
+ {id:'7.4',kind:'stage',trig:'She closes the laptop',
+  what:'The screen goes; the era holds center until the next song rolls it.',
   do:[{op:'black'}]},
 ]},
 
@@ -1566,8 +1583,8 @@ const FALLBACK_SHOW = [
   what:'It connects. The conversation runs.',
   do:[{op:'callState',st:'connected · 00:08'}]},
  {id:'3.6',kind:'stage',trig:'Through “what’s your address” — he hangs up',
-  what:'Black. Time returns to her.',
-  do:[{op:'black'}]},
+  what:'The phone goes; the timeline takes the stage and ROLLS HOME — 2021 spins forward to her July 2025, big and center.',
+  do:[{op:'black'},{op:'clock',t:'6:31',d:'Saturday, July 19, 2025'},{op:'stamp',t:'JULY 2025 · OHIO'}]},
  {id:'3.7',kind:'lyric',trig:'“It’s all right — We’ll have tonight.” — the agency calls HIM back',
   what:'HIS phone again, 2021 — an INCOMING call from Miss Whitfield.',
   do:[{op:'device',dev:'iphone',who:'jamie'},{op:'stamp',t:'SEPTEMBER 2021'},
@@ -1577,8 +1594,8 @@ const FALLBACK_SHOW = [
   what:'Connected. It runs until the thank-you.',
   do:[{op:'callState',st:'connected · 00:21'}]},
  {id:'3.9',kind:'stage',trig:'Through “thank you — this is great” — it ends',
-  what:'Black again.',
-  do:[{op:'black'}]},
+  what:'Again: the call goes, the centered timeline rolls forward to her evening.',
+  do:[{op:'black'},{op:'clock',t:'6:47',d:'Saturday, July 19, 2025'},{op:'stamp',t:'JULY 2025 · OHIO'}]},
  {id:'3.10',kind:'lyric',trig:'After Cathy’s “And not do anything at all” — JAMIE DIALS ROB',
   what:'SCRIPT: he dials — “perplexed but not unhappy.” The lease is up; an apartment WITH Cathy. 2021, pre-move-in — the era question answers itself.',
   do:[{op:'device',dev:'iphone',who:'jamie'},{op:'stamp',t:'SEPTEMBER 2021'},
@@ -1588,8 +1605,8 @@ const FALLBACK_SHOW = [
   what:'Connected — visible through the very end of the vamp.',
   do:[{op:'callState',st:'connected · 01:02'}]},
  {id:'3.12',kind:'music',trig:'DOWNBEAT of Moving Too Fast — he hangs up',
-  what:'Black. Song 4 takes over.',
-  do:[{op:'black'}]},
+  what:'The Rob call goes; time rolls home to her July 2025 one last time, centered — song 4 will spin it back.',
+  do:[{op:'black'},{op:'clock',t:'7:04',d:'Saturday, July 19, 2025'},{op:'stamp',t:'JULY 2025 · OHIO'}]},
 ]},
 
 /* ============ 4 · MOVING TOO FAST — JAMIE (with Cathy’s gig call) ============ */
@@ -1599,17 +1616,17 @@ const FALLBACK_SHOW = [
   do:[{op:'device',dev:'iphone',who:'jamie'},{op:'stamp',t:'OCTOBER 2021'},
       {op:'clock',t:'2:14',d:'Friday, October 8, 2021'}]},
  {id:'4.2',kind:'lyric',trig:'“But oh, oh — what else am I s’pposed to do?” — CATHY DIALS',
-  what:'HER phone — the gig-hunting era (2024, per the show’s structure; script gives no date) — dialing Mike Stelmyer. Script fact: his agency is never named.',
-  do:[{op:'device',dev:'iphone',who:'cathy'},{op:'stamp',t:'2024'},
-      {op:'clock',t:'10:10'},
+  what:'HER phone — MAY 2025, pinned by David (her backward line: between the pier and the party). Time ROLLS FORWARD from his October 2021 as she cuts in. Dialing Mike Stelmyer. Script fact: his agency is never named.',
+  do:[{op:'device',dev:'iphone',who:'cathy'},
+      {op:'clock',t:'10:10',d:'Friday, May 9, 2025'},{op:'stamp',t:'MAY 2025'},
       {op:'call',n:'Mike Stelmyer',st:'calling…',dir:'out'}]},
  {id:'4.3',kind:'lyric',trig:'On her “Hello, this is Catherine Hiatt, I’m calling for Mike Stelmyer” — it connects',
   what:'We see the dial AND the connect.',
   do:[{op:'callState',st:'connected · 00:15'}]},
  {id:'4.4',kind:'lyric',trig:'“I’ll call you soon!” — the call ends',
-  what:'Back to HIS phone, October 2021, locked — ready for the run of wins.',
-  do:[{op:'device',dev:'iphone',who:'jamie'},{op:'stamp',t:'OCTOBER 2021'},
-      {op:'clock',t:'2:14',d:'Friday, October 8, 2021'}]},
+  what:'Back to HIS phone — time ROLLS BACK May 2025 → October 2021, locked, ready for the run of wins.',
+  do:[{op:'device',dev:'iphone',who:'jamie'},
+      {op:'clock',t:'2:14',d:'Friday, October 8, 2021'},{op:'stamp',t:'OCTOBER 2021'}]},
  {id:'4.5',kind:'lyric',trig:'“Found an apartment on Seventy-Third!”',
   what:'Move-in day pops up, both names on the day.',
   do:[{op:'notif',app:'Calendar',w:'now',title:'MOVE-IN DAY 🚚 — W 73rd St',
@@ -1703,14 +1720,20 @@ const FALLBACK_SHOW = [
 
 /* ============ 7 · A SUMMER IN OHIO — CATHY’s laptop · ONE CUE ============ */
 {n:7,t:'A Summer in Ohio',who:'cathy',cues:[
- {id:'7.1',kind:'music',trig:'TOP OF THE SONG — one cue fires the whole number',
-  what:'Cathy’s laptop, full screen: the prerecorded FaceTime plays with the FaceTime overlays on. We see ONLY Jamie — no self-view of Cathy — reacting to her words for the entire song. Video produced separately (V2).',
-  hold:'Nothing else to fire until the cutoff. The video carries the number.',
-  do:[{op:'device',dev:'macbook',who:'cathy'},{op:'stamp',t:'JUNE 2024 · OHIO'},
-      {op:'clock',t:'9:38',d:'Friday, June 21, 2024'},
-      {op:'facetime',n:'Jamie',st:'FaceTime Video',main:'V2 — JAMIE AT HIS DESK · the prerecorded FaceTime plays here'}]},
- {id:'7.2',kind:'music',trig:'End of the song',
-  what:'Black.',
+ {id:'7.1',kind:'music',trig:'TOP OF THE SONG — intro vamp (anchor adjustable, Alonzo)',
+  what:'Cathy’s laptop, June 2024, Ohio. She places the FaceTime call — the RINGING screen: his initial pulsing, “FaceTime…”, no video yet.',
+  do:[{op:'device',dev:'macbook',who:'cathy'},
+      {op:'clock',t:'9:38',d:'Friday, June 21, 2024'},{op:'stamp',t:'JUNE 2024 · OHIO'},
+      {op:'facetime',n:'Jamie',st:'FaceTime…'}]},
+ {id:'7.2',kind:'music',trig:'A few bars in — where he should appear (anchor adjustable, Alonzo)',
+  what:'He answers. The prerecorded FaceTime (V2) plays for the entire number — only Jamie, no Cathy self-view — with the real FaceTime overlays and a ticking call duration. Video produced separately.',
+  hold:'Nothing else to fire until the final button. The video carries the number.',
+  do:[{op:'ftState',st:'connected',main:'V2 — JAMIE AT HIS DESK · the prerecorded FaceTime plays here'}]},
+ {id:'7.3',kind:'music',trig:'FINAL BUTTON of the song',
+  what:'The call ends — Call Ended card, his initial dimmed. The whole song was one call.',
+  do:[{op:'ftState',st:'Call Ended'}]},
+ {id:'7.4',kind:'stage',trig:'She closes the laptop',
+  what:'The screen goes; the era holds center until the next song rolls it.',
   do:[{op:'black'}]},
 ]},
 
@@ -2186,7 +2209,7 @@ function applyOp(st,o){
     case 'call': st.app='call'; st.call={n:o.n,st:o.st,dir:o.dir}; break;
     case 'callState': if(st.call) st.call.st=o.st; break;
     case 'facetime': st.app='facetime'; st.ft={n:o.n,st:o.st,main:o.main,pip:o.pip}; break;
-    case 'ftState': if(st.ft) st.ft.st=o.st; break;
+    case 'ftState': if(st.ft){ st.ft.st=o.st; if(o.main!==undefined) st.ft.main=o.main; } break;
     case 'ftMain': if(st.ft) st.ft.main=o.l; break;
     case 'row': st.cards.push(o); break;
     case 'clearRows': st.cards=[]; break;
@@ -2316,19 +2339,38 @@ function shellChrome(st){
   const dark=DARK_APPS.includes(st.app);
   return {dark, bg:dark?'transparent':ch, txt:dark?'#fff':ct};
 }
-/* re-dress the PERSISTENT phone shell for the current register — live register
-   swaps replace only the screen contents, so the status bar background/text,
-   edge mode, and home bar must follow the app or the lock screen's transparent
-   bar ends up floating over the next app's header */
+/* the frontmost macOS app, as the menu bar and window title report it */
+function mbMenuFor(st){
+  if(WEBAPP[st.app]) return 'Safari';
+  if(st.app==='settings2') return (st.setg&&st.setg.back==='Calendars')?'Calendar':'System Settings';
+  return NATIVE[st.app]||'Finder';
+}
+function mbTitleFor(st, menu){
+  const web=WEBAPP[st.app];
+  if(web) return web[1]+' — Safari';
+  if(st.app==='mailread'&&st.mailmsg) return st.mailmsg.s;
+  return menu;
+}
+/* re-dress the PERSISTENT device shell for the current register — live register
+   swaps replace only the screen contents, so the phone's status bar (background,
+   text, edge mode, home bar) and the Mac's menu bar / window title must follow
+   the app, or the previous register's chrome lingers over the new screen */
 function applyShellChrome(st){
   const c=shellChrome(st);
   stages().forEach(s=>{
-    const dev=s.querySelector('.iphone,.ipad'); if(!dev) return;
-    dev.style.setProperty('--chrome', c.bg);
-    dev.style.setProperty('--chrometxt', c.txt);
-    const scr=dev.querySelector('.screen'); if(scr) scr.classList.toggle('edge', c.dark);
-    const hb=dev.querySelector('.homebar');
-    if(hb) hb.style.background = c.dark?'rgba(255,255,255,.85)':'rgba(0,0,0,.55)';
+    const dev=s.querySelector('.iphone,.ipad');
+    if(dev){
+      dev.style.setProperty('--chrome', c.bg);
+      dev.style.setProperty('--chrometxt', c.txt);
+      const scr=dev.querySelector('.screen'); if(scr) scr.classList.toggle('edge', c.dark);
+      const hb=dev.querySelector('.homebar');
+      if(hb) hb.style.background = c.dark?'rgba(255,255,255,.85)':'rgba(0,0,0,.55)';
+      return;
+    }
+    const mac=s.querySelector('.macbook'); if(!mac) return;
+    const menu=mbMenuFor(st);
+    const mb=mac.querySelector('.menubar b'); if(mb) mb.textContent=menu;
+    const tl=mac.querySelector('.titlebar .name'); if(tl) tl.textContent=mbTitleFor(st, menu);
   });
 }
 
@@ -2486,7 +2528,7 @@ function callHTML(st){
     <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:16% 8% 12%">
       <div style="text-align:center"><div style="font-size:2.7em;font-weight:500">${c.n}</div>
         <div style="font-family:'Courier Prime',monospace;font-size:1.05em;letter-spacing:.18em;color:#aeb6cc;
-          text-transform:uppercase;margin-top:.5em">${c.st}</div></div>
+          text-transform:uppercase;margin-top:.5em">${liveTimerHTML(c.st)}</div></div>
       <div style="width:7em;height:7em;border-radius:50%;background:#3a4568;display:flex;align-items:center;
         justify-content:center;font-size:3em">${(c.n||'?')[0]}</div>
       ${/incoming/i.test(c.st||'')
@@ -2501,12 +2543,30 @@ function callHTML(st){
 }
 function ftHTML(st){
   const f=st.ft||{};
+  const ringing=/facetime…|calling|ringing/i.test(f.st||'');
+  const ended=/ended/i.test(f.st||'');
+  if(ringing) return `<div class="layer fs" style="background:linear-gradient(180deg,#1c2430,#0b0e14)">
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1em;color:#fff">
+      <div style="width:6.5em;height:6.5em;border-radius:50%;background:#3a4568;display:flex;align-items:center;
+        justify-content:center;font-size:2.6em;animation:ftpulse 1.6s ease-in-out infinite">${(f.n||'?')[0]}</div>
+      <div style="font-size:2em;font-weight:500">${f.n||''}</div>
+      <div style="font-family:'Courier Prime',monospace;font-size:1em;letter-spacing:.18em;color:#aeb6cc;text-transform:uppercase">FaceTime…</div></div>
+    <div style="position:absolute;bottom:1.2em;left:50%;transform:translateX(-50%);width:3.4em;height:3.4em;
+      border-radius:50%;background:#e0483e;color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.3em;z-index:3">✕</div>
+  </div>`;
+  if(ended) return `<div class="layer fs" style="background:linear-gradient(180deg,#1c2430,#0b0e14)">
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1em;color:#fff">
+      <div style="width:6.5em;height:6.5em;border-radius:50%;background:#3a4568;display:flex;align-items:center;
+        justify-content:center;font-size:2.6em;opacity:.7">${(f.n||'?')[0]}</div>
+      <div style="font-size:2em;font-weight:500;opacity:.85">${f.n||''}</div>
+      <div style="font-family:'Courier Prime',monospace;font-size:1.1em;letter-spacing:.18em;color:#aeb6cc;text-transform:uppercase">Call Ended</div></div>
+  </div>`;
   return `<div class="layer fs" style="background:#000">
     <div class="media fillmedia"><div class="mi">🎥</div><div class="ml">${f.main||''}</div></div>
     <div style="position:absolute;top:0;left:0;right:0;padding:.9em 1em;z-index:3;color:#fff;
       background:linear-gradient(rgba(0,0,0,.55),transparent);display:flex;justify-content:space-between;align-items:baseline">
       <span style="font-weight:600">${f.n||''}</span>
-      <span style="font-family:'Courier Prime',monospace;font-size:.72em;letter-spacing:.14em;color:#cfe0ff;text-transform:uppercase">${f.st||''}</span></div>
+      <span style="font-family:'Courier Prime',monospace;font-size:.72em;letter-spacing:.14em;color:#cfe0ff;text-transform:uppercase">FaceTime Video · <span class="calltimer" data-base="0">0:00</span></span></div>
     ${f.pip?`<div style="position:absolute;right:.8em;bottom:5em;width:27%;aspect-ratio:3/4;border-radius:.7em;overflow:hidden;
       border:2px solid rgba(255,255,255,.7);z-index:3">
       <div class="media fillmedia"><div class="ml" style="font-size:.5em">${f.pip}</div></div></div>`:''}
@@ -2999,9 +3059,7 @@ function deviceHTML(st,h){
   }
   const {bg:ch, txt:ct, dark}=shellChrome(st);
   if(st.dev==='macbook'){
-    const web=WEBAPP[st.app]; const menu=web?'Safari':(st.app==='settings2'
-      ? ((st.setg&&st.setg.back==='Calendars')?'Calendar':'System Settings')
-      : (NATIVE[st.app]||'Finder'));
+    const web=WEBAPP[st.app]; const menu=mbMenuFor(st);
     const chrome=web?`<div class="safbar"><div class="safrow"><span style="color:#8b9099">‹ ›</span>
       <div class="url">🔒 ${web[0]}</div><span style="color:#8b9099">＋</span></div></div>`:'';
     return `<div class="macbook" style="width:${h*1.55}px"><div class="mb-lid"><div class="mb-screen"><div class="mb-notch"></div>
@@ -3069,6 +3127,17 @@ function fitStamp(){
   let f=parseFloat(getComputedStyle(e).fontSize), guard=30;
   while(guard-- && f>18 && e.scrollWidth>e.clientWidth){ f-=2; e.style.fontSize=f+'px'; }
 }
+/* ERA-CENTER (David): when the phone rests mid-song, the timeline IS the stage —
+   the gold era leaves the rail and holds the center of the screen, large, and
+   the clock rolls play there. True black only when no era is in state (between
+   songs, preshow, manual blackout). Landscape rig only. */
+function eraStageOf(st){
+  const S=stageDims();
+  return S.w>S.h && !!st.black && !!st.stamp && !(si===0&&ci===0);
+}
+/* does this state actually darken the stage? (era-center keeps it lit;
+   the preshow house card paints through) */
+function stageBlack(st){ return !!st.black && !eraStageOf(st) && !(si===0&&ci===0); }
 /* stage geometry shared by full paints and live-animation reframes */
 function stageMetrics(st){
   const S=stageDims();
@@ -3099,6 +3168,7 @@ function frameDevice(st){
   const laptop = !portrait && !preshow && !st.black && st.dev==='macbook';
   document.body.classList.toggle('laptop', laptop);
   document.body.classList.toggle('railshide', !portrait && (preshow || st.dev==='full'));
+  document.body.classList.toggle('erastage', eraStageOf(st));
   const pj=document.getElementById('projDevice'); if(!pj) return;
   projFit = st.dev==='macbook' ? mbFit : (st.dev==='full' ? 1 : fit);
   const d=pj.firstElementChild;
@@ -3178,7 +3248,8 @@ function setStamp(st){
   if(rl){ const n=rl.querySelector('.rname'); n.textContent=name; n.className='rname '+(isC?'c':'j');
     rl.querySelector('.rdev').textContent=devLbl; rl.classList.toggle('on',on); }
   if(rr){ setEraText(rr.querySelector('.rera'), st.stamp||'');
-    rr.classList.toggle('on',on); }
+    // era-center: the timeline stays lit and takes the stage while the phone rests
+    rr.classList.toggle('on', on || eraStageOf(st)); }
   if(bt){ const n=bt.querySelector('.bname'); n.textContent=name; n.className='bname '+(isC?'c':'j');
     bt.querySelector('.bdev').textContent=devLbl;
     const bera=bt.querySelector('.bera'); bera.textContent=st.stamp||'';
@@ -3192,9 +3263,25 @@ function setEraText(el, txt){
   const parts=String(txt).split(' · ');
   const longest=parts.reduce((m,p)=>Math.max(m,p.length),0);
   el.innerHTML=parts.map(escTxt).join('<br>');
-  el.style.fontSize = longest>16?'clamp(15px,2.8vh,40px)':longest>10?'clamp(18px,3.6vh,52px)':'';
+  // size tier lives in CSS so era-center mode can scale the same element up
+  el.dataset.tier = longest>16?'long':longest>10?'mid':'short';
 }
 function escTxt(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+/* REAL call timers: a connected status with a duration ("connected · 00:14")
+   ticks second by second from the moment the screen appears — like a phone. */
+function liveTimerHTML(stTxt){
+  const m=/^(connected)\s*·\s*(\d+):(\d{2})$/i.exec(stTxt||'');
+  if(!m) return escTxt(stTxt||'');
+  const base=(+m[2])*60+(+m[3]);
+  return `${m[1]} · <span class="calltimer" data-base="${base}">${m[2]}:${m[3]}</span>`;
+}
+function fmtDur(s){ return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
+setInterval(()=>{
+  document.querySelectorAll('.calltimer').forEach(el=>{
+    if(!el.dataset.t0) el.dataset.t0=String(Date.now());
+    el.textContent=fmtDur(+el.dataset.base + Math.floor((Date.now()-+el.dataset.t0)/1000));
+  });
+},500);
 function sPopSafe(){ }
 
 function prng(seedStr){ let h=1779033703^seedStr.length;
@@ -3301,7 +3388,7 @@ async function playCue(cue, st, tok){
       paintAll(st); setStamp(st);
       // the device op lifts the between-songs black itself, so the rest of
       // the cue (unlock, app opens) plays in view, not behind the fade
-      document.body.classList.toggle('blk', blk||st.black);
+      document.body.classList.toggle('blk', blk||stageBlack(st));
       await wait(220); continue; }
     if(o.op==='clock'){
       const prevDate=st.date, prevTm=st.tm; applyOp(st,o);
@@ -3587,7 +3674,7 @@ async function playCue(cue, st, tok){
         const d=document.createElement('div'); d.className='thumb pop';
         d.innerHTML=`<span class="yr">${o.y}</span><small>${o.l}</small>`; g.appendChild(d);});
       scrollThreads(); await wait(190); continue; }
-    if(o.op==='black'){ applyOp(st,o); paintAll(st); continue; }
+    if(o.op==='black'){ applyOp(st,o); paintAll(st); setStamp(st); continue; }
     if(o.op==='docline'){ applyOp(st,o); paintAll(st); scrollThreads(); await wait(240); continue; }
     applyOp(st,o); paintAll(st);
   }
@@ -3654,8 +3741,8 @@ function hardRender(){          // no animation — scrub, resize, view swap, re
   CUR=buildState(song(), ci);
   paintAll(CUR);
   setStamp(CUR);
-  // the preshow house card paints through the between-songs black
-  document.body.classList.toggle('blk', blk||(CUR.black && !(si===0&&ci===0)));
+  // era-center keeps the stage lit; the preshow house card paints through
+  document.body.classList.toggle('blk', blk||stageBlack(CUR));
   scrollThreads();
   paintChrome();
 }
@@ -3681,7 +3768,7 @@ async function advance(){
   if(tok!==animTok) return;
   animRunning=false;
   // guarantee the DOM matches truth once the animation completes
-  document.body.classList.toggle('blk', blk||CUR.black);
+  document.body.classList.toggle('blk', blk||stageBlack(CUR));
   setStamp(CUR);
   paintChrome();
 }

@@ -59,6 +59,18 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   whole screen** under a top info bar (identity left, era right). Preshow and `dev:'full'`
   drop rails/bar entirely. Portrait/rot support (classic floating overlays) stays in the
   engine but is not the rig.
+- **TIME IS ALWAYS VISIBLE (David, Sept 14 night).** Every timeline shift — song tops,
+  mid-song flashbacks, AND the returns — plays as a visible roll, forward or backward,
+  never a hard cut. **ERA-CENTER**: when the phone rests mid-song (`black` with a stamp in
+  state), the stage is not empty black — the gold era takes the center of the screen,
+  large, and the rolls play there (the rail's `.rera` is the same element, scaled by
+  `body.erastage`). True black only between songs, at preshow, and on manual blackout.
+  So a "return" cue is `black` + dated `clock` + `stamp` — the phone goes, time rolls
+  home center-stage. Cathy's Stelmyer call is pinned **MAY 2025** (Friday, May 9 — David;
+  her backward line between the pier and the party). **Call timers really tick**: any
+  "connected · M:SS" status counts up second by second from the moment it appears
+  (`liveTimerHTML`/`.calltimer`), FaceTime duration included. **Song 7 is a full call
+  arc**: ringing (FaceTime…) → connected (V2 plays, timer runs) → Call Ended → era holds.
 - **No touch dots (cut by David).** The blue finger circles are gone everywhere. Taps read
   the way a real screen recording reads: the beat, the control's own pressed state (icon
   press animation, iOS pressed-gray on rows and buttons via `hover`/`btnHover`), then the
