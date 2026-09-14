@@ -34,10 +34,12 @@ Meet Sept 3 2021 · movers-in Oct 2021 · proposal June 2023 · **wedding May 18
 Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, writing). Do not build elaborate cueing inside 7; keep the FaceTime frame and the log; the video content is produced separately.
 
 ## Direction locked Sept 14, 2026 (team call — David, Alonzo, Peyton)
-- **The rig is a 75″ LANDSCAPE TV, audience up to 25 ft.** Readability rules everything:
-  use the close-up system (`{op:'frame', z, at:'top'|'mid'|'bottom'}`) so the region that
-  matters fills the glass — "the upper quadrant of the phone" for notifications, the
-  conversation for texting. Portrait/rot support stays in the engine but is not the rig.
+- **The rig is a 75″ LANDSCAPE TV, audience up to 25 ft.** Readability rules everything —
+  and **CLOSE-UP IS THE DEFAULT, not an option**: every register auto-zooms to its reading
+  region (`AUTOFRAME` in the engine — thread 2.2×, lock/notifications 1.9× top, posts 1.8×…).
+  A cue overrides with `{op:'frame', z, at:'top'|'mid'|'bottom'}` or `{op:'frame', off:true}`.
+  The owner banner and era stamp float above the zoomed phone with a dark scrim.
+  Portrait/rot support stays in the engine but is not the rig.
 - **Preshow**: the house card (title + the two-handed clock) renders at song 1 · cue 0.
 - **Non-diegetic is allowed.** The phone plays even when the actor isn't holding it; in
   those moments the frame may drop away entirely (`dev:'full'` full-bleed stage).
