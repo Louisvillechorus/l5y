@@ -1,6 +1,14 @@
 # ASSETS.md — media the team must produce
 *(updated Sept 14, 2026 to the locked direction — greeked placeholders render until real files exist)*
 
+## ⚠ TWO CASTS — every asset below needs TWO versions
+Maegan & Landon and Andrew & Charlie alternate performances. The show is one build; the operator
+picks the couple on the start screen, and every M/V code resolves to that couple's file. So each
+code below is shot twice — same composition, same moment, different couple. Deliver files named
+by code and cast, e.g. `M1-ml.jpg` / `M1-ac.jpg` (ml = Maegan & Landon, ac = Andrew & Charlie),
+or two folders `ml/` and `ac/` with `M1.jpg` inside each. A code missing for a cast simply keeps
+its placeholder — the show never breaks.
+
 ## In the show
 
 | Code | What it is | Appears in |

@@ -219,6 +219,9 @@
   #menu .keys{font-family:'Courier Prime',monospace;font-size:11px;color:var(--dim);letter-spacing:.05em;
     line-height:2;text-align:center;margin-top:6px}
   #menu kbd{border:1px solid rgba(243,239,228,.3);border-radius:4px;padding:0 6px;color:var(--paper)}
+  .castbtn{letter-spacing:.08em;opacity:.55}
+  .castbtn.sel{opacity:1;border-color:var(--gold);color:var(--gold);
+    box-shadow:0 0 0 1px var(--gold),0 0 18px rgba(233,199,102,.25)}
 
   /* ================= DEVICE SHELLS ================= */
   .iphone{height:100%;aspect-ratio:9/19.5;background:#000;border-radius:min(6.5vh,52px);padding:10px;
@@ -608,6 +611,12 @@
   <div class="sub">Two windows, one clicker. Open this file twice: leave one as <b>Presenter</b> on the operator's laptop,
   set the other to <b>Projection</b> and drag it to the projector. They stay in sync automatically —
   fire a cue in either and both move.</div>
+  <div class="sub" style="margin-bottom:4px"><b>1 · Who is on tonight?</b> Same show, same cues — only the photos and videos change.</div>
+  <div class="row">
+    <button class="mbtn castbtn" data-cast="ml" onclick="setCast('ml')">MAEGAN &amp; LANDON</button>
+    <button class="mbtn castbtn" data-cast="ac" onclick="setCast('ac')">ANDREW &amp; CHARLIE</button>
+  </div>
+  <div class="sub" style="margin-bottom:4px;margin-top:6px"><b>2 · Start.</b></div>
   <div class="row">
     <button class="mbtn gold" onclick="startAs('presenter')">Start — Presenter</button>
     <button class="mbtn" onclick="startAs('projection')">Start — Projection only</button>
@@ -664,7 +673,7 @@
 <div id="bar">
   <span>cue <b id="barCue">0</b>/<b id="barTot">0</b></span>
   <span id="barBlk"></span>
-  <span id="barView">presenter</span><span id="barBuild"></span>
+  <span id="barView">presenter</span><span id="barCast" style="color:var(--gold)"></span><span id="barBuild"></span>
   <button id="openProj" class="projbtn">⧉ Open projection window</button>
   <span class="go" id="barGo">SPACE = GO</span>
 </div>
@@ -694,7 +703,7 @@ const FALLBACK_SHOW = [
   what:'Preshow card out. Her phone, lit, already in her hand. JUNE 2026, the morning after.',
   do:[{op:'device',dev:'iphone',who:'cathy'},{op:'stamp',t:'JUNE 2026'},
       {op:'clock',t:'9:41',d:'Friday, June 12, 2026'},
-      {op:'wall',t:'cast photo of JAMIE — she never changed it'}]},
+      {op:'wall',t:'M24 — cast photo of JAMIE — she never changed it'}]},
  {id:'1.2',kind:'music',trig:'Prologue, next phrase',
   what:'FACEBOOK pushes a Memories notification. The algorithm has no idea.',
   do:[{op:'notif',app:'Facebook',w:'now',title:'Memories',
@@ -988,7 +997,7 @@ const FALLBACK_SHOW = [
   what:'No animations, by direction: the phone just keeps the season. Lock screen, Christmas wallpaper (photo TBD — M23), December 2022.',
   do:[{op:'device',dev:'iphone',who:'jamie'},{op:'stamp',t:'DECEMBER 2022'},
       {op:'clock',t:'9:12',d:'Saturday, December 24, 2022'},
-      {op:'wall',t:'Christmas — tree lights (photo TBD · M23)'}]},
+      {op:'wall',t:'M23 — Christmas tree lights'}]},
  {id:'6.2',kind:'music',trig:'Cutoff',
   what:'Black.',
   do:[{op:'black'}]},
@@ -1611,8 +1620,11 @@ function statusHTML(st){
 }
 function lockHTML(st){
   const [w1,w2,w3]=WALL[st.who]||WALL.cathy;
-  return `<div class="layer lockL fs" style="background:linear-gradient(160deg,${w1},${w2} 55%,${w3})">
-    <div class="wallnote">WALLPAPER — ${st.wall||'abstract gradient (no photo)'}</div>
+  const wsrc=assetFor(st.wall);   // per-cast wallpaper photo (M23/M24) when it exists
+  return `<div class="layer lockL fs" style="background:${wsrc
+      ?`#000 url(&quot;${wsrc}&quot;) center/cover no-repeat`
+      :`linear-gradient(160deg,${w1},${w2} 55%,${w3})`}">
+    ${wsrc?'':`<div class="wallnote">WALLPAPER — ${st.wall||'abstract gradient (no photo)'}</div>`}
     <div style="padding-top:11.5%">
       <div class="lk-date">${st.date}</div>
       <div class="lk-time">${st.tm}</div>
@@ -2932,7 +2944,7 @@ async function advance(){
   paintChrome();
 }
 function render(){ hardRender(); }
-function sync(){ try{ ch.postMessage({from:CID,si,ci,blk,started:true}); }catch(e){} }
+function sync(){ try{ ch.postMessage({from:CID,si,ci,blk,started:true,cast:CAST}); }catch(e){} }
 function next(){ if(ci<cues().length){ advance(); sync(); }
   else if(si<SHOW.length-1){ si++; ci=0; hardRender(); sync(); } }
 function prev(){ if(ci>0){ci--; hardRender(); sync();}
@@ -2948,6 +2960,58 @@ function startAs(v){
     if(rot) setTimeout(()=>rotNote('FEED ROTATED '+rot+'° · PRESS R TO CHANGE'),700); }
   started=true; document.body.classList.add('started'); setView(v);
   if(v!=='projection') sync(); }
+
+/* ---- TWO CASTS, ONE SHOW ----
+   Two couples alternate performances: the cues, timing, and text are identical;
+   the ONLY difference is which photo/video files the M/V asset codes resolve to.
+   The operator's first choice on the start screen is tonight's cast; it is
+   remembered per browser, synced to the projection window, and shown in the
+   presenter bar so there is never a doubt about whose faces are on the glass. */
+const CAST_NAMES={ml:'MAEGAN & LANDON', ac:'ANDREW & CHARLIE'};
+let CAST='ml'; try{ const c=localStorage.getItem('l5y_cast'); if(CAST_NAMES[c]) CAST=c; }catch(e){}
+/* per-cast media: asset code -> image/video URL (or data URI baked at build).
+   Filled in as real files arrive; a missing entry renders the greeked placeholder. */
+const CAST_ASSETS={ml:{},ac:{}};
+function assetFor(label){
+  const m=/^\s*([MV]\d+[a-z]?)\b/.exec(label||''); if(!m) return null;
+  return (CAST_ASSETS[CAST]||{})[m[1]]||null;
+}
+function swapMedia(el){
+  const ml=el.querySelector('.ml'); if(!ml) return;
+  const src=assetFor(ml.textContent); if(!src) return;
+  if(/\.(mp4|webm|mov)(\?|#|$)/i.test(src)){       // V-codes: the file plays in place
+    if(!el.querySelector('video')){
+      const v=document.createElement('video');
+      v.src=src; v.autoplay=true; v.muted=true; v.playsInline=true; v.loop=false;
+      v.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover';
+      if(!el.style.position) el.style.position='relative';
+      el.appendChild(v);
+    }
+  } else {
+    el.style.background=`#000 url("${src}") center/cover no-repeat`;
+  }
+  el.querySelectorAll('.mi,.ml').forEach(x=>x.style.display='none');
+}
+function applyAssets(root){
+  if(!root || root.nodeType!==1) return;
+  if(root.matches && root.matches('.media')) swapMedia(root);
+  if(root.querySelectorAll) root.querySelectorAll('.media').forEach(swapMedia);
+}
+/* every paint path (hard renders AND live-animation inserts) flows through here */
+try{ new MutationObserver(muts=>{ for(const m of muts) for(const n of m.addedNodes) applyAssets(n); })
+  .observe(document.body,{childList:true,subtree:true}); }catch(e){}
+function setCast(c, fromSync){
+  if(!CAST_NAMES[c] || c===CAST){ paintCastUI(); return; }
+  CAST=c; try{ localStorage.setItem('l5y_cast',c); }catch(e){}
+  paintCastUI();
+  if(started) hardRender();
+  if(!fromSync) try{ ch.postMessage({from:CID,cast:c}); }catch(e){}
+}
+function paintCastUI(){
+  document.querySelectorAll('[data-cast]').forEach(b=>
+    b.classList.toggle('sel', b.getAttribute('data-cast')===CAST));
+  const e=document.getElementById('barCast'); if(e) e.textContent='cast: '+CAST_NAMES[CAST];
+}
 
 /* rot — the house TV stands vertical but receives a landscape signal.
    Press R on the projection window to cycle 0° → 90° → 270° (covers both
@@ -2969,7 +3033,7 @@ function setRot(deg){ rot=(deg===90||deg===270)?deg:0; applyRotClass();
 let projWin=null;
 function openProjection(){
   if(projWin && !projWin.closed){ projWin.focus(); return; }
-  projWin = window.open(location.href.split('?')[0]+'?view=projection'+(rot?'&rot='+rot:''), 'l5y_projection',
+  projWin = window.open(location.href.split('?')[0]+'?view=projection&cast='+CAST+(rot?'&rot='+rot:''), 'l5y_projection',
     'width=1280,height=720,menubar=no,toolbar=no,location=no,status=no');
   if(!projWin){ alert('The browser blocked the new window.\n\nAllow pop-ups for this page, or open the file in a second window and choose “Start — Projection only”.'); return; }
   const btn=document.getElementById('openProj');
@@ -2982,6 +3046,8 @@ function openProjection(){
 const CID=Math.random().toString(36).slice(2);
 let ch; try{ ch=new BroadcastChannel('l5y-cues'); }catch(e){}
 if(ch) ch.onmessage=e=>{ const m=e.data; if(m.from===CID) return;
+  if(m.cast && m.cast!==CAST) setCast(m.cast, true);
+  if(m.si===undefined) return;               // cast-only message
   if(m.started && !started){ started=true; document.body.classList.add('started'); }
   const stepFwd = (m.si===si && m.ci===ci+1);
   blk=m.blk;
@@ -3042,6 +3108,9 @@ addEventListener('resize',()=>hardRender());
 const params=new URLSearchParams(location.search);
 if(params.has('rot')){ rot=(params.get('rot')==='90')?90:(params.get('rot')==='270')?270:0;
   rotExplicit=true; applyRotClass(); }
+if(params.has('cast') && CAST_NAMES[params.get('cast')]){ CAST=params.get('cast');
+  try{ localStorage.setItem('l5y_cast',CAST); }catch(e){} }
+paintCastUI();
 if(params.get('view')==='projection'){ startAs('projection'); }
 else render();
 </script>

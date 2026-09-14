@@ -30,6 +30,15 @@ Every screen must survive the question **"is this exactly what a real iPhone/Mac
 ## Storyline canon (do not contradict)
 Meet Sept 3 2021 · movers-in Oct 2021 · proposal June 2023 · **wedding May 18 2024** (the only shared date) · Ohio summers 2024 & 2025 · pier birthday July 19 2025 (he leaves; forwarded Amtrak receipt) · Elise/R.H. affair seeded May 2024 → Feb 2025 ("for you I'm always up") → April 2026 · breakup by email "Some practical things," June 2026 (lawyer emailed at 2:50, her at 4:12 — he told the lawyer first) · her final text READ 9:44, never answered · show ends on her, 2021, still typing. Jamie escalates by silence and administration (accounts, movers, lawyers); Cathy escalates by asking. His ghosts are cowardice; hers are courage. He cannot delete anything about her (Cancel, every time) except the two sharing buttons he does press: Stop Sharing and Leave Playlist.
 
+## TWO CASTS, ONE SHOW (David, Sept 14)
+Two couples alternate performances: **Maegan & Landon** and **Andrew & Charlie**. There is ONE
+build, one cues.js, one URL. The couples differ ONLY in which photo/video files the M/V asset
+codes resolve to (`CAST_ASSETS.ml` / `CAST_ASSETS.ac` in the engine). **The operator's first
+choice on the start screen is tonight's cast** — remembered per browser, synced to the
+projection window, shown in the presenter bar. Every content change automatically serves both
+casts because cues reference codes, never files; never fork the show per cast, and every asset
+must exist in both sets (a missing entry renders the greeked placeholder).
+
 ## Song 7 is special
 Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, writing). Do not build elaborate cueing inside 7; keep the FaceTime frame and the log; the video content is produced separately.
 
