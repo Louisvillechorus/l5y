@@ -10,7 +10,6 @@
   ],
   "photos": "JPG (convert HEIC). Long side at least 1600 px. Keep each file under 8 MB so it travels through the Drive connector.",
   "video": "MP4 (H.264), 1920×1080 landscape. The video is larger than the Drive transfer limit: upload it to the GitHub repo (Add file → Upload files, into assets/) or give it to the show laptop — tell me which.",
-  "audio": "M4A or MP3, mono is fine.",
   "folder": "One Google Drive folder named  L5Y ASSETS , files flat inside it (no subfolders). Tell me when files land — I pull them and place every one by its code. A missing file keeps its placeholder, so partial uploads never break the show."
  },
  "assets": [
@@ -21,7 +20,7 @@
    "kind": "photo",
    "format": "PORTRAIT (phone wallpaper, 9:19.5 — shoot vertical, leave headroom top and bottom for the clock)",
    "title": "Cathy's lock-screen wallpaper — a photo of Jamie",
-   "shoot": "Jamie alone, candid, early-relationship feel (2021). It is HER wallpaper, so it is a photo she took of him: relaxed, looking near the camera, warm light. No text, nothing busy in the top third (the clock sits there).",
+   "shoot": "Jamie alone, candid, early-relationship feel (2021). It is HER wallpaper, so it is a photo she took of him: relaxed, looking near the camera, warm light. No text, nothing busy in the top third (the clock sits there). (A lock screen needs a wallpaper; this is the realism default. If you would rather she has a plain wallpaper, skip this one.)",
    "who": "Jamie only",
    "era": "September–October 2021",
    "appears": "Song 1 — her lock screen, the first image of the show, behind everything she does that morning",
@@ -100,7 +99,7 @@
   },
   {
    "code": "M7",
-   "status": "confirmed",
+   "status": "confirm",
    "shared": false,
    "kind": "photo",
    "format": "4:3 landscape, wide enough to crop (see M7b)",
@@ -114,7 +113,7 @@
   },
   {
    "code": "M7b",
-   "status": "derived",
+   "status": "confirm",
    "shared": false,
    "kind": "photo",
    "format": "derived from M7 — DO NOT SHOOT",
@@ -167,76 +166,6 @@
    "appears": "Song 7 — the whole song, between the ringing screen and Call Ended",
    "song": 7,
    "slug": "facetime-jamie-desk"
-  },
-  {
-   "code": "A1",
-   "status": "pending",
-   "shared": false,
-   "kind": "audio",
-   "format": "M4A/MP3, exactly 0:47",
-   "title": "Cathy's voicemail",
-   "shoot": "Her recorded voicemail to Jamie — original words along the lines of: she got Ohio, call her back, she's happy. NOT lyrics. 47 seconds. Pending: only needed if the voicemail beat survives your Song 14 answer.",
-   "who": "Cathy's voice",
-   "era": "April 2025",
-   "appears": "Song 14 (current build) — the saved voicemail he cannot delete",
-   "song": 14,
-   "slug": "cathy-voicemail"
-  },
-  {
-   "code": "M8",
-   "status": "pending",
-   "shared": false,
-   "kind": "photo",
-   "format": "4:3 landscape",
-   "title": "Bar celebration — a figure half in frame",
-   "shoot": "Jamie celebrating at a bar with people; one unnamed woman half in frame at the edge (the Elise seed). Pending: only if Song 10 keeps the viral-press beats alongside the two texts.",
-   "who": "Jamie + others",
-   "era": "February 2024",
-   "appears": "Song 10 (current build) — the party photo in his press",
-   "song": 10,
-   "slug": "bar-celebration"
-  },
-  {
-   "code": "M11a",
-   "status": "pending",
-   "shared": false,
-   "kind": "photo",
-   "format": "4:3",
-   "title": "Carolann's hometown wedding",
-   "shoot": "Pending — cut if the Song 12 map replaces the Facebook beats. Not the leads; a friend's wedding photo.",
-   "who": "Extras",
-   "era": "2021",
-   "appears": "Song 12 (current build)",
-   "song": 12,
-   "slug": "carolann-wedding"
-  },
-  {
-   "code": "M11b",
-   "status": "pending",
-   "shared": false,
-   "kind": "photo",
-   "format": "4:3",
-   "title": "Carolann's baby announcement",
-   "shoot": "Pending — cut if the Song 12 map replaces the Facebook beats.",
-   "who": "Extras",
-   "era": "2021",
-   "appears": "Song 12 (current build)",
-   "song": 12,
-   "slug": "carolann-baby"
-  },
-  {
-   "code": "M11c",
-   "status": "pending",
-   "shared": false,
-   "kind": "photo",
-   "format": "4:3",
-   "title": "Carolann's first house",
-   "shoot": "Pending — cut if the Song 12 map replaces the Facebook beats.",
-   "who": "None",
-   "era": "2021",
-   "appears": "Song 12 (current build)",
-   "song": 12,
-   "slug": "carolann-house"
   }
  ]
 }

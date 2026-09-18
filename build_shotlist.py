@@ -13,7 +13,6 @@ out.append(f"- **Naming rule:** {N['rule']}")
 out.append(f"- **Examples:** `{'`, `'.join(N['examples'])}`")
 out.append(f"- **Photos:** {N['photos']}")
 out.append(f"- **Video:** {N['video']}")
-out.append(f"- **Audio:** {N['audio']}")
 out.append(f"- **Where:** {N['folder']}\n")
 
 def fname(a, cast):
@@ -29,7 +28,7 @@ def files_for(a):
 
 for status, heading in [('confirmed', 'SHOOT NOW — confirmed for the locked build'),
                         ('derived', 'DERIVED — nothing to shoot'),
-                        ('pending', 'HOLD — depends on the Song 10–14 answers')]:
+                        ('confirm', 'CONFIRM — waits on one Song 5 answer (party album)')]:
     rows = [a for a in S['assets'] if a['status'] == status]
     if not rows:
         continue

@@ -50,12 +50,12 @@ N = S['naming']
 out.append('<div class="rules">')
 out.append(f'<b>NAMING RULE</b> — {e(N["rule"])}<br>')
 out.append('<b>EXAMPLES</b> — ' + ' &nbsp;·&nbsp; '.join(f'<code>{e(x)}</code>' for x in N['examples']) + '<br>')
-out.append(f'<b>PHOTOS</b> — {e(N["photos"])}<br><b>VIDEO</b> — {e(N["video"])}<br><b>AUDIO</b> — {e(N["audio"])}<br><b>WHERE</b> — {e(N["folder"])}')
+out.append(f'<b>PHOTOS</b> — {e(N["photos"])}<br><b>VIDEO</b> — {e(N["video"])}<br><b>WHERE</b> — {e(N["folder"])}')
 out.append('</div>')
 
 groups = [('confirmed', 'SHOOT NOW — confirmed for the locked build'),
           ('derived', 'DERIVED — nothing to shoot'),
-          ('pending', 'HOLD — depends on the Song 10–14 answers')]
+          ('confirm', 'CONFIRM — waits on one Song 5 answer (party album)')]
 for status, heading in groups:
     rows = [a for a in S['assets'] if a['status'] == status]
     if not rows:

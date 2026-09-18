@@ -17,7 +17,7 @@ kids.push(new Paragraph({alignment:AlignmentType.CENTER,spacing:{after:260},
 
 kids.push(P('HOW TO NAME AND UPLOAD',{mono:true,size:18,bold:true,color:DIM}));
 const N=S.naming;
-[['Naming rule',N.rule],['Examples',N.examples.join('   ')],['Photos',N.photos],['Video',N.video],['Audio',N.audio],['Where',N.folder]]
+[['Naming rule',N.rule],['Examples',N.examples.join('   ')],['Photos',N.photos],['Video',N.video],['Where',N.folder]]
   .forEach(([k,v])=>kids.push(new Paragraph({spacing:{after:70},children:[
     new TextRun({text:k+':  ',font:MONO,size:17,bold:true,color:GOLD}),new TextRun({text:v,font:BODY,size:18,color:INK})]})));
 
@@ -27,7 +27,7 @@ const filesFor=a=>a.status==='derived'?'— (made from M7)':a.shared?fname(a,'SH
 const cell=(t,w,o={})=>new TableCell({width:{size:w,type:WidthType.PERCENTAGE},shading:o.fill?{type:ShadingType.CLEAR,fill:o.fill}:undefined,
   margins:{top:60,bottom:60,left:90,right:90},
   children:String(t).split('\n').map(line=>new Paragraph({children:[new TextRun({text:line,font:o.mono?MONO:BODY,size:o.size||15,bold:!!o.bold,color:o.color||INK})]}))});
-const groups=[['confirmed','SHOOT NOW — confirmed for the locked build','e8f0e4'],['derived','DERIVED — nothing to shoot','eef0f4'],['pending','HOLD — depends on the Song 10–14 answers','faf3dc']];
+const groups=[['confirmed','SHOOT NOW — confirmed for the locked build','e8f0e4'],['derived','DERIVED — nothing to shoot','eef0f4'],['confirm','CONFIRM — waits on one Song 5 answer (party album)','faf3dc']];
 for(const [status,heading,fill] of groups){
   const rows=S.assets.filter(a=>a.status===status); if(!rows.length) continue;
   kids.push(new Paragraph({spacing:{before:320,after:100},children:[new TextRun({text:heading,font:BODY,size:26,bold:true,color:INK})]}));

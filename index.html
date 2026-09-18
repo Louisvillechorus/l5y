@@ -725,36 +725,36 @@ const FALLBACK_SHOW = [
   what:'She taps it. Face ID, straight into ON THIS DAY — and the screen leans in close so the house reads every card.',
   do:[{op:'notiftap',to:'memories'}]},
  {id:'1.4',kind:'music',trig:'Prologue — the first memory',
-  what:'2022 — four years ago today. Nine months in: the first apartment, the couch. The happiest card.',
-  do:[{op:'mem',scroll:'flick',yr:'4 years ago · 2022',who:'Cathy Hiatt',av:'C',col:'#c2447a',when:'June 12, 2022',
-       txt:'nine months in and our apartment has a name. it is called The Couch.',media:'M15 — the hideous couch',likes:88}]},
+  what:'2025 — one year ago: Ohio again, her second summer, day one — the card he is not in. Her first flick fails and the feed snaps back — she is not ready for this one — a long beat, then she drags it over herself.',
+  do:[{op:'mem',scroll:'reluctant',yr:'1 year ago · 2025',who:'Cathy Wellerstein',av:'C',col:'#c2447a',when:'June 12, 2025',
+       txt:'Ohio, round two. day one 🎭',media:'M2 — Ohio cast photo, day one — no Jamie',likes:31}]},
  {id:'1.5',kind:'music',trig:'Prologue — the second',
-  what:'2023 — the proposal (June 12, 2023: the rowboat, the day The Next Ten Minutes returns to). Her scroll stalls halfway with the card half-revealed — a beat of not being ready — then commits.',
-  do:[{op:'mem',scroll:'peek',yr:'3 years ago · 2023',who:'Cathy Hiatt',av:'C',col:'#c2447a',when:'June 12, 2023',
-       txt:'he asked. I said yes before he finished 💍',media:'M3a — the ring, the rowboat',likes:341}]},
- {id:'1.6',kind:'music',trig:'Prologue — the third',
   what:'2024 — the wedding portrait, three weeks married and already apart (she is in Ohio). Dragged into view slowly, thumb never leaving the glass.',
   do:[{op:'mem',scroll:'drag',yr:'2 years ago · 2024',who:'Cathy Wellerstein',av:'C',col:'#c2447a',when:'June 12, 2024',
        txt:'married three weeks and 600 miles apart. worth it.',media:'M4 — the wedding portrait',likes:402}]},
+ {id:'1.6',kind:'music',trig:'Prologue — the third',
+  what:'2023 — the proposal (June 12, 2023: the rowboat, the day The Next Ten Minutes returns to). Her scroll stalls halfway with the card half-revealed — a beat of not being ready — then commits.',
+  do:[{op:'mem',scroll:'peek',yr:'3 years ago · 2023',who:'Cathy Wellerstein',av:'C',col:'#c2447a',when:'June 12, 2023',
+       txt:'he asked. I said yes before he finished 💍',media:'M3a — the ring, the rowboat',likes:341}]},
  {id:'1.7',kind:'music',trig:'Prologue rolls into the INTRO of Still Hurting',
-  what:'2025 — Ohio again, her second summer, day one — the card he is not in. Her first flick fails and the feed snaps back — she is not ready for this one — a long beat, then she drags it over herself.',
+  what:'2022 — four years ago, the oldest card: nine months in, the first apartment, the couch. The happiest one, last.',
   hold:'Four years in four cards, all before she sings a word. Let this one sit.',
-  do:[{op:'mem',scroll:'reluctant',yr:'1 year ago · 2025',who:'Cathy Wellerstein',av:'C',col:'#c2447a',when:'June 12, 2025',
-       txt:'Ohio, round two. day one 🎭',media:'M2 — Ohio cast photo, day one — no Jamie',likes:31}]},
+  do:[{op:'mem',scroll:'flick',yr:'4 years ago · 2022',who:'Cathy Wellerstein',av:'C',col:'#c2447a',when:'June 12, 2022',
+       txt:'nine months in and our apartment has a name. it is called The Couch.',media:'M15 — the hideous couch',likes:88}]},
  {id:'1.8',kind:'music',trig:'FIRST BAR of Still Hurting',
   what:'She puts the phone down. The song is hers — screen to black.',
   do:[{op:'black'}]},
  {id:'1.9',kind:'music',trig:'INTERLUDE, m. 58 — after “Like it’s simple, like it’s right.” She picks the phone back up.',
   what:'Unlock. Messages. Everyone already knows — the whole list is condolences.',
-  do:[{op:'device',dev:'iphone',who:'cathy'},{op:'unlock'},{op:'openapp',icon:'Messages',to:'msglist'},
+  do:[{op:'device',dev:'iphone',who:'cathy'},{op:'setapp',to:'lock'},{op:'unlock'},{op:'openapp',icon:'Messages',to:'msglist'},
       {op:'msgrows',rows:[
-        {n:'Jamie',p:'You: please just call me',w:'Wednesday',av:'#8f95a3',i:'J'},
         {n:'Mom ❤️',p:'call me when you’re up. I love you.',w:'8:02 AM',av:'#e0783f',i:'M',un:true},
         {n:'Dana + girls 🍸',p:'Dana: we’re coming over at 7. non-negotiable.',w:'7:41 AM',av:'#b45ac9',i:'D',un:true},
-        {n:'Grammy',p:'bubbeleh. are you eating?',w:'Yesterday',av:'#7b61c9',i:'G',un:true},
         {n:'Beth',p:'just heard. I’m so so sorry 💔',w:'Yesterday',av:'#3f7fe0',i:'B'},
-        {n:'Aunt Patti',p:'your mother told me. calling tonight',w:'Wednesday',av:'#5aa86b',i:'P'},
-        {n:'Michael (voice)',p:'no lesson this week. take care of you.',w:'Tuesday',av:'#3f9ea0',i:'M'},
+        {n:'Grammy',p:'sweetheart. are you eating?',w:'Yesterday',av:'#7b61c9',i:'G',un:true},
+        {n:'Aunt Patti',p:'your mother told me. call me, honey',w:'Yesterday',av:'#5aa86b',i:'P'},
+        {n:'Jamie',p:'I’m not angry. just talk to me',w:'Wednesday',av:'#8f95a3',i:'J'},
+        {n:'Michael (voice)',p:'no lesson this week — I’m out of town',w:'Tuesday',av:'#3f9ea0',i:'M'},
         {n:'Ohio Housing',p:'Re: summer sublet — deposit received',w:'Monday',av:'#5aa86b',i:'O'},
         {n:'CVS Pharmacy',p:'Your prescription is ready for pickup',w:'Monday',av:'#d0454c',i:'C'},
         {n:'Dentist — Dr. Okafor',p:'Reminder: cleaning Jun 22, 2:30 PM',w:'Sunday',av:'#7a8699',i:'D'}]}]},
@@ -768,7 +768,7 @@ const FALLBACK_SHOW = [
         {k:'stamp',t:'May 30|9:12 PM'},{k:'me',t:'the super needs to know about the lease by the 15th'},
         {k:'stamp',t:'Monday|11:02 PM'},{k:'me',t:'are you coming home this weekend?'},
         {k:'stamp',t:'Wednesday|8:15 AM'},{k:'me',t:'please just call me'},
-        {k:'stamp',t:'Wednesday|9:30 PM'},{k:'me',t:'I still have your ring'},{k:'rcpt',t:'Delivered'}]}]},
+        {k:'stamp',t:'Wednesday|9:30 PM'},{k:'me',t:'I’m not angry. just talk to me'},{k:'rcpt',t:'Delivered'}]}]},
  {id:'1.11',kind:'music',trig:'Interlude — she types it live',
   what:'PRESENT — 9:41 this morning. Typed in real time, hesitant.',
   do:[{op:'stampline',t:'Today|9:41 AM'},{op:'type',pace:'hesitant',t:'I’m not sure that I can do this without you'}]},
@@ -791,10 +791,10 @@ const FALLBACK_SHOW = [
   do:[{op:'black'}]},
  {id:'1.17',kind:'lyric',trig:'“Give me a day, Jamie!” — the memories return, full screen',
   what:'NON-DIEGETIC — she is not holding the phone. The frame drops away and the feed fills the whole screen, resting on the wedding.',
-  do:[{op:'device',dev:'full',who:'cathy'},{op:'setapp',to:'memories'},{op:'memgo',i:2}]},
+  do:[{op:'device',dev:'full',who:'cathy'},{op:'setapp',to:'memories'},{op:'memgo',i:1}]},
  {id:'1.18',kind:'lyric',trig:'“Bring back the lies” — back to the beginning',
-  what:'The feed drifts back to the first card — nine months in, the happiest one, enormous, to close the song.',
-  do:[{op:'memgo',i:0}]},
+  what:'The feed drifts down to the oldest card — nine months in, the happiest one, enormous, to close the song.',
+  do:[{op:'memgo',i:3}]},
  {id:'1.19',kind:'music',trig:'FINAL CUTOFF',
   what:'HARD BLACK on the cutoff.',
   do:[{op:'black'}]},
@@ -803,20 +803,23 @@ const FALLBACK_SHOW = [
 /* ============ 2 · SHIKSA GODDESS — JAMIE, his iPhone ============ */
 {n:2,t:'Shiksa Goddess',who:'jamie',cues:[
  {id:'2.1',kind:'music',trig:'Segue chord out of her blackout',
-  what:'His phone, September 2021, 11:38 PM. Locked. Walking home.',
+  what:'His phone, September 2021, 11:38 PM. Locked. Walking home — three unread on the lock screen, her number on top.',
   do:[{op:'device',dev:'iphone',who:'jamie'},{op:'stamp',t:'SEPTEMBER 2021'},
-      {op:'clock',t:'11:38',d:'Friday, September 3, 2021'}]},
+      {op:'clock',t:'11:38',d:'Friday, September 3, 2021'},
+      {op:'notif',app:'Messages',w:'3h ago',title:'Mom ❤️',t:'dinner sunday. no excuses.'},
+      {op:'notif',app:'Messages',w:'1h ago',title:'Rob',t:'well??? how’d it go'},
+      {op:'notif',app:'Messages',w:'56m ago',title:'+1 (917) 555-0148',t:'it’s cathy 😊 — from tonight'}]},
  {id:'2.2',kind:'lyric',trig:'I’m breaking my mother’s heart — THE SECOND TIME',
   what:'The phone comes out. Unlock, straight to Messages — her number sits on top, one hour old.',
   do:[{op:'unlock'},{op:'openapp',icon:'Messages',to:'msglist'},
       {op:'msgrows',rows:[
-        {n:'Cathy Hiatt',p:'it’s cathy 😊 — from tonight',w:'10:42 PM',av:'#c2447a',i:'C',un:true},
+        {n:'+1 (917) 555-0148',p:'it’s cathy 😊 — from tonight',w:'10:42 PM',av:'#8f95a3',i:'#',un:true},
         {n:'Rob',p:'well??? how’d it go',w:'10:12 PM',av:'#3f7fe0',i:'R',un:true},
         {n:'Mom ❤️',p:'dinner sunday. no excuses.',w:'8:05 PM',av:'#e0783f',i:'M',un:true},
-        {n:'Linda Whitfield',p:'pages by Friday. I mean it.',w:'Yesterday',av:'#8a6d10',i:'L'},
-        {n:'Elissa Weiss',p:'You: it was fun, but…',w:'Tuesday',av:'#7b61c9',i:'E'},
+        {n:'Dr. Adler',p:'gave your name to an agent — Ms. Whitfield. call her office.',w:'Yesterday',av:'#8a6d10',i:'A'},
+        {n:'Elissa Weiss',p:'it was fun, but…',w:'Tuesday',av:'#7b61c9',i:'E'},
         {n:'H. Greenblatt',p:'ok. good luck with the book I guess',w:'Monday',av:'#5aa86b',i:'H'},
-        {n:'S. Rosen',p:'You: I’ll call you this week',w:'2 wks ago',av:'#b45ac9',i:'S'},
+        {n:'S. Rosen',p:'I’ll call you this week',w:'2 wks ago',av:'#b45ac9',i:'S'},
         {n:'Columbia workshop',p:'Adam: notes attached for Thursday',w:'2 wks ago',av:'#7a8699',i:'C'}]}]},
  {id:'2.3',kind:'lyric',trig:'Before “…my grandfather’s rolling in his grave” — the first draft',
   what:'Her thread — one message in it: her number. He types a long, overwrought draft in full.',
@@ -869,10 +872,10 @@ const FALLBACK_SHOW = [
   what:'Black — the screens stay out of the song until the calls.',
   do:[{op:'black'}]},
  {id:'3.4',kind:'lyric',trig:'“And you’re mine… We’re doing fine.” — JAMIE DIALS. Time snaps back.',
-  what:'HIS phone, 2021 — a cold call to the agency, via Dr. Adler. She is not his agent yet, so the phone shows the business listing, not a contact. (Script fact: Whitfield is his literary agent at her own agency; Elise is the editor at Random House.)',
+  what:'HIS phone, 2021 — a cold call to the agency, via Dr. Adler. She is not his agent yet; he saved the office number from Adler’s text as “Ms. Whitfield (office)”. (Script fact: Whitfield is his literary agent at her own agency; Elise is the editor at Random House.)',
   do:[{op:'device',dev:'iphone',who:'jamie'},{op:'stamp',t:'SEPTEMBER 2021'},
-      {op:'clock',t:'2:41',d:'Tuesday, September 14, 2021'},
-      {op:'call',n:'Whitfield Literary Agency',st:'calling…',dir:'out'}]},
+      {op:'clock',t:'2:41',d:'Tuesday, September 7, 2021'},
+      {op:'call',n:'Ms. Whitfield (office)',st:'calling…',dir:'out'}]},
  {id:'3.5',kind:'stage',trig:'On his “Hi — I’m calling for Miss Whitfield”',
   what:'It connects. The conversation runs.',
   do:[{op:'callState',st:'connected · 00:08'}]},
@@ -880,10 +883,10 @@ const FALLBACK_SHOW = [
   what:'The phone goes; the timeline takes the stage and ROLLS HOME — 2021 spins forward to her July 2025, big and center.',
   do:[{op:'black'},{op:'clock',t:'6:31',d:'Saturday, July 19, 2025'},{op:'stamp',t:'JULY 2025 · OHIO'}]},
  {id:'3.7',kind:'lyric',trig:'“It’s all right — We’ll have tonight.” — the agency calls HIM back',
-  what:'HIS phone again, 2021 — an INCOMING call from Miss Whitfield.',
+  what:'HIS phone again, 2021 — a couple of weeks later (script): an INCOMING call from Ms. Whitfield.',
   do:[{op:'device',dev:'iphone',who:'jamie'},{op:'stamp',t:'SEPTEMBER 2021'},
-      {op:'clock',t:'4:18',d:'Tuesday, September 14, 2021'},
-      {op:'call',n:'Whitfield Literary Agency',st:'incoming call',dir:'in'}]},
+      {op:'clock',t:'4:18',d:'Tuesday, September 21, 2021'},
+      {op:'call',n:'Ms. Whitfield (office)',st:'incoming call',dir:'in'}]},
  {id:'3.8',kind:'stage',trig:'“Hello… this is— oh, Miss Whitfield.” He answers',
   what:'Connected. It runs until the thank-you.',
   do:[{op:'callState',st:'connected · 00:21'}]},
@@ -893,19 +896,19 @@ const FALLBACK_SHOW = [
  {id:'3.10',kind:'lyric',trig:'After Cathy’s “And not do anything at all” — JAMIE DIALS ROB',
   what:'SCRIPT: he dials — “perplexed but not unhappy.” The lease is up; an apartment WITH Cathy. 2021, pre-move-in — the era question answers itself.',
   do:[{op:'device',dev:'iphone',who:'jamie'},{op:'stamp',t:'SEPTEMBER 2021'},
-      {op:'clock',t:'8:02',d:'Tuesday, September 14, 2021'},
+      {op:'clock',t:'8:02',d:'Thursday, September 30, 2021'},
       {op:'call',n:'Rob',st:'calling mobile…',dir:'out'}]},
  {id:'3.11',kind:'stage',trig:'Rob picks up — “Yeah, listen. You know how my lease is up?”',
   what:'Connected — visible through the very end of the vamp.',
   do:[{op:'callState',st:'connected · 01:02'}]},
  {id:'3.12',kind:'music',trig:'DOWNBEAT of Moving Too Fast — he hangs up',
-  what:'The Rob call goes; time rolls home to her July 2025 one last time, centered — song 4 will spin it back.',
-  do:[{op:'black'},{op:'clock',t:'7:04',d:'Saturday, July 19, 2025'},{op:'stamp',t:'JULY 2025 · OHIO'}]},
+  what:'The Rob call goes on the downbeat; time rolls one month forward into Moving Too Fast — OCTOBER 2021, center-stage — and his phone comes up on the next cue.',
+  do:[{op:'black'},{op:'clock',t:'2:14',d:'Friday, October 8, 2021'},{op:'stamp',t:'OCTOBER 2021'}]},
 ]},
 
 /* ============ 4 · MOVING TOO FAST — JAMIE (with Cathy’s gig call) ============ */
 {n:4,t:'Moving Too Fast',who:'both',cues:[
- {id:'4.1',kind:'music',trig:'Count-off — drums in',
+ {id:'4.1',kind:'music',trig:'DRUMS IN — right after the downbeat, his phone comes up',
   what:'His phone, October 2021. Locked and quiet.',
   do:[{op:'device',dev:'iphone',who:'jamie'},{op:'stamp',t:'OCTOBER 2021'},
       {op:'clock',t:'2:14',d:'Friday, October 8, 2021'}]},
@@ -914,7 +917,7 @@ const FALLBACK_SHOW = [
   do:[{op:'device',dev:'iphone',who:'cathy'},
       {op:'clock',t:'10:10',d:'Friday, May 9, 2025'},{op:'stamp',t:'MAY 2025'},
       {op:'call',n:'Mike Stelmyer',st:'calling…',dir:'out'}]},
- {id:'4.3',kind:'lyric',trig:'On her “Hello, this is Catherine Hiatt, I’m calling for Mike Stelmyer” — it connects',
+ {id:'4.3',kind:'lyric',trig:'END of “what else am I s’pposed to do?” — it connects; she speaks next',
   what:'We see the dial AND the connect.',
   do:[{op:'callState',st:'connected · 00:15'}]},
  {id:'4.4',kind:'lyric',trig:'“I’ll call you soon!” — the call ends',
@@ -963,7 +966,7 @@ const FALLBACK_SHOW = [
   what:'She comments on it anyway. Lovingly.',do:[{op:'comment',n:'Cathy',t:'❤️ so proud of this one'}]},
  {id:'5.5',kind:'lyric',trig:'“Staring catatonic out the window”',
   what:'She opens his thread — yesterday’s ordinary warmth still sitting above, which makes today’s NOT DELIVERED colder.',
-  do:[{op:'openapp',icon:'Messages',to:'thread',contact:'Jamie 💙',sub:'Do Not Disturb'},
+  do:[{op:'clock',t:'12:06'},{op:'openapp',icon:'Messages',to:'thread',contact:'Jamie 💙',sub:'Do Not Disturb'},
       {op:'history',items:[
         {k:'stamp',t:'Tuesday|8:12 AM'},{k:'them',t:'gym then pages. love you'},
         {k:'me',t:'bring back oat milk'},{k:'them',t:'👍'},
@@ -986,17 +989,18 @@ const FALLBACK_SHOW = [
   what:'THE RELEASE — everything flips to Delivered at once. He woke up. (Clock: 6:04 PM.)',
   hold:'The tightest band sync in the song. Land it on the smile.',
   do:[{op:'clock',t:'6:04'},{op:'rcptswap',t:'Delivered ✓'}]},
- {id:'5.10',kind:'stage',trig:'SHE opens the book and closes it.',
-  what:'Back to Facebook — a reader has photographed the dedication page.',
+ {id:'5.10',kind:'lyric',trig:'“I’m a part of that… Aren’t I?”',
+  what:'In the clear — she leaves the thread, opens Safari, and types it into Google. The loneliest cue in the show.',
+  do:[{op:'openapp',icon:'Safari',to:'search'},
+      {op:'search',t:'is it normal to feel invisible at your husband’s party'}]},
+ {id:'5.11',kind:'lyric',trig:'On the closing repeats of “I’m a part of that” — she clears it',
+  what:'Backspaced to nothing.',do:[{op:'searchClear',done:'search cleared'}]},
+ {id:'5.12',kind:'stage',trig:'SHE hands the book back — looks briefly at the dedication page (script direction, the song’s last beat)',
+  what:'Facebook — a reader has photographed the dedication page. “For Cathy.” The last image of the song.',
   do:[{op:'openapp',icon:'Facebook',to:'fbpost'},
       {op:'post',who:'a reader',av:'✦',col:'#8a6d10',when:'today',txt:'That dedication page though 🥹',
        media:'M12 — the dedication page: “For Cathy”',likes:9}]},
- {id:'5.11',kind:'lyric',trig:'(two bars later)',what:'Likes climb.',do:[{op:'like',to:41}]},
- {id:'5.12',kind:'lyric',trig:'“I’m a part of that… Aren’t I?”',
-  what:'In the clear — she leaves Facebook, opens Safari, and types it into Google. The loneliest cue in the show.',
-  do:[{op:'openapp',icon:'Safari',to:'search'},
-      {op:'search',t:'is it normal to feel invisible at your husband’s party'}]},
- {id:'5.13',kind:'music',trig:'As the song ends',what:'She clears it.',do:[{op:'searchClear',done:'search cleared'}]},
+ {id:'5.13',kind:'music',trig:'Final chord',what:'Likes climb on it.',do:[{op:'like',to:41}]},
 ]},
 
 /* ============ 6 · THE SCHMUEL SONG — JAMIE, his MacBook ============
@@ -1236,7 +1240,7 @@ const FALLBACK_SHOW = [
  {id:'13.1',kind:'music',trig:'Intro, bar 1',
   what:'His phone lights the dark. June 2026, 6:12 AM. Not his bed.',
   do:[{op:'device',dev:'iphone',who:'jamie'},{op:'stamp',t:'JUNE 2026 · BEFORE DAWN'},{op:'batt',v:9},
-      {op:'clock',t:'6:12',d:'Friday, June 12, 2026'}]},
+      {op:'clock',t:'6:12',d:'Thursday, June 11, 2026'}]},
  {id:'13.2',kind:'music',trig:'Bar 2',
   what:'Unlocked before the house has settled. Straight to Messages. No hesitation — that is the point.',
   hold:'Her opening took four cues of hesitation. His takes one.',
@@ -1328,7 +1332,7 @@ const FALLBACK_SHOW = [
  {id:'14.5',kind:'lyric',trig:'JAMIE: I could never rescue you —',
   what:'FLIP TO HIS SCREEN. June 2026, 2:40 PM. His inbox is the same three emails she will read on Friday — the sender’s side.',
   do:[{op:'device',dev:'iphone',who:'jamie'},{op:'stamp',t:'JUNE 2026 · HIS LAST AFTERNOON'},
-      {op:'clock',t:'2:40',d:'Friday, June 12, 2026'},{op:'setapp',to:'mail'},
+      {op:'clock',t:'2:40',d:'Thursday, June 11, 2026'},{op:'setapp',to:'mail'},
       {op:'inbox',rows:[
         {f:'U-MOVE',s:'Booking confirmed — Saturday 8:00 AM',p:'1 bedroom · pickup W 73rd St',w:'2:31 PM',unread:true},
         {f:'Chase',s:'Account closed — joint checking',p:'Confirmation of closure. Funds transferred.',w:'1:55 PM'},
@@ -1369,7 +1373,7 @@ const FALLBACK_SHOW = [
       {op:'history',items:[
         {k:'stamp',t:'Monday|11:02 PM'},{k:'them',t:'are you coming home this weekend?'},
         {k:'stamp',t:'Wednesday|8:15 AM'},{k:'them',t:'please just call me'},
-        {k:'stamp',t:'Wednesday|9:30 PM'},{k:'them',t:'I still have your ring'},
+        {k:'stamp',t:'Wednesday|9:30 PM'},{k:'them',t:'I’m not angry. just talk to me'},
         {k:'stamp',t:'Today|9:41 AM'},{k:'them',t:'I’m not sure that I can do this without you'},
         {k:'stamp',t:'|READ 9:44 AM — he never answered'}]}]},
  {id:'14.11',kind:'stage',trig:'HE puts the key on the table and goes.',
@@ -1480,10 +1484,10 @@ function applyOp(st,o){
     case 'history': o.items.forEach(m=>st.msgs.push({...m})); break;
     case 'scrollhist': case 'scrollend': break;
     case 'type': st.draft=o.t; st.kbd=true; break;
-    case 'send': if(st.draft){st.msgs.push({k:'me',t:st.draft});} st.draft=''; st.kbd=false; break;
+    case 'send': if(st.draft){ st.msgs=st.msgs.filter(m=>m.k!=='rcpt'); st.msgs.push({k:'me',t:st.draft}); } st.draft=''; st.kbd=false; break;
     case 'wipe': st.draft=''; st.kbd=false; break;
     case 'noop': break;
-    case 'rcpt': st.msgs.push({k:'rcpt',t:o.t}); break;
+    case 'rcpt': st.msgs=st.msgs.filter(m=>m.k!=='rcpt'); st.msgs.push({k:'rcpt',t:o.t}); break;
     case 'rcptswap': for(let j=st.msgs.length-1;j>=0;j--){if(st.msgs[j].k==='rcpt'){st.msgs[j].t=o.t;break;}} break;
     case 'me': st.msgs.push({k:'me',t:o.t,...(o.link?{link:o.link}:{}),...(o.media?{media:o.media}:{}),...(o.video?{video:o.video}:{}),...(o.doc?{doc:o.doc}:{})}); break;
     case 'them': st.msgs.push({k:'them',t:o.t,...(o.doc?{doc:o.doc}:{}),...(o.link?{link:o.link}:{}),...(o.media?{media:o.media}:{}),...(o.video?{video:o.video}:{})}); break;
@@ -1617,9 +1621,15 @@ function kbdHTML(){
     `<div class="krow"><div class="key w">123</div><div class="key" data-k="🙂" style="flex:.8 1 0">☺</div>`+
     `<div class="key sp" data-k=" ">space</div><div class="key w" data-k="↵">return</div></div>`;
 }
-function iconEl(n){
+function iconEl(n, glyph){
   const ic=ICON[n]||{bg:'#c7c7cc',g:''};
-  return `<div class="gi" style="background:${ic.bg}"><svg viewBox="0 0 64 64">${ic.g}</svg></div>`;
+  return `<div class="gi" style="background:${ic.bg}"><svg viewBox="0 0 64 64">${glyph||ic.g}</svg></div>`;
+}
+/* the real Calendar icon shows today's weekday and day — from state, never hard-coded */
+function calGlyph(date){
+  const m=/^(\w+), \w+ (\d+)/.exec(date||''); const wd=m?m[1].slice(0,3).toUpperCase():'FRI', dd=m?m[2]:'12';
+  return `<text x="32" y="23" font-family="Inter,Helvetica,sans-serif" font-size="11" font-weight="600" fill="#fb3b30" text-anchor="middle">${wd}</text>
+   <text x="32" y="53" font-family="Inter,Helvetica,sans-serif" font-size="31" font-weight="300" fill="#1c1c1e" text-anchor="middle">${dd}</text>`;
 }
 
 /* ---------- screen renderers ---------- */
@@ -1688,6 +1698,7 @@ function statusHTML(st){
     ${bars<4?`<span class="hlbl" style="font-size:.72em;font-weight:700;letter-spacing:.02em">LTE</span>`:`<span class="wifi"><b></b></span>`}
     <span class="batt" style="--pct:${st.batt||72}%;${(st.batt&&st.batt<=20)?'color:#fb3b30':''}"><i></i></span></span>`;
 }
+function lockDate(d){ return (d||'').replace(/,\s*\d{4}\s*$/,''); }
 function lockHTML(st){
   const [w1,w2,w3]=WALL[st.who]||WALL.cathy;
   const wsrc=assetFor(st.wall);   // per-cast wallpaper photo (M23/M24) when it exists
@@ -1696,7 +1707,7 @@ function lockHTML(st){
       :`linear-gradient(160deg,${w1},${w2} 55%,${w3})`}">
     ${wsrc?'':`<div class="wallnote">WALLPAPER — ${st.wall||'abstract gradient (no photo)'}</div>`}
     <div style="padding-top:11.5%">
-      <div class="lk-date">${st.date}</div>
+      <div class="lk-date">${lockDate(st.date)}</div>
       <div class="lk-time">${st.tm}</div>
     </div>
     <div class="nstack" style="margin-top:1.4em">
@@ -1717,10 +1728,11 @@ function lockHTML(st){
 }
 function homeHTML(st){
   const [w1,w2,w3]=WALL[st.who]||WALL.cathy;
-  const badge = st.notifs.length?`<span class="bdg">${st.notifs.length}</span>`:'';
+  const unread = (st.msgrows&&st.msgrows.length) ? st.msgrows.filter(r=>r.un).length : st.notifs.length;
+  const badge = unread?`<span class="bdg">${unread}</span>`:'';
   return `<div class="layer home fs" style="background:linear-gradient(160deg,${w1},${w2} 55%,${w3})">
     <div class="hgrid">${HOME_GRID.map(([n])=>`<div class="happ" data-app="${n}">
-      ${iconEl(n).replace('</svg>','</svg>'+(n==='Messages'?badge:''))}<small class="hlbl">${n}</small></div>`).join('')}</div>
+      ${iconEl(n, n==='Calendar'?calGlyph(st.date):null).replace('</svg>','</svg>'+(n==='Messages'?badge:''))}<small class="hlbl">${n}</small></div>`).join('')}</div>
     <div class="pagedots"><i class="on"></i><i></i></div>
     <div class="searchpill">🔍 Search</div>
     <div class="dockrow">${HOME_DOCK.map(n=>`<div class="happ" data-app="${n}">${iconEl(n)}</div>`).join('')}</div>
@@ -1831,6 +1843,12 @@ function mailReadHTML(st){
 }
 function callHTML(st){
   const c=st.call||{n:'',st:''};
+  if(/ended/i.test(c.st||'')) return `<div class="layer fs" style="background:linear-gradient(180deg,#26303f,#0d1118);color:#fff">
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1em">
+      <div style="font-size:2.7em;font-weight:500;opacity:.85;text-align:center">${c.n}</div>
+      <div style="font-family:'Courier Prime',monospace;font-size:1.05em;letter-spacing:.18em;color:#aeb6cc;text-transform:uppercase">Call Ended</div>
+      <div style="width:7em;height:7em;border-radius:50%;background:#3a4568;display:flex;align-items:center;justify-content:center;font-size:3em;opacity:.6;margin-top:.6em">${(c.n||'?')[0]}</div>
+    </div></div>`;
   return `<div class="layer fs" style="background:linear-gradient(180deg,#26303f,#0d1118);color:#fff">
     <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:16% 8% 12%">
       <div style="text-align:center"><div style="font-size:2.7em;font-weight:500">${c.n}</div>
@@ -2689,6 +2707,10 @@ function swapLayer(st,cls){ // replace the screen inside each stack, with an ent
 async function playCue(cue, st, tok){
   for(const o of cue.do){
     if(tok!==animTok) return;
+    if((o.op==='device'||o.op==='black') && st.call && !/ended/i.test(st.call.st||'')){
+      st.call.st='Call Ended'; swapLayer(st,null);
+      await wait(1100); if(tok!==animTok) return;
+    }
     if(o.op==='device'){ applyOp(st,o);
       const nx=cue.do[cue.do.indexOf(o)+1];
       if(nx && (nx.op==='setapp'||nx.op==='inbox')) applyOp(st,cue.do[cue.do.indexOf(o)+1]);
@@ -2715,7 +2737,7 @@ async function playCue(cue, st, tok){
             const txt=`${WD[d.getDay()]}, ${MO[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
             const hh=Math.floor(Math.random()*12)+1, mm=String(Math.floor(Math.random()*60)).padStart(2,'0');
             const itm=(i===steps?st.tm:hh+':'+mm);
-            stacks().forEach(k=>{ const ld=k.querySelector('.lk-date'); if(ld) ld.textContent=txt;
+            stacks().forEach(k=>{ const ld=k.querySelector('.lk-date'); if(ld) ld.textContent=lockDate(txt);
               const lt=k.querySelector('.lk-time'); if(lt) lt.textContent=itm; });
             // the rail era rolls with it — the audience watches the months spin
             // forward or backward, then the stamp op names where we landed
@@ -2727,7 +2749,7 @@ async function playCue(cue, st, tok){
       stacks().forEach(k=>{ const shell=k.closest('.screen'); if(!shell) return;
         const sb=shell.querySelector('.statusbar span'); if(sb) sb.textContent=st.tm;
         const lt=k.querySelector('.lk-time'); if(lt) lt.textContent=st.tm;
-        const ld=k.querySelector('.lk-date'); if(ld&&o.d) ld.textContent=st.date; });
+        const ld=k.querySelector('.lk-date'); if(ld&&o.d) ld.textContent=lockDate(st.date); });
       setStamp(st);
       continue; }
     if(o.op==='stamp'){ applyOp(st,o); setStamp(st); continue; }
