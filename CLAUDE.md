@@ -39,6 +39,14 @@ projection window, shown in the presenter bar. Every content change automaticall
 casts because cues reference codes, never files; never fork the show per cast, and every asset
 must exist in both sets (a missing entry renders the greeked placeholder).
 
+## The prologue memory ladder is FOUR cards (canon arithmetic)
+They meet Sept 3, 2021, so Facebook "On This Day" (June 12) can only reach back to 2022:
+**2022** nine months in — the couch (M15) · **2023** the proposal, June 12 (the rowboat day
+The Next Ten Minutes returns to) · **2024** married three weeks, 600 miles apart (Ohio is forty
+miles east of Cincinnati per the script) · **2025** Ohio round two, day one — the card he is
+not in (M2). The pier (M1, July 19, 2025) is Song 3's post only — it can never be a June 12
+memory. Never reintroduce a 2021 card.
+
 ## Song 7 is special
 Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, writing). Do not build elaborate cueing inside 7; keep the FaceTime frame and the log; the video content is produced separately.
 
@@ -66,7 +74,11 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   large, and the rolls play there (the rail's `.rera` is the same element, scaled by
   `body.erastage`). True black only between songs, at preshow, and on manual blackout.
   So a "return" cue is `black` + dated `clock` + `stamp` — the phone goes, time rolls
-  home center-stage. Cathy's Stelmyer call is pinned **MAY 2025** (Friday, May 9 — David;
+  home center-stage. **TIME NEVER RESETS (David, Sept 18)**: a song inherits the previous
+  song's final era (`freshState` reads `songEndState(idx-1)`), so the outgoing era holds
+  center-stage between songs and the next song's first cue rolls FROM it — every song-top
+  roll travels the true distance. MONTH + YEAR is on screen at every moment that is not
+  an animation; true black exists only at preshow and on the operator's manual blackout. Cathy's Stelmyer call is pinned **MAY 2025** (Friday, May 9 — David;
   her backward line between the pier and the party). **Call timers really tick**: any
   "connected · M:SS" status counts up second by second from the moment it appears
   (`liveTimerHTML`/`.calltimer`), FaceTime duration included. **Song 7 is a full call
