@@ -16,13 +16,16 @@ out.append(f"- **Video:** {N['video']}")
 out.append(f"- **Audio:** {N['audio']}")
 out.append(f"- **Where:** {N['folder']}\n")
 
-def files_for(a):
+def fname(a, cast):
     ext = {'photo': 'jpg', 'video': 'mp4', 'audio': 'm4a'}[a['kind']]
+    return f"S{a['song']:02d}-{a['code']}-{a['slug']}-{cast}.{ext}"
+
+def files_for(a):
     if a['status'] == 'derived':
         return '— (I make this from M7)'
     if a['shared']:
-        return f"`{a['code']}.{ext}`  (one file, both casts)"
-    return f"`{a['code']}-ml.{ext}`  ·  `{a['code']}-ac.{ext}`"
+        return f"`{fname(a,'SHARED')}`"
+    return f"`{fname(a,'ML')}`  ·  `{fname(a,'AC')}`"
 
 for status, heading in [('confirmed', 'SHOOT NOW — confirmed for the locked build'),
                         ('derived', 'DERIVED — nothing to shoot'),

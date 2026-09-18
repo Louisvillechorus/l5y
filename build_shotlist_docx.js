@@ -22,7 +22,8 @@ const N=S.naming;
     new TextRun({text:k+':  ',font:MONO,size:17,bold:true,color:GOLD}),new TextRun({text:v,font:BODY,size:18,color:INK})]})));
 
 const ext={photo:'jpg',video:'mp4',audio:'m4a'};
-const filesFor=a=>a.status==='derived'?'— (made from M7)':a.shared?`${a.code}.${ext[a.kind]}  (one file, both casts)`:`${a.code}-ml.${ext[a.kind]}\n${a.code}-ac.${ext[a.kind]}`;
+const fname=(a,c)=>`S${String(a.song).padStart(2,'0')}-${a.code}-${a.slug}-${c}.${ext[a.kind]}`;
+const filesFor=a=>a.status==='derived'?'— (made from M7)':a.shared?fname(a,'SHARED'):`${fname(a,'ML')}\n${fname(a,'AC')}`;
 const cell=(t,w,o={})=>new TableCell({width:{size:w,type:WidthType.PERCENTAGE},shading:o.fill?{type:ShadingType.CLEAR,fill:o.fill}:undefined,
   margins:{top:60,bottom:60,left:90,right:90},
   children:String(t).split('\n').map(line=>new Paragraph({children:[new TextRun({text:line,font:o.mono?MONO:BODY,size:o.size||15,bold:!!o.bold,color:o.color||INK})]}))});

@@ -1,18 +1,17 @@
 {
  "naming": {
-  "rule": "Name every file by its asset code, then the cast suffix: -ml (Maegan & Landon) or -ac (Andrew & Charlie). Assets marked SHARED need no suffix — one file serves both casts.",
+  "rule": "Every filename says WHERE it plays, WHAT it is, and WHICH CAST, in this order:  S<song>-<code>-<what>-<CAST>.<ext>   The cast tag is ML (Maegan & Landon), AC (Andrew & Charlie), or SHARED (one file serves both casts). The code (M1, M7b, V2…) is the part the system reads — never change it; the rest is for humans.",
   "examples": [
-   "M1-ml.jpg",
-   "M1-ac.jpg",
-   "M12.jpg",
-   "V2-ml.mp4",
-   "V2-ac.mp4",
-   "A1-ml.m4a"
+   "S03-M1-pier-golden-hour-ML.jpg",
+   "S03-M1-pier-golden-hour-AC.jpg",
+   "S05-M12-dedication-for-cathy-SHARED.jpg",
+   "S07-V2-facetime-jamie-desk-ML.mp4",
+   "S07-V2-facetime-jamie-desk-AC.mp4"
   ],
   "photos": "JPG (convert HEIC). Long side at least 1600 px. Keep each file under 8 MB so it travels through the Drive connector.",
-  "video": "MP4 (H.264), 1920×1080, landscape. Videos exceed the Drive transfer limit — upload V2 to the GitHub repo (Add file → Upload files, into assets/) or hand it to the show laptop; tell me which.",
+  "video": "MP4 (H.264), 1920×1080 landscape. The video is larger than the Drive transfer limit: upload it to the GitHub repo (Add file → Upload files, into assets/) or give it to the show laptop — tell me which.",
   "audio": "M4A or MP3, mono is fine.",
-  "folder": "One Drive folder, flat, e.g. “L5Y Assets” — tell me when it's there. Missing files are fine: a code that has no file keeps its placeholder, so partial uploads never break the show."
+  "folder": "One Google Drive folder named  L5Y ASSETS , files flat inside it (no subfolders). Tell me when files land — I pull them and place every one by its code. A missing file keeps its placeholder, so partial uploads never break the show."
  },
  "assets": [
   {
@@ -25,7 +24,9 @@
    "shoot": "Jamie alone, candid, early-relationship feel (2021). It is HER wallpaper, so it is a photo she took of him: relaxed, looking near the camera, warm light. No text, nothing busy in the top third (the clock sits there).",
    "who": "Jamie only",
    "era": "September–October 2021",
-   "appears": "Song 1 — her lock screen, the first image of the show, behind everything she does that morning"
+   "appears": "Song 1 — her lock screen, the first image of the show, behind everything she does that morning",
+   "song": 1,
+   "slug": "cathy-wallpaper-jamie"
   },
   {
    "code": "M15",
@@ -37,7 +38,9 @@
    "shoot": "The two of them on a genuinely ugly secondhand couch in the first apartment, deliriously happy — this is her “nine months in and our apartment has a name. it is called The Couch.” post, and it is the photo that fills the whole screen to close Song 1. Make it the best photo of the set.",
    "who": "Both",
    "era": "June 2022 — nine months in, the first apartment",
-   "appears": "Song 1 prologue — Facebook Memory, 4 years ago; and full-screen to close Song 1"
+   "appears": "Song 1 prologue — Facebook Memory, 4 years ago; and full-screen to close Song 1",
+   "song": 1,
+   "slug": "the-couch-nine-months"
   },
   {
    "code": "M3a",
@@ -49,7 +52,9 @@
    "shoot": "The engagement: her hand with the ring in the foreground, the Central Park rowboat / water behind (or a rowboat-dock stand-in). Attached to “he asked. I said yes before he finished 💍”.",
    "who": "Cathy's hand + ring (Jamie optional, background)",
    "era": "June 12, 2023",
-   "appears": "Song 1 prologue — Facebook Memory, 3 years ago"
+   "appears": "Song 1 prologue — Facebook Memory, 3 years ago",
+   "song": 1,
+   "slug": "ring-rowboat"
   },
   {
    "code": "M2",
@@ -61,7 +66,9 @@
    "shoot": "Cathy with her summer-stock castmates on the first day in Ohio, 2025 — a group/company photo, theater lobby or rehearsal room. Jamie is NOT in it; that is the point. Attached to “Ohio, round two. day one 🎭”.",
    "who": "Cathy + castmates (no Jamie)",
    "era": "June 12, 2025 — Ohio, second summer",
-   "appears": "Song 1 prologue — Facebook Memory, 1 year ago (the card she is not ready for)"
+   "appears": "Song 1 prologue — Facebook Memory, 1 year ago (the card she is not ready for)",
+   "song": 1,
+   "slug": "ohio-cast-day-one"
   },
   {
    "code": "M4",
@@ -73,7 +80,9 @@
    "shoot": "The two of them in wedding attire, classic portrait — the one they'd post. Attached to “married three weeks and 600 miles apart. worth it.”",
    "who": "Both",
    "era": "May 18, 2024",
-   "appears": "Song 1 prologue — Facebook Memory, 2 years ago"
+   "appears": "Song 1 prologue — Facebook Memory, 2 years ago",
+   "song": 1,
+   "slug": "wedding-portrait"
   },
   {
    "code": "M1",
@@ -85,7 +94,9 @@
    "shoot": "Jamie and Cathy on a pier by a river at golden hour — HER photo of his surprise visit (a selfie of the two, or set on a timer). This is her birthday post “look who made it to Ohio 🥰 best birthday present”.",
    "who": "Both",
    "era": "July 19, 2025 — Ohio, her birthday",
-   "appears": "Song 3 — the birthday post as she makes it (July 19, 2025)"
+   "appears": "Song 3 — the birthday post as she makes it (July 19, 2025)",
+   "song": 3,
+   "slug": "pier-golden-hour"
   },
   {
    "code": "M7",
@@ -97,7 +108,9 @@
    "shoot": "A party/group shot at Jamie's book party: Jamie centered and lit, people around him, CATHY AT THE FAR EDGE of the frame, half in, clearly croppable out. Shoot wide so a re-crop that removes her still looks like a good photo.",
    "who": "Jamie centered, Cathy at the edge, others",
    "era": "March 2025",
-   "appears": "Song 5 — “Publication party! Tagged: Jamie Wellerstein and guest”"
+   "appears": "Song 5 — “Publication party! Tagged: Jamie Wellerstein and guest”",
+   "song": 5,
+   "slug": "party-cathy-at-edge"
   },
   {
    "code": "M7b",
@@ -109,7 +122,9 @@
    "shoot": "I produce this from M7 by cropping her out. Nothing to shoot; just make sure M7 has room to crop.",
    "who": "—",
    "era": "—",
-   "appears": "Song 5 — the fan-account repost"
+   "appears": "Song 5 — the fan-account repost",
+   "song": 5,
+   "slug": "party-recropped"
   },
   {
    "code": "M12",
@@ -121,7 +136,9 @@
    "shoot": "A photo of a real printed book page reading only “For Cathy” — a reader's snapshot, slightly angled, real paper texture. No people, so ONE file serves both casts.",
    "who": "None (shared)",
    "era": "—",
-   "appears": "Song 5 — a reader photographed the dedication page"
+   "appears": "Song 5 — a reader photographed the dedication page",
+   "song": 5,
+   "slug": "dedication-for-cathy"
   },
   {
    "code": "M23",
@@ -133,7 +150,9 @@
    "shoot": "Tree lights, bokeh, warm — no people needed, so ONE file serves both casts (unless you want the couple in it; then shoot per cast).",
    "who": "None (shared)",
    "era": "December 2022",
-   "appears": "Song 6 — the whole song is this lock screen"
+   "appears": "Song 6 — the whole song is this lock screen",
+   "song": 6,
+   "slug": "christmas-wallpaper"
   },
   {
    "code": "V2",
@@ -145,7 +164,9 @@
    "shoot": "Jamie on a laptop webcam at his desk, writing, half-attending, reacting to her words for the entire number. Frame it exactly like a FaceTime feed (face upper-center, desk lamp, notebook/laptop). The engine draws the FaceTime chrome and the ticking duration — the video is only his feed. No Cathy self-view.",
    "who": "Jamie only",
    "era": "June 2024",
-   "appears": "Song 7 — the whole song, between the ringing screen and Call Ended"
+   "appears": "Song 7 — the whole song, between the ringing screen and Call Ended",
+   "song": 7,
+   "slug": "facetime-jamie-desk"
   },
   {
    "code": "A1",
@@ -157,7 +178,9 @@
    "shoot": "Her recorded voicemail to Jamie — original words along the lines of: she got Ohio, call her back, she's happy. NOT lyrics. 47 seconds. Pending: only needed if the voicemail beat survives your Song 14 answer.",
    "who": "Cathy's voice",
    "era": "April 2025",
-   "appears": "Song 14 (current build) — the saved voicemail he cannot delete"
+   "appears": "Song 14 (current build) — the saved voicemail he cannot delete",
+   "song": 14,
+   "slug": "cathy-voicemail"
   },
   {
    "code": "M8",
@@ -169,7 +192,9 @@
    "shoot": "Jamie celebrating at a bar with people; one unnamed woman half in frame at the edge (the Elise seed). Pending: only if Song 10 keeps the viral-press beats alongside the two texts.",
    "who": "Jamie + others",
    "era": "February 2024",
-   "appears": "Song 10 (current build) — the party photo in his press"
+   "appears": "Song 10 (current build) — the party photo in his press",
+   "song": 10,
+   "slug": "bar-celebration"
   },
   {
    "code": "M11a",
@@ -181,7 +206,9 @@
    "shoot": "Pending — cut if the Song 12 map replaces the Facebook beats. Not the leads; a friend's wedding photo.",
    "who": "Extras",
    "era": "2021",
-   "appears": "Song 12 (current build)"
+   "appears": "Song 12 (current build)",
+   "song": 12,
+   "slug": "carolann-wedding"
   },
   {
    "code": "M11b",
@@ -193,7 +220,9 @@
    "shoot": "Pending — cut if the Song 12 map replaces the Facebook beats.",
    "who": "Extras",
    "era": "2021",
-   "appears": "Song 12 (current build)"
+   "appears": "Song 12 (current build)",
+   "song": 12,
+   "slug": "carolann-baby"
   },
   {
    "code": "M11c",
@@ -205,7 +234,9 @@
    "shoot": "Pending — cut if the Song 12 map replaces the Facebook beats.",
    "who": "None",
    "era": "2021",
-   "appears": "Song 12 (current build)"
+   "appears": "Song 12 (current build)",
+   "song": 12,
+   "slug": "carolann-house"
   }
  ]
 }
