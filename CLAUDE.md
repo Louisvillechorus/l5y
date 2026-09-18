@@ -54,8 +54,8 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
 - **The rig is a 75″ LANDSCAPE TV, audience up to 25 ft.** Readability rules everything.
   **FRAMING (David, Sept 18 — supersedes the close-up default): THE WHOLE PHONE IS ALWAYS
   ON STAGE.** Nothing is cropped, nothing re-aims mid-cue, and the presenter preview is
-  exactly the projection. Legibility comes from the phone running iOS Larger Text (`.fs`
-  base size), not from a zoomed window. `CLOSEUP_DEFAULT=false` in the engine; a cue may
+  exactly the projection. Legibility comes from the phone running iOS Larger Text (`.fs` = 2.4% of the
+  phone height via `--ph`, so the preview and the projection lay out identically), not from a zoomed window. `CLOSEUP_DEFAULT=false` in the engine; a cue may
   still ask for a close-up explicitly with `{op:'frame', z, at}` — none do in the show.
 - **The composed stage (revised Sept 14 evening — nothing ever overlays the phone).**
   Landscape is a three-zone stage: **left rail = identity** (CATHY/JAMIE in their color +
@@ -99,8 +99,8 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
 
 ## THE LINE-BY-LINE BUILD (David, Sept 18 — the spec; 72 cues)
 - **1** prologue memories auto-play from ONE GO (the waltz); black on the first bar; at the
-  m.58 interlude she picks up the phone and sends her text (auto sequence); memories
-  return full-bleed on her later line; the read receipt / typing beats are CUT.
+  m.58 interlude she picks up the phone and sends her text (auto sequence); then READ 9:44,
+  his typing bubble, it stops — the thread stays up to the cutoff (the memories return is CUT).
 - **2** as built (drafts, the send, her typing bubble, her call); same-night compression kept.
 - **3** era-center only for her; Jamie's three calls (Whitfield ×2, Rob — he dials, per the
   script) with return rolls; hang-up on the downbeat of 4.

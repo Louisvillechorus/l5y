@@ -186,6 +186,12 @@
   .now .cid{font-family:'Courier Prime',monospace;font-size:21px;font-weight:700;line-height:1}
   .now .cid span{font-size:11px;font-weight:400;margin-left:8px;letter-spacing:.14em}
   .now .what{font-size:12.5px;color:#b9bdc9;margin-top:5px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .prog{height:7px;background:rgba(243,239,228,.1);border-radius:4px;margin-top:8px;position:relative;overflow:visible;opacity:0;transition:opacity .3s}
+  .prog.on{opacity:1}
+  .prog i{display:block;height:100%;width:0;border-radius:4px;background:var(--go);transition:width .12s linear}
+  .prog.done i{background:#5b8f72}
+  .prog{margin-bottom:14px}
+  .prog span{position:absolute;right:0;top:10px;font-family:'Courier Prime',monospace;font-size:10px;letter-spacing:.14em;color:var(--dim);text-transform:uppercase;white-space:nowrap}
   .pov{display:inline-block;font-family:'Courier Prime',monospace;font-size:10px;
     letter-spacing:.14em;border-radius:99px;padding:2px 10px;text-transform:uppercase}
   .pov.c{background:rgba(224,122,158,.18);color:var(--cathy);border:1px solid rgba(224,122,158,.5)}
@@ -232,7 +238,9 @@
   .qrow.cur{background:rgba(233,199,102,.1);color:var(--paper)}
   .qrow.cur .qid{color:var(--gold);font-weight:700}
   .qrow.done{opacity:.35}
-  .qrow .qt{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .qrow .qt{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #presenter{overflow:hidden}
+  .trigger .line{overflow-wrap:anywhere}
 
   #bar{position:fixed;bottom:0;left:0;right:0;height:34px;background:#05070c;
     border-top:1px solid rgba(243,239,228,.12);display:none;align-items:center;gap:20px;padding:0 16px;
@@ -275,17 +283,17 @@
     box-shadow:0 0 0 1px var(--gold),0 0 18px rgba(233,199,102,.25)}
 
   /* ================= DEVICE SHELLS ================= */
-  .iphone{height:100%;aspect-ratio:9/19.5;background:#000;border-radius:min(6.5vh,52px);padding:10px;
+  .iphone{height:100%;aspect-ratio:9/19.5;background:#000;border-radius:calc(var(--ph,800px) * 0.062);padding:10px;
     box-shadow:0 0 0 3px var(--case,#2a2d35),0 0 0 7px #0d0f14,0 34px 80px rgba(0,0,0,.8);
     position:relative;flex:0 0 auto}
-  .iphone .screen{width:100%;height:100%;border-radius:min(5.4vh,43px);overflow:hidden;position:relative;
+  .iphone .screen{width:100%;height:100%;border-radius:calc(var(--ph,800px) * 0.052);overflow:hidden;position:relative;
     background:#000;display:flex;flex-direction:column}
   .island{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:31%;height:3.3%;
     background:#000;border-radius:99px;z-index:40}
   .homebar{position:absolute;bottom:7px;left:50%;transform:translateX(-50%);width:34%;height:4px;border-radius:99px;z-index:40}
   .statusbar{flex:0 0 auto;display:flex;justify-content:space-between;align-items:flex-end;
     font-family:var(--sf);font-weight:600;z-index:30;background:var(--chrome,#f9f9f9);color:var(--chrometxt,#000)}
-  .iphone .statusbar{height:5.5%;padding:0 8.5% 3px;font-size:clamp(9px,1.5vh,18px)}
+  .iphone .statusbar{height:5.5%;padding:0 8.5% 3px;font-size:calc(var(--ph,800px) * 0.019)}
   /* dark full-screen registers (lock/home/call…): the wallpaper runs edge to edge
      and the status bar floats over it — like the real phone, no black band */
   .screen.edge .statusbar{position:absolute;top:0;left:0;right:0;height:5.5%}
@@ -552,7 +560,7 @@
   .app *{font-family:var(--sf)}
   /* Larger Text: the phone runs iOS Dynamic Type two steps up, so the whole
      screen reads from the house without any cropping */
-  .fs{font-size:clamp(11px,1.95vh,21px)}
+  .fs{font-size:calc(var(--ph,800px) * 0.024)}
   .mb-screen .fs{font-size:13.5px}
   .ipad .fs{font-size:clamp(10px,1.45vh,16px)}
   /* lock */
@@ -713,6 +721,7 @@
       <div class="nowrow"><span class="cid" id="nowId">—<span id="nowWho"></span></span>
         <span class="dev" id="nowDev"></span><span class="pov" id="nowPov"></span></div>
       <div class="what" id="nowWhat">Standing by for top of show.</div>
+      <div class="prog" id="nowProg"><i></i><span></span></div>
     </div>
     <div class="standby">
       <div class="sbTag"><span class="dot"></span><b id="sbLabel">NEXT GO</b><span class="kind" id="sbKind"></span></div>
@@ -808,13 +817,18 @@ const FALLBACK_SHOW = [
       {op:'stampline',t:'Today|9:41 AM'},{op:'type',pace:'hesitant',t:'I’m not sure that I can do this without you'},
       {op:'pause',ms:350},
       {op:'send'},{op:'rcpt',t:'Delivered'}]},
- {id:'1.4',kind:'lyric',trig:'“Give me a day, Jamie!” — the memories return, full screen',
-  what:'NON-DIEGETIC — she is not holding the phone. The frame drops away and the feed fills the whole screen, resting on the wedding card.',
-  do:[{op:'device',dev:'full',who:'cathy'},{op:'setapp',to:'memories'},{op:'memgo',i:1}]},
- {id:'1.5',kind:'lyric',trig:'“Jamie is over and where can I turn?” — the last verse',
-  what:'The feed drifts down to the oldest card — nine months in, the couch, the happiest one — enormous, to close the song.',
-  do:[{op:'memgo',i:3}]},
- {id:'1.6',kind:'music',trig:'FINAL CUTOFF — the last chord of Still Hurting',
+ {id:'1.4',kind:'lyric',trig:'“Give me a day, Jamie!” — Delivered turns to READ',
+  what:'Delivered → READ, 9:44. He is awake. He is holding his phone.',
+  hold:'Let the receipt sit alone for a full phrase.',
+  do:[{op:'clock',t:'9:44'},{op:'rcptswap',t:'Read 9:44 AM'}]},
+ {id:'1.5',kind:'lyric',trig:'“Hang them back on the wall!” — his typing bubble rises',
+  what:'His typing bubble rises. He is answering.',
+  do:[{op:'typing'}]},
+ {id:'1.6',kind:'lyric',trig:'“Had no chance at all.” — it stops',
+  what:'It stops. Nothing comes. He read it and put the phone down. The thread stays up through her last verse.',
+  hold:'The cruellest silence available in 2026.',
+  do:[{op:'untyping'}]},
+ {id:'1.7',kind:'music',trig:'FINAL CUTOFF — the last chord of Still Hurting',
   what:'Black on the cutoff. JUNE 2026 holds center-stage until his song rolls it back.',
   do:[{op:'black'}]},
 ]},
@@ -1483,8 +1497,7 @@ function lockHTML(st){
   const wsrc=assetFor(st.wall);   // per-cast wallpaper photo (M23/M24) when it exists
   return `<div class="layer lockL fs" style="background:${wsrc
       ?`#000 url(&quot;${wsrc}&quot;) center/cover no-repeat`
-      :`linear-gradient(160deg,${w1},${w2} 55%,${w3})`}">
-    ${wsrc?'':`<div class="wallnote">WALLPAPER — ${st.wall||'abstract gradient (no photo)'}</div>`}
+      :`radial-gradient(ellipse at 28% 18%, ${w2} 0%, transparent 52%), radial-gradient(ellipse at 78% 88%, ${w2} 0%, transparent 46%), linear-gradient(160deg,${w1},${w3} 60%,${w1})`}">
     <div style="padding-top:11.5%">
       <div class="lk-date">${lockDate(st.date)}</div>
       <div class="lk-time">${st.tm}</div>
@@ -2028,6 +2041,7 @@ function fmtMins(m){ m=Math.max(0,Math.round(m)); const h=Math.floor(m/60), r=m%
 function fmtClock(min){ min=Math.round(min); let h=Math.floor(min/60)%24, m=min%60; h=h%12||12; return h+':'+String(m).padStart(2,'0'); }
 function driveTick(){
   document.querySelectorAll('.mapsdrive').forEach(el=>{
+    if(!el.getClientRects().length) return;   // hidden stage (presenter view): nothing to measure
     const key=el.dataset.key, t0=DRIVE_T0[key]; if(!t0) return;
     const dur=(+el.dataset.dur||300)*1000, mins=+el.dataset.mins||220, miles=+el.dataset.miles||214, start=+el.dataset.start||965;
     const p=Math.min(1,(performance.now()-t0)/dur);
@@ -2329,7 +2343,7 @@ function deviceHTML(st,h){
   // identity lives on the rails/owner banner — the hardware reads as an iPhone:
   // neutral graphite case, so close-up window edges look like a real bezel
   const caseCol = '#3d4048';
-  return `<div class="${cls}" style="height:${h}px;--case:${caseCol};--chrome:${ch};--chrometxt:${ct}">${notch}
+  return `<div class="${cls}" style="height:${h}px;--ph:${h}px;--case:${caseCol};--chrome:${ch};--chrometxt:${ct}">${notch}
     <div class="screen${dark?' edge':''}"><div class="statusbar">${statusHTML(st)}</div>
     <div class="app" style="position:relative"><div class="screenstack">${screenHTML(st)}</div></div></div>
     <div class="homebar" style="background:${dark?'rgba(255,255,255,.85)':'rgba(0,0,0,.55)'}"></div></div>`;
@@ -2706,7 +2720,9 @@ async function playCue(cue, st, tok){
       if(canRoll){
         const A=new Date(prevDate), B=new Date(o.d);
         if(!isNaN(A)&&!isNaN(B)){
-          const steps=16, WD=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+          const months=Math.abs((B.getFullYear()-A.getFullYear())*12+(B.getMonth()-A.getMonth()));
+          const steps=Math.max(14, Math.min(40, 12+Math.round(months/2)));   // a month ~1.2 s, five years ~3 s
+          const WD=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
                 MO=['January','February','March','April','May','June','July','August','September','October','November','December'];
           const era=railOn?rr.querySelector('.rera'):null;
           for(let i=1;i<=steps;i++){
@@ -2721,7 +2737,7 @@ async function playCue(cue, st, tok){
             // forward or backward, then the stamp op names where we landed
             if(era) setEraText(era, MO[d.getMonth()]+' '+d.getFullYear());
             const pe=document.getElementById('prevEra'); if(pe) pe.textContent=MO[d.getMonth()].toUpperCase()+' '+d.getFullYear();
-            await wait(i<4?40:(i<12?70:130));   // accelerate, then brake into the new era
+            await wait(i<4?45:(i<steps-4?70:140));   // accelerate, cruise, brake into the new era
           }
         }
       }
@@ -3044,7 +3060,8 @@ function paintChrome(){
       : kind==='stage'?'GO WHEN YOU SEE THIS':'GO ON THIS LINE';
     $('trigLine').innerHTML=trigHTML(nxt.trig, kind);
     $('trigLine').parentElement.className='trigger '+kind;
-    $('nextWhat').innerHTML='<b>WHAT HAPPENS</b> &nbsp;'+escTxt(nxt.what);
+    const est=estDuration(nxt);
+    $('nextWhat').innerHTML='<b>WHAT HAPPENS</b> &nbsp;'+(est>2500?'<b style="color:var(--go)">AUTO ~'+Math.round(est/1000)+' s</b> &nbsp;':'')+escTxt(nxt.what);
     $('holdNote').style.display=nxt.hold?'block':'none';
     $('holdNote').textContent=nxt.hold||'';
     const after = ci+1<cues().length ? cues()[ci+1] : null;
@@ -3072,7 +3089,7 @@ function paintChrome(){
     $('thenLine').innerHTML='';
   }
   $('queue').innerHTML=cues().map((c,i)=>`<div class="qrow ${i===ci?'cur':''} ${i<ci?'done':''}">
-    <span class="qid">${c.id}</span><span class="qt">${c.what}</span></div>`).join('');
+    <span class="qid">${c.id}</span><span class="qt">${estDuration(c)>2500?'⏱ ':''}${c.what}</span></div>`).join('');
   const q=$('queue').querySelector('.cur'); if(q) q.scrollIntoView({block:'nearest'});
   $('barCue').textContent=ci; $('barTot').textContent=cues().length;
   $('barBlk').innerHTML = blk?'<span class="blk">● BLACKOUT</span>':'';
@@ -3090,6 +3107,58 @@ function hardRender(){          // no animation — scrub, resize, view swap, re
   paintChrome();
 }
 let animRunning=false;
+/* how long a cue plays on its own after GO — the presenter's progress bar */
+function estDuration(cue){
+  let t=0;
+  for(const o of cue.do){
+    switch(o.op){
+      case 'pause': t+=o.ms||800; break;
+      case 'device': t+=220; break;
+      case 'clock': t+=o.d?1800:0; break;
+      case 'notiftap': t+=980; break;
+      case 'unlock': t+=940; break;
+      case 'openapp': t+=1900; break;
+      case 'setapp': t+=150; break;
+      case 'tap': t+=340; break;
+      case 'push': t+=430; break;
+      case 'history': t+=200; break;
+      case 'stampline': t+=120; break;
+      case 'type': t+=340+(o.t||'').length*(o.pace==='hesitant'?80:o.pace==='angry'?34:52); break;
+      case 'send': t+=300; break;
+      case 'wipe': t+=260+((o.t||'').length||20)*16; break;
+      case 'rcpt': t+=700; break;
+      case 'sheet': t+=420; break;
+      case 'btnHover': t+=520; break;
+      case 'btnTap': t+=540; break;
+      case 'notifDismiss': t+=620; break;
+      case 'mem': t+=2600; break;
+      case 'post': t+=2300; break;
+      case 'them': t+=1000; break;
+      case 'me': t+=340; break;
+      case 'mailopen': t+=790; break;
+      case 'ftState': case 'callState': case 'findmy': case 'call': case 'facetime': case 'books': case 'mapsdrive': case 'like': t+=300; break;
+      default: break;
+    }
+  }
+  return t;
+}
+let playStart=0, playEst=0;
+setInterval(()=>{
+  const el=document.getElementById('nowProg'); if(!el) return;
+  const bar=el.firstElementChild, txt=el.lastElementChild;
+  if(!playStart){ el.classList.remove('on','done'); return; }
+  const gone=performance.now()-playStart;
+  if(animRunning){
+    const f=Math.min(.97, gone/Math.max(playEst,400));
+    el.classList.add('on'); el.classList.remove('done');
+    bar.style.width=(f*100).toFixed(1)+'%';
+    txt.textContent='PLAYING · '+(gone/1000).toFixed(1)+' s of ~'+(playEst/1000).toFixed(1)+' s';
+  } else {
+    el.classList.add('on','done'); bar.style.width='100%';
+    txt.textContent='SETTLED · '+(Math.min(gone,playEst>0?Math.max(gone,0):gone)/1000).toFixed(1)+' s';
+    if(gone>playEst+6000){ playStart=0; }
+  }
+},100);
 async function advance(){
   const cue=cues()[ci];
   const wasRunning=animRunning;
@@ -3106,7 +3175,7 @@ async function advance(){
   CUR = buildState(song(), ci);
   paintChrome();
 
-  animRunning=true;
+  animRunning=true; playStart=performance.now(); playEst=estDuration(cue);
   await playCue(cue, before, tok);   // animation drives the DOM only
   if(tok!==animTok) return;
   animRunning=false;
