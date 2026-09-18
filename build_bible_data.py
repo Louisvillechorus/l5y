@@ -102,8 +102,10 @@ def onscreen(o):
     if op=='ftMain': return [('main feed swaps → ', o.get('l',''))]
     if op=='wall': return [('WALLPAPER — ', o['t'])]
     if op=='sheet':
+        btns = ' · '.join(f"[{x}]" for x in o.get('opts',[]))
+        if o.get('danger'): btns += (' · ' if btns else '') + f"[{o['danger']}] (red)"
         return [('ACTION SHEET slides up over the app — ', f"“{o.get('title','')}”"),
-                ('  buttons: ', f"[{o.get('danger','')}] (red) · [{o.get('safe','Cancel')}]")]
+                ('  buttons: ', f"{btns} · [{o.get('safe','Cancel')}]")]
     if op=='sheetDismiss': return [('sheet slides away — ', 'nothing chosen')]
     if op=='btnHover': return [('FINGER RESTS ON ', f"[{o['b']}] — the button holds its pressed shade. Not pressing.")]
     if op=='btnTap': return [('PRESSES ', f"[{o['b']}]")]
@@ -113,7 +115,17 @@ def onscreen(o):
         if o.get('toggle'): out.append(('  toggle: ', f"{o['toggle']['l']} — {'ON' if o['toggle'].get('on') else 'OFF'}"))
         return out
     if op=='findmy':
+        if o.get('person'):
+            p=o['person']
+            return [('FIND MY — her card: ', f"{p.get('n','')} · {p.get('loc','')}" +
+                     (f" · Sharing My Location ✓ {p['sharing']} (green) · [Stop Sharing My Location] (red)" if p.get('sharing') else ' · [Share My Location] (blue)'))]
         return [('FIND MY — People: ', ' · '.join(f"{r['n']}: {r['s']}" for r in o.get('rows',[])))]
+    if op=='pause': return [('  … a beat (auto-timed, ', f"{o.get('ms',800)/1000:.1f} s)")]
+    if op=='intermission': return [('INTERMISSION CARD — ', 'the house sees “Intermission”; it holds until Act Two’s first GO')]
+    if op=='books': return [('BOOKS — his novel, open on her phone: ', f"“{o.get('page','')}” · {o.get('pos','')}")]
+    if op=='mapsdrive':
+        return [('MAPS — THE DRIVE (live, time-based from this GO): ', f"{o.get('dest','')} · arrival in {int(o.get('dur',300))//60} min of stage time"),
+                ('  compressed trip: ', f"{o.get('mins','')} min / {o.get('miles','')} mi · the puck rides the route, maneuvers count down, the phone clock runs with it")]
     if op=='calevent':
         out=[('CALENDAR EVENT — ', f"“{o.get('title','')}” · {o.get('when','')}" + (f" · {o['where']}" if o.get('where') else ''))]
         if o.get('invitees'): out.append(('  invitees: ', ' · '.join(f"{v['n']} {'✓' if v['st']=='accepted' else '✗' if v['st']=='declined' else v['st']}" for v in o['invitees'])))

@@ -23,11 +23,11 @@ const N=S.naming;
 
 const ext={photo:'jpg',video:'mp4',audio:'m4a'};
 const fname=(a,c)=>`S${String(a.song).padStart(2,'0')}-${a.code}-${a.slug}-${c}.${ext[a.kind]}`;
-const filesFor=a=>a.status==='derived'?'— (made from M7)':a.shared?fname(a,'SHARED'):`${fname(a,'ML')}\n${fname(a,'AC')}`;
+const filesFor=a=>a.status==='cut'?'— (nothing to upload)':a.status==='derived'?'— (made from M7)':a.shared?fname(a,'SHARED'):`${fname(a,'ML')}\n${fname(a,'AC')}`;
 const cell=(t,w,o={})=>new TableCell({width:{size:w,type:WidthType.PERCENTAGE},shading:o.fill?{type:ShadingType.CLEAR,fill:o.fill}:undefined,
   margins:{top:60,bottom:60,left:90,right:90},
   children:String(t).split('\n').map(line=>new Paragraph({children:[new TextRun({text:line,font:o.mono?MONO:BODY,size:o.size||15,bold:!!o.bold,color:o.color||INK})]}))});
-const groups=[['confirmed','SHOOT NOW — confirmed for the locked build','e8f0e4'],['derived','DERIVED — nothing to shoot','eef0f4'],['confirm','CONFIRM — waits on one Song 5 answer (party album)','faf3dc']];
+const groups=[['confirmed','SHOOT — every photo and video the locked build needs','e8f0e4'],['derived','DERIVED — nothing to shoot','eef0f4'],['confirm','CONFIRM — waiting on an answer','faf3dc'],['cut','CUT (Sept 18) — do NOT shoot','f4e4e4']];
 for(const [status,heading,fill] of groups){
   const rows=S.assets.filter(a=>a.status===status); if(!rows.length) continue;
   kids.push(new Paragraph({spacing:{before:320,after:100},children:[new TextRun({text:heading,font:BODY,size:26,bold:true,color:INK})]}));

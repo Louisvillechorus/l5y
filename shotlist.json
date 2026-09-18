@@ -1,10 +1,10 @@
 {
  "naming": {
-  "rule": "Every filename says WHERE it plays, WHAT it is, and WHICH CAST, in this order:  S<song>-<code>-<what>-<CAST>.<ext>   The cast tag is ML (Maegan & Landon), AC (Andrew & Charlie), or SHARED (one file serves both casts). The code (M1, M7b, V2…) is the part the system reads — never change it; the rest is for humans.",
+  "rule": "Every filename says WHERE it plays, WHAT it is, and WHICH CAST, in this order:  S<song>-<code>-<what>-<CAST>.<ext>   The cast tag is ML (Maegan & Landon), AC (Andrew & Charlie), or SHARED (one file serves both casts). The code (M2, M15, V2…) is the part the system reads — never change it; the rest is for humans.",
   "examples": [
-   "S03-M1-pier-golden-hour-ML.jpg",
-   "S03-M1-pier-golden-hour-AC.jpg",
-   "S05-M12-dedication-for-cathy-SHARED.jpg",
+   "S01-M4-wedding-portrait-ML.jpg",
+   "S01-M4-wedding-portrait-AC.jpg",
+   "S06-M23-christmas-wallpaper-SHARED.jpg",
    "S07-V2-facetime-jamie-desk-ML.mp4",
    "S07-V2-facetime-jamie-desk-AC.mp4"
   ],
@@ -23,7 +23,7 @@
    "shoot": "Jamie alone, candid, early-relationship feel (2021). It is HER wallpaper, so it is a photo she took of him: relaxed, looking near the camera, warm light. No text, nothing busy in the top third (the clock sits there). (A lock screen needs a wallpaper; this is the realism default. If you would rather she has a plain wallpaper, skip this one.)",
    "who": "Jamie only",
    "era": "September–October 2021",
-   "appears": "Song 1 — her lock screen, the first image of the show, behind everything she does that morning",
+   "appears": "Song 1 — her lock screen, the first image of the show; Song 10 and Song 14 — her lock screen again",
    "song": 1,
    "slug": "cathy-wallpaper-jamie"
   },
@@ -76,68 +76,12 @@
    "kind": "photo",
    "format": "4:5 portrait",
    "title": "The wedding portrait",
-   "shoot": "The two of them in wedding attire, classic portrait — the one they'd post. Attached to “married three weeks and 600 miles apart. worth it.”",
+   "shoot": "The two of them in wedding attire, classic portrait — the one they'd post. Attached to “married three weeks and 600 miles apart. worth it.” It is also the card the feed rests on, full screen, when the memories return late in Song 1.",
    "who": "Both",
    "era": "May 18, 2024",
-   "appears": "Song 1 prologue — Facebook Memory, 2 years ago",
+   "appears": "Song 1 prologue — Facebook Memory, 2 years ago; and full-screen when the memories return",
    "song": 1,
    "slug": "wedding-portrait"
-  },
-  {
-   "code": "M1",
-   "status": "confirmed",
-   "shared": false,
-   "kind": "photo",
-   "format": "4:3 landscape",
-   "title": "The pier, golden hour",
-   "shoot": "Jamie and Cathy on a pier by a river at golden hour — HER photo of his surprise visit (a selfie of the two, or set on a timer). This is her birthday post “look who made it to Ohio 🥰 best birthday present”.",
-   "who": "Both",
-   "era": "July 19, 2025 — Ohio, her birthday",
-   "appears": "Song 3 — the birthday post as she makes it (July 19, 2025)",
-   "song": 3,
-   "slug": "pier-golden-hour"
-  },
-  {
-   "code": "M7",
-   "status": "confirm",
-   "shared": false,
-   "kind": "photo",
-   "format": "4:3 landscape, wide enough to crop (see M7b)",
-   "title": "Publication party — Cathy at the frame's edge",
-   "shoot": "A party/group shot at Jamie's book party: Jamie centered and lit, people around him, CATHY AT THE FAR EDGE of the frame, half in, clearly croppable out. Shoot wide so a re-crop that removes her still looks like a good photo.",
-   "who": "Jamie centered, Cathy at the edge, others",
-   "era": "March 2025",
-   "appears": "Song 5 — “Publication party! Tagged: Jamie Wellerstein and guest”",
-   "song": 5,
-   "slug": "party-cathy-at-edge"
-  },
-  {
-   "code": "M7b",
-   "status": "confirm",
-   "shared": false,
-   "kind": "photo",
-   "format": "derived from M7 — DO NOT SHOOT",
-   "title": "The same photo, re-cropped — Cathy gone",
-   "shoot": "I produce this from M7 by cropping her out. Nothing to shoot; just make sure M7 has room to crop.",
-   "who": "—",
-   "era": "—",
-   "appears": "Song 5 — the fan-account repost",
-   "song": 5,
-   "slug": "party-recropped"
-  },
-  {
-   "code": "M12",
-   "status": "confirmed",
-   "shared": true,
-   "kind": "photo",
-   "format": "4:5 portrait, close",
-   "title": "The dedication page — “For Cathy”",
-   "shoot": "A photo of a real printed book page reading only “For Cathy” — a reader's snapshot, slightly angled, real paper texture. No people, so ONE file serves both casts.",
-   "who": "None (shared)",
-   "era": "—",
-   "appears": "Song 5 — a reader photographed the dedication page",
-   "song": 5,
-   "slug": "dedication-for-cathy"
   },
   {
    "code": "M23",
@@ -146,7 +90,7 @@
    "kind": "photo",
    "format": "PORTRAIT wallpaper (9:19.5)",
    "title": "Christmas tree lights — Jamie's lock-screen wallpaper",
-   "shoot": "Tree lights, bokeh, warm — no people needed, so ONE file serves both casts (unless you want the couple in it; then shoot per cast).",
+   "shoot": "Tree lights, bokeh, warm — no people needed, so ONE file serves both casts (unless you want the couple in it; then shoot per cast and name it ML / AC).",
    "who": "None (shared)",
    "era": "December 2022",
    "appears": "Song 6 — the whole song is this lock screen",
@@ -166,6 +110,48 @@
    "appears": "Song 7 — the whole song, between the ringing screen and Call Ended",
    "song": 7,
    "slug": "facetime-jamie-desk"
+  },
+  {
+   "code": "M1",
+   "status": "cut",
+   "shared": false,
+   "kind": "photo",
+   "format": "—",
+   "title": "The pier, golden hour (CUT Sept 18 — Song 3 has no phone for Cathy)",
+   "shoot": "Do not shoot. Song 3 is Jamie's calls only, by direction.",
+   "who": "—",
+   "era": "—",
+   "appears": "— (was Song 3's birthday post)",
+   "song": 3,
+   "slug": "pier-golden-hour"
+  },
+  {
+   "code": "M7",
+   "status": "cut",
+   "shared": false,
+   "kind": "photo",
+   "format": "—",
+   "title": "Publication party photo (CUT Sept 18 — Song 5 is the dedication only)",
+   "shoot": "Do not shoot. The party album is gone; Song 5 is one thing: the dedication page in Books.",
+   "who": "—",
+   "era": "—",
+   "appears": "— (was Song 5's party album, with its re-crop M7b)",
+   "song": 5,
+   "slug": "party-cathy-at-edge"
+  },
+  {
+   "code": "M12",
+   "status": "cut",
+   "shared": true,
+   "kind": "photo",
+   "format": "—",
+   "title": "Photo of the dedication page (CUT Sept 18 — rendered in Apple Books instead)",
+   "shoot": "Do not shoot. The engine renders the page in Books on her phone: “For Cathy.” No photo needed.",
+   "who": "—",
+   "era": "—",
+   "appears": "— (Song 5's dedication is drawn, not photographed)",
+   "song": 5,
+   "slug": "dedication-for-cathy"
   }
  ]
 }

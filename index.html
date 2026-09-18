@@ -102,12 +102,31 @@
   .house .ht{font-family:'Fraunces',serif;font-weight:300;font-size:clamp(28px,7vh,108px);
     letter-spacing:.16em;color:var(--paper);text-transform:uppercase;text-align:center;padding:0 4vw}
   .house .hs{font-family:'Courier Prime',monospace;font-weight:700;font-size:clamp(11px,1.7vh,21px);
-    letter-spacing:.5em;color:var(--dim);text-transform:uppercase}
+    letter-spacing:.5em;color:var(--dim);text-transform:uppercase;white-space:nowrap}
   /* ---- FULL-BLEED stage — non-diegetic beats: the phone frame drops away ---- */
   .fullstage{position:relative;width:100%;height:100%;overflow:hidden;background:#000;
     font-size:clamp(14px,3vh,34px)}
   .fullstage .screenstack{position:absolute;inset:0}
   .fullstage .memscreen{max-width:min(92%,96vh);margin:0 auto}
+
+  /* ---- MAPS DRIVE (Song 12): navigation chrome sized for 25 ft ---- */
+  .mapsdrive .dv-banner{margin:.5em .55em 0;background:#2e7d4f;border-radius:.8em;padding:.6em .8em;display:flex;gap:.7em;
+    align-items:center;position:relative;z-index:2;box-shadow:0 4px 14px rgba(0,0,0,.35)}
+  .mapsdrive .dv-ico{font-size:3em;line-height:1;flex:none;width:1.15em;text-align:center}
+  .mapsdrive .dv-dist{font-size:2.2em;font-weight:800;line-height:1.05}
+  .mapsdrive .dv-instr{font-size:1.32em;font-weight:600;line-height:1.18;margin-top:.14em}
+  .mapsdrive .dv-via{font-size:1em;opacity:.85;margin-top:.1em}
+  .mapsdrive .dv-map{flex:1;min-height:0;position:relative}
+  .mapsdrive .dv-svg{position:absolute;inset:0;width:100%;height:100%}
+  .mapsdrive .dv-sheet{background:#161b22;padding:.75em .9em .95em;display:flex;justify-content:space-between;align-items:center;
+    position:relative;z-index:2;border-top:1px solid #262c36}
+  .mapsdrive .dv-eta{font-size:2.3em;font-weight:800;line-height:1;color:#fff}
+  .mapsdrive .dv-eta span{font-size:.4em;font-weight:500;color:#9aa4b1;margin-left:.5em}
+  .mapsdrive .dv-stats{font-size:1.35em;color:#cfd6e0;margin-top:.3em}
+  .mapsdrive .dv-stats b{color:#fff;font-weight:700}
+  .mapsdrive .dv-dest-name{font-size:.95em;color:#9aa4b1;margin-top:.15em}
+  .mapsdrive .dv-end{background:#fb3b30;border-radius:1.4em;padding:.55em 1.2em;font-weight:700;font-size:1.25em}
+  .mapsdrive.arrived .dv-banner{background:#2f6fd6}
 
   /* ---- VERTICAL TV (portrait) — the phone IS the screen ---- */
   body.portrait #projection{padding:0 1vw 1vh}
@@ -132,9 +151,9 @@
   #rotNote.on{opacity:1}
 
   /* ================= PRESENTER ================= */
-  #presenter{position:fixed;inset:0 0 34px 0;display:none;grid-template-columns:1.15fr .85fr;gap:0}
+  #presenter{position:fixed;inset:0 0 34px 0;display:none;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:0}
   body.v-presenter #presenter{display:grid}
-  .pcol{min-height:0;display:flex;flex-direction:column}
+  .pcol{min-height:0;min-width:0;display:flex;flex-direction:column}
   .pleft{border-right:1px solid rgba(243,239,228,.12);background:#080b12}
   .phead{padding:10px 16px;border-bottom:1px solid rgba(243,239,228,.12);display:flex;align-items:baseline;gap:12px}
   .phead .song{font-family:'Fraunces',serif;font-size:17px}
@@ -150,45 +169,65 @@
     font-size:clamp(13px,1.5vw,26px);letter-spacing:.16em;color:var(--gold);text-transform:uppercase;
     opacity:0;transition:opacity .5s ease;min-height:1.3em;text-align:center}
   #prevStamp.on{opacity:1}
+  /* the crop, drawn on the preview: the audience sees only what is inside the gold lines */
+  .cropband{position:absolute;background:rgba(5,7,12,.8);pointer-events:none;z-index:5}
+  .cropband.t{border-bottom:2px solid var(--gold)}
+  .cropband.b{border-top:2px solid var(--gold)}
   .plabel{padding:7px 16px;border-top:1px solid rgba(243,239,228,.12);font-family:'Courier Prime',monospace;
     font-size:10.5px;letter-spacing:.16em;color:var(--dim);text-transform:uppercase;text-align:center}
 
   /* right column */
   .pright{background:#0a0e17}
-  .now{padding:14px 18px;border-bottom:1px solid rgba(243,239,228,.12)}
+  /* ON SCREEN NOW — one compact strip; the GO card below gets the room */
+  .now{padding:10px 18px 9px;border-bottom:1px solid rgba(243,239,228,.12);flex:0 0 auto}
   .now .tag{font-family:'Courier Prime',monospace;font-size:9.5px;letter-spacing:.24em;color:var(--dim);
-    text-transform:uppercase;margin-bottom:5px}
-  .now .cid{font-family:'Courier Prime',monospace;font-size:26px;font-weight:700;line-height:1}
-  .now .cid span{font-size:12px;font-weight:400;margin-left:9px;letter-spacing:.14em}
-  .now .what{font-size:13px;color:var(--paper);margin-top:7px;line-height:1.45}
-  .pov{display:inline-block;margin-left:8px;font-family:'Courier Prime',monospace;font-size:10px;
+    text-transform:uppercase;margin-bottom:4px}
+  .nowrow{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .now .cid{font-family:'Courier Prime',monospace;font-size:21px;font-weight:700;line-height:1}
+  .now .cid span{font-size:11px;font-weight:400;margin-left:8px;letter-spacing:.14em}
+  .now .what{font-size:12.5px;color:#b9bdc9;margin-top:5px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .pov{display:inline-block;font-family:'Courier Prime',monospace;font-size:10px;
     letter-spacing:.14em;border-radius:99px;padding:2px 10px;text-transform:uppercase}
   .pov.c{background:rgba(224,122,158,.18);color:var(--cathy);border:1px solid rgba(224,122,158,.5)}
   .pov.j{background:rgba(95,184,201,.18);color:var(--jamie);border:1px solid rgba(95,184,201,.5)}
   .pov.cut{background:rgba(233,199,102,.2);color:var(--gold);border:1px solid rgba(233,199,102,.6)}
   .now .dev{display:inline-block;font-family:'Courier Prime',monospace;font-size:10px;letter-spacing:.12em;
-    border:1px solid rgba(243,239,228,.3);border-radius:99px;padding:2px 9px;margin-top:8px;color:var(--dim)}
+    border:1px solid rgba(243,239,228,.3);border-radius:99px;padding:2px 9px;color:var(--dim)}
 
-  .standby{flex:1;min-height:0;display:flex;flex-direction:column;padding:14px 18px;overflow:hidden}
-  .sbTag{display:flex;align-items:center;gap:9px;margin-bottom:9px}
-  .sbTag .dot{width:9px;height:9px;border-radius:50%;background:var(--gold);
+  /* THE GO CARD — the one thing the operator reads from across the booth */
+  .standby{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;padding:16px 18px 10px;overflow:hidden}
+  .sbTag{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .sbTag .dot{width:12px;height:12px;border-radius:50%;background:var(--gold);flex:none;
     animation:pulse 1.5s ease-in-out infinite}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-  .sbTag b{font-family:'Courier Prime',monospace;font-size:11px;letter-spacing:.26em;color:var(--gold)}
-  .trigger{background:#121826;border-left:3px solid var(--gold);border-radius:0 8px 8px 0;
-    padding:12px 14px;margin-bottom:11px}
-  .trigger .lbl{font-family:'Courier Prime',monospace;font-size:9px;letter-spacing:.2em;color:var(--dim);
-    text-transform:uppercase;margin-bottom:5px}
-  .trigger .line{font-size:17px;line-height:1.4;color:#fff}
-  .trigger .line.stage{font-style:italic;color:#c9cdd8;font-size:14.5px}
-  .nextwhat{font-size:13px;color:var(--dim);line-height:1.45}
-  .nextwhat b{color:var(--paper)}
+  .sbTag b{font-family:'Courier Prime',monospace;font-size:15px;letter-spacing:.22em;color:var(--gold)}
+  .sbTag .kind{margin-left:auto;font-family:'Courier Prime',monospace;font-size:11px;letter-spacing:.16em;
+    padding:3px 11px;border-radius:99px;border:1px solid;text-transform:uppercase;white-space:nowrap}
+  .sbTag .kind.lyric{color:var(--gold);border-color:rgba(233,199,102,.6);background:rgba(233,199,102,.12)}
+  .sbTag .kind.music{color:var(--jamie);border-color:rgba(95,184,201,.6);background:rgba(95,184,201,.12)}
+  .sbTag .kind.stage{color:var(--cathy);border-color:rgba(224,122,158,.6);background:rgba(224,122,158,.12)}
+  .trigger{background:#131a2a;border:2px solid rgba(233,199,102,.5);border-left:9px solid var(--gold);border-radius:10px;
+    padding:13px 18px 16px;margin-bottom:12px;box-shadow:0 12px 40px rgba(0,0,0,.5)}
+  .trigger.music{border-color:rgba(95,184,201,.5);border-left-color:var(--jamie)}
+  .trigger.stage{border-color:rgba(224,122,158,.5);border-left-color:var(--cathy)}
+  .trigger .lbl{font-family:'Courier Prime',monospace;font-size:10.5px;letter-spacing:.24em;color:var(--dim);
+    text-transform:uppercase;margin-bottom:8px}
+  .trigger .line{font-family:'Archivo',sans-serif;font-size:clamp(22px,2.4vw,33px);line-height:1.22;color:#fff;font-weight:600}
+  .trigger .line q{quotes:none;color:var(--gold);font-family:'Fraunces',serif;font-weight:600}
+  .trigger .line q::before{content:'“'} .trigger .line q::after{content:'”'}
+  .trigger .line .ev{color:var(--jamie);font-family:'Courier Prime',monospace;letter-spacing:.05em;font-weight:700}
+  .trigger.stage .line .ev{color:var(--cathy)}
+  .trigger .line .rest{color:#d6d9e3;font-weight:400;font-size:.74em}
+  .nextwhat{font-size:14px;color:#c9cdd8;line-height:1.45}
+  .nextwhat b{color:var(--paper);font-family:'Courier Prime',monospace;font-size:11px;letter-spacing:.14em}
   .hold{margin-top:10px;background:rgba(233,199,102,.13);border:1px solid rgba(233,199,102,.4);
-    border-radius:7px;padding:8px 11px;font-size:12px;color:var(--gold)}
+    border-radius:7px;padding:8px 11px;font-size:12.5px;color:var(--gold)}
+  .then{margin-top:auto;padding-top:10px;border-top:1px dashed rgba(243,239,228,.14);font-size:12px;color:var(--dim);line-height:1.4;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .then b{color:#9aa0b3;font-family:'Courier Prime',monospace;letter-spacing:.1em}
 
-  .queue{border-top:1px solid rgba(243,239,228,.12);padding:9px 0 6px;max-height:34%;overflow:hidden}
-  .standby{flex:0 0 auto}
-  .qrow{display:flex;gap:10px;padding:5px 18px;font-size:11.5px;color:var(--dim);align-items:baseline}
+  .queue{border-top:1px solid rgba(243,239,228,.12);padding:8px 0 6px;max-height:27%;overflow:hidden;flex:0 0 auto}
+  .qrow{display:flex;gap:10px;padding:4px 18px;font-size:11.5px;color:var(--dim);align-items:baseline}
   .qrow .qid{font-family:'Courier Prime',monospace;font-size:11px;min-width:44px;color:var(--dim)}
   .qrow.cur{background:rgba(233,199,102,.1);color:var(--paper)}
   .qrow.cur .qid{color:var(--gold);font-weight:700}
@@ -246,7 +285,7 @@
   .homebar{position:absolute;bottom:7px;left:50%;transform:translateX(-50%);width:34%;height:4px;border-radius:99px;z-index:40}
   .statusbar{flex:0 0 auto;display:flex;justify-content:space-between;align-items:flex-end;
     font-family:var(--sf);font-weight:600;z-index:30;background:var(--chrome,#f9f9f9);color:var(--chrometxt,#000)}
-  .iphone .statusbar{height:5.5%;padding:0 8.5% 3px;font-size:clamp(8px,1.3vh,15px)}
+  .iphone .statusbar{height:5.5%;padding:0 8.5% 3px;font-size:clamp(9px,1.5vh,18px)}
   /* dark full-screen registers (lock/home/call…): the wallpaper runs edge to edge
      and the status bar floats over it — like the real phone, no black band */
   .screen.edge .statusbar{position:absolute;top:0;left:0;right:0;height:5.5%}
@@ -511,7 +550,9 @@
   /* ================= APP SKINS ================= */
   .app{flex:1;min-height:0;position:relative;display:flex;flex-direction:column;background:#fff;overflow:hidden}
   .app *{font-family:var(--sf)}
-  .fs{font-size:clamp(10px,1.6vh,17px)}
+  /* Larger Text: the phone runs iOS Dynamic Type two steps up, so the whole
+     screen reads from the house without any cropping */
+  .fs{font-size:clamp(11px,1.95vh,21px)}
   .mb-screen .fs{font-size:13.5px}
   .ipad .fs{font-size:clamp(10px,1.45vh,16px)}
   /* lock */
@@ -664,21 +705,22 @@
   <div class="pcol pleft">
     <div class="phead"><span class="song" id="pSong">—</span><span class="cnt" id="pCount"></span></div>
     <div id="preview"><div class="prevwrap"><div id="prevOwner"></div><div id="prevStamp"></div><div id="previewInner"></div></div></div>
-    <div class="plabel">what the audience sees right now</div>
+    <div class="plabel">what the audience sees right now — the whole phone, exactly as projected</div>
   </div>
   <div class="pcol pright">
     <div class="now">
       <div class="tag">on screen now</div>
-      <div class="cid" id="nowId">—<span id="nowWho"></span></div>
+      <div class="nowrow"><span class="cid" id="nowId">—<span id="nowWho"></span></span>
+        <span class="dev" id="nowDev"></span><span class="pov" id="nowPov"></span></div>
       <div class="what" id="nowWhat">Standing by for top of show.</div>
-      <div class="dev" id="nowDev"></div><span class="pov" id="nowPov"></span>
     </div>
     <div class="standby">
-      <div class="sbTag"><span class="dot"></span><b id="sbLabel">STANDBY — NEXT CUE</b></div>
+      <div class="sbTag"><span class="dot"></span><b id="sbLabel">NEXT GO</b><span class="kind" id="sbKind"></span></div>
       <div class="trigger"><div class="lbl" id="trigLbl">GO ON THIS LINE</div>
         <div class="line" id="trigLine">—</div></div>
       <div class="nextwhat" id="nextWhat"></div>
       <div class="hold" id="holdNote" style="display:none"></div>
+      <div class="then" id="thenLine"></div>
     </div>
     <div class="queue" id="queue"></div>
   </div>
@@ -712,41 +754,36 @@ const FALLBACK_SHOW = [
 
 /* ============ 1 · STILL HURTING — CATHY, her iPhone ============ */
 {n:1,t:'Still Hurting',who:'cathy',cues:[
- {id:'1.1',kind:'music',trig:'PROLOGUE — the wedding waltz begins. SHE is discovered on her phone.',
-  what:'Preshow card out. Her phone, lit, already in her hand. JUNE 2026, the morning after.',
+ {id:'1.1',kind:'music',trig:'PROLOGUE — the first note of the wedding waltz. SHE is discovered on her phone.',
+  what:'AUTO-PLAYS from this one GO (~25 s). Her phone, lit — JUNE 2026, the morning after. Facebook pushes a Memories notification; she gives in and taps it; four cards scroll up one at a time — 2025 Ohio (the card he is not in), 2024 the wedding, 2023 the ring, 2022 the couch. Nothing else to fire until the first bar.',
+  hold:'The card timings are the `pause` values in cues.js — stretch or tighten them to the waltz in tech.',
   do:[{op:'device',dev:'iphone',who:'cathy'},{op:'stamp',t:'JUNE 2026'},
       {op:'clock',t:'9:41',d:'Friday, June 12, 2026'},
-      {op:'wall',t:'M24 — cast photo of JAMIE — she never changed it'}]},
- {id:'1.2',kind:'music',trig:'Prologue, next phrase',
-  what:'FACEBOOK pushes a Memories notification. The algorithm has no idea.',
-  do:[{op:'notif',app:'Facebook',w:'now',title:'Memories',
-       t:'You have memories with Jamie Wellerstein to look back on today'}]},
- {id:'1.3',kind:'music',trig:'Prologue — she gives in',
-  what:'She taps it. Face ID, straight into ON THIS DAY — and the screen leans in close so the house reads every card.',
-  do:[{op:'notiftap',to:'memories'}]},
- {id:'1.4',kind:'music',trig:'Prologue — the first memory',
-  what:'2025 — one year ago: Ohio again, her second summer, day one — the card he is not in. Her first flick fails and the feed snaps back — she is not ready for this one — a long beat, then she drags it over herself.',
-  do:[{op:'mem',scroll:'reluctant',yr:'1 year ago · 2025',who:'Cathy Wellerstein',av:'C',col:'#c2447a',when:'June 12, 2025',
-       txt:'Ohio, round two. day one 🎭',media:'M2 — Ohio cast photo, day one — no Jamie',likes:31}]},
- {id:'1.5',kind:'music',trig:'Prologue — the second',
-  what:'2024 — the wedding portrait, three weeks married and already apart (she is in Ohio). Dragged into view slowly, thumb never leaving the glass.',
-  do:[{op:'mem',scroll:'drag',yr:'2 years ago · 2024',who:'Cathy Wellerstein',av:'C',col:'#c2447a',when:'June 12, 2024',
-       txt:'married three weeks and 600 miles apart. worth it.',media:'M4 — the wedding portrait',likes:402}]},
- {id:'1.6',kind:'music',trig:'Prologue — the third',
-  what:'2023 — the proposal (June 12, 2023: the rowboat, the day The Next Ten Minutes returns to). Her scroll stalls halfway with the card half-revealed — a beat of not being ready — then commits.',
-  do:[{op:'mem',scroll:'peek',yr:'3 years ago · 2023',who:'Cathy Wellerstein',av:'C',col:'#c2447a',when:'June 12, 2023',
-       txt:'he asked. I said yes before he finished 💍',media:'M3a — the ring, the rowboat',likes:341}]},
- {id:'1.7',kind:'music',trig:'Prologue rolls into the INTRO of Still Hurting',
-  what:'2022 — four years ago, the oldest card: nine months in, the first apartment, the couch. The happiest one, last.',
-  hold:'Four years in four cards, all before she sings a word. Let this one sit.',
-  do:[{op:'mem',scroll:'flick',yr:'4 years ago · 2022',who:'Cathy Wellerstein',av:'C',col:'#c2447a',when:'June 12, 2022',
+      {op:'wall',t:'M24 — cast photo of JAMIE — she never changed it'},
+      {op:'pause',ms:2600},
+      {op:'notif',app:'Facebook',w:'now',title:'Memories',
+       t:'You have memories with Jamie Wellerstein to look back on today'},
+      {op:'pause',ms:2200},
+      {op:'notiftap',to:'memories'},
+      {op:'pause',ms:400},
+      {op:'mem',scroll:'reluctant',yr:'1 year ago · 2025',who:'Cathy Wellerstein',av:'C',col:'#c2447a',when:'June 12, 2025',
+       txt:'Ohio, round two. day one 🎭',media:'M2 — Ohio cast photo, day one — no Jamie',likes:31},
+      {op:'pause',ms:2400},
+      {op:'mem',scroll:'drag',yr:'2 years ago · 2024',who:'Cathy Wellerstein',av:'C',col:'#c2447a',when:'June 12, 2024',
+       txt:'married three weeks and 600 miles apart. worth it.',media:'M4 — the wedding portrait',likes:402},
+      {op:'pause',ms:2400},
+      {op:'mem',scroll:'peek',yr:'3 years ago · 2023',who:'Cathy Wellerstein',av:'C',col:'#c2447a',when:'June 12, 2023',
+       txt:'he asked. I said yes before he finished 💍',media:'M3a — the ring, the rowboat',likes:341},
+      {op:'pause',ms:2400},
+      {op:'mem',scroll:'flick',yr:'4 years ago · 2022',who:'Cathy Wellerstein',av:'C',col:'#c2447a',when:'June 12, 2022',
        txt:'nine months in and our apartment has a name. it is called The Couch.',media:'M15 — the hideous couch',likes:88}]},
- {id:'1.8',kind:'music',trig:'FIRST BAR of Still Hurting',
-  what:'She puts the phone down. The song is hers — screen to black.',
+ {id:'1.2',kind:'music',trig:'FIRST BAR OF STILL HURTING — the downbeat, before she sings',
+  what:'She puts the phone down. Black — JUNE 2026 holds center-stage while she sings.',
   do:[{op:'black'}]},
- {id:'1.9',kind:'music',trig:'INTERLUDE, m. 58 — after “Like it’s simple, like it’s right.” She picks the phone back up.',
-  what:'Unlock. Messages. Everyone already knows — the whole list is condolences.',
-  do:[{op:'device',dev:'iphone',who:'cathy'},{op:'setapp',to:'lock'},{op:'unlock'},{op:'openapp',icon:'Messages',to:'msglist'},
+ {id:'1.3',kind:'music',trig:'INTERLUDE (m. 58) — the bar after “…like it’s right”. She picks the phone back up.',
+  what:'AUTO-PLAYS from this GO (~12 s). Unlock, Messages — the whole list is condolences — his thread, mid-history: days of her asking, all Delivered, all silent. She types it live, hesitant, and SENDS. Delivered.',
+  hold:'Nothing to fire until her next sung line. If the interlude runs long, the Delivered sits — let it.',
+  do:[{op:'device',dev:'iphone',who:'cathy'},{op:'unlock'},{op:'openapp',icon:'Messages',to:'msglist'},
       {op:'msgrows',rows:[
         {n:'Mom ❤️',p:'call me when you’re up. I love you.',w:'8:02 AM',av:'#e0783f',i:'M',un:true},
         {n:'Dana + girls 🍸',p:'Dana: we’re coming over at 7. non-negotiable.',w:'7:41 AM',av:'#b45ac9',i:'D',un:true},
@@ -757,59 +794,41 @@ const FALLBACK_SHOW = [
         {n:'Michael (voice)',p:'no lesson this week — I’m out of town',w:'Tuesday',av:'#3f9ea0',i:'M'},
         {n:'Ohio Housing',p:'Re: summer sublet — deposit received',w:'Monday',av:'#5aa86b',i:'O'},
         {n:'CVS Pharmacy',p:'Your prescription is ready for pickup',w:'Monday',av:'#d0454c',i:'C'},
-        {n:'Dentist — Dr. Okafor',p:'Reminder: cleaning Jun 22, 2:30 PM',w:'Sunday',av:'#7a8699',i:'D'}]}]},
- {id:'1.10',kind:'music',trig:'Interlude — she opens his thread',
-  what:'His name, then the thread — mid-history, cold logistics from May going colder, days of her asking, all Delivered, all silent. Close-up on the conversation.',
-  do:[{op:'hover',row:'Jamie'},{op:'tap'},{op:'push',to:'thread',contact:'Jamie',sub:'mobile'},
-      {op:'frame',z:2.2,at:'bottom'},
+        {n:'Dentist — Dr. Okafor',p:'Reminder: cleaning Jun 22, 2:30 PM',w:'Sunday',av:'#7a8699',i:'D'}]},
+      {op:'pause',ms:700},
+      {op:'hover',row:'Jamie'},{op:'tap'},{op:'push',to:'thread',contact:'Jamie',sub:'mobile'},
       {op:'history',items:[
         {k:'stamp',t:'May 12|6:40 PM'},{k:'me',t:'your mail is piling up here'},
         {k:'them',t:'I’ll come by this week'},{k:'me',t:'ok'},
         {k:'stamp',t:'May 30|9:12 PM'},{k:'me',t:'the super needs to know about the lease by the 15th'},
         {k:'stamp',t:'Monday|11:02 PM'},{k:'me',t:'are you coming home this weekend?'},
         {k:'stamp',t:'Wednesday|8:15 AM'},{k:'me',t:'please just call me'},
-        {k:'stamp',t:'Wednesday|9:30 PM'},{k:'me',t:'I’m not angry. just talk to me'},{k:'rcpt',t:'Delivered'}]}]},
- {id:'1.11',kind:'music',trig:'Interlude — she types it live',
-  what:'PRESENT — 9:41 this morning. Typed in real time, hesitant.',
-  do:[{op:'stampline',t:'Today|9:41 AM'},{op:'type',pace:'hesitant',t:'I’m not sure that I can do this without you'}]},
- {id:'1.12',kind:'music',trig:'Interlude — SHE SENDS IT',
-  what:'Send. Delivered.',
-  do:[{op:'send'},{op:'rcpt',t:'Delivered'}]},
- {id:'1.13',kind:'lyric',trig:'What about lies, Jamie?',
-  what:'Delivered → READ, 9:44. He is awake. He is holding his phone.',
-  hold:'Let the receipt sit alone for a full phrase.',
-  do:[{op:'clock',t:'9:44'},{op:'rcptswap',t:'Read 9:44 AM'}]},
- {id:'1.14',kind:'lyric',trig:'What about you, Jamie? — on the soft bloom',
-  what:'His typing bubble rises. He is answering.',
-  do:[{op:'typing'}]},
- {id:'1.15',kind:'lyric',trig:'What about you?',
-  what:'It stops. Nothing comes. He read it and put the phone down.',
-  hold:'The cruellest silence available in 2026.',
-  do:[{op:'untyping'}]},
- {id:'1.16',kind:'music',trig:'She locks the phone',
-  what:'She puts it down. Black.',
-  do:[{op:'black'}]},
- {id:'1.17',kind:'lyric',trig:'“Give me a day, Jamie!” — the memories return, full screen',
-  what:'NON-DIEGETIC — she is not holding the phone. The frame drops away and the feed fills the whole screen, resting on the wedding.',
+        {k:'stamp',t:'Wednesday|9:30 PM'},{k:'me',t:'I’m not angry. just talk to me'},{k:'rcpt',t:'Delivered'}]},
+      {op:'pause',ms:600},
+      {op:'stampline',t:'Today|9:41 AM'},{op:'type',pace:'hesitant',t:'I’m not sure that I can do this without you'},
+      {op:'pause',ms:350},
+      {op:'send'},{op:'rcpt',t:'Delivered'}]},
+ {id:'1.4',kind:'lyric',trig:'“Give me a day, Jamie!” — the memories return, full screen',
+  what:'NON-DIEGETIC — she is not holding the phone. The frame drops away and the feed fills the whole screen, resting on the wedding card.',
   do:[{op:'device',dev:'full',who:'cathy'},{op:'setapp',to:'memories'},{op:'memgo',i:1}]},
- {id:'1.18',kind:'lyric',trig:'“Bring back the lies” — back to the beginning',
-  what:'The feed drifts down to the oldest card — nine months in, the happiest one, enormous, to close the song.',
+ {id:'1.5',kind:'lyric',trig:'“Jamie is over and where can I turn?” — the last verse',
+  what:'The feed drifts down to the oldest card — nine months in, the couch, the happiest one — enormous, to close the song.',
   do:[{op:'memgo',i:3}]},
- {id:'1.19',kind:'music',trig:'FINAL CUTOFF',
-  what:'HARD BLACK on the cutoff.',
+ {id:'1.6',kind:'music',trig:'FINAL CUTOFF — the last chord of Still Hurting',
+  what:'Black on the cutoff. JUNE 2026 holds center-stage until his song rolls it back.',
   do:[{op:'black'}]},
 ]},
 
 /* ============ 2 · SHIKSA GODDESS — JAMIE, his iPhone ============ */
 {n:2,t:'Shiksa Goddess',who:'jamie',cues:[
- {id:'2.1',kind:'music',trig:'Segue chord out of her blackout',
-  what:'His phone, September 2021, 11:38 PM. Locked. Walking home — three unread on the lock screen, her number on top.',
-  do:[{op:'device',dev:'iphone',who:'jamie'},{op:'stamp',t:'SEPTEMBER 2021'},
-      {op:'clock',t:'11:38',d:'Friday, September 3, 2021'},
+ {id:'2.1',kind:'music',trig:'TOP OF SHIKSA GODDESS — the first chord, as he enters',
+  what:'HIS phone — time rolls BACK five years, JUNE 2026 → SEPTEMBER 2021. Locked, walking home: three unread on the lock screen, her number on top.',
+  do:[{op:'device',dev:'iphone',who:'jamie'},
+      {op:'clock',t:'11:38',d:'Friday, September 3, 2021'},{op:'stamp',t:'SEPTEMBER 2021'},
       {op:'notif',app:'Messages',w:'3h ago',title:'Mom ❤️',t:'dinner sunday. no excuses.'},
       {op:'notif',app:'Messages',w:'1h ago',title:'Rob',t:'well??? how’d it go'},
       {op:'notif',app:'Messages',w:'56m ago',title:'+1 (917) 555-0148',t:'it’s cathy 😊 — from tonight'}]},
- {id:'2.2',kind:'lyric',trig:'I’m breaking my mother’s heart — THE SECOND TIME',
+ {id:'2.2',kind:'lyric',trig:'“I’m breaking my mother’s heart” — THE SECOND TIME',
   what:'The phone comes out. Unlock, straight to Messages — her number sits on top, one hour old.',
   do:[{op:'unlock'},{op:'openapp',icon:'Messages',to:'msglist'},
       {op:'msgrows',rows:[
@@ -821,572 +840,314 @@ const FALLBACK_SHOW = [
         {n:'H. Greenblatt',p:'ok. good luck with the book I guess',w:'Monday',av:'#5aa86b',i:'H'},
         {n:'S. Rosen',p:'I’ll call you this week',w:'2 wks ago',av:'#b45ac9',i:'S'},
         {n:'Columbia workshop',p:'Adam: notes attached for Thursday',w:'2 wks ago',av:'#7a8699',i:'C'}]}]},
- {id:'2.3',kind:'lyric',trig:'Before “…my grandfather’s rolling in his grave” — the first draft',
+ {id:'2.3',kind:'lyric',trig:'“The JCC of Spring Valley…” — the first draft',
   what:'Her thread — one message in it: her number. He types a long, overwrought draft in full.',
-  do:[{op:'hover',row:'Cathy Hiatt'},{op:'tap'},{op:'push',to:'thread',contact:'Cathy Hiatt',sub:'new contact'},
+  do:[{op:'hover',row:'+1 (917) 555-0148'},{op:'tap'},{op:'push',to:'thread',contact:'+1 (917) 555-0148',sub:'not in contacts'},
       {op:'history',items:[{k:'stamp',t:'Today|10:42 PM'},{k:'them',t:'it’s cathy 😊 — from tonight'}]},
       {op:'clock',t:'11:39'},{op:'type',pace:'hesitant',t:'Tonight was maybe the best night of my whole life'}]},
- {id:'2.4',kind:'lyric',trig:'Still before the grandfather line — deleted; a bolder one',
+ {id:'2.4',kind:'lyric',trig:'“…and crumbling to the ground” — deleted; a bolder one',
   what:'Backspaces every character, then tries again, bolder.',
   do:[{op:'wipe'},{op:'type',t:'So when can I see you again. Tomorrow?'}]},
- {id:'2.5',kind:'lyric',trig:'…and that one goes too',
-  what:'Deleted. 11:41. Failing to write a text on a sidewalk.',
-  do:[{op:'wipe'},{op:'clock',t:'11:41'}]},
- {id:'2.6',kind:'stage',trig:'He pockets the phone',
-  what:'Black while he sings.',
-  do:[{op:'black'}]},
- {id:'2.7',kind:'lyric',trig:'“I’ve been standing for days with the phone in my hand” — it comes back out',
+ {id:'2.5',kind:'lyric',trig:'“And my grandfather’s rolling…” — that one goes too; phone away',
+  what:'Deleted — failing to write a text on a sidewalk. He pockets the phone: black, SEPTEMBER 2021 holds center while he sings.',
+  do:[{op:'wipe'},{op:'clock',t:'11:41'},{op:'pause',ms:700},{op:'black'}]},
+ {id:'2.6',kind:'lyric',trig:'“…with the phone in my hand” — it comes back out',
   what:'The thread again. 11:47.',
-  do:[{op:'device',dev:'iphone',who:'jamie'},{op:'setapp',to:'thread',contact:'Cathy Hiatt',sub:'new contact'},
+  do:[{op:'device',dev:'iphone',who:'jamie'},{op:'setapp',to:'thread',contact:'+1 (917) 555-0148',sub:'not in contacts'},
       {op:'history',items:[{k:'stamp',t:'Today|10:42 PM'},{k:'them',t:'it’s cathy 😊 — from tonight'}]},
       {op:'clock',t:'11:47'}]},
- {id:'2.8',kind:'lyric',trig:'“Like an idiot, scared to death” — he finally sends it',
-  what:'Two words: “home safe?” — typed and SENT. The finale receives this exact text at 11:58.',
+ {id:'2.7',kind:'lyric',trig:'“Like an idiot, scared to death” — he finally sends it',
+  what:'Two words: “home safe?” — typed and SENT. The finale receives this exact text at 11:48.',
   do:[{op:'clock',t:'11:48'},{op:'stampline',t:'|11:48 PM'},{op:'type',t:'home safe?'},
       {op:'send'},{op:'rcpt',t:'Delivered'}]},
- {id:'2.9',kind:'music',trig:'Under the vamp',
+ {id:'2.8',kind:'lyric',trig:'“I’ve been wand’ring through the desert!” — her typing bubble',
   what:'Her typing bubble appears — and stays up.',
   do:[{op:'typing'}]},
- {id:'2.10',kind:'lyric',trig:'“And if you had a pierced tongue” — he is ON THE PHONE with Cathy',
-  what:'The bubble never resolves as a text — she called instead. Connected call, her name on his screen.',
-  do:[{op:'call',n:'Cathy Hiatt',st:'incoming call',dir:'in'},{op:'callState',st:'connected · 00:14'}]},
- {id:'2.11',kind:'stage',trig:'Call ends — phone away just before “breaking the circle”',
-  what:'Black, and it does not come back out. Nothing else until See I’m Smiling.',
+ {id:'2.9',kind:'lyric',trig:'“If you had a pierced tongue” — he is ON THE PHONE with Cathy',
+  what:'The bubble never resolves as a text — she called instead. Connected call, her number on his screen; the timer ticks.',
+  do:[{op:'call',n:'+1 (917) 555-0148',st:'incoming call',dir:'in'},{op:'callState',st:'connected · 00:14'}]},
+ {id:'2.10',kind:'lyric',trig:'“…waiting for someone like—” (cut off) — HE HANGS UP; phone away',
+  what:'Call Ended, then black — SEPTEMBER 2021 holds center. Nothing else until See I’m Smiling.',
   do:[{op:'black'}]},
 ]},
 
-/* ============ 3 · SEE I’M SMILING — CATHY & JAMIE (calls disrupt time) ============ */
+/* ============ 3 · SEE I’M SMILING — CATHY & JAMIE (his calls disrupt her time) ============ */
 {n:3,t:'See I’m Smiling',who:'both',cues:[
- {id:'3.1',kind:'music',trig:'Scene change — her phone rolls back to July 19, 2025',
-  what:'Ohio, her birthday. Facebook opens on the post she just made — the pier photo.',
-  do:[{op:'device',dev:'iphone',who:'cathy'},{op:'sig',v:2},{op:'stamp',t:'JULY 2025 · OHIO'},
-      {op:'clock',t:'6:12',d:'Saturday, July 19, 2025'},
-      {op:'unlock'},{op:'openapp',icon:'Facebook',to:'fbpost'},
-      {op:'post',who:'Cathy Wellerstein',av:'C',col:'#c2447a',when:'just now · Ohio',
-       txt:'look who made it to Ohio 🥰 best birthday present',
-       media:'M1 — cast photo: the pier, golden hour',likes:3}]},
- {id:'3.2',kind:'music',trig:'A beat later',
-  what:'The likes climb.',
-  do:[{op:'like',to:47}]},
- {id:'3.3',kind:'stage',trig:'She puts the phone away',
-  what:'Black — the screens stay out of the song until the calls.',
-  do:[{op:'black'}]},
- {id:'3.4',kind:'lyric',trig:'“And you’re mine… We’re doing fine.” — JAMIE DIALS. Time snaps back.',
-  what:'HIS phone, 2021 — a cold call to the agency, via Dr. Adler. She is not his agent yet; he saved the office number from Adler’s text as “Ms. Whitfield (office)”. (Script fact: Whitfield is his literary agent at her own agency; Elise is the editor at Random House.)',
-  do:[{op:'device',dev:'iphone',who:'jamie'},{op:'stamp',t:'SEPTEMBER 2021'},
-      {op:'clock',t:'2:41',d:'Tuesday, September 7, 2021'},
+ {id:'3.1',kind:'music',trig:'TOP OF SEE I’M SMILING — the first chord (the pier)',
+  what:'No phone for her, by direction. Time rolls FORWARD center-stage — SEPTEMBER 2021 → JULY 2025, her birthday in Ohio — and holds while she sings.',
+  do:[{op:'black'},{op:'clock',t:'6:12',d:'Saturday, July 19, 2025'},{op:'stamp',t:'JULY 2025 · OHIO'}]},
+ {id:'3.2',kind:'lyric',trig:'“And you’re mine… We’re doing fine.” — JAMIE DIALS. Time snaps back.',
+  what:'HIS phone, 2021 — a cold call to the agent, via Dr. Adler. He saved the office number from Adler’s text as “Ms. Whitfield (office)”. Time rolls BACK to SEPTEMBER 2021.',
+  do:[{op:'device',dev:'iphone',who:'jamie'},
+      {op:'clock',t:'2:41',d:'Tuesday, September 7, 2021'},{op:'stamp',t:'SEPTEMBER 2021'},
       {op:'call',n:'Ms. Whitfield (office)',st:'calling…',dir:'out'}]},
- {id:'3.5',kind:'stage',trig:'On his “Hi — I’m calling for Miss Whitfield”',
-  what:'It connects. The conversation runs.',
+ {id:'3.3',kind:'stage',trig:'JAMIE: “Hi, I’m calling for Ms. Whitfield” — it connects',
+  what:'Connected — the timer ticks while the conversation runs.',
   do:[{op:'callState',st:'connected · 00:08'}]},
- {id:'3.6',kind:'stage',trig:'Through “what’s your address” — he hangs up',
-  what:'The phone goes; the timeline takes the stage and ROLLS HOME — 2021 spins forward to her July 2025, big and center.',
+ {id:'3.4',kind:'stage',trig:'JAMIE: “What’s your address?” — his last words; he hangs up',
+  what:'Call Ended; the phone goes. Time ROLLS FORWARD home, center-stage — SEPTEMBER 2021 → JULY 2025.',
   do:[{op:'black'},{op:'clock',t:'6:31',d:'Saturday, July 19, 2025'},{op:'stamp',t:'JULY 2025 · OHIO'}]},
- {id:'3.7',kind:'lyric',trig:'“It’s all right — We’ll have tonight.” — the agency calls HIM back',
-  what:'HIS phone again, 2021 — a couple of weeks later (script): an INCOMING call from Ms. Whitfield.',
-  do:[{op:'device',dev:'iphone',who:'jamie'},{op:'stamp',t:'SEPTEMBER 2021'},
-      {op:'clock',t:'4:18',d:'Tuesday, September 21, 2021'},
+ {id:'3.5',kind:'lyric',trig:'“It’s all right — We’ll have tonight.” — the agent calls HIM back',
+  what:'HIS phone again, 2021 — two weeks later (script): an INCOMING call from Ms. Whitfield. Time rolls BACK.',
+  do:[{op:'device',dev:'iphone',who:'jamie'},
+      {op:'clock',t:'4:18',d:'Tuesday, September 21, 2021'},{op:'stamp',t:'SEPTEMBER 2021'},
       {op:'call',n:'Ms. Whitfield (office)',st:'incoming call',dir:'in'}]},
- {id:'3.8',kind:'stage',trig:'“Hello… this is— oh, Miss Whitfield.” He answers',
+ {id:'3.6',kind:'stage',trig:'JAMIE: “Hello? This is… Oh, Ms. Whitfield” — he answers',
   what:'Connected. It runs until the thank-you.',
   do:[{op:'callState',st:'connected · 00:21'}]},
- {id:'3.9',kind:'stage',trig:'Through “thank you — this is great” — it ends',
-  what:'Again: the call goes, the centered timeline rolls forward to her evening.',
+ {id:'3.7',kind:'stage',trig:'JAMIE: “Thank you, this is great.” — it ends',
+  what:'Again: Call Ended, the phone goes, the centered timeline rolls FORWARD to her evening.',
   do:[{op:'black'},{op:'clock',t:'6:47',d:'Saturday, July 19, 2025'},{op:'stamp',t:'JULY 2025 · OHIO'}]},
- {id:'3.10',kind:'lyric',trig:'After Cathy’s “And not do anything at all” — JAMIE DIALS ROB',
-  what:'SCRIPT: he dials — “perplexed but not unhappy.” The lease is up; an apartment WITH Cathy. 2021, pre-move-in — the era question answers itself.',
-  do:[{op:'device',dev:'iphone',who:'jamie'},{op:'stamp',t:'SEPTEMBER 2021'},
-      {op:'clock',t:'8:02',d:'Thursday, September 30, 2021'},
+ {id:'3.8',kind:'lyric',trig:'“And not do anything at all…” — JAMIE DIALS ROB',
+  what:'SCRIPT: he dials — “perplexed but not unhappy.” The lease is up; an apartment WITH Cathy. 2021, pre-move-in. Time rolls BACK.',
+  do:[{op:'device',dev:'iphone',who:'jamie'},
+      {op:'clock',t:'8:02',d:'Thursday, September 30, 2021'},{op:'stamp',t:'SEPTEMBER 2021'},
       {op:'call',n:'Rob',st:'calling mobile…',dir:'out'}]},
- {id:'3.11',kind:'stage',trig:'Rob picks up — “Yeah, listen. You know how my lease is up?”',
+ {id:'3.9',kind:'stage',trig:'JAMIE: “Rob? Yeah, listen.” — Rob picks up',
   what:'Connected — visible through the very end of the vamp.',
   do:[{op:'callState',st:'connected · 01:02'}]},
- {id:'3.12',kind:'music',trig:'DOWNBEAT of Moving Too Fast — he hangs up',
-  what:'The Rob call goes on the downbeat; time rolls one month forward into Moving Too Fast — OCTOBER 2021, center-stage — and his phone comes up on the next cue.',
+ {id:'3.10',kind:'music',trig:'DOWNBEAT OF MOVING TOO FAST — he hangs up',
+  what:'Call Ended on the downbeat; time rolls one month FORWARD into Moving Too Fast — OCTOBER 2021, center-stage.',
   do:[{op:'black'},{op:'clock',t:'2:14',d:'Friday, October 8, 2021'},{op:'stamp',t:'OCTOBER 2021'}]},
 ]},
 
 /* ============ 4 · MOVING TOO FAST — JAMIE (with Cathy’s gig call) ============ */
 {n:4,t:'Moving Too Fast',who:'both',cues:[
- {id:'4.1',kind:'music',trig:'DRUMS IN — right after the downbeat, his phone comes up',
-  what:'His phone, October 2021. Locked and quiet.',
-  do:[{op:'device',dev:'iphone',who:'jamie'},{op:'stamp',t:'OCTOBER 2021'},
-      {op:'clock',t:'2:14',d:'Friday, October 8, 2021'}]},
- {id:'4.2',kind:'lyric',trig:'“But oh, oh — what else am I s’pposed to do?” — CATHY DIALS',
-  what:'HER phone — MAY 2025, pinned by David (her backward line: between the pier and the party). Time ROLLS FORWARD from his October 2021 as she cuts in. Dialing Mike Stelmyer. Script fact: his agency is never named.',
+ {id:'4.1',kind:'lyric',trig:'“But oh, oh — what else am I s’pposed to do?” — CATHY DIALS',
+  what:'HER phone — MAY 2025 (pinned by David: her backward line, between the pier and the party). Time ROLLS FORWARD from his October 2021 as she cuts in. Dialing Mike Stelmyer; his agency is never named (script).',
   do:[{op:'device',dev:'iphone',who:'cathy'},
       {op:'clock',t:'10:10',d:'Friday, May 9, 2025'},{op:'stamp',t:'MAY 2025'},
       {op:'call',n:'Mike Stelmyer',st:'calling…',dir:'out'}]},
- {id:'4.3',kind:'lyric',trig:'END of “what else am I s’pposed to do?” — it connects; she speaks next',
-  what:'We see the dial AND the connect.',
+ {id:'4.2',kind:'lyric',trig:'END OF “…what else am I s’pposed to do?” — it connects; she speaks next',
+  what:'We see the dial AND the connect; the timer ticks under her call.',
   do:[{op:'callState',st:'connected · 00:15'}]},
- {id:'4.4',kind:'lyric',trig:'“I’ll call you soon!” — the call ends',
-  what:'Back to HIS phone — time ROLLS BACK May 2025 → October 2021, locked, ready for the run of wins.',
+ {id:'4.3',kind:'stage',trig:'CATHY: “I’ll call you soon!” — the call ends; back to HIS phone',
+  what:'Call Ended; time ROLLS BACK, May 2025 → October 2021 — his phone, locked, ready for the run of wins.',
   do:[{op:'device',dev:'iphone',who:'jamie'},
       {op:'clock',t:'2:14',d:'Friday, October 8, 2021'},{op:'stamp',t:'OCTOBER 2021'}]},
- {id:'4.5',kind:'lyric',trig:'“Found an apartment on Seventy-Third!”',
+ {id:'4.4',kind:'lyric',trig:'“Found an apartment on Seventy-Third!”',
   what:'Move-in day pops up, both names on the day.',
   do:[{op:'notif',app:'Calendar',w:'now',title:'MOVE-IN DAY 🚚 — W 73rd St',
        t:'Saturday, Oct 16 · 9:00 AM · with Cathy Hiatt'}]},
- {id:'4.6',kind:'lyric',trig:'“The Atlantic Monthly’s printing my first chapter”',
+ {id:'4.5',kind:'lyric',trig:'“The Atlantic Monthly’s printing my first chapter”',
   what:'The Atlantic says yes.',
   do:[{op:'notif',app:'Mail',w:'now',title:'The Atlantic Monthly',t:'We are delighted to publish your excerpt'}]},
- {id:'4.7',kind:'lyric',trig:'“Two thousand bucks without rewriting one word!”',
+ {id:'4.6',kind:'lyric',trig:'“Two thousand bucks without rewriting one word!”',
   what:'The deposit lands.',
   do:[{op:'notif',app:'Chase',w:'now',title:'Chase',t:'You received a deposit of $2,000.00'}]},
- {id:'4.8',kind:'lyric',trig:'“I left Columbia and don’t regret it”',
+ {id:'4.7',kind:'lyric',trig:'“I left Columbia and don’t regret it”',
   what:'The withdrawal confirmation.',
   do:[{op:'notif',app:'Mail',w:'now',title:'Columbia University',t:'Withdrawal processed — Fall term ✓'}]},
- {id:'4.9',kind:'lyric',trig:'“I wrote a book and Sonny Mehta read it!”',
+ {id:'4.8',kind:'lyric',trig:'“I wrote a book and Sonny Mehta read it!”',
   what:'THE BIGGEST HIT.',
   do:[{op:'notif',app:'Messages',w:'now',title:'Linda Whitfield',t:'SONNY READ IT. CALL ME NOW.'}]},
- {id:'4.10',kind:'music',trig:'Button',
-  what:'Black.',
+ {id:'4.9',kind:'music',trig:'FINAL CHORD — the last hit of Moving Too Fast',
+  what:'Black. OCTOBER 2021 holds center until her song rolls it forward.',
   do:[{op:'black'}]},
 ]},
 
-/* ============ 5 · I’M A PART OF THAT — CATHY, her iPhone ============
-   REBUILT: his Do Not Disturb is shown from HER side. She watches her own
-   messages fail to deliver. Same beat, one device, and crueller. ========= */
+/* ============ 5 · I’M A PART OF THAT — CATHY, her iPhone · ONE THING ============ */
 {n:5,t:'I’m a Part of That',who:'cathy',cues:[
- {id:'5.1',kind:'music',trig:'Intro figure',
-  what:'Her phone, March 2025.',
-  do:[{op:'device',dev:'iphone',who:'cathy'},{op:'stamp',t:'MARCH 2025'},
-      {op:'clock',t:'11:20',d:'Sunday, March 9, 2025'}]},
- {id:'5.2',kind:'lyric',trig:'“One day we’re just like ‘Leave It to Beaver’”',
-  what:'She opens Facebook herself — and finds the party album. She is “and guest.”',
-  do:[{op:'unlock'},{op:'openapp',icon:'Facebook',to:'fbpost'},{op:'post',who:'Random House Events',av:'R',col:'#333',when:'last night',
-       txt:'Publication party! Tagged: Jamie Wellerstein and guest',
-       media:'M7 — cast photo: party, Cathy at the frame’s edge',likes:180}]},
- {id:'5.3',kind:'lyric',trig:'“And then he’s off on a trip to Jamie-land”',
-  what:'A fan account reposts it — cropped without her.',
-  do:[{op:'post',who:'bookish_nyc',av:'B',col:'#7b61c9',when:'this morning',txt:'the man of the hour ✨',
-       media:'M7b — SAME PHOTO, RE-CROPPED — Cathy gone',likes:322}]},
- {id:'5.4',kind:'lyric',trig:'And I’m a part of that.',
-  what:'She comments on it anyway. Lovingly.',do:[{op:'comment',n:'Cathy',t:'❤️ so proud of this one'}]},
- {id:'5.5',kind:'lyric',trig:'“Staring catatonic out the window”',
-  what:'She opens his thread — yesterday’s ordinary warmth still sitting above, which makes today’s NOT DELIVERED colder.',
-  do:[{op:'clock',t:'12:06'},{op:'openapp',icon:'Messages',to:'thread',contact:'Jamie 💙',sub:'Do Not Disturb'},
-      {op:'history',items:[
-        {k:'stamp',t:'Tuesday|8:12 AM'},{k:'them',t:'gym then pages. love you'},
-        {k:'me',t:'bring back oat milk'},{k:'them',t:'👍'},
-        {k:'stamp',t:'Thursday|6:30 PM'},{k:'me',t:'callback went ok I think?? they laughed at the right spot'},
-        {k:'them',t:'of course they did'},
-        {k:'stamp',t:'Yesterday|7:20 PM'},{k:'them',t:'don’t wait up. this chapter is winning'},
-        {k:'me',t:'leftovers in the fridge. go get it, killer'},
-        {k:'stamp',t:'Today|12:04 PM'},{k:'me',t:'lunch?'},{k:'rcpt',t:'Not Delivered'}]}]},
- {id:'5.6',kind:'lyric',trig:'“Barely even breathing all the while…”',
-  what:'1:37. She tries again. Nothing.',
-  do:[{op:'clock',t:'1:37'},{op:'stampline',t:'|1:37 PM'},{op:'type',t:'ok eating without you'}]},
- {id:'5.7',kind:'lyric',trig:'(phrase button)',
-  what:'Sent into the void. Not Delivered.',
-  do:[{op:'send'},{op:'rcpt',t:'Not Delivered'}]},
- {id:'5.8',kind:'lyric',trig:'“Next day it’s just like it never happened”',
-  what:'3:15. Six hours of Do Not Disturb, from her side of it.',
-  do:[{op:'clock',t:'3:15'},{op:'stampline',t:'|3:15 PM'},{op:'type',t:'we’re out of coffee fyi'},
-      {op:'send'},{op:'rcpt',t:'Not Delivered'}]},
- {id:'5.9',kind:'lyric',trig:'“And then he smiles”',
-  what:'THE RELEASE — everything flips to Delivered at once. He woke up. (Clock: 6:04 PM.)',
-  hold:'The tightest band sync in the song. Land it on the smile.',
-  do:[{op:'clock',t:'6:04'},{op:'rcptswap',t:'Delivered ✓'}]},
- {id:'5.10',kind:'lyric',trig:'“I’m a part of that… Aren’t I?”',
-  what:'In the clear — she leaves the thread, opens Safari, and types it into Google. The loneliest cue in the show.',
-  do:[{op:'openapp',icon:'Safari',to:'search'},
-      {op:'search',t:'is it normal to feel invisible at your husband’s party'}]},
- {id:'5.11',kind:'lyric',trig:'On the closing repeats of “I’m a part of that” — she clears it',
-  what:'Backspaced to nothing.',do:[{op:'searchClear',done:'search cleared'}]},
- {id:'5.12',kind:'stage',trig:'SHE hands the book back — looks briefly at the dedication page (script direction, the song’s last beat)',
-  what:'Facebook — a reader has photographed the dedication page. “For Cathy.” The last image of the song.',
-  do:[{op:'openapp',icon:'Facebook',to:'fbpost'},
-      {op:'post',who:'a reader',av:'✦',col:'#8a6d10',when:'today',txt:'That dedication page though 🥹',
-       media:'M12 — the dedication page: “For Cathy”',likes:9}]},
- {id:'5.13',kind:'music',trig:'Final chord',what:'Likes climb on it.',do:[{op:'like',to:41}]},
-]},
-
-/* ============ 6 · THE SCHMUEL SONG — JAMIE, his MacBook ============
-   He is at his desk writing her a story. The whole song lives there. ===== */
-{n:6,t:'The Schmuel Song',who:'jamie',cues:[
- {id:'6.1',kind:'stage',trig:'Christmas — the story is his to tell',
-  what:'No animations, by direction: the phone just keeps the season. Lock screen, Christmas wallpaper (photo TBD — M23), December 2022.',
-  do:[{op:'device',dev:'iphone',who:'jamie'},{op:'stamp',t:'DECEMBER 2022'},
-      {op:'clock',t:'9:12',d:'Saturday, December 24, 2022'},
-      {op:'wall',t:'M23 — Christmas tree lights'}]},
- {id:'6.2',kind:'music',trig:'Cutoff',
-  what:'Black.',
+ {id:'5.1',kind:'music',trig:'TOP OF I’M A PART OF THAT — the first notes of the intro',
+  what:'Time rolls FORWARD center-stage — OCTOBER 2021 → MARCH 2025, the book party — and holds while she sings.',
+  do:[{op:'black'},{op:'clock',t:'8:12',d:'Saturday, March 8, 2025'},{op:'stamp',t:'MARCH 2025'}]},
+ {id:'5.2',kind:'lyric',trig:'“I’m a part of that.” — THE LAST TIME she sings it, as she picks up the book',
+  what:'The one thing this song needs. Her phone: unlock, Books — his novel opens where she left it, the last page. The dedication: “For Cathy.” The last image of the song.',
+  hold:'Script direction: she looks briefly at the dedication page, then closes the book. Let the page sit through the final chord.',
+  do:[{op:'device',dev:'iphone',who:'cathy'},{op:'unlock'},{op:'openapp',icon:'Books',to:'books'},
+      {op:'books',author:'Jamie Wellerstein',page:'For Cathy',pos:'312 of 312',left:'Last page'}]},
+ {id:'5.3',kind:'music',trig:'FINAL CHORD — the last note of the song',
+  what:'Black. MARCH 2025 holds center.',
   do:[{op:'black'}]},
 ]},
 
-/* ============ 7 · A SUMMER IN OHIO — CATHY’s laptop · ONE CUE ============ */
+/* ============ 6 · THE SCHMUEL SONG — JAMIE, his iPhone · the season only ============ */
+{n:6,t:'The Schmuel Song',who:'jamie',cues:[
+ {id:'6.1',kind:'music',trig:'TOP OF THE SCHMUEL SONG — the tree lights come up, before he speaks',
+  what:'His phone, locked — the Christmas wallpaper (M23). Time rolls BACK, MARCH 2025 → DECEMBER 2022. No animations: the phone keeps the season for the whole song.',
+  do:[{op:'device',dev:'iphone',who:'jamie'},
+      {op:'clock',t:'9:12',d:'Saturday, December 24, 2022'},{op:'stamp',t:'DECEMBER 2022'},
+      {op:'wall',t:'M23 — Christmas tree lights'}]},
+ {id:'6.2',kind:'music',trig:'FINAL CHORD — after the watch, the last note',
+  what:'Black. DECEMBER 2022 holds center.',
+  do:[{op:'black'}]},
+]},
+
+/* ============ 7 · A SUMMER IN OHIO — CATHY’s laptop · ONE FACETIME ============ */
 {n:7,t:'A Summer in Ohio',who:'cathy',cues:[
- {id:'7.1',kind:'music',trig:'TOP OF THE SONG — intro vamp (anchor adjustable, Alonzo)',
-  what:'Cathy’s laptop, June 2024, Ohio. She places the FaceTime call — the RINGING screen: his initial pulsing, “FaceTime…”, no video yet.',
+ {id:'7.1',kind:'music',trig:'TOP OF A SUMMER IN OHIO — the intro vamp; she places the call',
+  what:'Cathy’s laptop, Ohio — time rolls FORWARD, DECEMBER 2022 → JUNE 2024. She places the FaceTime call: the RINGING screen, his initial pulsing, no video yet.',
   do:[{op:'device',dev:'macbook',who:'cathy'},
       {op:'clock',t:'9:38',d:'Friday, June 21, 2024'},{op:'stamp',t:'JUNE 2024 · OHIO'},
       {op:'facetime',n:'Jamie',st:'FaceTime…'}]},
- {id:'7.2',kind:'music',trig:'A few bars in — where he should appear (anchor adjustable, Alonzo)',
-  what:'He answers. The prerecorded FaceTime (V2) plays for the entire number — only Jamie, no Cathy self-view — with the real FaceTime overlays and a ticking call duration. Video produced separately.',
-  hold:'Nothing else to fire until the final button. The video carries the number.',
+ {id:'7.2',kind:'lyric',trig:'“I could have a mansion on a hill” — her first line; HE ANSWERS',
+  what:'He answers. The prerecorded FaceTime (V2) plays for the entire number — only Jamie, no Cathy self-view — with the real FaceTime overlays and a ticking call duration.',
+  hold:'Nothing else to fire until the final chord. The video carries the number.',
   do:[{op:'ftState',st:'connected',main:'V2 — JAMIE AT HIS DESK · the prerecorded FaceTime plays here'}]},
- {id:'7.3',kind:'music',trig:'FINAL BUTTON of the song',
-  what:'The call ends — Call Ended card, his initial dimmed. The whole song was one call.',
-  do:[{op:'ftState',st:'Call Ended'}]},
- {id:'7.4',kind:'stage',trig:'She closes the laptop',
-  what:'The screen goes; the era holds center until the next song rolls it.',
-  do:[{op:'black'}]},
+ {id:'7.3',kind:'music',trig:'FINAL CHORD — the last note; the call ends and she closes the laptop',
+  what:'Call Ended card (his initial dimmed), a breath, then the screen goes — JUNE 2024 holds center until the wedding rolls it.',
+  do:[{op:'ftState',st:'Call Ended'},{op:'pause',ms:2600},{op:'black'}]},
 ]},
 
-/* ============ 8 · THE NEXT TEN MINUTES — DUET · time, not animations ============ */
+/* ============ 8 · THE NEXT TEN MINUTES — DUET · time, not animations · then INTERMISSION ============ */
 {n:8,t:'The Next Ten Minutes',who:'both',cues:[
- {id:'8.1',kind:'stage',trig:'“No, that one’s Jerry Seinfeld… No, the Dakota —” · the rowboat, the question',
-  what:'No animations, by direction: the phones only mark WHERE WE ARE IN TIME. The rowboat on the Central Park lake — “No, the Dakota” — pointing at the Upper West Side. The engagement day.',
-  do:[{op:'device',dev:'iphone',who:'cathy'},{op:'stamp',t:'JUNE 12, 2023'},
-      {op:'clock',t:'4:44',d:'Monday, June 12, 2023'}]},
- {id:'8.2',kind:'music',trig:'AT THE VOWS — the underscore turns',
-  what:'The only date both timelines will ever share, enormous.',
-  do:[{op:'stamp',t:'MAY 18, 2024 · THE WEDDING'},
-      {op:'clock',t:'6:47',d:'Saturday, May 18, 2024'}]},
- {id:'8.3',kind:'music',trig:'CATHY’s “Is that one John Lennon?” — back in time to the engagement',
-  what:'The clock rolls back to the beginning of the piece.',
-  do:[{op:'stamp',t:'JUNE 12, 2023'},
-      {op:'clock',t:'4:44',d:'Monday, June 12, 2023'}]},
- {id:'8.4',kind:'music',trig:'Cutoff',
-  what:'Black.',
-  do:[{op:'black'}]},
+ {id:'8.1',kind:'stage',trig:'JAMIE: “No, that one’s Jerry Seinfeld” — his first line, in the rowboat',
+  what:'No animations, by direction: the phones only mark WHERE WE ARE IN TIME. Her phone, locked — the engagement day, June 12, 2023 — time rolls BACK from Ohio 2024.',
+  do:[{op:'device',dev:'iphone',who:'cathy'},
+      {op:'clock',t:'4:44',d:'Monday, June 12, 2023'},{op:'stamp',t:'JUNE 2023'}]},
+ {id:'8.2',kind:'lyric',trig:'JAMIE: “For the next ten lifetimes?” — the altar',
+  what:'The only date both timelines will ever share — the lock screen rolls FORWARD to Saturday, May 18, 2024.',
+  do:[{op:'clock',t:'6:47',d:'Saturday, May 18, 2024'},{op:'stamp',t:'MAY 2024 · THE WEDDING'}]},
+ {id:'8.3',kind:'lyric',trig:'CATHY: “Is that one John Lennon?” — back in the boat',
+  what:'The clock rolls BACK to the beginning of the piece.',
+  do:[{op:'clock',t:'4:44',d:'Monday, June 12, 2023'},{op:'stamp',t:'JUNE 2023'}]},
+ {id:'8.4',kind:'music',trig:'FINAL CHORD — the lights fade on the boat. END OF ACT ONE',
+  what:'INTERMISSION card. It holds through the break; the first GO of Act Two (9.1) clears it.',
+  do:[{op:'intermission'}]},
 ]},
 
 /* ============ 9 · A MIRACLE WOULD HAPPEN — JAMIE · notifications only ============ */
 {n:9,t:'A Miracle Would Happen',who:'jamie',cues:[
- {id:'9.1',kind:'music',trig:'Vamp — his phone, locked',
-  what:'October 2024. Married, at a party, and the phone will not stop. He never touches it — the attention just arrives.',
-  do:[{op:'device',dev:'iphone',who:'jamie'},{op:'stamp',t:'OCTOBER 2024'},
-      {op:'clock',t:'11:22',d:'Friday, October 18, 2024'}]},
- {id:'9.2',kind:'lyric',trig:'“Every other woman in the world suddenly finds you attractive”',
+ {id:'9.1',kind:'music',trig:'TOP OF ACT TWO — the first notes of the vamp, before he sings',
+  what:'The Intermission card goes. His phone, locked — time rolls FORWARD, JUNE 2023 → OCTOBER 2024. Married, at a party, and the phone will not stop. He never touches it; the attention just arrives.',
+  do:[{op:'device',dev:'iphone',who:'jamie'},
+      {op:'clock',t:'11:22',d:'Friday, October 18, 2024'},{op:'stamp',t:'OCTOBER 2024'}]},
+ {id:'9.2',kind:'lyric',trig:'“…suddenly finds you attractive”',
   what:'A reader.',
   do:[{op:'notif',app:'Instagram',w:'now',title:'@a.reader.somewhere',
        t:'okay the ending WRECKED me. how are you real'}]},
  {id:'9.3',kind:'lyric',trig:'“And now they’re banging down your door”',
   what:'And another.',
   do:[{op:'notif',app:'Instagram',w:'now',title:'@lit.with.lena',t:'sent you a message request'}]},
- {id:'9.4',kind:'lyric',trig:'“I’m at these parties… I’m the grand fromage”',
+ {id:'9.4',kind:'lyric',trig:'“I’m the grand fromage”',
   what:'The book keeps growing without him.',
   do:[{op:'notif',app:'Goodreads',w:'now',title:'Goodreads',t:'Your book passed 10,000 ratings · ★ 4.6'}]},
- {id:'9.5',kind:'lyric',trig:'“And here she comes: ‘Let’s get a cup of coffee…’” — Elise',
+ {id:'9.5',kind:'lyric',trig:'“Let’s get a cup of coffee.” — Elise',
   what:'And Elise.',
   do:[{op:'notif',app:'Messages',w:'now',title:'Elise · Ed.',t:'proofs went out 🎉 celebratory drink sometime?'}]},
- {id:'9.6',kind:'lyric',trig:'“It’s a challenge to resist temptation”',
+ {id:'9.6',kind:'lyric',trig:'“It’s a challenge to resist temptation” — THE SECOND TIME (after the party)',
   what:'Front row.',
   do:[{op:'notif',app:'Instagram',w:'now',title:'@novel.annie',t:'front row at your reading tonight 🙋‍♀️'}]},
- {id:'9.7',kind:'music',trig:'Button',
-  what:'Black.',
+ {id:'9.7',kind:'music',trig:'FINAL CHORD — the last note of the song',
+  what:'Black. OCTOBER 2024 holds center.',
   do:[{op:'black'}]},
 ]},
 
-/* ============ 10 · CLIMBING UPHILL — CATHY, her iPhone ============
-   REBUILT: his viral acclaim is shown on HER phone. She is scrolling it. == */
+/* ============ 10 · CLIMBING UPHILL — CATHY · two texts, two rejections, one flashback ============ */
 {n:10,t:'Climbing Uphill',who:'cathy',cues:[
- {id:'10.1',kind:'music',trig:'Intro',
-  what:'Her phone, February 2024, 6:02 AM. Audition day starts in Mail — the breakdown, opened and read.',
-  do:[{op:'device',dev:'iphone',who:'cathy'},{op:'stamp',t:'FEBRUARY 2024'},
-      {op:'clock',t:'6:02',d:'Monday, February 5, 2024'},{op:'setapp',to:'mail'},
-      {op:'inbox',rows:[
-        {f:'Casting Networks',s:'BREAKDOWN — new musical (Equity)',p:'F, 20s. Legit soprano to high C…',w:'5:12 AM',unread:true},
-        {f:'Casting Office',s:'Thank you for auditioning',p:'We enjoyed meeting you. At this time…',w:'Thursday'},
-        {f:'Backstage',s:'9 new roles match your profile',p:'Apply today',w:'Wednesday'},
-        {f:'Mom',s:'Fwd: saw this and thought of you',p:'',w:'Tuesday'},
-        {f:'Chase',s:'Your statement is ready',p:'',w:'Monday'}]},
-      {op:'hover',row:'Casting Networks'},
-      {op:'mailopen',f:'Casting Networks',to:'Cathy Hiatt-Wellerstein',s:'BREAKDOWN — new musical (Equity)',w:'5:12 AM',
-       body:['SEEKING: F, 20s–30s.',
-             'Legit soprano to high C. Strong dancer.',
-             'MUST READ YOUNG.',
-             'Submit headshot & résumé. Sign-in opens 6:30 AM.']}]},
- {id:'10.2',kind:'lyric',trig:'“I’m climbin’ uphill, Daddy”',
-  what:'The check-in text lands over the breakdown: she is number two hundred.',
-  do:[{op:'notif',app:'Messages',w:'now',title:'Audition Check-In',
-       t:'You’re checked in: #200 of 200. Estimated wait: 3 hr 40 min.'}]},
- {id:'10.3',kind:'lyric',trig:'(phrase button)',
-  what:'The bank tells her what the headshots cost. Another banner, worse.',
-  do:[{op:'notif',app:'Chase',w:'now',title:'Chase',
-       t:'Declined: $175.00 — REPRO-HEADSHOTS NYC. Available balance: $23.41.'}]},
- {id:'10.4',kind:'lyric',trig:'FIRST BELL TONE',
-  what:'Her head, typed into Google and never searched. Never a caption of what she sings.',
-  hold:'Bells are the tightest MD sync in the show. One fragment per bell.',
-  do:[{op:'openapp',icon:'Safari',to:'search'},
-      {op:'search',t:'smile. breathe. don’t look at your shoes.'}]},
- {id:'10.5',kind:'lyric',trig:'Second bell',what:'“196 to go.”',do:[{op:'search',t:'196 to go'}]},
- {id:'10.6',kind:'lyric',trig:'Third bell',what:'“quiet till 6, he’s writing.”',do:[{op:'search',t:'quiet till 6, he’s writing'}]},
- {id:'10.7',kind:'lyric',trig:'Fourth bell',what:'“he didn’t ask about the callback.”',do:[{op:'search',t:'he didn’t ask about the callback'}]},
- {id:'10.8',kind:'lyric',trig:'Fifth bell',what:'“what am I doing here.”',do:[{op:'search',t:'what am I doing here'}]},
- {id:'10.9',kind:'lyric',trig:'(his interruption section)',
-  what:'She closes Safari and scrolls HIS press instead. The review, going viral.',
-  do:[{op:'openapp',icon:'Facebook',to:'fbpost'},
-      {op:'post',who:'BOOKS Weekly',av:'B',col:'#333',when:'2h',
-       txt:'THE WELLERSTEIN MOMENT — the year’s most talked-about debut',likes:512}]},
- {id:'10.10',kind:'lyric',trig:'(with the build)',
-  what:'4,212 and climbing, while she waits in a hallway.',do:[{op:'like',to:4212}]},
- {id:'10.11',kind:'lyric',trig:'(call section)',
-  what:'SEED FIVE — the party photo. A figure half in frame, never named.',
-  do:[{op:'post',who:'Random House · tagged',av:'R',col:'#333',when:'now',txt:'celebrating the review!!',
-       media:'M8 — cast photo: bar celebration · a figure half in frame',likes:64}]},
- {id:'10.12',kind:'lyric',trig:'AFTER THE LAST BELL — in the clear',
-  what:'Back to Safari. Her search bar.',
-  do:[{op:'openapp',icon:'Safari',to:'search'},{op:'search',t:'how to quit acting gracefully'}]},
- {id:'10.13',kind:'music',trig:'As the final vamp dies',what:'Cleared.',do:[{op:'searchClear',done:'search cleared'}]},
+ {id:'10.1',kind:'music',trig:'TOP OF CLIMBING UPHILL — the intro, before her first note',
+  what:'Her phone, locked, in the audition hallway — time rolls BACK, OCTOBER 2024 → FEBRUARY 2024. An older sign-in reminder sits on the lock screen; then his text lands on top: “break a leg” — lowercase, three seconds of effort.',
+  do:[{op:'device',dev:'iphone',who:'cathy'},
+      {op:'clock',t:'9:52',d:'Monday, February 5, 2024'},{op:'stamp',t:'FEBRUARY 2024'},
+      {op:'notif',app:'Mail',w:'8:14 AM',title:'Casting Networks',t:'Reminder: sign-in opens 10:00 AM — Equity chorus call'},
+      {op:'pause',ms:1100},
+      {op:'notif',app:'Messages',w:'now',title:'Jamie 💙',t:'break a leg'}]},
+ {id:'10.2',kind:'stage',trig:'CATHY: “Okay, thank you. Thank you so much.” — her first spoken line',
+  what:'A rejection lands over the lock screen — last week’s audition, answered. Just enough to read: they are not moving forward.',
+  do:[{op:'notif',app:'Mail',w:'now',title:'Meridian Stage Company — Casting',
+       t:'Thank you for auditioning. We will not be moving forward at this time, but we hope to see you…'}]},
+ {id:'10.3',kind:'lyric',trig:'“Belting as high as they can!”',
+  what:'Another one. A callback that went the other way.',
+  do:[{op:'notif',app:'Mail',w:'now',title:'Northfield Summer Playhouse',
+       t:'Re: your callback — we have decided to go in another direction. We will keep your…'}]},
+ {id:'10.4',kind:'lyric',trig:'“Grant me Grace!” — she puts the phone away',
+  what:'Black — FEBRUARY 2024 holds center while she sings.',
+  do:[{op:'black'}]},
+ {id:'10.5',kind:'music',trig:'THE BELL TONE — before the audition where we hear her thoughts',
+  what:'FLASHBACK, AUTO-PLAYS from this GO. Time rolls BACK three months, FEBRUARY 2024 → NOVEMBER 2023. Her phone lights: a text from him, long and thoughtful — the night before an earlier callback. She opens it; the thread shows the man he was three months ago.',
+  hold:'The contrast IS the cue: three seconds of effort in February, a paragraph in November.',
+  do:[{op:'black'},{op:'clock',t:'9:48',d:'Wednesday, November 8, 2023'},{op:'stamp',t:'NOVEMBER 2023'},
+      {op:'device',dev:'iphone',who:'cathy'},
+      {op:'pause',ms:600},
+      {op:'notif',app:'Messages',w:'now',title:'Jamie 💙',
+       t:'You are going to walk in there tomorrow and be the best thing they see all week. I mean it. Whatever happens in that room, you are already the real thing — I have known that since the first night. Go get it, and call me the second you are out. I love you.'},
+      {op:'pause',ms:1800},
+      {op:'notiftap',to:'thread',contact:'Jamie 💙',sub:'mobile'},
+      {op:'history',items:[
+        {k:'stamp',t:'Tuesday|8:15 PM'},{k:'me',t:'callback thursday. 9am. help'},
+        {k:'them',t:'you’ve got this. what are you singing?'},{k:'me',t:'the one you like'},
+        {k:'stamp',t:'Today|9:48 PM'},
+        {k:'them',t:'You are going to walk in there tomorrow and be the best thing they see all week. I mean it. Whatever happens in that room, you are already the real thing — I have known that since the first night. Go get it, and call me the second you are out. I love you.'}]}]},
+ {id:'10.6',kind:'stage',trig:'JAMIE: “Cathy, what are you doing now?” — his phone scene begins',
+  what:'The phone goes; time rolls FORWARD home — NOVEMBER 2023 → FEBRUARY 2024 — and holds center to the end of the song.',
+  do:[{op:'black'},{op:'clock',t:'9:52',d:'Monday, February 5, 2024'},{op:'stamp',t:'FEBRUARY 2024'}]},
 ]},
 
-/* ============ 11 · IF I DIDN’T BELIEVE IN YOU — JAMIE, his iPhone ====== */
+/* ============ 11 · IF I DIDN’T BELIEVE IN YOU — JAMIE · timeline only ============ */
 {n:11,t:'If I Didn’t Believe In You',who:'jamie',cues:[
- {id:'11.1',kind:'stage',trig:'The fight is already underway.',
-  what:'His phone, March 2026. The party invite on the real Calendar — his ✓ and her ✗ on the same screen.',
-  do:[{op:'device',dev:'iphone',who:'jamie'},{op:'stamp',t:'MARCH 2026'},
-      {op:'clock',t:'7:41',d:'Friday, March 6, 2026'},{op:'setapp',to:'calevent'},
-      {op:'calevent',back:'March',cal:'Random House',dot:'#fb3b30',title:'Publication Party — Book 2 🥂',
-       when:'Tonight · 7:30 PM',where:'1745 Broadway',
-       invitees:[{n:'Jamie Wellerstein',st:'accepted'},{n:'Cathy Hiatt-Wellerstein',st:'declined'}]}]},
- {id:'11.2',kind:'lyric',trig:'If I didn’t believe in you,',
-  what:'Elise texts, mid-argument — he opens the thread, and it visibly has a past.',
-  do:[{op:'openapp',icon:'Messages',to:'thread',contact:'Elise · R.H.',sub:'work'},
-      {op:'history',items:[
-        {k:'stamp',t:'Feb 2025|1:14 AM'},{k:'them',t:'still up? this chapter is killing me 😅'},
-        {k:'me',t:'for you I’m always up'},
-        {k:'stamp',t:'Today|7:41 PM'},{k:'them',t:'are you coming or not?'}]}]},
- {id:'11.3',kind:'lyric',trig:'We wouldn’t be having this fight.',
-  what:'She double-texts.',do:[{op:'them',t:'people are asking where you are.'}]},
- {id:'11.4',kind:'lyric',trig:'If I didn’t believe in you —',
-  what:'“fine.” The deadliest text in the show.',
-  hold:'Phrase button, then let it sit in silence.',do:[{op:'them',t:'fine.'}]},
- {id:'11.5',kind:'lyric',trig:'“I’d walk out the door and say, ‘Cathy, you’re right’”',
-  what:'He types a reply.',do:[{op:'type',t:'leaving in 10'}]},
- {id:'11.6',kind:'lyric',trig:'[CHOICE — ALONZO] send it, or pocket it',
-  what:'He does NOT send. Phone in pocket, screen locked. Two very different Jamies.',
-  hold:'Decide in tech.',do:[{op:'setapp',to:'lock'},{op:'clock',t:'9:12'}]},
- {id:'11.7',kind:'lyric',trig:'THE PEAK of the bridge',
-  what:'A memory resurfaces on his own phone: his own words, three years ago.',
-  hold:'The word “believe” curdles in real time.',
-  do:[{op:'unlock'},{op:'openapp',icon:'Facebook',to:'fbpost'},
-      {op:'post',who:'Memories',av:'M',col:'#7b61c9',when:'3 years ago today',
-       txt:'“EVERYONE go see my brilliant wife tonight. Front row forever.”',likes:88}]},
- {id:'11.8',kind:'lyric',trig:'(two bars later)',
-  what:'Likes climb on the corpse of it.',do:[{op:'like',to:131}]},
- {id:'11.9',kind:'music',trig:'ON THE BLACKOUT',
-  what:'A notification he will not see until morning: she signed the Ohio contract.',
-  hold:'She made the decision while he was arguing.',
-  do:[{op:'setapp',to:'lock'},{op:'clock',t:'11:47'},
-      {op:'notif',app:'Mail',w:'11:47 PM',title:'Summer Season (Ohio)',t:'Contract received — C. Hiatt ✓'}]},
- {id:'11.10',kind:'music',trig:'Final cutoff',what:'Black.',do:[{op:'black'}]},
+ {id:'11.1',kind:'stage',trig:'JAMIE: “Okay, stop. Cathy, stop.” — his first words',
+  what:'Timeline only, by direction. Time rolls FORWARD center-stage — FEBRUARY 2024 → MARCH 2026, the night of the party — and holds for the whole song.',
+  do:[{op:'black'},{op:'clock',t:'7:41',d:'Friday, March 6, 2026'},{op:'stamp',t:'MARCH 2026'}]},
 ]},
 
-/* ============ 12 · I CAN DO BETTER THAN THAT — CATHY, her iPhone ======= */
+/* ============ 12 · I CAN DO BETTER THAN THAT — CATHY · THE DRIVE ============ */
 {n:12,t:'I Can Do Better Than That',who:'cathy',cues:[
- {id:'12.1',kind:'music',trig:'Vamp — the drive',
-  what:'Her phone, November 2021. Real turn-by-turn: three hours forty to the Eastern Shore.',
-  do:[{op:'device',dev:'iphone',who:'cathy'},{op:'stamp',t:'NOVEMBER 2021'},
-      {op:'clock',t:'4:05',d:'Saturday, November 6, 2021'},{op:'setapp',to:'maps'},
-      {op:'maps',instr:'Merge onto NJ Tpke S',via:'via I-95 S',eta:'3 hr 40 min',dest:'Eastern Shore, MD'}]},
- {id:'12.2',kind:'lyric',trig:'“My best friend had a little situation at the end of our senior year”',
-  what:'She switches to Music — the collaborative playlist, real screen. He has already added three songs. The finale leaves it.',
-  do:[{op:'openapp',icon:'Music',to:'music'},
-      {op:'music',title:'US 🎧',sub:'Collaborative Playlist — Jamie & Cathy',rows:[
-        {t:'———— ————',by:'Added by Jamie ✨'},
-        {t:'——— ——————',by:'Added by Jamie ✨'},
-        {t:'————— ———',by:'Added by Jamie ✨'},
-        {t:'—— ————— ——',by:'Added by you'}]}]},
- {id:'12.3',kind:'lyric',trig:'“And like a shot, she and Mitchell got married that summer”',
-  what:'She opens Facebook — Carolann’s settled life, scrolling past.',
-  do:[{op:'openapp',icon:'Facebook',to:'fbpost'},
-      {op:'post',who:'Carolann',av:'C',col:'#7b61c9',when:'2 yrs ago',txt:'MR & MRS MITCHELL 💍',
-       media:'M11a — hometown wedding',likes:74}]},
- {id:'12.4',kind:'lyric',trig:'“Carolann getting bigger ev’ry minute”',
-  what:'The baby.',
-  do:[{op:'post',who:'Carolann',av:'C',col:'#7b61c9',when:'1 yr ago',txt:'he’s here 💙',
-       media:'M11b — baby announcement',likes:118}]},
- {id:'12.5',kind:'lyric',trig:'“They got a little cute house… with a crucifix on the door”',
-  what:'The house, crucifix on the door.',
-  do:[{op:'post',who:'Carolann',av:'C',col:'#7b61c9',when:'this week',txt:'our first HOUSE 🏡',
-       media:'M11c — first house',likes:203}]},
- {id:'12.6',kind:'lyric',trig:'(the ex verse)',
-  what:'She opens Photos — she kept the receipt: a screenshot saved a year ago, caption and all.',
-  do:[{op:'openapp',icon:'Photos',to:'shot'},
-      {op:'shot',album:'Screenshots',date:'Saved Nov 2020',thread:'R · iMessage',
-       t:'I think I need to focus on my career right now. You’re great. — R',
-       note:'her caption: “a heartfelt letter, apparently”'}]},
- {id:'12.7',kind:'lyric',trig:'THE DRAFTS — pre-chorus',
-  what:'She opens his thread — two months deep — then three weeks of drafted courage begin. Draft one, October 12.',
-  do:[{op:'openapp',icon:'Messages',to:'thread',contact:'Jamie ✨',sub:'mobile'},
-      {op:'history',items:[
-        {k:'stamp',t:'Oct 3|9:20 PM'},{k:'them',t:'one month anniversary of “home safe?”'},
-        {k:'me',t:'you kept the date??'},{k:'them',t:'I keep everything'},
-        {k:'stamp',t:'Thursday|11:02 PM'},{k:'me',t:'my radiator died again 🥶'},
-        {k:'them',t:'MY radiator works fine. just saying'}]},
-      {op:'stampline',t:'|DRAFTS · NEVER SENT'},{op:'type',pace:'hesitant',t:'so my lease is up in…'}]},
- {id:'12.8',kind:'lyric',trig:'(next phrase)',
-  what:'Draft two, two weeks later. Braver.',
-  do:[{op:'wipe',t:'OCT 12 · deleted'},{op:'type',pace:'hesitant',t:'how attached are you to your apartment'}]},
- {id:'12.9',kind:'lyric',trig:'(last phrase before the chorus)',
-  what:'Draft three. All caps. Still not sent.',
-  hold:'Her ghosts are made of courage. His are made of cowardice.',
-  do:[{op:'wipe',t:'OCT 26 · deleted'},{op:'type',t:'MOVE IN WITH ME (too much?)'}]},
- {id:'12.10',kind:'lyric',trig:'“Say you’ll move in with me” — deleted; she asks him out loud',
-  what:'Deleted. She puts the phone down and asks him out loud instead.',
-  do:[{op:'wipe',t:'NOV 2 · deleted — she asks out loud instead'}]},
- {id:'12.11',kind:'lyric',trig:'(final chorus)',
-  what:'Back to Maps. Twelve minutes out — the nav says arriving; so does she.',
-  do:[{op:'openapp',icon:'Maps',to:'maps'},
-      {op:'maps',instr:'Continue straight',via:'MD-33 W',eta:'12 min',arriving:true,dest:'Eastern Shore, MD'}]},
+ {id:'12.1',kind:'music',trig:'TOP OF I CAN DO BETTER THAN THAT — the first note of the vamp',
+  what:'Her phone on the dash — Apple Maps, mid-route, New York → the Eastern Shore. Time rolls BACK, MARCH 2026 → NOVEMBER 2021. The drive really moves for the whole song: the puck rides the route, the miles and minutes fall, each maneuver counts down, and the phone’s clock runs 4:05 → 7:45. Arrival lands five minutes after this GO.',
+  hold:'`dur` (seconds to arrival) lives on this cue in cues.js — match it to the song in tech. After arrival the screen holds on “You have arrived.”',
+  do:[{op:'device',dev:'iphone',who:'cathy'},
+      {op:'mapsdrive',key:'12',dur:300,mins:220,miles:214,startMin:965,arrive:'7:45 PM',dest:'St. Michaels — the Eastern Shore'},
+      {op:'clock',t:'4:05',d:'Saturday, November 6, 2021'},{op:'stamp',t:'NOVEMBER 2021'}]},
+ {id:'12.2',kind:'music',trig:'FINAL CHORD — the last note of the song',
+  what:'Black. NOVEMBER 2021 holds center.',
+  do:[{op:'black'}]},
 ]},
 
-/* ============ 13 · NOBODY NEEDS TO KNOW — JAMIE, his iPhone ============ */
+/* ============ 13 · NOBODY NEEDS TO KNOW — JAMIE · two beats ============ */
 {n:13,t:'Nobody Needs to Know',who:'jamie',cues:[
- {id:'13.1',kind:'music',trig:'Intro, bar 1',
-  what:'His phone lights the dark. June 2026, 6:12 AM. Not his bed.',
-  do:[{op:'device',dev:'iphone',who:'jamie'},{op:'stamp',t:'JUNE 2026 · BEFORE DAWN'},{op:'batt',v:9},
-      {op:'clock',t:'6:12',d:'Thursday, June 11, 2026'}]},
- {id:'13.2',kind:'music',trig:'Bar 2',
-  what:'Unlocked before the house has settled. Straight to Messages. No hesitation — that is the point.',
-  hold:'Her opening took four cues of hesitation. His takes one.',
-  do:[{op:'unlock'},{op:'openapp',icon:'Messages',to:'thread'},
-      {op:'setapp',to:'thread',contact:'R.H. EDITS',sub:'work'}]},
- {id:'13.3',kind:'lyric',trig:'“I’m off to Ohio” — the scroll-back',
-  what:'THE SCROLL-BACK. Five years of seeded messages, in order, uncaptioned.',
-  hold:'Fire early and let it run. Recognition is the effect — do not explain it.',
-  do:[{op:'history',items:[
-      {k:'stamp',t:'May 2024|'},{k:'them',t:'ch. 7 notes attached — coffee thursday?'},
-      {k:'them',media:'ch7-notes-v2.pdf · 214 KB',doc:true},
-      {k:'stamp',t:'Feb 2025 · 1:14 AM|'},{k:'them',t:'still up? this chapter is killing me 😅'},
-      {k:'me',t:'for you I’m always up'},
-      {k:'stamp',t:'April 2026|'},{k:'them',t:'this stays at the office. agreed?'},{k:'me',t:'agreed.'},
-      {k:'stamp',t:'Today|6:04 AM'},{k:'me',t:'I keep thinking about it'},{k:'them',t:'don’t. not over text.'}]}]},
- {id:'13.4',kind:'lyric',trig:'“Hold on, facts are facts”',
-  what:'The real dialog, over the real thread: Delete this conversation? His thumb sits on Delete. Never presses.',
-  hold:'He keeps the thread. That is the corner he asks the house for.',
-  do:[{op:'sheet',title:'Delete this conversation? This conversation will be deleted from all your devices.',
-       danger:'Delete',safe:'Cancel'},
-      {op:'btnHover',b:'Delete'}]},
- {id:'13.5',kind:'lyric',trig:'Nobody needs to know.',
-  what:'Her contact card, mid-edit. ELISE · ED. struck through; R.H. EDITS typed in its place.',
-  do:[{op:'contactcard',n:'R.H. EDITS',sub:'Random House',col:'#7b61c9',editing:true,
-       rename:{from:'Elise · Ed.',to:'R.H. EDITS'},
-       rows:[{l:'mobile',v:'(646) ···-··88'}]}]},
- {id:'13.6',kind:'lyric',trig:'(next phrase)',
-  what:'He opens Find My. The confirmation asks if he is sure. He is. “Forever,” from Moving Too Fast, ends on a real button.',
-  do:[{op:'openapp',icon:'FindMy',to:'findmy'},{op:'findmy',pin:true,pin2:true,rows:[{n:'Cathy 💛',s:'W 73rd St · now — sharing Until: Forever',col:'#c2447a'}]},
-      {op:'sheet',title:'Stop sharing your location with Cathy?',danger:'Stop Sharing',safe:'Cancel'},
-      {op:'btnHover',b:'Stop Sharing'},{op:'btnTap',b:'Stop Sharing'},
-      {op:'findmy',pin:false,rows:[{n:'Cathy 💛',s:'You stopped sharing your location',col:'#c2447a',off:true}]}]},
- {id:'13.7',kind:'lyric',trig:'THE BRIDGE',
-  what:'He opens Calendar — her opening night, three weeks out — ✓ Accepted, by him, in a life he is dismantling.',
-  hold:'The only time all song the marriage speaks — and it is a calendar invite.',
-  do:[{op:'openapp',icon:'Calendar',to:'calevent'},
-      {op:'calevent',back:'June',cal:'Cathy 💛',dot:'#c2447a',title:'CATHY — OPENING NIGHT 🎭',
-       when:'Friday, July 3 · 8:00 PM · in 3 weeks',where:'Medina Summer Theatre, OH',
-       resp:'Accept'}]},
- {id:'13.8',kind:'lyric',trig:'(verse 3)',
-  what:'Back to HIM, 7:58. Her good-morning text arrives.',
-  do:[{op:'device',dev:'iphone',who:'jamie'},{op:'clock',t:'7:58'},{op:'setapp',to:'lock'},
-      {op:'notif',app:'Messages',w:'now',title:'Cathy 💛',t:'morning! call me before rehearsal? miss your face'}]},
- {id:'13.9',kind:'stage',trig:'ON HIS SWIPE',what:'Gone. Unread.',do:[{op:'notifDismiss'}]},
- {id:'13.10',kind:'lyric',trig:'(next phrase)',
-  what:'He opens Settings → Battery. 9%, Low Power Mode, and the usage table that says where the night went.',
-  do:[{op:'unlock'},{op:'openapp',icon:'Settings',to:'settings2'},
-      {op:'settings2',back:'Settings',title:'Battery',gauge:9,gaugeSub:'Last charged yesterday, 11:41 PM',
-       groups:[{rows:[{l:'Low Power Mode',on:true}]},
-               {h:'Battery Usage — Last 24 Hours',rows:[
-                 {l:'Messages',v:'6 hr 12 min',sub:'top conversation: R.H. EDITS'},
-                 {l:'Safari',v:'1 hr 03 min'}]}]}]},
- {id:'13.11',kind:'lyric',trig:'FINAL SECTION',
-  what:'Back to Messages — a new, empty conversation. To: |',
-  do:[{op:'openapp',icon:'Messages',to:'thread',contact:'New Message',sub:'To: '}]},
- {id:'13.12',kind:'lyric',trig:'(his last sung phrase)',
-  what:'He types “hey” to someone new.',do:[{op:'type',t:'hey'}]},
- {id:'13.13',kind:'lyric',trig:'(as the phrase ends)',
-  what:'And deletes even that.',do:[{op:'wipe'}]},
- {id:'13.14',kind:'music',trig:'In the silence before the final chord',
-  what:'Notes. A note called “we need to talk,” edited eleven weeks ago, one line long. He has been carrying the ending since before the fight.',
-  hold:'The last screen of the song. Let it land alone.',
-  do:[{op:'openapp',icon:'Notes',to:'note'},
-      {op:'note',title:'we need to talk',edited:'Edited March 24 — 11 weeks ago',
-       lines:['cathy —','I don’t know how to start this, so I’ll just say it.','']}]},
+ {id:'13.1',kind:'music',trig:'TOP OF NOBODY NEEDS TO KNOW — the first note, before he sings',
+  what:'Time rolls FORWARD center-stage — NOVEMBER 2021 → JUNE 2026, before dawn. His phone is face-down somewhere it should not be.',
+  do:[{op:'black'},{op:'batt',v:9},{op:'clock',t:'6:12',d:'Thursday, June 11, 2026'},{op:'stamp',t:'JUNE 2026'}]},
+ {id:'13.2',kind:'lyric',trig:'“Cathy is waiting” — her text lands',
+  what:'AUTO-PLAYS from this GO. His phone lights on the nightstand — 9% battery — with her good-morning text. He swipes it away immediately, unread, and the screen goes dark again. JUNE 2026 holds.',
+  do:[{op:'device',dev:'iphone',who:'jamie'},
+      {op:'notif',app:'Messages',w:'now',title:'Cathy 💛',t:'good morning. can’t wait to see you — what time does your flight land?'},
+      {op:'pause',ms:1500},{op:'notifDismiss'},{op:'pause',ms:900},{op:'black'}]},
+ {id:'13.3',kind:'lyric',trig:'“…in love with someone like you” — his last line; Find My, location back ON',
+  what:'Unlock, Find My, her card — she is in Ohio, and he has not been sharing back. Share My Location → Share Indefinitely. The green check is the last image of the song: the cover-up, filed as devotion.',
+  hold:'Location was OFF before the song (we never see him turn it off). Hold on this screen through the final chord; 14.1 takes it away.',
+  do:[{op:'device',dev:'iphone',who:'jamie'},{op:'clock',t:'6:31'},{op:'unlock'},
+      {op:'openapp',icon:'FindMy',to:'findmy'},
+      {op:'findmy',person:{n:'Cathy 💛',loc:'Medina, OH',when:'now',mapLabel:'Medina, Ohio',col:'#c2447a'}},
+      {op:'pause',ms:800},
+      {op:'btnHover',b:'Share My Location'},
+      {op:'sheet',title:'Share your location with Cathy 💛?',opts:['Share for One Hour','Share Until End of Day','Share Indefinitely'],safe:'Cancel'},
+      {op:'btnHover',b:'Share Indefinitely'},{op:'btnTap',b:'Share Indefinitely'},
+      {op:'findmy',person:{n:'Cathy 💛',loc:'Medina, OH',when:'now',mapLabel:'Medina, Ohio',col:'#c2447a',sharing:'Indefinitely'}}]},
 ]},
 
 /* ============ 14 · GOODBYE UNTIL TOMORROW / I COULD NEVER RESCUE YOU ====
-   DUET. Device flips by whoever is singing. Her 2021 against his 2026. */
+   DUET. The era flips with the singer; her one animation; his era holds last. */
 {n:14,t:'Goodbye Until Tomorrow / I Could Never Rescue You',who:'both',cues:[
- {id:'14.1',kind:'music',trig:'THE DUET BEGINS — first vocal entrance',
-  what:'HER phone. September 2021, 11:58 PM. The night they met.',
-  do:[{op:'device',dev:'iphone',who:'cathy'},{op:'stamp',t:'SEPTEMBER 2021 · THE FIRST NIGHT'},
-      {op:'clock',t:'11:58',d:'Friday, September 3, 2021'}]},
- {id:'14.2',kind:'lyric',trig:'CATHY: Goodbye until tomorrow —',
-  what:'She saves his number on a real contact card — then edits it, and adds a sparkle.',
-  do:[{op:'unlock'},{op:'openapp',icon:'Messages',to:'contact'},
-      {op:'contactcard',n:'Jamie ✨',sub:'Added just now',col:'#8f95a3',editing:true,
-       rename:{from:'Jamie Wellerstein',to:'Jamie ✨'},
-       rows:[{l:'mobile',v:'(917) ···-··08'}]}]},
- {id:'14.3',kind:'lyric',trig:'CATHY: Goodbye until I crawl to your door —',
-  what:'His text is already waiting: “home safe?”',
-  do:[{op:'setapp',to:'thread',contact:'Jamie ✨',sub:'mobile'},
-      {op:'history',items:[{k:'stamp',t:'Today|11:48 PM'},{k:'them',t:'home safe?'}]}]},
- {id:'14.4',kind:'lyric',trig:'CATHY: “I have been waiting for you!”',
-  what:'She starts her reply. SHE IS STILL TYPING WHEN THE SHOW ENDS.',
-  hold:'Do not send. This is the payoff of Shiksa Goddess, two hours ago.',
-  do:[{op:'type',pace:'hesitant',t:'safe 😊 tonight was'}]},
- {id:'14.5',kind:'lyric',trig:'JAMIE: I could never rescue you —',
-  what:'FLIP TO HIS SCREEN. June 2026, 2:40 PM. His inbox is the same three emails she will read on Friday — the sender’s side.',
-  do:[{op:'device',dev:'iphone',who:'jamie'},{op:'stamp',t:'JUNE 2026 · HIS LAST AFTERNOON'},
-      {op:'clock',t:'2:40',d:'Thursday, June 11, 2026'},{op:'setapp',to:'mail'},
-      {op:'inbox',rows:[
-        {f:'U-MOVE',s:'Booking confirmed — Saturday 8:00 AM',p:'1 bedroom · pickup W 73rd St',w:'2:31 PM',unread:true},
-        {f:'Chase',s:'Account closed — joint checking',p:'Confirmation of closure. Funds transferred.',w:'1:55 PM'},
-        {f:'Kessler & Roth LLP',s:'Following our call',p:'Attached, as discussed. Please review at your convenience.',w:'2:50 PM'}]}]},
- {id:'14.6',kind:'lyric',trig:'JAMIE: “I went downtown and closed the bank account”',
-  what:'His SENT folder. “Some practical things,” 4:12 PM, To: Cathy — the email the house read from her side in Still Hurting. THE JOINT ACCOUNT FROM MOVING TOO FAST, CLOSED.',
-  hold:'The audience watched this open in Act One, and read it arrive in song one.',
-  do:[{op:'inbox',title:'Sent',rows:[
-        {f:'To: Cathy',s:'Some practical things',p:'Cathy — I didn’t want to do this over the phone. I went…',w:'4:12 PM'},
-        {f:'To: Kessler & Roth LLP',s:'Re: Following our call',p:'Understood. Go ahead.',w:'3:05 PM'},
-        {f:'To: U-MOVE',s:'Booking — Saturday',p:'Confirmed for 8 AM. One bedroom.',w:'2:12 PM'}]}]},
- {id:'14.7',kind:'lyric',trig:'JAMIE: All I could do was love you.',
-  what:'He opens Music — the playlist from 2021. Leave “US”? — this button he CAN press.',
-  do:[{op:'openapp',icon:'Music',to:'music'},
-      {op:'music',title:'US 🎧',sub:'Collaborative Playlist — Jamie & Cathy',rows:[
-        {t:'———— ————',by:'Added by Cathy 💛'},
-        {t:'——— ——————',by:'Added by you'},
-        {t:'————— ———',by:'Added by Cathy 💛'}]},
-      {op:'sheet',title:'Leave “US 🎧”? You will no longer be able to listen with Cathy.',danger:'Leave Playlist',safe:'Cancel'},
-      {op:'btnHover',b:'Leave Playlist'},{op:'btnTap',b:'Leave Playlist'},
-      {op:'musicBanner',t:'You left this playlist'}]},
- {id:'14.8',kind:'lyric',trig:'JAMIE: I could never rescue you —',
-  what:'The real Voicemail screen. Cathy — April 9, 2025 — 0:47, saved two years. He presses play; the transcription reads along under his final verse.',
-  hold:'The man who empties Recently Deleted keeps her happiest 47 seconds.',
-  do:[{op:'openapp',icon:'Phone',to:'vm'},
-      {op:'vm',n:'Cathy 💛',sub:'mobile',date:'April 9, 2025',dur:47,pos:14,playing:true,saved:true,
-       transcript:'JAMIE. CALL ME BACK. I GOT OHIO. I GOT—'}]},
- {id:'14.9',kind:'lyric',trig:'(verse button)',
-  what:'Delete Voicemail? His thumb crosses to Delete — and presses Cancel. He keeps this too.',
-  do:[{op:'sheet',title:'Delete this voicemail?',danger:'Delete Voicemail',safe:'Cancel'},
-      {op:'btnHover',b:'Delete Voicemail'},{op:'btnTap',b:'Cancel'},
-      {op:'vm',n:'Cathy 💛',sub:'mobile',date:'April 9, 2025',dur:47,pos:47,playing:false,saved:true,
-       transcript:'JAMIE. CALL ME BACK. I GOT OHIO. I GOT—'}]},
- {id:'14.10',kind:'lyric',trig:'JAMIE: Goodbye.',
-  what:'He opens her thread — the same messages the house read at 9:41 this morning, mirrored from his side. All read. Never answered.',
-  hold:'The image the whole night has been building to.',
-  do:[{op:'openapp',icon:'Messages',to:'thread',contact:'Cathy 💛',sub:'mobile'},
-      {op:'history',items:[
-        {k:'stamp',t:'Monday|11:02 PM'},{k:'them',t:'are you coming home this weekend?'},
-        {k:'stamp',t:'Wednesday|8:15 AM'},{k:'them',t:'please just call me'},
-        {k:'stamp',t:'Wednesday|9:30 PM'},{k:'them',t:'I’m not angry. just talk to me'},
-        {k:'stamp',t:'Today|9:41 AM'},{k:'them',t:'I’m not sure that I can do this without you'},
-        {k:'stamp',t:'|READ 9:44 AM — he never answered'}]}]},
- {id:'14.11',kind:'stage',trig:'HE puts the key on the table and goes.',
-  what:'His screen dies.',do:[{op:'black'}]},
- {id:'14.12',kind:'lyric',trig:'CATHY: Goodbye until tomorrow. (final)',
-  what:'BACK TO HER. Five years earlier, still typing. She glows on through the final chord.',
-  hold:'Hold it. Do not resolve it.',
-  do:[{op:'device',dev:'iphone',who:'cathy'},{op:'stamp',t:'SEPTEMBER 2021 · THE FIRST NIGHT'},
-      {op:'clock',t:'11:58',d:'Friday, September 3, 2021'},
-      {op:'unlock'},{op:'openapp',icon:'Messages',to:'thread',contact:'Jamie ✨',sub:'mobile'},
-      {op:'history',items:[{k:'stamp',t:'Today|11:48 PM'},{k:'them',t:'home safe?'}]},
+ {id:'14.1',kind:'music',trig:'TOP OF THE FINALE — the intro, before her first line',
+  what:'The phone goes; time rolls BACK center-stage — JUNE 2026 → SEPTEMBER 2021, the first night — and holds while she sings.',
+  do:[{op:'black'},{op:'clock',t:'11:40',d:'Friday, September 3, 2021'},{op:'stamp',t:'SEPTEMBER 2021'}]},
+ {id:'14.2',kind:'lyric',trig:'JAMIE: “I called Elise to help me pack my bags” — his first line',
+  what:'His half: time rolls FORWARD, SEPTEMBER 2021 → JUNE 2026, his last afternoon.',
+  do:[{op:'clock',t:'2:40',d:'Thursday, June 11, 2026'},{op:'stamp',t:'JUNE 2026'}]},
+ {id:'14.3',kind:'lyric',trig:'CATHY: “Goodbye until I crawl to your door” — her return',
+  what:'Back to her: time rolls BACK to the first night.',
+  do:[{op:'clock',t:'11:47',d:'Friday, September 3, 2021'},{op:'stamp',t:'SEPTEMBER 2021'}]},
+ {id:'14.4',kind:'lyric',trig:'CATHY: “I will be waiting for you!” — her LAST line before he stands; his text lands',
+  what:'THE ONE ANIMATION. Her phone lights on the steps: “home safe?” — the text the house watched him send in Shiksa Goddess. She opens it and starts to answer. SHE IS STILL TYPING when his last verse takes the stage.',
+  hold:'Do not send. It is the payoff of Shiksa Goddess, two hours ago.',
+  do:[{op:'device',dev:'iphone',who:'cathy'},{op:'clock',t:'11:48'},
+      {op:'notif',app:'Messages',w:'now',title:'Jamie',t:'home safe?'},
+      {op:'pause',ms:1500},
+      {op:'notiftap',to:'thread',contact:'Jamie',sub:'mobile'},
+      {op:'history',items:[{k:'stamp',t:'Today|10:42 PM'},{k:'me',t:'it’s cathy 😊 — from tonight'},
+                           {k:'stamp',t:'Today|11:48 PM'},{k:'them',t:'home safe?'}]},
+      {op:'pause',ms:500},
       {op:'type',pace:'hesitant',t:'safe 😊 tonight was'}]},
-]}
+ {id:'14.5',kind:'lyric',trig:'JAMIE: “You never noticed how the wind had changed” — he stands',
+  what:'The phone goes mid-word. Time rolls FORWARD to JUNE 2026 — the breakup — and holds as the last image while he sings his goodbye.',
+  hold:'Hold it. Do not resolve it.',
+  do:[{op:'black'},{op:'clock',t:'4:12',d:'Thursday, June 11, 2026'},{op:'stamp',t:'JUNE 2026'}]},
+ {id:'14.6',kind:'music',trig:'FINAL BLACKOUT — on the last “Goodbye”',
+  what:'True black. End of show.',
+  do:[{op:'stamp',t:''},{op:'black'}]},
+]},
+
 ];
 let SHOW = (typeof window!=='undefined' && window.L5Y_SHOW) ? window.L5Y_SHOW : FALLBACK_SHOW;
 const BUILD = (typeof window!=='undefined' && window.L5Y_BUILD) ? window.L5Y_BUILD : 'embedded';
@@ -1435,6 +1196,7 @@ function freshState(song){
   const prev = songEndState(SHOW.indexOf(song)-1);
   return {dev:'iphone',who,app:'lock',
     stamp: prev ? prev.stamp : '',
+    inter: prev ? !!prev.inter : false,   // the Intermission card holds until Act Two's first cue
     tm: prev ? prev.tm : (song.who==='cathy'?'9:41':'11:38'),
     date: prev ? prev.date : (song.who==='cathy'?'Friday, June 12, 2026':'Friday, September 3, 2021'),
     notifs:[],contact:{n:song.who==='cathy'?'Jamie':'Cathy Hiatt',sub:'mobile'},
@@ -1444,7 +1206,7 @@ function freshState(song){
     mails:[],rows:[],call:null,ft:null,cards:[],deck:[],doclines:0,search:'',feed:[],focus:null,
     mem:[],msgrows:null,searchDone:null,mailbox:'Inbox',mailmsg:null,wall:null,
     sheet:null,contact2:null,fm:null,calev:null,setg:null,rem:null,ftrec:null,nav:null,
-    mus:null,shot:null,note:null,vm:null,igr:null,match:null};
+    mus:null,shot:null,note:null,vm:null,igr:null,match:null,book:null,drive:null};
 }
 function applyOp(st,o){
   switch(o.op){
@@ -1464,8 +1226,14 @@ function applyOp(st,o){
     case 'tap': st.hover=null; break;
     case 'frame': st.frame = o.off ? 'off' : {z:o.z||2, at:o.at||'mid'}; break;
     case 'memgo': st.memAt = (o.i==null?null:o.i); break;
+    case 'pause': break;                        // animation-only beat (playCue waits); no state
+    case 'intermission': st.black=true; st.inter=true; break;
+    case 'notifDismiss': st.notifs.shift(); break;
+    case 'books': st.app='books'; st.book=o; st.sheet=null; break;
+    case 'mapsdrive': st.app='mapsdrive'; st.drive=o; st.sheet=null; break;
     case 'device': {
       st.black=false;   // a device cue puts a screen back on stage — blackout ends
+      st.inter=false;   // …and the Intermission card, if it was up
       st.frame=null; st.memAt=null;
       const newWho = (o.who==='cathy'||o.who==='jamie') ? o.who : st.who;
       if(newWho!==st.who){
@@ -1476,6 +1244,7 @@ function applyOp(st,o){
         st.deck=[]; st.doclines=0; st.doctext=null; st.search=''; st.searchDone=null; st.focus=null; st.mem=[]; st.msgrows=null; st.mailbox='Inbox'; st.mailmsg=null; st.wall=null;
         st.sheet=null; st.contact2=null; st.fm=null; st.calev=null; st.setg=null; st.rem=null;
         st.ftrec=null; st.nav=null; st.mus=null; st.shot=null; st.note=null; st.vm=null; st.igr=null; st.match=null;
+        st.book=null; st.drive=null;
         st.hover=null; st.photoTab='library'; st.app='lock';
         st.contact={n:newWho==='cathy'?'Jamie':'Cathy Hiatt',sub:'mobile'};
       }
@@ -1575,6 +1344,7 @@ const ICON={
    <g stroke="#e0c86a" stroke-width="2.2" stroke-linecap="round"><line x1="13" y1="27" x2="51" y2="27"/>
    <line x1="13" y1="35" x2="51" y2="35"/><line x1="13" y1="43" x2="51" y2="43"/><line x1="13" y1="51" x2="38" y2="51"/></g>`},
  Music:{bg:'linear-gradient(#fc5c6d,#f0264a)',g:`<path d="M44 15l-18 4.5v21.5a6.5 5.5 0 1 0 3.5 4.6V26l11-2.7v11.5a6.5 5.5 0 1 0 3.5 4.6V15z" fill="#fff"/>`},
+ Books:{bg:'linear-gradient(#ffb547,#f28c12)',g:`<path d="M13 18h15.5a4 4 0 0 1 3.5 2v28a4 4 0 0 0-3.5-2H13V18z" fill="#fff"/><path d="M51 18H35.5a4 4 0 0 0-3.5 2v28a4 4 0 0 1 3.5-2H51V18z" fill="#fff" opacity=".88"/>`},
  Maps:{bg:'#e9f4e2',g:`<path d="M0 42l22-11 20 8 22-13v38H0z" fill="#bfe0a8"/>
    <path d="M0 27l24 8 18-10 22 6" fill="none" stroke="#8fc7ff" stroke-width="5.5"/>
    <path d="M17 0l7 64" stroke="#fff" stroke-width="4" fill="none"/>
@@ -1638,6 +1408,14 @@ const HOME_GRID=[['Messages'],['Facebook'],['Photos'],['Camera'],
                  ['Mail'],['Instagram'],['Calendar'],['Clock'],
                  ['Chase'],['Maps'],['FaceTime'],['Tinder'],
                  ['Settings'],['Notes'],['FindMy'],['Reminders']];
+/* two people, two home screens — the dating app lives on HIS phone only,
+   and she reads his novel in Books on hers */
+const HOME_GRIDS={
+  cathy:[['Messages'],['Facebook'],['Photos'],['Camera'],
+         ['Mail'],['Instagram'],['Calendar'],['Books'],
+         ['Chase'],['Maps'],['FaceTime'],['Clock'],
+         ['Settings'],['Notes'],['FindMy'],['Reminders']],
+  jamie:HOME_GRID};
 const HOME_DOCK=['Phone','Safari','Messages','Music'];
 const CHROME={lock:['transparent','#fff'],home:['transparent','#fff'],msglist:['#f9f9f9','#000'],
   thread:['#f9f9f9','#000'],photos:['#f9f9f9','#000'],fbpost:['#fff','#000'],mail:['#fff','#000'],
@@ -1647,7 +1425,8 @@ const CHROME={lock:['transparent','#fff'],home:['transparent','#fff'],msglist:['
   backstage:['#fff','#000'],contact:['#f2f2f7','#000'],findmy:['#f2f2f7','#000'],calevent:['#fff','#000'],
   settings2:['#f2f2f7','#000'],reminders:['#fff','#000'],ftrecents:['#fff','#000'],
   maps:['#28303a','#fff'],music:['#fff','#000'],shot:['#000','#fff'],
-  note:['#fbf9f4','#000'],vm:['#fff','#000'],igreq:['#fff','#000']};
+  note:['#fbf9f4','#000'],vm:['#fff','#000'],igreq:['#fff','#000'],
+  books:['#fff','#000'],mapsdrive:['#171a21','#fff']};
 /* one truth for the shell's chrome: dark full-screen registers run edge to edge
    with a transparent, white-text status bar; everything else keeps app chrome */
 const DARK_APPS=['lock','home','call','facetime','ember','focus','x'];
@@ -1731,7 +1510,7 @@ function homeHTML(st){
   const unread = (st.msgrows&&st.msgrows.length) ? st.msgrows.filter(r=>r.un).length : st.notifs.length;
   const badge = unread?`<span class="bdg">${unread}</span>`:'';
   return `<div class="layer home fs" style="background:linear-gradient(160deg,${w1},${w2} 55%,${w3})">
-    <div class="hgrid">${HOME_GRID.map(([n])=>`<div class="happ" data-app="${n}">
+    <div class="hgrid">${(HOME_GRIDS[st.who]||HOME_GRID).map(([n])=>`<div class="happ" data-app="${n}">
       ${iconEl(n, n==='Calendar'?calGlyph(st.date):null).replace('</svg>','</svg>'+(n==='Messages'?badge:''))}<small class="hlbl">${n}</small></div>`).join('')}</div>
     <div class="pagedots"><i class="on"></i><i></i></div>
     <div class="searchpill">🔍 Search</div>
@@ -1851,19 +1630,19 @@ function callHTML(st){
     </div></div>`;
   return `<div class="layer fs" style="background:linear-gradient(180deg,#26303f,#0d1118);color:#fff">
     <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:16% 8% 12%">
-      <div style="text-align:center"><div style="font-size:2.7em;font-weight:500">${c.n}</div>
-        <div style="font-family:'Courier Prime',monospace;font-size:1.05em;letter-spacing:.18em;color:#aeb6cc;
+      <div style="text-align:center"><div style="font-size:2.5em;font-weight:500;line-height:1.1">${c.n}</div>
+        <div class="cst" style="font-family:'Courier Prime',monospace;font-size:1.05em;letter-spacing:.18em;color:#aeb6cc;
           text-transform:uppercase;margin-top:.5em">${liveTimerHTML(c.st)}</div></div>
-      <div style="width:7em;height:7em;border-radius:50%;background:#3a4568;display:flex;align-items:center;
-        justify-content:center;font-size:3em">${(c.n||'?')[0]}</div>
+      <div style="width:6.4em;height:6.4em;border-radius:50%;background:#3a4568;display:flex;align-items:center;
+        justify-content:center;font-size:2.8em">${(c.n||'?')[0]}</div>
       ${/incoming/i.test(c.st||'')
-        ? `<div style="display:flex;gap:18%;width:100%;justify-content:center">
-            <div style="width:4.6em;height:4.6em;border-radius:50%;background:#e0483e;display:flex;align-items:center;justify-content:center;font-size:1.8em">✕</div>
-            <div style="width:4.6em;height:4.6em;border-radius:50%;background:#39c26a;display:flex;align-items:center;justify-content:center;font-size:1.8em">✆</div></div>`
-        : `<div style="display:flex;gap:12%;width:100%;justify-content:center;align-items:center">
-            <div style="width:3.8em;height:3.8em;border-radius:50%;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:1.4em">🔇</div>
-            <div style="width:4.6em;height:4.6em;border-radius:50%;background:#e0483e;display:flex;align-items:center;justify-content:center;font-size:1.8em">✕</div>
-            <div style="width:3.8em;height:3.8em;border-radius:50%;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:1.4em">🔊</div></div>`}
+        ? `<div class="callbtns" style="display:flex;gap:14%;width:100%;justify-content:center">
+            <div style="width:4.2em;height:4.2em;border-radius:50%;background:#e0483e;display:flex;align-items:center;justify-content:center;font-size:1.7em">✕</div>
+            <div style="width:4.2em;height:4.2em;border-radius:50%;background:#39c26a;display:flex;align-items:center;justify-content:center;font-size:1.7em">✆</div></div>`
+        : `<div class="callbtns" style="display:flex;gap:8%;width:100%;justify-content:center;align-items:center">
+            <div style="width:3.4em;height:3.4em;border-radius:50%;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:1.35em">🔇</div>
+            <div style="width:4.2em;height:4.2em;border-radius:50%;background:#e0483e;display:flex;align-items:center;justify-content:center;font-size:1.7em">✕</div>
+            <div style="width:3.4em;height:3.4em;border-radius:50%;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:1.35em">🔊</div></div>`}
       </div></div>`;
 }
 function ftHTML(st){
@@ -2004,6 +1783,7 @@ function sheetHTML(st){
   return `<div class="sheetdim"></div><div class="sheetwrap">
     <div class="sheetbox">
       ${sh.title?`<div class="sheettitle">${sh.title}</div>`:''}
+      ${(sh.opts||[]).map(o=>`<div class="sheetbtn" data-btn="${o}">${o}</div>`).join('')}
       ${sh.danger?`<div class="sheetbtn danger" data-btn="${sh.danger}">${sh.danger}</div>`:''}
     </div>
     <div class="sheetbox"><div class="sheetbtn" data-btn="${sh.safe||'Cancel'}" style="font-weight:600">${sh.safe||'Cancel'}</div></div>
@@ -2039,6 +1819,37 @@ function contactHTML(st){
 /* ---------- FIND MY ---------- */
 function findmyHTML(st){
   const f=st.fm||{rows:[]};
+  if(f.person){
+    // one person's card (People → tap a name): where they are, and whether
+    // YOU are sharing back — the real iOS layout, Share / Stop Sharing at the foot
+    const p=f.person;
+    return `<div class="layer fs" style="background:#f2f2f7;display:flex;flex-direction:column;overflow:hidden">
+      <div style="flex:1;min-height:0;background:repeating-linear-gradient(45deg,#dfe9dc 0 14px,#d3e2d0 14px 28px);position:relative">
+        <div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 46%, rgba(194,68,122,.22), transparent 28%)"></div>
+        <div style="position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:2.4em;height:2.4em;border-radius:50%;background:${p.col||'#c2447a'};
+          color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1em;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.35)">${(p.n||'?')[0]}</div>
+        ${p.mapLabel?`<div style="position:absolute;left:50%;top:44%;transform:translate(-50%,1.6em);font-size:.68em;font-weight:600;color:#3a4a3f;background:rgba(255,255,255,.8);border-radius:.4em;padding:.1em .45em;white-space:nowrap">${p.mapLabel}</div>`:''}
+      </div>
+      <div style="background:#fff;border-radius:1em 1em 0 0;margin-top:-.8em;position:relative;padding:.5em .8em .8em;box-shadow:0 -2px 10px rgba(0,0,0,.08)">
+        <div style="width:2.4em;height:.3em;border-radius:.2em;background:#d8d8dc;margin:0 auto .5em"></div>
+        <div style="display:flex;align-items:center;gap:.6em">
+          <div style="width:2.4em;height:2.4em;border-radius:50%;background:${p.col||'#c2447a'};color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700">${(p.n||'?')[0]}</div>
+          <div style="min-width:0;flex:1"><div style="font-size:1.15em;font-weight:700;color:#000">${p.n}</div>
+            <div style="font-size:.78em;color:#8e8e93">${p.loc||''}${p.when?` · ${p.when}`:''}</div></div>
+          <span style="width:1.7em;height:1.7em;border-radius:50%;background:#e5e5ea;color:#6e6e73;display:flex;align-items:center;justify-content:center;font-size:.9em">✕</span></div>
+        <div style="display:flex;gap:.5em;margin:.7em 0 .6em">
+          ${['Contact','Directions'].map(x=>`<div style="flex:1;background:#f2f2f7;border-radius:.6em;padding:.5em;text-align:center;color:#2f7cf6;font-weight:600;font-size:.9em">${x}</div>`).join('')}</div>
+        <div style="background:#f2f2f7;border-radius:.7em;overflow:hidden">
+          <div style="padding:.55em .8em;display:flex;justify-content:space-between;color:#000"><span>Notifications</span><span style="color:#c7c7cc">›</span></div>
+          ${p.sharing
+            ?`<div style="padding:.55em .8em;border-top:1px solid #e5e5ea;display:flex;justify-content:space-between;align-items:center">
+                <span style="color:#000">Sharing My Location</span><span style="color:#34c759;font-weight:600;font-size:.85em">✓ ${p.sharing}</span></div>
+              <div data-btn="Stop Sharing My Location" style="padding:.55em .8em;border-top:1px solid #e5e5ea;color:#fb3b30">Stop Sharing My Location</div>`
+            :`<div data-btn="Share My Location" style="padding:.55em .8em;border-top:1px solid #e5e5ea;color:#2f7cf6">Share My Location</div>`}
+        </div>
+      </div>
+    </div>`;
+  }
   return `<div class="layer fs" style="background:#f2f2f7;display:flex;flex-direction:column;overflow:hidden">
     <div style="flex:1.1;min-height:0;background:repeating-linear-gradient(45deg,#dfe9dc 0 14px,#d3e2d0 14px 28px);position:relative">
       <div style="position:absolute;inset:0;background:
@@ -2153,6 +1964,109 @@ function mapsHTML(st){
       <div><div style="font-size:1.25em;font-weight:700;color:${n.arriving?'#7fe0a2':'#fff'}">${n.eta||''}</div>
         <div style="font-size:.78em;color:#9aa4b1">${n.dest||''}</div></div>
       <div style="background:#fb3b30;border-radius:1.2em;padding:.35em 1em;font-weight:700;font-size:.9em">End</div></div>
+  </div>`;
+}
+
+/* ---------- MAPS — THE DRIVE (Song 12) ----------
+   Turn-by-turn that really moves: the puck rides the route, the map follows it,
+   the banner counts down to each maneuver, the ETA and the miles fall, and the
+   phone's own clock advances with the trip. Time-based from the moment the
+   screen first appears (per drive key), so it is identical every night and
+   survives re-paints. A three-hour-forty drive, compressed to the song. */
+const DRIVE_ROUTE=[[820,140],[700,300],[600,560],[520,820],[480,1060],[440,1300],[420,1540],
+                   [470,1700],[560,1760],[660,1800],[720,1900],[700,2040],[600,2120],[540,2180]];
+const DRIVE_STEPS=[   // at = fraction of the trip where the maneuver happens
+  {at:.51,icon:'↱',instr:'Take exit 1 toward Delaware Memorial Bridge',via:'I-295 S'},
+  {at:.55,icon:'↱',instr:'Take exit 1A for US-301 S',via:'toward DE-896'},
+  {at:.78,icon:'↰',instr:'Take US-50 E toward Annapolis',via:'Bay Bridge'},
+  {at:.85,icon:'⬆',instr:'Continue over the Chesapeake Bay Bridge',via:'US-50 E'},
+  {at:.97,icon:'↱',instr:'Take the exit for MD-33 W',via:'toward St. Michaels'},
+  {at:1,  icon:'⚑',instr:'Arrive at your destination',via:'on the right'}];
+const DRIVE_T0={};    // drive key → performance.now() when it first appeared
+function mapsDriveHTML(st){
+  const d=st.drive||{};
+  const key=d.key||'drive';
+  if(!DRIVE_T0[key]) DRIVE_T0[key]=performance.now();
+  const pts=DRIVE_ROUTE.map(p=>p.join(',')).join(' ');
+  return `<div class="layer fs mapsdrive" data-key="${key}" data-dur="${d.dur||300}" data-mins="${d.mins||220}"
+      data-miles="${d.miles||214}" data-start="${d.startMin||965}"
+      style="background:#171a21;display:flex;flex-direction:column;overflow:hidden;color:#fff">
+    <div class="dv-banner"><div class="dv-ico">⬆</div>
+      <div style="min-width:0;flex:1"><div class="dv-dist">Starting route</div>
+        <div class="dv-instr">Head south on the West Side Hwy</div><div class="dv-via">toward I-95 S</div></div></div>
+    <div class="dv-map">
+      <svg class="dv-svg" viewBox="580 -140 480 480" preserveAspectRatio="xMidYMid slice">
+        <rect x="-3000" y="-3000" width="8000" height="8000" fill="#1e222b"/>
+        <path d="M1040 -400 L1040 1500 L880 1520 L840 1300 L900 900 L860 500 L900 100 L960 -400 Z" fill="#0f1a2b"/>
+        <path d="M600 1180 L760 1120 L840 1300 L780 1420 L640 1400 Z" fill="#0f1a2b"/>
+        <path d="M470 1560 L560 1500 L640 1560 L680 1700 L640 1740 L600 1760 L560 1740 L520 1780 L560 1900 L640 2000 L600 2160 L560 2300 L520 2400 L440 2400 L430 2000 L470 1800 Z" fill="#0f1a2b"/>
+        <g stroke="#2e3440" stroke-width="7" fill="none" stroke-linecap="round">
+          <path d="M640 120 L380 700 L300 1200 L280 1900"/><path d="M200 900 L900 820"/><path d="M120 1500 L700 1520"/>
+          <path d="M300 2000 L700 2040 L980 2100"/><path d="M700 300 L980 420"/><path d="M400 1300 L720 1240"/></g>
+        <g stroke="#3b4250" stroke-width="10" fill="none" stroke-linecap="round">
+          <path d="M760 60 L560 620 L440 1100 L420 1560 L380 2000"/><path d="M420 1560 L120 1600"/></g>
+        <polyline points="${pts}" fill="none" stroke="#1d4f9e" stroke-width="22" stroke-linejoin="round" stroke-linecap="round"/>
+        <polyline class="dv-route" points="${pts}" fill="none" stroke="#3d8bff" stroke-width="14" stroke-linejoin="round" stroke-linecap="round"/>
+        <g font-family="Inter,Helvetica,sans-serif" font-size="24" fill="#c9d0dc" font-weight="600">
+          <text x="850" y="120">New York</text><text x="560" y="330">Newark</text><text x="400" y="800">Philadelphia</text>
+          <text x="350" y="1050">Wilmington</text><text x="250" y="1580">Baltimore</text><text x="310" y="1720">Annapolis</text>
+          <text x="735" y="2000">Easton</text><text x="440" y="2262">St. Michaels</text>
+          <text x="480" y="1960" fill="#7f9bc4" font-style="italic" font-weight="400">Chesapeake Bay</text>
+          <text x="880" y="700" fill="#7f9bc4" font-style="italic" font-weight="400">Atlantic Ocean</text></g>
+        <g class="dv-dest" transform="translate(540,2180)"><circle r="11" fill="#fb3b30" stroke="#fff" stroke-width="4"/></g>
+        <g class="dv-puck" transform="translate(820,140)"><circle r="19" fill="#fff" opacity=".95"/><path d="M0 -11 L10 9 L0 4 L-10 9 Z" fill="#2f7cf6"/></g>
+      </svg>
+    </div>
+    <div class="dv-sheet">
+      <div><div class="dv-eta">${d.arrive||'7:45 PM'}<span>arrival</span></div>
+        <div class="dv-stats"><b class="dv-left">${fmtMins(d.mins||220)}</b> · <b class="dv-miles">${d.miles||214} mi</b></div>
+        <div class="dv-dest-name">${d.dest||''}</div></div>
+      <div class="dv-end">End</div></div>
+  </div>`;
+}
+function fmtMins(m){ m=Math.max(0,Math.round(m)); const h=Math.floor(m/60), r=m%60; return h?`${h} hr ${r} min`:`${r} min`; }
+function fmtClock(min){ min=Math.round(min); let h=Math.floor(min/60)%24, m=min%60; h=h%12||12; return h+':'+String(m).padStart(2,'0'); }
+function driveTick(){
+  document.querySelectorAll('.mapsdrive').forEach(el=>{
+    const key=el.dataset.key, t0=DRIVE_T0[key]; if(!t0) return;
+    const dur=(+el.dataset.dur||300)*1000, mins=+el.dataset.mins||220, miles=+el.dataset.miles||214, start=+el.dataset.start||965;
+    const p=Math.min(1,(performance.now()-t0)/dur);
+    const path=el.querySelector('.dv-route'); if(!path||!path.getTotalLength) return;
+    const L=path.getTotalLength(), a=path.getPointAtLength(L*p), b=path.getPointAtLength(Math.min(L,L*p+6));
+    const ang=(b.x===a.x&&b.y===a.y)?0:Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI+90;
+    el.querySelector('.dv-puck').setAttribute('transform',`translate(${a.x.toFixed(1)},${a.y.toFixed(1)}) rotate(${ang.toFixed(1)})`);
+    const W=480;
+    el.querySelector('.dv-svg').setAttribute('viewBox',`${(a.x-W/2).toFixed(1)} ${(a.y-W*0.58).toFixed(1)} ${W} ${W}`);
+    const step=DRIVE_STEPS.find(s=>s.at>p)||DRIVE_STEPS[DRIVE_STEPS.length-1];
+    const toGo=Math.max(0,(step.at-p)*miles), left=miles*(1-p);
+    const distTxt = toGo>=10?Math.round(toGo)+' mi':toGo>=0.19?toGo.toFixed(1)+' mi':Math.max(100,Math.round(toGo*5280/100)*100)+' ft';
+    const done=p>=1;
+    el.querySelector('.dv-ico').textContent=done?'⚑':step.icon;
+    el.querySelector('.dv-dist').textContent=done?'Arrived':distTxt;
+    el.querySelector('.dv-instr').textContent=done?'You have arrived':step.instr;
+    el.querySelector('.dv-via').textContent=done?el.querySelector('.dv-dest-name').textContent:(step.via||'');
+    el.querySelector('.dv-left').textContent=done?'Arrived':fmtMins(mins*(1-p));
+    el.querySelector('.dv-miles').textContent=(done?0:(left>=10?Math.round(left):+left.toFixed(1)))+' mi';
+    el.classList.toggle('arrived',done);
+    // the phone's own clock advances with the trip — 3 h 40 of road in one song
+    const scr=el.closest('.screen'); if(scr){ const sb=scr.querySelector('.statusbar span'); if(sb) sb.textContent=fmtClock(start+mins*p); }
+  });
+}
+setInterval(driveTick,200);
+
+/* ---------- BOOKS — a page of his novel, on her phone ---------- */
+function booksHTML(st){
+  const b=st.book||{};
+  return `<div class="layer fs" style="background:#fff;display:flex;flex-direction:column;overflow:hidden;color:#111">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:.5em .8em .2em">
+      <span style="font-size:1.2em;color:#111">‹</span>
+      <span style="font-size:.74em;color:#8e8e93;letter-spacing:.02em">${b.author||''}</span>
+      <span style="width:1.7em;height:1.7em;border-radius:50%;background:#f2f2f7;display:flex;align-items:center;justify-content:center;font-size:.95em;color:#111">⋯</span></div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 2em 2em;text-align:center;font-family:Georgia,'Times New Roman',serif">
+      ${b.head?`<div style="font-size:.7em;letter-spacing:.26em;text-transform:uppercase;color:#8e8e93;margin-bottom:2.4em">${b.head}</div>`:''}
+      <div style="font-size:2.4em;font-style:italic;line-height:1.35;color:#111">${b.page||''}</div></div>
+    <div style="display:flex;justify-content:space-between;padding:.4em 1em .8em;font-size:.7em;color:#8e8e93">
+      <span>${b.left||''}</span><span>${b.pos||''}</span></div>
   </div>`;
 }
 
@@ -2327,6 +2241,8 @@ function screenHTML(st){
     case 'note': return noteHTML(st);
     case 'vm': return vmHTML(st);
     case 'igreq': return igreqHTML(st);
+    case 'books': return booksHTML(st);
+    case 'mapsdrive': return mapsDriveHTML(st);
     case 'ember': return deckHTML2(st);
     case 'pages': return docHTML2(st);
     case 'search': return searchHTML2(st);
@@ -2357,7 +2273,7 @@ const WEBAPP={backstage:['backstage.com/cathy-hiatt','Backstage','#f7f8fa','#e3e
 const NATIVE={thread:'Messages',msglist:'Messages',photos:'Photos',mail:'Mail',mailread:'Mail',
   pages:'Pages',facetime:'FaceTime',cards:'System Settings',search:'Safari',
   calevent:'Calendar',reminders:'Reminders',contact:'Contacts',vm:'FaceTime',ftrecents:'FaceTime',
-  music:'Music',note:'Notes',findmy:'Find My',maps:'Maps'};
+  music:'Music',note:'Notes',findmy:'Find My',maps:'Maps',mapsdrive:'Maps',books:'Books'};
 
 /* the preshow card: the clock and the title, as the house walks in */
 function houseHTML(){
@@ -2373,6 +2289,14 @@ function houseHTML(){
     </svg>
     <div class="ht">The Last Five Years</div>
     <div class="hs">Redline Performing Arts</div>
+  </div>`;
+}
+
+/* the Intermission card: after The Next Ten Minutes, until Act Two's first cue */
+function interHTML(){
+  return `<div class="house">
+    <div class="ht">Intermission</div>
+    <div class="hs">The Last Five Years · Act Two</div>
   </div>`;
 }
 
@@ -2436,10 +2360,43 @@ const AUTOFRAME={lock:{z:1.9,at:'top'},home:{z:1.6,at:'mid'},msglist:{z:1.9,at:'
      (name top, buttons bottom) — the layer's own type carries 25 ft instead */
   photos:{z:1.6,at:'mid'},shot:{z:1.6,at:'mid'},
   search:{z:1.8,at:'top'},calevent:{z:1.8,at:'top'},settings2:{z:1.8,at:'top'},
-  findmy:{z:1.6,at:'mid'},reminders:{z:1.8,at:'top'},contact:{z:1.8,at:'top'},
+  findmy:{z:1.5,at:'bottom'},reminders:{z:1.8,at:'top'},contact:{z:1.8,at:'top'},
   ember:{z:1.6,at:'mid'},vm:{z:1.8,at:'mid'},ftrecents:{z:1.9,at:'top'},
   music:{z:1.7,at:'mid'},maps:{z:1.6,at:'mid'},note:{z:1.8,at:'top'},igreq:{z:1.8,at:'mid'},
+  books:{z:1.2,at:'mid'},   /* the whole page reads as a page; mapsdrive runs UNCROPPED: banner top, ETA bottom, the road between */
   pages:{z:1.6,at:'mid'},cards:{z:1.8,at:'mid'},focus:{z:1.8,at:'top'},standby:{z:1.6,at:'mid'}};
+/* the reading window for THIS state: a cue's own frame wins; a thread pulls
+   back while the keyboard is up so the conversation stays in view above it */
+/* FRAMING (David, Sept 18 — supersedes the close-up default): THE WHOLE PHONE
+   IS ALWAYS ON STAGE. Nothing is cropped, nothing re-aims, and the presenter
+   preview is exactly the projection. Legibility comes from the phone itself
+   running Larger Text (a real iOS setting — see .fs), not from a zoomed
+   window. A cue may still ask for a close-up explicitly with {op:'frame'}. */
+const CLOSEUP_DEFAULT=false;
+function autoFrame(st){
+  if(st.frame==='off') return null;
+  if(st.frame && st.frame.z) return st.frame;
+  if(!CLOSEUP_DEFAULT) return null;
+  if(st.app==='thread') return st.kbd ? {z:1.5,at:'bottom'} : {z:1.9,at:'bottom'};
+  return AUTOFRAME[st.app];
+}
+/* presenter: paint the crop onto the preview, so the operator sees exactly
+   what the audience sees — the part of the phone inside the gold lines */
+function paintCropBands(st, maskOn){
+  if(view!=='presenter') return;
+  const pv=document.getElementById('previewInner'); if(!pv) return;
+  pv.querySelectorAll('.cropband').forEach(e=>e.remove());
+  const dev=pv.querySelector('.iphone'); if(!dev || !maskOn || projFit<=1.01) return;
+  const f=1/projFit, fr=autoFrame(st)||{at:'mid'};
+  const R=dev.getBoundingClientRect(), P=pv.getBoundingClientRect();
+  const top=R.top-P.top, H=R.height, hid=H*(1-f);
+  const tH = fr.at==='top'?0 : fr.at==='bottom'?hid : hid/2;
+  const bH = hid-tH;
+  const mk=(y,h,cls)=>{ const d=document.createElement('div'); d.className='cropband '+cls;
+    d.style.cssText=`top:${y}px;height:${h}px;left:${R.left-P.left}px;width:${R.width}px`; pv.appendChild(d); };
+  if(tH>1) mk(top,tH,'t');
+  if(bH>1) mk(top+H-bH,bH,'b');
+}
 /* portrait: the era stamp must hold ONE line clear of the phone — long stamps
    shrink to fit rather than wrapping behind the device */
 function fitStamp(){
@@ -2458,11 +2415,11 @@ function fitStamp(){
    songs, preshow, manual blackout). Landscape rig only. */
 function eraStageOf(st){
   const S=stageDims();
-  return S.w>S.h && !!st.black && !!st.stamp && !(si===0&&ci===0);
+  return S.w>S.h && !!st.black && !st.inter && !!st.stamp && !(si===0&&ci===0);
 }
 /* does this state actually darken the stage? (era-center keeps it lit;
-   the preshow house card paints through) */
-function stageBlack(st){ return !!st.black && !eraStageOf(st) && !(si===0&&ci===0); }
+   the preshow house card and the Intermission card paint through) */
+function stageBlack(st){ return !!st.black && !st.inter && !eraStageOf(st) && !(si===0&&ci===0); }
 /* stage geometry shared by full paints and live-animation reframes */
 function stageMetrics(st){
   const S=stageDims();
@@ -2486,7 +2443,8 @@ function stageMetrics(st){
 function frameDevice(st){
   const {S, portrait, h, fit, mbFit}=stageMetrics(st);
   document.body.classList.toggle('portrait', portrait);
-  const preshow = (si===0 && ci===0);
+  // a house card (preshow, Intermission) owns the whole stage: no rails, no device
+  const preshow = (si===0 && ci===0) || !!st.inter;
   document.body.classList.toggle('preshow', preshow);
   // landscape stage modes: rails flank the phone; the laptop takes the whole
   // screen under a top info bar; preshow/full-bleed drop the chrome entirely
@@ -2512,7 +2470,7 @@ function frameDevice(st){
       // auto zoom. The push-in renders inside a WIDE READING WINDOW: the window
       // grows to the scaled content width, so text is never chopped mid-line —
       // the crop is vertical only, to the reading region.
-      const fr = st.frame==='off' ? null : (st.frame && st.frame.z ? st.frame : AUTOFRAME[st.app]);
+      const fr = autoFrame(st);
       if(fr){
         const phW=h*9/19.5, maxW=S.w*0.54;
         const z=Math.min(+fr.z, maxW/phW);   // never wider than the rails allow
@@ -2532,6 +2490,7 @@ function frameDevice(st){
     pj.style.width=(!portrait && !laptop && (preshow || st.dev==='full' || st.black))?'100%':'';
     pj.style.height=''; pj.style.borderRadius='';
   }
+  paintCropBands(st, maskOn);
 }
 function paintAll(st){
   const {S, portrait, h, mbFit}=stageMetrics(st);
@@ -2542,20 +2501,27 @@ function paintAll(st){
   const pj=document.getElementById('projDevice');
   if(pj){
     pj.innerHTML = preshow ? houseHTML()
+                 : st.inter ? interHTML()
                  : st.black ? '' : deviceHTML(st, st.dev==='macbook'?macW:h);
   }
   frameDevice(st);
   if(view==='presenter'){
     const pv=document.getElementById('previewInner');
     const ph=Math.min(pv.parentElement.clientHeight-16,620);
+    // era-center in the preview looks like era-center on stage: the gold era, big
     pv.innerHTML = preshow ? houseHTML()
-      : st.black?`<div style="color:${st.stamp?'var(--gold)':'#555'};font-family:Courier Prime,monospace;letter-spacing:.2em;text-align:center">${st.stamp?'— ERA CENTER · '+escTxt(st.stamp)+' —':'— BLACK —'}</div>`
+      : st.inter ? interHTML()
+      : st.black?(st.stamp
+          ?`<div style="text-align:center"><div id="prevEra" style="color:var(--gold);font-family:Courier Prime,monospace;font-weight:700;letter-spacing:.16em;font-size:clamp(28px,4.2vw,64px);line-height:1.15;text-shadow:0 0 40px rgba(233,199,102,.35)">${String(st.stamp).split(' · ').map(escTxt).join('<br>')}</div>
+              <div style="color:#8b8fa3;font-family:Courier Prime,monospace;letter-spacing:.24em;font-size:11px;margin-top:14px">ERA CENTER — the phone is away; the time holds the stage</div></div>`
+          :`<div style="color:#555;font-family:Courier Prime,monospace;letter-spacing:.2em;text-align:center">— BLACK —</div>`)
       : deviceHTML(st, st.dev==='macbook'?Math.min(pv.parentElement.clientWidth*0.9/1.55,ph):ph);
   }
 }
 function setStamp(st){
   ['projStamp','prevStamp'].forEach(id=>{ const e=document.getElementById(id); if(!e) return;
     e.textContent=st.stamp||''; e.classList.toggle('on', !!st.stamp && !st.black); });
+  { const pe=document.getElementById('prevEra'); if(pe) pe.innerHTML=String(st.stamp||'').split(' · ').map(escTxt).join('<br>'); }
   fitStamp();
   // WHOSE PHONE — the audience must never have to guess
   ['projOwner','prevOwner'].forEach(id=>{ const e=document.getElementById(id); if(!e) return;
@@ -2711,9 +2677,21 @@ async function playCue(cue, st, tok){
       st.call.st='Call Ended'; swapLayer(st,null);
       await wait(1100); if(tok!==animTok) return;
     }
+    if(o.op==='pause'){ await wait(o.ms||800); continue; }
+    if(o.op==='intermission'){ applyOp(st,o); paintAll(st); setStamp(st);
+      document.body.classList.toggle('blk', blk||stageBlack(st)); continue; }
+    if(o.op==='notifDismiss'){
+      // the top notification slides off under his thumb, then the stack closes up
+      stacks().forEach(k=>{ const n=k.querySelector('.nstack .notif'); if(!n) return;
+        n.style.transition='transform .38s ease-in, opacity .3s ease-in';
+        n.style.transform='translateX(115%)'; n.style.opacity='0'; });
+      await wait(420); if(tok!==animTok) return;
+      applyOp(st,o); swapLayer(st,null); await wait(200); continue; }
     if(o.op==='device'){ applyOp(st,o);
       const nx=cue.do[cue.do.indexOf(o)+1];
-      if(nx && (nx.op==='setapp'||nx.op==='inbox')) applyOp(st,cue.do[cue.do.indexOf(o)+1]);
+      // a phone that is ALREADY in an app when it appears (mounted on the dash,
+      // mid-navigation) paints straight into it — no lock-screen flash
+      if(nx && (nx.op==='setapp'||nx.op==='inbox'||nx.op==='mapsdrive')) applyOp(st,cue.do[cue.do.indexOf(o)+1]);
       paintAll(st); setStamp(st);
       // the device op lifts the between-songs black itself, so the rest of
       // the cue (unlock, app opens) plays in view, not behind the fade
@@ -2742,6 +2720,7 @@ async function playCue(cue, st, tok){
             // the rail era rolls with it — the audience watches the months spin
             // forward or backward, then the stamp op names where we landed
             if(era) setEraText(era, MO[d.getMonth()]+' '+d.getFullYear());
+            const pe=document.getElementById('prevEra'); if(pe) pe.textContent=MO[d.getMonth()].toUpperCase()+' '+d.getFullYear();
             await wait(i<4?40:(i<12?70:130));   // accelerate, then brake into the new era
           }
         }
@@ -2810,9 +2789,9 @@ async function playCue(cue, st, tok){
       applyOp(st,o); await wait(340); continue; }
     if(o.op==='push'){ applyOp(st,o); swapLayer(st,'pushIn'); await wait(430); continue; }
     if(o.op==='history'){ applyOp(st,o); swapLayer(st,null);
-      // land at the TOP of the history so the audience reads it from the beginning
-      stacks().forEach(k=>{const t=k.querySelector('.thread'); if(t){t.style.justifyContent='flex-start'; t.scrollTop=0;}});
-      await wait(200); continue; }
+      // the thread lands on its newest messages, hugging the input bar — the
+      // part of the conversation the reading window is aimed at
+      scrollThreads(); await wait(200); continue; }
     if(o.op==='scrollhist'){
       await Promise.all(stacks().map(k=>{const t=k.querySelector('.thread'); if(!t)return null;
         const target=Math.max(0,(t.scrollHeight-t.clientHeight)*0.55);
@@ -2832,6 +2811,7 @@ async function playCue(cue, st, tok){
       st.kbd=true;
       stacks().forEach(k=>{const kb=k.querySelector('.kbd'); if(kb) kb.classList.add('up');
         const pr=k.querySelector('.predict'); if(pr) pr.classList.add('up');});
+      frameDevice(st);          // the window pulls back so the thread stays in view above the keys
       await wait(340); if(tok!==animTok) return;
       const text=o.t;
       const TR=prng('type'+cue.id+text.length);
@@ -2891,7 +2871,7 @@ async function playCue(cue, st, tok){
         const kb=k.querySelector('.kbd'); if(kb) setTimeout(()=>kb.classList.remove('up'),260);
         const pr=k.querySelector('.predict'); if(pr) setTimeout(()=>pr.classList.remove('up'),260);
       });
-      scrollThreads(); await wait(300); continue; }
+      scrollThreads(); await wait(300); frameDevice(st); continue; }
     if(o.op==='wipe'){
       const text=st.draft||'';
       const wipeMeta=o.t;
@@ -2906,7 +2886,7 @@ async function playCue(cue, st, tok){
       applyOp(st,o);
       stacks().forEach(k=>{const kb=k.querySelector('.kbd'); if(kb) kb.classList.remove('up');
         const pr=k.querySelector('.predict'); if(pr) pr.classList.remove('up'); });
-      scrollThreads(); await wait(260); continue; }
+      scrollThreads(); frameDevice(st); await wait(260); continue; }
     if(o.op==='rcpt'){
       if(cue.do.some(x=>x.op==='send')) await wait(560+prng('rc'+cue.id)()*320);
       if(tok!==animTok) return; applyOp(st,o);
@@ -2947,6 +2927,13 @@ async function playCue(cue, st, tok){
       await wait(340); if(tok!==animTok) return;
       applyOp(st,o); swapLayer(st,null); await wait(200); continue; }
     if(o.op==='vmState'||o.op==='musicBanner'||o.op==='match'){ applyOp(st,o); swapLayer(st,'fadeUp'); await wait(300); continue; }
+    if(o.op==='callState'){
+      // the call screen stays put: only its status line changes (no re-render, no flash)
+      applyOp(st,o);
+      const inPlace=stacks().map(k=>{ const e=k.querySelector('.cst'); if(!e) return false;
+        e.innerHTML=liveTimerHTML(st.call?st.call.st:''); return true; });
+      if(!inPlace.length || !inPlace.every(Boolean)) swapLayer(st,null);
+      await wait(200); continue; }
     if(o.op==='mailopen'){
       await wait(360); if(tok!==animTok) return;
       applyOp(st,o); swapLayer(st,'pushIn'); await wait(430); continue; }
@@ -2991,11 +2978,14 @@ async function playCue(cue, st, tok){
       await wait(o.op==='docline'?260:340); continue; }
     if(['call','facetime','cards','ember','pages','search','x','focus','clearRows','callState','ftState','ftMain',
         'like','comment','swipe','fqRelease','searchClear','memories','msgrows',
-        'contactcard','findmy','calevent','settings2','reminders','ftrecents','maps','music','shot','note','vm','igreq'].includes(o.op)){
+        'contactcard','findmy','calevent','settings2','reminders','ftrecents','maps','music','shot','note','vm','igreq',
+        'books','mapsdrive'].includes(o.op)){
       const wasApp=st.app; applyOp(st,o);
+      if(o.op==='mapsdrive') delete DRIVE_T0[o.key||'drive'];   // a live GO starts the trip from zero
       const appMap={call:'call',facetime:'facetime',cards:'cards',ember:'ember',pages:'pages',search:'search',x:'x',focus:'focus',memories:'memories',
         contactcard:'contact',findmy:'findmy',calevent:'calevent',settings2:'settings2',reminders:'reminders',
-        ftrecents:'ftrecents',maps:'maps',music:'music',shot:'shot',note:'note',vm:'vm',igreq:'igreq'};
+        ftrecents:'ftrecents',maps:'maps',music:'music',shot:'shot',note:'note',vm:'vm',igreq:'igreq',
+        books:'books',mapsdrive:'mapsdrive'};
       swapLayer(st, appMap[o.op]&&wasApp!==st.app ? 'appOpen' : 'fadeUp');
       await wait(o.op==='swipe'?520:300); continue; }
     if(o.op==='thumb'){ applyOp(st,o);
@@ -3016,6 +3006,19 @@ const song=()=>SHOW[si];
 const cues=()=>song().cues;
 
 let CUR=null;                     // live animated state
+/* the GO line, typeset for a booth: sung words glow gold inside quotes; a
+   musical or stage anchor in CAPS before ' — ' reads as the event; the rest
+   is the operator's note, smaller */
+function trigHTML(t, kind){
+  let s=escTxt(t||'');
+  s=s.replace(/[“"]([^”"]+)[”"]/g,(m,q)=>`<q>${q}</q>`);
+  const ev=/^([A-Z0-9][A-Z0-9’'!?.,:()\/&\-\s]{2,}?)(\s+—\s+)([\s\S]*)$/.exec(s);
+  if(kind!=='lyric' && ev && !/<q>/.test(ev[1])) return `<span class="ev">${ev[1]}</span>${ev[2]}<span class="rest">${ev[3]}</span>`;
+  if(kind!=='lyric' && /^[A-Z0-9][A-Z0-9’'!?.,:()\/&\-\s]+$/.test(s)) return `<span class="ev">${s}</span>`;
+  const ql=/^(.*?<\/q>[!?.,]*)(\s+—\s+)([\s\S]*)$/.exec(s);
+  if(ql) return `${ql[1]}${ql[2]}<span class="rest">${ql[3]}</span>`;
+  return s;
+}
 function paintChrome(){
   const cur = ci>0 ? cues()[ci-1] : null;
   const nxt = ci<cues().length ? cues()[ci] : null;
@@ -3031,31 +3034,42 @@ function paintChrome(){
   pv.textContent = st.who==='cathy'?'CATHY’S SCREEN':'JAMIE’S SCREEN';
   pv.className = 'pov '+(st.who==='cathy'?'c':'j');
   if(cur && cur.cut){ pv.textContent='⤳ CUTAWAY — '+(st.who==='cathy'?'HER':'HIS')+' SCREEN'; pv.className='pov cut'; }
+  const kindOf=c=>c.kind==='music'?'music':c.kind==='stage'?'stage':'lyric';
   if(nxt){
-    $('sbLabel').textContent='STANDBY — '+nxt.id;
-    $('trigLbl').textContent = nxt.kind==='music'?'GO ON THIS MUSICAL MOMENT'
-      : nxt.kind==='stage'?'GO ON THIS STAGE ACTION':'GO ON THIS LINE';
-    $('trigLine').textContent=nxt.trig;
-    $('trigLine').className='line'+(nxt.kind!=='lyric'?' stage':'');
-    $('nextWhat').innerHTML='<b>'+nxt.id+'</b> — '+nxt.what;
+    const kind=kindOf(nxt);
+    $('sbLabel').textContent='NEXT GO — '+nxt.id;
+    const kd=$('sbKind'); kd.className='kind '+kind; kd.style.display='';
+    kd.textContent = kind==='music'?'♩ MUSIC CUE':kind==='stage'?'✋ STAGE ACTION':'♪ SUNG LINE';
+    $('trigLbl').textContent = kind==='music'?'GO ON THIS MUSICAL MOMENT'
+      : kind==='stage'?'GO WHEN YOU SEE THIS':'GO ON THIS LINE';
+    $('trigLine').innerHTML=trigHTML(nxt.trig, kind);
+    $('trigLine').parentElement.className='trigger '+kind;
+    $('nextWhat').innerHTML='<b>WHAT HAPPENS</b> &nbsp;'+escTxt(nxt.what);
     $('holdNote').style.display=nxt.hold?'block':'none';
     $('holdNote').textContent=nxt.hold||'';
+    const after = ci+1<cues().length ? cues()[ci+1] : null;
+    const nextBuilt = SHOW[(si+1)%SHOW.length];
+    $('thenLine').innerHTML = after
+      ? `<b>THEN ${after.id}</b> &nbsp;${escTxt(after.trig)}`
+      : `<b>THEN</b> &nbsp;end of song — <b>]</b> to load ${escTxt(nextBuilt.n+' · '+nextBuilt.t)}`;
   } else {
     const last = si>=SHOW.length-1;
     const nextBuilt = SHOW[(si+1)%SHOW.length];
     const nextInOrder = RUNNING_ORDER.find(([n])=>n===song().n+1);
     $('sbLabel').textContent='END OF SONG';
+    const kd=$('sbKind'); kd.className='kind'; kd.textContent=''; kd.style.display='none';
     $('trigLbl').textContent='NEXT';
     if(last && nextInOrder && !SHOW.some(s=>s.n===nextInOrder[0])){
-      $('trigLine').textContent='“'+nextInOrder[1]+'” is not built yet — end of loaded content.';
+      $('trigLine').innerHTML=escTxt('“'+nextInOrder[1]+'” is not built yet — end of loaded content.');
       $('nextWhat').innerHTML='<b>'+SHOW.length+' of '+RUNNING_ORDER.length+' songs loaded.</b> '+
         'Press <b>[</b> to go back, or <b>esc</b> for the running order.';
     } else {
-      $('trigLine').textContent='] to advance to '+nextBuilt.t;
+      $('trigLine').innerHTML='<span class="ev">PRESS ]</span> <span class="rest">to load '+escTxt(nextBuilt.n+' · '+nextBuilt.t)+' — its first GO is then on this card</span>';
       $('nextWhat').textContent='';
     }
-    $('trigLine').className='line stage';
+    $('trigLine').parentElement.className='trigger music';
     $('holdNote').style.display='none';
+    $('thenLine').innerHTML='';
   }
   $('queue').innerHTML=cues().map((c,i)=>`<div class="qrow ${i===ci?'cur':''} ${i<ci?'done':''}">
     <span class="qid">${c.id}</span><span class="qt">${c.what}</span></div>`).join('');

@@ -20,15 +20,18 @@ def fname(a, cast):
     return f"S{a['song']:02d}-{a['code']}-{a['slug']}-{cast}.{ext}"
 
 def files_for(a):
+    if a['status'] == 'cut':
+        return '— (nothing to upload)'
     if a['status'] == 'derived':
         return '— (I make this from M7)'
     if a['shared']:
         return f"`{fname(a,'SHARED')}`"
     return f"`{fname(a,'ML')}`  ·  `{fname(a,'AC')}`"
 
-for status, heading in [('confirmed', 'SHOOT NOW — confirmed for the locked build'),
+for status, heading in [('confirmed', 'SHOOT — every photo and video the locked build needs'),
                         ('derived', 'DERIVED — nothing to shoot'),
-                        ('confirm', 'CONFIRM — waits on one Song 5 answer (party album)')]:
+                        ('confirm', 'CONFIRM — waiting on an answer'),
+                        ('cut', 'CUT (Sept 18) — do NOT shoot')]:
     rows = [a for a in S['assets'] if a['status'] == status]
     if not rows:
         continue

@@ -51,10 +51,12 @@ memory. Never reintroduce a 2021 card.
 Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, writing). Do not build elaborate cueing inside 7; keep the FaceTime frame and the log; the video content is produced separately.
 
 ## Direction locked Sept 14, 2026 (team call — David, Alonzo, Peyton)
-- **The rig is a 75″ LANDSCAPE TV, audience up to 25 ft.** Readability rules everything —
-  and **CLOSE-UP IS THE DEFAULT, not an option**: every register auto-zooms to its reading
-  region (`AUTOFRAME` in the engine — thread 2.2×, lock/notifications 1.9× top, posts 1.8×…).
-  A cue overrides with `{op:'frame', z, at:'top'|'mid'|'bottom'}` or `{op:'frame', off:true}`.
+- **The rig is a 75″ LANDSCAPE TV, audience up to 25 ft.** Readability rules everything.
+  **FRAMING (David, Sept 18 — supersedes the close-up default): THE WHOLE PHONE IS ALWAYS
+  ON STAGE.** Nothing is cropped, nothing re-aims mid-cue, and the presenter preview is
+  exactly the projection. Legibility comes from the phone running iOS Larger Text (`.fs`
+  base size), not from a zoomed window. `CLOSEUP_DEFAULT=false` in the engine; a cue may
+  still ask for a close-up explicitly with `{op:'frame', z, at}` — none do in the show.
 - **The composed stage (revised Sept 14 evening — nothing ever overlays the phone).**
   Landscape is a three-zone stage: **left rail = identity** (CATHY/JAMIE in their color +
   HER PHONE/HIS LAPTOP), **center = the device**, **right rail = the era only** — month
@@ -90,9 +92,33 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
 - **Preshow**: the house card (title + the two-handed clock) renders at song 1 · cue 0.
 - **Non-diegetic is allowed.** The phone plays even when the actor isn't holding it; in
   those moments the frame may drop away entirely (`dev:'full'` full-bleed stage).
-- **Simplicity**: target one or two screen moments per song; black is the default state
-  while they sing. Songs 3 is deliberately near-empty (post + likes, then Jamie's call).
-- **Song 3 is `who:'both'`** by direction: Jamie's outgoing call appears inside Cathy's song.
+- **Simplicity**: target one or two screen moments per song; black (era-center) is the
+  default state while they sing.
+- **Song 3 is `who:'both'`** by direction: Jamie's calls appear inside Cathy's song; she has
+  no phone in it (her pier post was cut Sept 18).
+
+## THE LINE-BY-LINE BUILD (David, Sept 18 — the spec; 72 cues)
+- **1** prologue memories auto-play from ONE GO (the waltz); black on the first bar; at the
+  m.58 interlude she picks up the phone and sends her text (auto sequence); memories
+  return full-bleed on her later line; the read receipt / typing beats are CUT.
+- **2** as built (drafts, the send, her typing bubble, her call); same-night compression kept.
+- **3** era-center only for her; Jamie's three calls (Whitfield ×2, Rob — he dials, per the
+  script) with return rolls; hang-up on the downbeat of 4.
+- **4** her Stelmyer call (dial → connect → end), then his notifications. **5** ONE THING:
+  Books on her phone, the last page — “For Cathy” (rendered; no photo). **6** his lock screen,
+  Christmas wallpaper, whole song. **7** the FaceTime arc (ring → V2 → Call Ended → black).
+- **8** her lock screen marks the time, back and forth; **8.4 = INTERMISSION card** (holds
+  until 9.1). **9** notifications only. **10** “break a leg” before her first note, two
+  rejection emails, black, the bell-tone FLASHBACK to NOVEMBER 2023 (his long text), return.
+- **11** timeline only (one cue). **12** THE DRIVE: Apple Maps for the whole song, time-based
+  (`mapsdrive`, `dur` seconds to arrival — tune in tech), the phone clock runs with it.
+- **13** two beats: her text lands and he swipes it away; on his last line, Find My →
+  Share My Location → Share Indefinitely (it was OFF before the song; never shown turning off).
+- **14** era flips with the singer; her one animation (his “home safe?” lands, she opens it,
+  types, never sends); his last verse rolls to JUNE 2026 and holds; FINAL BLACKOUT = true black.
+- Instrumental passages auto-play from one GO using `{op:'pause', ms}` beats — tunable in tech.
+- Assets that remain: M24, M15, M3a, M2, M4 (Song 1), M23 (Song 6), V2 (Song 7). CUT: M1, M7/M7b, M12.
+- **Never quote the script in chat.** Trigger fragments live only in `cues.js`, short.
 - **LINES LAW (supreme)**: trigger lines come ONLY from the licensed script. Every line
   not yet checked against it carries a ⚠CONFIRM flag in the cue data and documents.
   Never write, fix, or fill a script line from memory. `apply_lines.py` +

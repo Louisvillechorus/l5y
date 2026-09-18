@@ -17,6 +17,8 @@ def fname(a, cast):
 
 
 def files(a):
+    if a['status'] == 'cut':
+        return '<span class="dim">— nothing to upload</span>'
     if a['status'] == 'derived':
         return '<span class="dim">— made from M7, nothing to upload</span>'
     if a['shared']:
@@ -53,9 +55,10 @@ out.append('<b>EXAMPLES</b> — ' + ' &nbsp;·&nbsp; '.join(f'<code>{e(x)}</code
 out.append(f'<b>PHOTOS</b> — {e(N["photos"])}<br><b>VIDEO</b> — {e(N["video"])}<br><b>WHERE</b> — {e(N["folder"])}')
 out.append('</div>')
 
-groups = [('confirmed', 'SHOOT NOW — confirmed for the locked build'),
+groups = [('confirmed', 'SHOOT — every photo and video the locked build needs'),
           ('derived', 'DERIVED — nothing to shoot'),
-          ('confirm', 'CONFIRM — waits on one Song 5 answer (party album)')]
+          ('confirm', 'CONFIRM — waiting on an answer'),
+          ('cut', 'CUT (Sept 18) — do NOT shoot; listed so nobody shoots them by mistake')]
 for status, heading in groups:
     rows = [a for a in S['assets'] if a['status'] == status]
     if not rows:
