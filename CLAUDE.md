@@ -41,9 +41,9 @@ must exist in both sets (a missing entry renders the greeked placeholder).
 
 ## The prologue memory ladder is FOUR cards (canon arithmetic)
 They meet Sept 3, 2021, so Facebook "On This Day" (June 12) can only reach back to 2022:
-**2022** nine months in — the couch (M15) · **2023** the proposal, June 12 (the rowboat day
+**2022** nine months in — the bear (M2, Jamie giving it to her; caption “nine months in. he brought a bear 🧸”) · **2023** the proposal, June 12 (the rowboat day
 The Next Ten Minutes returns to) · **2024** married three weeks, 600 miles apart (Ohio is forty
-miles east of Cincinnati per the script) · **2025** Ohio round two, day one — the bear (M2 — Jamie IS in the frame: he is giving her the bear; the caption is “Ohio round 2 day 1” — David, Sept 19). The pier (M1, July 19, 2025) is Song 3's post only — it can never be a June 12
+miles east of Cincinnati per the script) · **2025** Ohio round two, day one — Cathy in the dressing-room mirror (M26; caption “Ohio round 2 day 1”). The couch (M15) is CUT from the whole show (David, Sept 19). She stays on the bear (memgo i:3). The pier (M1, July 19, 2025) is Song 3's post only — it can never be a June 12
 memory. Never reintroduce a 2021 card.
 
 ## Song 7 is special
@@ -201,8 +201,8 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
 - **14** era flips with the singer; her one animation (his “home safe?” lands, she opens it,
   types, never sends); his last verse rolls to JUNE 2026 and holds; FINAL BLACKOUT = true black.
 - Instrumental passages auto-play from one GO using `{op:'pause', ms}` beats — tunable in tech.
-- Assets: M24, M15, M3a, M2 (now THE BEAR), M4 (Song 1), M23 (Song 6), V2 (Song 7), plus loop-only
-  photos (S00-LOOP-…). CUT: M1, M7/M7b, M12.
+- Assets: M24, M25, M26, M3a, M2 (THE BEAR), M4 (Songs 1 and 9), M23 (Song 6), V2 (Song 7), plus loop-only
+  photos (S00-LOOP-…). CUT: M1, M7/M7b, M12, M15.
 - **Never quote the script in chat.** Trigger fragments live only in `cues.js`, short.
 - **LINES LAW (supreme)**: trigger lines come ONLY from the licensed script. Every line
   not yet checked against it carries a ⚠CONFIRM flag in the cue data and documents.
