@@ -26,6 +26,10 @@ window.L5Y_SHOW = [
 
 /* ============ 1 · STILL HURTING — CATHY, her iPhone ============ */
 {n:1,t:'Still Hurting',who:'cathy',cues:[
+ {id:'1.0',kind:'stage',trig:'HOUSE — the preshow performer is announced',
+  what:'The pad turns to tonight’s preshow performer — the name the operator chose on the start screen, nothing else on the page. If NONE was chosen the title page simply stays up and this GO does nothing.',
+  hold:'Hold here through the preshow. The next GO tears this page for the top of the show.',
+  do:[{op:'perf'}]},
  {id:'1.1',kind:'music',trig:'PROLOGUE — the first note of the wedding waltz',
   what:'ONE GO. The title page tears off the pad and falls; beneath it the calendar reads JUNE · YEAR 5, the morning after, and holds center-stage through the whole prologue. No phone, no sound.',
   hold:'`ms` on this cue delays the tear after GO (0 = on the GO). Nothing else moves until her verse-two line.',

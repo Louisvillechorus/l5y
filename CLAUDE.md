@@ -116,9 +116,17 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   **THE INK HAS GRIT** (`#inkgrit`): a low-amplitude displacement roughens the glyph CONTOUR so the type sits
   in the paper, with only a whisper of interior mottle — the fill stays hard black (a fine interior screen
   greys the letter out at 25 ft and is wrong). A page in flight drops the filter (16 filtered clones cost frames).
-  **The house pages carry the words only** (David: leave those simple): the title page is REDLINE PERFORMING
-  ARTS over THE LAST / FIVE / YEARS — no act number, no author credit; the intermission page is INTER /
-  MISSION alone — no “Act Two”. Photos fall behind both (the files are still outstanding).
+  **THE TITLE PAGE IS ITSELF A DATE CARD** (David, Sept 19 night — his second mockup): THE LAST over a huge
+  **5** over YEARS, with *Redline Performing Arts* at the foot. No act number, no author credit.
+  **INTERMISSION is ONE WORD on a wide torn BAND** across the middle of the stage (`.pad.inter .sheet` insets
+  to a strip) — never split across lines. Photos fall behind both; the photo files are still outstanding.
+- **THE OPERATOR'S GATE (David, Sept 19 night)**: the app cannot start until the questionnaire is answered —
+  (1) tonight's cast, (2) tonight's preshow performer (Gayle King · Kenneth Bailey · Taylor Thomas ·
+  Elijah Pahls · none), (3) a summary of both with “is this right?”, (4) **a SECOND person must confirm**,
+  and only then do the Start buttons appear. The choice is stored (`l5y_perf`) and synced to the projection
+  window. **Cue 1.0** (new; the existing ids are unchanged) turns the pad to the performer's name; choosing
+  none leaves the title page up so the GO is a harmless no-op. The next GO (1.1) tears whatever page is on
+  top, so the prologue works either way.
 - **TIME ONLY EVER CHANGES ON THE CALENDAR** (`eraRoll`), and every roll rides the TIME WARP MUSIC
   (`assets/sfx/timewarp.mp3`, David's file, `warpStart`: in on the first page, out as the last settles,
   stopped on a scrub): forward = pages tear off and fall;

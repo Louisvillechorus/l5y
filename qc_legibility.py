@@ -92,7 +92,7 @@ def run():
         errs = []
         pg.on('pageerror', lambda e: errs.append(str(e)))
         pg.goto(FILE); pg.wait_for_timeout(800)
-        pg.click('text=Start — Projection only'); pg.wait_for_timeout(300)
+        pg.evaluate("startAs('projection')"); pg.wait_for_timeout(300)   # the start screen is behind the operator questionnaire now
 
         nsongs = pg.evaluate('SHOW.length')
         problems = []
