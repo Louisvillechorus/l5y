@@ -322,7 +322,7 @@ window.L5Y_SHOW = [
   what:'FLASHBACK, AUTO-PLAYS from this GO. The pages settle BACK three months — FEBRUARY → NOVEMBER · YEAR 3 — and dock; her phone rises: a text from him, long and thoughtful, the night before an earlier callback. She opens it; the thread shows the man he was three months ago.',
   hold:'The contrast IS the cue: three seconds of effort in February, a paragraph in November.',
   do:[{op:'clock',t:'9:48',d:'Wednesday, November 8, 2023'},{op:'stamp',t:'three months earlier'},
-      {op:'device',dev:'iphone',who:'cathy'},
+      {op:'device',dev:'iphone',who:'cathy',fresh:true},
       {op:'pause',ms:1500},
       {op:'notif',app:'Messages',w:'now',title:'Jamie 💙',
        t:'You are going to walk in there tomorrow and be the best thing they see all week. I mean it. Whatever happens in that room, you are already the real thing — I have known that since the first night. Go get it, and call me the second you are out. I love you.'},

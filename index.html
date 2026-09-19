@@ -1207,7 +1207,7 @@ const FALLBACK_SHOW = [
   what:'FLASHBACK, AUTO-PLAYS from this GO. The pages settle BACK three months — FEBRUARY → NOVEMBER · YEAR 3 — and dock; her phone rises: a text from him, long and thoughtful, the night before an earlier callback. She opens it; the thread shows the man he was three months ago.',
   hold:'The contrast IS the cue: three seconds of effort in February, a paragraph in November.',
   do:[{op:'clock',t:'9:48',d:'Wednesday, November 8, 2023'},{op:'stamp',t:'three months earlier'},
-      {op:'device',dev:'iphone',who:'cathy'},
+      {op:'device',dev:'iphone',who:'cathy',fresh:true},
       {op:'pause',ms:1500},
       {op:'notif',app:'Messages',w:'now',title:'Jamie 💙',
        t:'You are going to walk in there tomorrow and be the best thing they see all week. I mean it. Whatever happens in that room, you are already the real thing — I have known that since the first night. Go get it, and call me the second you are out. I love you.'},
@@ -1384,7 +1384,7 @@ function applyOp(st,o){
     case 'notifDismiss': st.notifs.shift(); break;
     case 'books': st.app='books'; st.book=o; st.sheet=null; break;
     case 'mapsdrive': st.app='mapsdrive'; st.drive=o; st.sheet=null; break;
-    case 'device': {
+    case 'device': if(o.fresh){ st.notifs=[]; } {
       st.black=false;   // a device cue puts a screen back on stage — blackout ends
       st.inter=false; st.curtain=false;   // …and the Intermission card / curtain, if up
       st.frame=null; st.memAt=null;
@@ -3757,7 +3757,10 @@ function camPush(sel,z,delay,anchor,dur,force,nofit){
     const T=el.getBoundingClientRect(); if(!T.width) return; const p1=g.loc(T.left,T.top), p2=g.loc(T.right,T.bottom);
     const qx=(p1.x+p2.x)/2, qy=(p1.y+p2.y)/2, tw=Math.max(p2.x-p1.x,1), th=Math.max(p2.y-p1.y,1);
     const F=g.F, mTop=F.top+F.height*0.08, mBot=F.bottom-F.height*0.08, uR=g.ux+g.uw;
-    if(!force && T.left>=g.ux && T.right<=uR && T.top>=mTop && T.bottom<=mBot) return;      // already in frame: hold
+    let Md; try{ Md=new DOMMatrix(c.style.transform||''); }catch(e){ Md=new DOMMatrix(); }     // the destination transform (a glide may be in flight)
+    const d1p=Md.transformPoint(new DOMPoint(p1.x,p1.y)), d2p=Md.transformPoint(new DOMPoint(p2.x,p2.y));
+    const L=g.P0x+d1p.x, Rr=g.P0x+d2p.x, Tt=g.P0y+d1p.y, Bb=g.P0y+d2p.y;
+    if(!force && L>=g.ux && Rr<=uR && Tt>=mTop && Bb<=mBot) return;      // already in frame where the camera lands: hold
     if(anchor==='top'||anchor==='bottom'){ z=Math.max(1,Math.min(z, g.uw/g.dw)); camApply(c,g,z,qx,qy,anchor,false,dur||1.4); return; }
     const cur=parseFloat(c.dataset.z)||1;
     const fitZ=Math.min(g.uw*0.88/tw, g.H*0.84/th);
