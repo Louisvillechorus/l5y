@@ -3147,6 +3147,7 @@ async function playCue(cue, st, tok){
         return humanScroll(f,i*f.clientHeight,'memgo'+cue.id,tok,{gesture:'drag',flicks:2});}));
       camPush(`.memfeed .memscreen:nth-child(${(o.i||0)+1}) .body`, 2.6, 0, null, null, true); camPush(`.memfeed .memscreen:nth-child(${(o.i||0)+1}) .media`, 2.2, 2600, 'center', 3.2, true, true);
       await wait(400); continue; }
+    if(o.op==='curtain') bedStop(2);
     if(o.op==='black'||o.op==='curtain'){
       // the phone drops away, then the era returns to center (or the curtain falls)
       const ph=stages().map(x=>x.querySelector('.iphone,.macbook,.carplay,.fullstage')).filter(Boolean);
@@ -3154,6 +3155,7 @@ async function playCue(cue, st, tok){
       if(ph.length){ ph.forEach(e=>e.classList.add('drop')); await wait(520); if(tok!==animTok) return; }
       applyOp(st,o); paintAll(st); setStamp(st);
       document.body.classList.toggle('blk', blk||stageBlack(st)); continue; }
+    if(o.op==='bed'){ if(o.stop) bedStop(o.fade); else bedStart(o.file,o.fade,o.gain); continue; }   // an ambience under the song, by cue only
     if(o.op==='prologue'){   // the title page holds for `ms`, then tears off — the era beneath it
       st.prologueLive=true; setStamp(st);
       if(o.ms){ await wait(o.ms); if(tok!==animTok){ st.prologueLive=false; return; } }
@@ -3246,6 +3248,7 @@ function paintChrome(){
   const bt=$('barBuild'); if(bt) bt.textContent=BUILD;
 }
 function hardRender(){          // no animation — scrub, resize, view swap, remote sync
+  if(typeof BED!=='undefined' && BED && BED.si!==si) bedStop(1.2);   // the bed belongs to its song
   animTok++; animRunning=false; if(typeof playStart!=='undefined') playStart=0; sfxRingStop(); camTimersClear();
   CUR=buildState(song(), ci);
   CAM_ST=CUR; paintAll(CUR); camWide(true);
@@ -4034,6 +4037,13 @@ function sfxLoad(){ if(sfxLoad.done||!AC) return; sfxLoad.done=true; const S=win
     if(u[0]===0x63&&u[1]===0x61&&u[2]===0x66&&u[3]===0x66) SFX_BUF_()[name]=cafDecode(u);   // sniff the magic: some .caf files are WAV inside
     else AC.decodeAudioData(u.buffer.slice(u.byteOffset,u.byteOffset+u.byteLength)).then(b=>{ SFX_BUF_()[name]=b; }).catch(e=>console.warn('sfx decode',name,e));
   }catch(e){ console.warn('sfx',name,e); } }); }
+var BED=null;
+function bedStart(file,fade,gain){ if(!sfxOn()) return; bedStop(0.6); const b=SFX_BUF_()[file]; if(!b) return;
+  const src=AC.createBufferSource(); src.buffer=b; src.loop=true; const g=AC.createGain(); const t=AC.currentTime;
+  g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(gain||.45,t+(fade||4)); src.connect(g).connect(MASTER); src.start(t); BED={src,g,file,si:(typeof si==='number'?si:-1)}; }
+function bedStop(fade){ if(!BED) return; const {src,g}=BED; BED=null; const t=AC.currentTime, f=fade==null?4:fade;
+  try{ g.gain.cancelScheduledValues(t); g.gain.setValueAtTime(Math.max(g.gain.value,0.0001),t); g.gain.exponentialRampToValueAtTime(0.0001,t+Math.max(.05,f)); }catch(e){}
+  setTimeout(()=>{ try{ src.stop(); }catch(e){} }, f*1000+150); }
 function sample(name,o={}){ const f=SFX_MAP_()[name], b=f&&SFX_BUF_()[f]; if(!b||!AC) return null;
   const src=AC.createBufferSource(); src.buffer=b; src.loop=!!o.loop; const g=AC.createGain(); g.gain.value=o.gain==null?1:o.gain;
   src.connect(g).connect(MASTER); src.start(AC.currentTime+(o.at||0)); return src; }
