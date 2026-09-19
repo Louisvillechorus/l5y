@@ -43,7 +43,7 @@ must exist in both sets (a missing entry renders the greeked placeholder).
 They meet Sept 3, 2021, so Facebook "On This Day" (June 12) can only reach back to 2022:
 **2022** nine months in — the couch (M15) · **2023** the proposal, June 12 (the rowboat day
 The Next Ten Minutes returns to) · **2024** married three weeks, 600 miles apart (Ohio is forty
-miles east of Cincinnati per the script) · **2025** Ohio round two, day one — the bear on the pillow (M2 — whether Jamie is in the frame is David’s call at the shoot). The pier (M1, July 19, 2025) is Song 3's post only — it can never be a June 12
+miles east of Cincinnati per the script) · **2025** Ohio round two, day one — the bear (M2 — Jamie IS in the frame: he is giving her the bear, David Sept 19). The pier (M1, July 19, 2025) is Song 3's post only — it can never be a June 12
 memory. Never reintroduce a 2021 card.
 
 ## Song 7 is special
@@ -169,7 +169,7 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
 - **13** two beats: her text lands (5:05 AM — before dawn means before the 5:24 sunrise) and he
   swipes it away; on his last line, Find My → Share My Location → Share Indefinitely (it was OFF
   before the song; never shown turning off). Her Ohio is **Mount Orab, OH** (forty miles east of
-  Cincinnati, per the script — David to confirm the town).
+  Cincinnati, per the script — confirmed by David, Sept 19). 4.8 keeps “SONNY READ IT.” (David’s call).
 - **Continuity law (Sept 19)**: her Friday thread (1.2) carries Thursday — the flight text from
   13.2 verbatim, “landed?”, “I read it. please call me”, “I’m not angry. just talk to me” — because
   his last day is June 11; nothing in it may imply he moved out earlier. Calls connect at 0:00.
