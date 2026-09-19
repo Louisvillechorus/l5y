@@ -2,14 +2,14 @@
 import json, html
 
 data=json.load(open('book.json'))
-DEV={'iphone':'iPhone','ipad':'iPad','macbook':'MacBook'}
+DEV={'iphone':'iPhone','ipad':'iPad','macbook':'MacBook','carplay':'CarPlay (the dash)'}
 APPNAME={'lock':'Lock screen','home':'Home screen','msglist':'Messages','thread':'Messages',
  'mail':'Mail','mailread':'Mail — reading','memories':'Facebook Memories','fbpost':'Facebook',
  'cards':'System card','photos':'Photos','call':'Phone','facetime':'FaceTime','ember':'Ember',
- 'pages':'Pages','search':'Search','focus':'Focus','standby':'Standby','off':'Screen off'}
+ 'pages':'Pages','search':'Search','focus':'Focus','standby':'Standby','off':'Screen off','findmy':'Find My','mapsdrive':'Maps — navigating','books':'Books'}
 
 SOUND_MAP=[('unlock','unlock swish'),('send','send whoosh'),('notif','notification tri-tone (soft)'),
- ('notiftap','tap thock'),('facetime','FaceTime trill, then connect pop'),('call','outgoing ring'),
+ ('notiftap','tap thock'),('facetime','FaceTime trill, then connect pop'),('call','ring — outgoing ringback, or the ringtone when dir is in'),
  ('type','keyboard clicks (follow the projection rhythm)'),('wipe','rapid delete clicks'),
  ('vm','voicemail playback: her recorded VO, 0:47'),('match','match chime (Ember)'),('black','room tone out')]
 def sound_for(ops):
@@ -22,8 +22,17 @@ def sound_for(ops):
 def onscreen(o):
     """The verbatim content a cue puts on the glass."""
     op=o['op']
-    if op=='stamp': return ([('ERA FOOT LINE → ', f"“{o['t']}”")] if o.get('t') else [])
-    if op=='clock': return [('TIME → ', f"{o['t']}" + (f" · {o['d']}" if o.get('d') else '')) + (' — the calendar pages roll to it (forward tears, backward settles) before any phone appears' if o.get('d') else '')]
+    if op=='stamp': return ([('ERA FOOT LINE → ', f"“{o['t']}”")] if o.get('t') else [('ERA FOOT LINE → ', 'clears')])
+    if op=='memgo': return [('SCROLLS BACK — ', f"she drifts up the feed to card {o.get('i',0)+1} and holds on it")]
+    if op=='batt': return [('BATTERY → ', f"{o['v']}%")]
+    if op=='clock':
+        lab=''
+        if o.get('d'):
+            try:
+                import datetime as _dt; d=_dt.datetime.strptime(o['d'],'%A, %B %d, %Y'); y=d.year; n=(y-2020) if d>=_dt.datetime(y,9,3) else (y-2021)
+                lab=f" — the house reads {d.strftime('%B').upper()} · YEAR {n}; the calendar pages roll to it (forward tears, backward settles) before any device appears"
+            except Exception: lab=' — the calendar pages roll to it'
+        return [('TIME → ', f"{o['t']}" + (f" · {o['d']}" if o.get('d') else '') + lab)]
     if op=='notif':
         t=o.get('title'); head=o['app']+(f' · {t}' if t and t!=o['app'] else '')
         return [(f"NOTIFICATION — {head} ({o.get('w','now')}): ", f"“{o['t']}”")]
@@ -183,7 +192,7 @@ def plays(o, cue, songwho):
     if op=='openapp': return (f"OPENS {o['icon']} — closes the current app if one is open, a beat on the home screen, "
                               'then the icon itself presses (its real tap animation) and the app opens · sound: tap')
     if op=='setapp': return f"cut to {APPNAME.get(o['to'],o['to'])} (instant)"
-    if op=='hover': return f"HESITATION — “{o['row']}” holds the iOS pressed-gray under a resting finger … and does not commit. Holds until the next cue."
+    if op=='hover': return f"“{o['row']}” takes the iOS pressed-gray under the finger"
     if op=='tap': return 'TAP COMMITS — the pressed row releases and pushes through · sound: tap'
     if op=='push': return f"thread pushes in from the list — {o.get('contact','')}"
     if op=='mailopen': return 'the row presses through — the email pushes in over the inbox'
@@ -199,25 +208,25 @@ def plays(o, cue, songwho):
     if op=='row' or op=='cards': return 'sound: soft pop'
     if op=='swipe': return 'sound: whoosh'
     if op=='docline': return 'sound: key-click burst (self-timed)'
-    if op=='black': return 'hard black'
+    if op=='black': return 'the device drops; the calendar takes center-stage (never black — true black is the curtain only)'
     return None
 
 OPS_SILENT={'device','clock'}  # covered inline
 
 # per-song dramaturgy intro — shared by the DOCX and PDF renderers
 INTROS={
-1:'COLD OPEN. Her phone is the first actor on stage, and the whole prologue plays from ONE GO: the Memories notification, the tap, four years in four cards. Black on the first bar. At the m.58 interlude she picks it up and sends her text — one GO, plays out on its own. Then, on her lines: Delivered turns to READ at 9:44, his typing bubble rises, and it stops. The thread stays up to the cutoff.',
-2:'THE FIRST NIGHT, FROM HIS SIDE. Three overwrought drafts die under the backspace key before two words survive: “home safe?” — the exact text the finale receives five years later. She answers by calling instead. His hesitation here is the measure for how fast he moves in 13.',
+1:'COLD OPEN, NO PHONE. The falling pages wind down on ONE GO — the title lifts away, the pages thin out, the last one blows off — and the calendar lands: JUNE · YEAR 5, the morning after. On her verse-two line the calendar docks and her phone rises (one GO, plays out): the Memories notification she ignores, Messages, his thread — days of her asking, a Thursday of silence — and she types her text and SENDS. Delivered → READ 9:44. His typing bubble rises. It stops. Then she opens the Memories: four cards, four years, and she drifts back up to the bear — the last image — until the cutoff takes the phone away.',
+2:'THE FIRST NIGHT, FROM HIS SIDE. Three overwrought drafts die under the backspace key before two words survive: “home safe?” — the exact text the finale receives the same night. She answers by calling instead. His hesitation here is the measure for how fast he moves in 13.',
 3:'HER SONG, HIS CALLS. She has no phone in this number: the era holds center-stage while she sings. Then his 2021 calls cut in — the agent cold call, the callback, and Rob (he dials, per the script) — and each hang-up rolls the time home to her July. The house learns the projections can time-travel.',
 4:'THE AVALANCHE, COMPRESSED. Her one professional call — dial, connect, end, then his phone rolls back — and his lock screen wins five times in the exact order he sings them: the apartment, the Atlantic, the money, Columbia, Sonny. The happy infrastructure of the marriage installs itself so the back half can dismantle it.',
-5:'ONE THING. The era holds while she sings; on her last phrase, as she picks up the book, her phone opens Books to the last page of his novel: “For Cathy.” Nothing else. The last image of the song.',
+5:'CALENDAR ONLY, BY DIRECTION. The pages roll forward to MARCH · YEAR 4, the book party, and hold center-stage for the whole song. No phone — the dedication is cut.',
 6:'STILLNESS, BY DIRECTION. One held Christmas lock screen. No animation, no cueing inside the number — the kindest screen of the night, deliberately so; the generosity buys the betrayal its full price later. Not one Elise pixel anywhere in this song.',
 7:'ONE CALL. Ringing on the vamp, he answers on her first line, the prerecorded FaceTime (V2) carries the entire number — Jamie at his desk, half-attending, writing, while Ohio sings to him — and Call Ended on the final chord. The engine draws only the FaceTime chrome and the ticking duration; everything alive in it is the video.',
-8:'TIME, NOT CONTENT. Her lock screen marks only where we are: June 12, 2023 — then the one date both timelines share: May 18, 2024 — then back again on the rowboat line. The final chord brings up the INTERMISSION card, which holds until Act Two’s first GO.',
+8:'TIME, NOT CONTENT. No phone. The calendar alone marks where we are: JUNE · YEAR 2, the rowboat — then the one date both timelines share, MAY · YEAR 3, the wedding — then back to the rowboat on the singers’ lines. The final chord brings up the INTERMISSION pages, which hold until Act Two’s first GO.',
 9:'NOTIFICATIONS ONLY. His married year arrives as a stack he never touches — readers, the growing book, Elise, front row. The phone will not stop, and he never once interacts with it. The attention just lands.',
 10:'TWO TEXTS, THREE MONTHS APART. “break a leg” lands before her first note — lowercase, three seconds of effort — then two rejection emails over the lock screen. On the bell tone, time rolls back to November 2023 and his other text arrives: long, thoughtful, the man he was. The contrast is the whole cue.',
 11:'TIMELINE ONLY. One GO: time rolls forward to MARCH 2026, the night of the party, and holds center-stage for the whole fight. Nothing on a phone — the argument is the screen.',
-12:'THE DRIVE. Her phone on the dash, Apple Maps for the entire song: the puck rides the route from New York to the Eastern Shore, the miles and minutes fall, each maneuver counts down, the phone’s clock runs 4:05 to 7:45. Arrival is timed to the song (tune `dur` in tech).',
+12:'THE DRIVE, ON THE DASH. CarPlay for the entire song: Apple Maps, the puck rides the route from New York to the Eastern Shore, the miles and minutes fall, each maneuver counts down, the dash clock runs 4:05 to 7:45. Arrival is timed to the song (tune `dur` in tech). On the final chord the dash goes dark and NOVEMBER · YEAR 1 holds.',
 13:'TWO BEATS. Her good-morning text lights his phone and he swipes it away, unread, at once. On his last line he opens Find My and turns his location back ON — Share Indefinitely — the cover-up filed as devotion. It was off before the song; we never see him turn it off.',
 14:'THE GRAMMAR RESOLVES. The era flips with the singer. Her one animation: his “home safe?” lands on her steps, she opens it, and she is still typing her answer when his last verse rolls the time forward to JUNE 2026 — the last image. True black on the final goodbye.'}
 

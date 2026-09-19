@@ -43,8 +43,7 @@ must exist in both sets (a missing entry renders the greeked placeholder).
 They meet Sept 3, 2021, so Facebook "On This Day" (June 12) can only reach back to 2022:
 **2022** nine months in — the couch (M15) · **2023** the proposal, June 12 (the rowboat day
 The Next Ten Minutes returns to) · **2024** married three weeks, 600 miles apart (Ohio is forty
-miles east of Cincinnati per the script) · **2025** Ohio round two, day one — the card he is
-not in (M2). The pier (M1, July 19, 2025) is Song 3's post only — it can never be a June 12
+miles east of Cincinnati per the script) · **2025** Ohio round two, day one — the bear on the pillow (M2 — whether Jamie is in the frame is David’s call at the shoot). The pier (M1, July 19, 2025) is Song 3's post only — it can never be a June 12
 memory. Never reintroduce a 2021 card.
 
 ## Song 7 is special
@@ -98,10 +97,17 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   no phone in it (her pier post was cut Sept 18).
 
 ## TORN SCORE (David, Sept 19 — the facelift; supersedes anything above it contradicts)
-- **Stage**: dark ground; the phone bezel-less and squared, center, 92% of the stage height; NO rails.
-  **THE ERA IS ONE CONTINUOUS ARTIFACT** (`#era`): a torn calendar pad center-stage when the phone
-  is away, a torn paper strip beside the phone (3-letter month, YEAR, the number, the owner's name)
-  when it is up. It transforms between homes (`setEraHome`), it never disappears.
+- **Stage**: dark ground; the phone bezel-less and squared; NO rails; **NO character names anywhere on
+  stage** (David, Sept 19 — it is obvious whose phone it is). **THE ERA IS ONE CONTINUOUS ARTIFACT**
+  (`#era`): a torn calendar pad center-stage when the phone is away (a small YEAR label, the
+  NUMERAL as the hero, the month beneath, a foot line), a torn paper strip docked at the right when a device is up — **the month small and
+  horizontal at the top, YEAR huge running down the strip, the number at the foot** (the year outranks
+  the month). It transforms between homes (`setEraHome`), it never disappears.
+- **PAPER** is generated in the engine (`paperTex`): a lit heightfield — flat facets, sharp fold
+  creases (two warped Voronoi seam layers, only some seams creased), three long folds, ridged
+  micro-wrinkles, fibre grain — in four tones (white, cream, grey, off-white), seeded. David's
+  references: photos of real crumpled sheets. Real scans can replace it: drop files in
+  `assets/paper/` and build.py embeds them as `window.L5Y_PAPER`.
 - **TIME ONLY EVER CHANGES ON THE CALENDAR** (`eraRoll`): forward = pages tear off and fall;
   backward = pages rise and settle. Long journeys skip months (≤16 pages, ~3 s at a song top,
   ~2 s mid-song). The phone never rolls; a dated `clock` op rolls the era, then `device` docks it
@@ -112,11 +118,35 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
 - **Preshow / intermission**: the falling torn pages loop (photos, text, score) with a title page.
   **Prologue** = one GO: the title lifts, the pages thin out and the last blows away (~52 s),
   then the calendar lands. **Curtain** (`curtain` op) = true black.
-- **The camera ("the eyes")**: `camPush(sel,z)` pushes toward the action inside the phone's own
-  frame (never crops a target: z fits the target), `camWide()` on register changes. Product-demo
-  grammar: establish → push → hold → release. `frame:'wide'` per cue if ever needed.
-- **Sound** is synthesized in the engine (`sfx`, `sfxRing`, `sfxAmbience`), seeded per cue, and
-  plays only from the window the operator clicked Start in; speaker button → volume popover.
+- **THE CAMERA (David, Sept 19 — supersedes "the whole phone is always on stage")**: the frame is
+  ALWAYS a window into the phone; the phone is never shown phone-sized. The docked strip owns the
+  right 15% of the frame (`ERA_ZONE`); the phone fills the rest (`camRest`, up to `CAM_FILL`=3.5×),
+  anchored to the top of the register (bottom for a thread or Find My's card), and on a beat the
+  camera pans and tightens on what matters (`camPush(sel,z)`: the notification, the field, the
+  last bubble, the receipt, the card, the button, the inbox row, the mail body). z is the ask; the
+  fit clamps it so a target is never cropped; the phone never shows black above or below once it
+  is taller than the frame. Moves land slowly (ease-out ~0.95 s), rests glide (~0.85 s), a breath
+  of drift keeps the shot alive. Product-demo grammar: establish → push → hold → release; every
+  register change pulls to rest first. The MacBook (song 7) and the dash (song 12) fill the frame
+  natively. The presenter preview is a 16:9 frame running the same camera (with its own strip).
+- **CARPLAY (song 12)**: the drive plays on the dash — `dev:'carplay'`, a landscape head unit
+  (sidebar: clock, signal, recent apps, home; Maps with the maneuver card and the trip card over the
+  map, the same live route model as the phone). The dash clock rides with the trip.
+- **SOUND (David, Sept 19 — the licensed iOS set)**: the real system sounds live in `assets/sfx/`
+  (SentMessage, ReceivedMessage, sms-received1 = the lock-screen text tone, new-mail, mail-sent,
+  key_press_*, Tock, lock, Swish, vc~ringing = the FaceTime ring, vc~ended, vc~invitation-accepted,
+  Reflection.m4r = the ringtone, ct-* call tones). build.py embeds them into the STANDALONE and
+  docs (never into index.html); the engine decodes Core Audio Format itself (`cafDecode`: lpcm
+  and ima4) and plays the mapped sample (`SFX_MAP_`, `sample`); the synthesized sounds in `sfx()`
+  remain the fallback, so a missing file never silences a beat. Paper (tear, settle, flutter,
+  rustle) stays synthesized. Ringback (outgoing phone) is synthesized — it is a network tone.
+  Sound plays only from the window the operator clicked Start in; a window we opened ourselves
+  (`?view=projection`) is silent unless its checkbox says otherwise; speaker button → volume popover.
+- **OPERATOR SAFETY (Sept 19 review)**: one `setBlackout()` for key, button and the other window;
+  a RELOADED presenter resumes at the saved cue (`l5y_pos`, reload only, 3 h); resize never cancels
+  a running cue; `hardRender` stops rings and clears camera timers; GO keys are ignored while the
+  volume slider has focus; Esc does nothing in the projection window; Google Fonts load
+  non-blocking (theatre Wi-Fi must never stall the engine).
 - **Presenter**: song + cast + character, NOW with progress, the GO card, THEN, the whole queue,
   BLACKOUT and MENU buttons. Nothing else.
 - Restore point before this sprint: git tag `restore-sept18-line-by-line`.
@@ -134,10 +164,18 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
 - **8** calendar only: engagement → wedding → engagement on the singers' lines; **8.4 = INTERMISSION**
   (the falling pages; holds until 9.1). **9** notifications only. **10** “break a leg” before her first note, two
   rejection emails, black, the bell-tone FLASHBACK to NOVEMBER 2023 (his long text), return.
-- **11** timeline only (one cue). **12** THE DRIVE: Apple Maps for the whole song, time-based
-  (`mapsdrive`, `dur` seconds to arrival — tune in tech), the phone clock runs with it.
-- **13** two beats: her text lands and he swipes it away; on his last line, Find My →
-  Share My Location → Share Indefinitely (it was OFF before the song; never shown turning off).
+- **11** timeline only (one cue). **12** THE DRIVE on CARPLAY: Apple Maps on the dash for the whole
+  song, time-based (`mapsdrive`, `dur` seconds to arrival — tune in tech), the dash clock runs with it.
+- **13** two beats: her text lands (5:05 AM — before dawn means before the 5:24 sunrise) and he
+  swipes it away; on his last line, Find My → Share My Location → Share Indefinitely (it was OFF
+  before the song; never shown turning off). Her Ohio is **Mount Orab, OH** (forty miles east of
+  Cincinnati, per the script — David to confirm the town).
+- **Continuity law (Sept 19)**: her Friday thread (1.2) carries Thursday — the flight text from
+  13.2 verbatim, “landed?”, “I read it. please call me”, “I’m not angry. just talk to me” — because
+  his last day is June 11; nothing in it may imply he moved out earlier. Calls connect at 0:00.
+  Her contact for him is “Jamie 💙” through June 2024 (7.1). The drive is dated Nov 6 2021 (after
+  the Oct 16 move-in) — if the licensed script's drive contains the move-in invitation, David must
+  re-date it; never fill that from memory.
 - **14** era flips with the singer; her one animation (his “home safe?” lands, she opens it,
   types, never sends); his last verse rolls to JUNE 2026 and holds; FINAL BLACKOUT = true black.
 - Instrumental passages auto-play from one GO using `{op:'pause', ms}` beats — tunable in tech.

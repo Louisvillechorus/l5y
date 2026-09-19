@@ -17,7 +17,7 @@ MIN_PX_AT_880 = 9.0
 CHECK_JS = r"""() => {
   const root = document.querySelector('#projDevice');
   if(!root) return {empty:true, clips:[], tiny:[]};
-  const screen = root.querySelector('.screen, .mb-screen, .fullstage');
+  const screen = root.querySelector('.screen, .mb-screen, .cp-main, .fullstage');
   if(!screen) return {empty:true, clips:[], tiny:[]};
   const clips=[], tiny=[]; const MINPX=%f;
   const H = screen.getBoundingClientRect().height;
