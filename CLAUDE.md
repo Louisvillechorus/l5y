@@ -103,11 +103,11 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   NUMERAL as the hero, the month beneath, a foot line), a torn paper strip docked at the right when a device is up — **the month small and
   horizontal at the top, YEAR huge running down the strip, the number at the foot** (the year outranks
   the month). It transforms between homes (`setEraHome`), it never disappears.
-- **PAPER** is generated in the engine (`paperTex`): a lit heightfield — flat facets, sharp fold
-  creases (two warped Voronoi seam layers, only some seams creased), three long folds, ridged
-  micro-wrinkles, fibre grain — in four tones (white, cream, grey, off-white), seeded. David's
-  references: photos of real crumpled sheets. Real scans can replace it: drop files in
-  `assets/paper/` and build.py embeds them as `window.L5Y_PAPER`.
+- **PAPER (David, Sept 19 night: the crumple is CUT)**: the sheets are flat matte off-white with a
+  whisper of grain and quiet torn edges. The generator (`paperTex`) stays in the engine but is
+  inert; real scans in `assets/paper/` (embedded by build.py as `window.L5Y_PAPER`) would show
+  through `--pp` if David ever wants texture back. The strip is 12.4vw wide — everything on the
+  right side big (month 4vw, YEAR 8.4vw, the number 17.5vw).
 - **TIME ONLY EVER CHANGES ON THE CALENDAR** (`eraRoll`): forward = pages tear off and fall;
   backward = pages rise and settle. Long journeys skip months (≤16 pages, ~3 s at a song top,
   ~2 s mid-song). The phone never rolls; a dated `clock` op rolls the era, then `device` docks it
@@ -115,24 +115,33 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
 - **YEAR 1…5**, never real years on stage: Year N = years since the night they met (Sept 3);
   the real dates stay in cues.js (`yearN()` derives the label). The wedding is May · Year 3.
 - **The phone only comes up when it is used.** Calendar-only songs: 5, 8 (three moves), 11.
-- **Preshow / intermission**: the falling torn pages loop (photos, text, score) with a title page.
-  **Prologue** = one GO: the title lifts, the pages thin out and the last blows away (~52 s),
-  then the calendar lands. **Curtain** (`curtain` op) = true black.
-- **THE CAMERA (David, Sept 19 — supersedes "the whole phone is always on stage")**: the frame is
-  ALWAYS a window into the phone; the phone is never shown phone-sized. The docked strip owns the
-  right 15% of the frame (`ERA_ZONE`); the phone fills the rest (`camRest`, up to `CAM_FILL`=3.5×),
-  anchored to the top of the register (bottom for a thread or Find My's card), and on a beat the
-  camera pans and tightens on what matters (`camPush(sel,z)`: the notification, the field, the
-  last bubble, the receipt, the card, the button, the inbox row, the mail body). z is the ask; the
-  fit clamps it so a target is never cropped; the phone never shows black above or below once it
-  is taller than the frame. Moves land slowly (ease-out ~0.95 s), rests glide (~0.85 s), a breath
-  of drift keeps the shot alive. Product-demo grammar: establish → push → hold → release; every
-  register change pulls to rest first. The MacBook (song 7) and the dash (song 12) fill the frame
-  natively. The presenter preview is a 16:9 frame running the same camera (with its own strip).
+- **Preshow / intermission (David, Sept 19 night — the falling pages are CUT, “too cartoonlike”)**:
+  the calendar pad sits center-stage, STILL. Before the show its top page reads the title
+  (Redline Performing Arts / The Last Five Years); at the break it reads Intermission (Act Two).
+  **Prologue** = one GO: the title page tears off and falls (`tearTop`), the era beneath it —
+  JUNE · YEAR 5 — holds through the whole prologue. 9.1 tears the Intermission page the same way,
+  then rolls. Nothing else moves, nothing sounds. **Curtain** (`curtain` op) = true black.
+- **THE CAMERA (David, Sept 19 night — CALM; supersedes everything above)**: the screen SUPPORTS
+  a live musical; it is not a show of its own. The frame is a window into the phone (never
+  phone-sized): the docked strip owns the right 15% (`ERA_ZONE`), the screen fills the rest edge
+  to edge (`camRest`, `CAM_FILL`=3.6×), anchored to the TOP of the register (a thread opens at its
+  top — the name, the history; Find My's card sits at the BOTTOM), with feathers where it leaves
+  the frame. **THE FOLLOW RULE**: a push (`camPush`) moves the camera ONLY when its target is not
+  already in frame; when it is, the camera holds. When it must move it pans at the current zoom if
+  the target fits, and re-zooms only when it must. Every move is one slow glide (1.4 s,
+  ease-in-out). No drift. Nothing moves while a receipt changes or a bubble lands in frame. The MacBook (song 7) and the dash (song 12) fill
+  the frame natively. The presenter preview is a 16:9 frame running the same camera.
 - **CARPLAY (song 12)**: the drive plays on the dash — `dev:'carplay'`, a landscape head unit
   (sidebar: clock, signal, recent apps, home; Maps with the maneuver card and the trip card over the
   map, the same live route model as the phone). The dash clock rides with the trip.
-- **SOUND (David, Sept 19 — the licensed iOS set)**: the real system sounds live in `assets/sfx/`
+- **THE SOUND LAW (David, Sept 19 night)**: the screen makes ONLY the sounds a real iPhone makes
+  with its volume up, and QUIETLY (default 0.35, trims ≤ .7). Send, receive, the lock-screen tone,
+  mail, the FaceTime ring / accept / end. **NO RINGTONES (David)**: an incoming call BUZZES — the
+  phone vibrating on the table (`assets/sfx/vibrate.mp3`, David's licensed file). NO paper sounds, NO
+  ambience, NO taps, swipes, unlock or ringback; keyboard clicks are off unless a cue says
+  `keys:true`; any notification/bubble may be silenced with `snd:false`. A noise every five
+  seconds is a trope — sound is color and context, never a beat of its own.
+- **SOUND FILES (David, Sept 19 — the licensed iOS set)**: the real system sounds live in `assets/sfx/`
   (SentMessage, ReceivedMessage, sms-received1 = the lock-screen text tone, new-mail, mail-sent,
   key_press_*, Tock, lock, Swish, vc~ringing = the FaceTime ring, vc~ended, vc~invitation-accepted,
   Reflection.m4r = the ringtone, ct-* call tones). build.py embeds them into the STANDALONE and
@@ -152,9 +161,11 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
 - Restore point before this sprint: git tag `restore-sept18-line-by-line`.
 
 ## THE LINE-BY-LINE BUILD (David, Sept 18 — the spec; 65 cues after Sept 19)
-- **1** prologue = the falling pages wind down (one GO, no phone); on her verse-2 line the phone
-  rises and she sends her text (auto); READ 9:44, his typing bubble, it stops; then she opens the
-  Memories — four cards, the BEAR (M2) last, she drifts back up to it; cutoff = phone away.
+- **1** prologue = the title page tears off (one GO, no phone); on her verse-2 line the phone rises
+  and she sends her text (auto, ~50 s — SLOW by direction, Sept 19 night: she reads the list, she
+  reads his name and the history, she types slowly, she waits before Send; every pause is tunable);
+  READ 9:44, his typing bubble, it stops; then she opens the Memories — four cards (~26 s, slow), the
+  BEAR (M2) last, she drifts back up to it; cutoff = phone away.
 - **2** 2.1 the roll then his lock screen; 2.2 = ONE ~50 s piece (three drafts → “home safe?” →
   Delivered → her typing bubble); 2.3 her call; 2.4 hang up. Same-night compression kept.
 - **3** era-center only for her; Jamie's three calls (Whitfield ×2, Rob — he dials, per the

@@ -674,10 +674,10 @@
      time only ever changes on it. Falling torn pages for preshow and intermission. */
   #projection{background:#0a0a0b radial-gradient(ellipse at 50% 60%,#17171a 0%,#0a0a0b 68%) !important}
   #railL,#railR,#barTop,#projOwner,#projStamp{display:none !important}
-  .paper,#era .sheet,#era .strip .stop{background:#e9e5dc var(--pp,var(--pp1,none)) center/cover no-repeat;color:#171512}
+  .paper,#era .sheet,#era .strip .stop{background:var(--pp,var(--pp1,none)) center/cover no-repeat #ece9e2;color:#171512}   /* flat matte sheets (the crumple is cut — David); a real scan in assets/paper/ still shows through --pp */
   .paper{box-shadow:0 30px 60px rgba(0,0,0,.6),0 2px 4px rgba(0,0,0,.45)}
   /* the sheets are photographs of crumpled paper generated in the engine (paperTex): facets, fold creases, fibre grain — see PAPER below */
-  .paper::before,#era .sheet::before,#era .strip .stop::before{content:'';position:absolute;inset:0;pointer-events:none;mix-blend-mode:multiply;opacity:.15;
+  .paper::before,#era .sheet::before,#era .strip .stop::before{content:'';position:absolute;inset:0;pointer-events:none;mix-blend-mode:multiply;opacity:.09;
     background:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="220" height="220"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .1 0"/></filter><rect width="100%" height="100%" filter="url(%23n)"/></svg>')}
   /* ---- falling loop ---- */
   #loop{position:absolute;inset:0;overflow:hidden;opacity:0;transition:opacity .8s ease;pointer-events:none;z-index:4}
@@ -705,7 +705,7 @@
   #era{position:absolute;z-index:6;opacity:1;transition:opacity .8s ease;will-change:transform}
   #era.hidden{opacity:0;pointer-events:none}
   #era.center{inset:0;margin:auto;width:min(42vw,760px);height:calc(min(42vw,760px)*1.18)}
-  #era.docked{inset:0;margin:auto 2.4vw auto auto;width:10vw;height:82vh}
+  #era.docked{inset:0;margin:auto 2vw auto auto;width:12.4vw;height:88vh}
   #era .pad,#era .strip{position:absolute;inset:0;transition:opacity .35s ease}
   #era.docked .pad{opacity:0;pointer-events:none} #era.center .strip{opacity:0;pointer-events:none}
   #era .sheet{position:absolute;inset:0;padding:6% 7% 8%;display:flex;flex-direction:column;justify-content:flex-end;transform-origin:8% 0%;
@@ -716,14 +716,16 @@
   #era .ynum{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:clamp(60px,15vw,300px);line-height:.82;color:#171512;margin-top:.6vh}
   #era .mo{font-family:'Fraunces',Georgia,serif;font-weight:300;font-size:clamp(28px,4.6vw,92px);line-height:.95;letter-spacing:.01em;color:#171512;margin-top:1.2vh;white-space:nowrap}
   #era .rule{height:1px;background:#bdb7a8;margin:2vh 0 1.2vh}
+  #era .ttl{font-family:'Fraunces',Georgia,serif;font-weight:300;font-size:clamp(30px,5.2vw,104px);line-height:1.02;letter-spacing:.02em;color:#171512;margin-top:1.4vh}
+  #era .ttl:empty,#era .ynum:empty,#era .mo:empty{display:none} #era .pad.house .rule,#era .pad.house .foot{display:none}
   #era .foot{font-family:'Courier Prime',monospace;font-weight:700;font-size:clamp(12px,1.9vw,34px);letter-spacing:.3em;color:#8c8a84;text-transform:uppercase;min-height:1.2em}
   /* the docked strip (David, Sept 19): no name — it is obvious whose phone it is. The YEAR outranks the month:
      the month small and horizontal at the top, YEAR huge running down the strip, the number at the foot. */
   #era .strip .stop{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:3.2vh 0 2vh;
     --pp:var(--pp2,none);box-shadow:0 24px 50px rgba(0,0,0,.6),0 2px 4px rgba(0,0,0,.45);transform-origin:8% 0%}
-  #era .smo{font-family:'Courier Prime',monospace;font-weight:700;font-size:clamp(16px,3.1vw,62px);line-height:1;letter-spacing:.08em;text-transform:uppercase;color:#6b675e}
-  #era .syr{writing-mode:vertical-rl;font-family:'Courier Prime',monospace;font-weight:400;font-size:clamp(28px,6.6vw,132px);line-height:1;letter-spacing:.04em;text-transform:uppercase;color:#6b675e;margin-right:.04em}
-  #era .snum{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:clamp(44px,14vw,280px);line-height:.8;color:#171512}
+  #era .smo{font-family:'Courier Prime',monospace;font-weight:700;font-size:clamp(18px,4vw,80px);line-height:1;letter-spacing:.06em;text-transform:uppercase;color:#6b675e}
+  #era .syr{writing-mode:vertical-rl;font-family:'Courier Prime',monospace;font-weight:400;font-size:clamp(30px,8.4vw,168px);line-height:1;letter-spacing:.04em;text-transform:uppercase;color:#6b675e;margin-right:.04em}
+  #era .snum{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:clamp(50px,17.5vw,350px);line-height:.8;color:#171512}
   .tear{animation:tear 1s cubic-bezier(.55,.05,.5,1) forwards;z-index:9;box-shadow:0 12px 30px rgba(0,0,0,.35)}
   @keyframes tear{0%{transform:rotate(0)}18%{transform:rotate(-3deg) translate(0,-3%)}55%{transform:rotate(-14deg) translate(-4%,8%);opacity:1}100%{transform:rotate(-34deg) translate(-18%,120%);opacity:0}}
   .settle{animation:settle .7s cubic-bezier(.2,.9,.25,1.05) forwards;z-index:9;box-shadow:0 12px 30px rgba(0,0,0,.35)}
@@ -760,14 +762,14 @@
      pushes the device into the frame — the phone fills the stage beside the era strip, cropped top and bottom like a
      reading window — and lands softly (fast out of the gate, slow into the frame). A breath of drift keeps it alive. */
   .stagecam{transform-origin:0 0;will-change:transform;transition:transform .95s cubic-bezier(.16,.8,.22,1)}
-  .stagecam>.drift{animation:camdrift 12s ease-in-out infinite alternate;transform-origin:50% 50%}
+  .stagecam>.drift{animation:none}   /* the drift was cut (David, Sept 19 night): nothing moves without a reason */
   @keyframes camdrift{from{transform:scale(1)}to{transform:scale(1.014)}}
   #previewInner{background:#0a0a0b;overflow:hidden;border-radius:3px;flex:0 0 auto}
-  .prevStrip{position:absolute;right:2.4%;top:9%;height:82%;width:10%;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:3% 0 2%;
-    background:#e9e5dc var(--pp2,none) center/cover no-repeat;color:#171512;box-shadow:0 10px 30px rgba(0,0,0,.6);clip-path:polygon(0 100%,0 2%,8% 0,16% 2.4%,25% .6%,33% 2.6%,42% .8%,50% 2.2%,58% .4%,67% 2.4%,75% .8%,84% 2.6%,92% .6%,100% 2%,100% 100%)}
-  .prevStrip span{font-family:'Courier Prime',monospace;font-weight:700;font-size:1.2vw;letter-spacing:.08em;color:#6b675e}
-  .prevStrip b{writing-mode:vertical-rl;font-family:'Courier Prime',monospace;font-weight:400;font-size:2.6vw;line-height:1;letter-spacing:.04em;color:#6b675e}
-  .prevStrip i{font-style:normal;font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:5.4vw;line-height:.8}
+  .prevStrip{position:absolute;right:2%;top:6%;height:88%;width:12.4%;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:3% 0 2%;
+    background:var(--pp2,none) center/cover no-repeat #ece9e2;color:#171512;box-shadow:0 10px 30px rgba(0,0,0,.6);clip-path:polygon(0 100%,0 2%,8% 0,16% 2.4%,25% .6%,33% 2.6%,42% .8%,50% 2.2%,58% .4%,67% 2.4%,75% .8%,84% 2.6%,92% .6%,100% 2%,100% 100%)}
+  .prevStrip span{font-family:'Courier Prime',monospace;font-weight:700;font-size:1.5vw;letter-spacing:.06em;color:#6b675e}
+  .prevStrip b{writing-mode:vertical-rl;font-family:'Courier Prime',monospace;font-weight:400;font-size:3.2vw;line-height:1;letter-spacing:.04em;color:#6b675e}
+  .prevStrip i{font-style:normal;font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:6.6vw;line-height:.8}
   body.blk #era,body.blk #projDevice,body.blk #loop{opacity:0 !important}
   body.blk #projection{background:#000 !important}
   body.portrait #era.docked{display:none}
@@ -839,7 +841,7 @@
   <div id="projDevice"></div>
   <div id="era" class="center hidden" data-home="center">
     <div class="pad"><div class="sheet u2"></div><div class="sheet u1"></div>
-      <div class="sheet top"><div class="yr"></div><div class="ynum"></div><div class="mo"></div><div class="rule"></div><div class="foot"></div></div></div>
+      <div class="sheet top"><div class="yr"></div><div class="ttl"></div><div class="ynum"></div><div class="mo"></div><div class="rule"></div><div class="foot"></div></div></div>
     <div class="strip"><div class="stop"><div class="smo"></div><div class="syr">year</div><div class="snum"></div></div></div>
   </div>
   <div id="rotNote"></div>
@@ -910,18 +912,18 @@ const FALLBACK_SHOW = [
 /* ============ 1 · STILL HURTING — CATHY, her iPhone ============ */
 {n:1,t:'Still Hurting',who:'cathy',cues:[
  {id:'1.1',kind:'music',trig:'PROLOGUE — the first note of the wedding waltz',
-  what:'AUTO-PLAYS from this one GO (~52 s). The title page lifts away; the falling pages keep falling, thinning out, until the last one blows off — and the calendar lands center-stage: JUNE · YEAR 5. No phone in the prologue.',
-  hold:'The wind-down length is the `ms` on this cue — match it to the waltz in tech.',
+  what:'ONE GO. The title page tears off the pad and falls; beneath it the calendar reads JUNE · YEAR 5, the morning after, and holds center-stage through the whole prologue. No phone, no sound.',
+  hold:'`ms` on this cue delays the tear after GO (0 = on the GO). Nothing else moves until her verse-two line.',
   do:[{op:'clock',t:'9:41',d:'Friday, June 12, 2026'},{op:'stamp',t:'the morning after'},
       {op:'wall',t:'M24 — cast photo of JAMIE — she never changed it'},
-      {op:'prologue',ms:52000}]},
+      {op:'prologue',ms:0}]},
  {id:'1.2',kind:'lyric',trig:'“…something wonderful died” — she picks up the phone and sends it',
-  what:'AUTO-PLAYS from this GO (~18 s). The calendar docks; her phone rises, locked — a Facebook Memories notification lands and she ignores it. Unlock, Messages (the whole list is condolences), his thread mid-history — days of her asking, all silent. She types it live, hesitant, and SENDS. Delivered.',
+  what:'AUTO-PLAYS from this GO (~50 s — slowed by direction; every pause is tunable in tech). The calendar docks; her phone rises, locked — a Facebook Memories notification lands and she ignores it. Unlock, Messages (the whole list is condolences), his thread mid-history — days of her asking, all silent. She types it live, hesitant, and SENDS. Delivered.',
   hold:'Nothing to fire until her next sung line. If the verse runs long, the Delivered sits — let it.',
   do:[{op:'device',dev:'iphone',who:'cathy'},
       {op:'pause',ms:900},
       {op:'notif',app:'Facebook',w:'now',title:'Memories',t:'You have memories with Jamie Wellerstein to look back on today'},
-      {op:'pause',ms:1800},
+      {op:'pause',ms:4500},
       {op:'unlock'},{op:'openapp',icon:'Messages',to:'msglist'},
       {op:'msgrows',rows:[
         {n:'Mom ❤️',p:'call me when you’re up. I love you.',w:'8:02 AM',av:'#e0783f',i:'M',un:true},
@@ -934,8 +936,8 @@ const FALLBACK_SHOW = [
         {n:'Ohio Housing',p:'Re: summer sublet — deposit received',w:'Monday',av:'#5aa86b',i:'O'},
         {n:'CVS Pharmacy',p:'Your prescription is ready for pickup',w:'Monday',av:'#d0454c',i:'C'},
         {n:'Dentist — Dr. Okafor',p:'Reminder: cleaning Jun 22, 2:30 PM',w:'Sunday',av:'#7a8699',i:'D'}]},
-      {op:'pause',ms:700},
-      {op:'hover',row:'Jamie'},{op:'tap'},{op:'push',to:'thread',contact:'Jamie',sub:'mobile'},
+      {op:'pause',ms:3500},
+      {op:'hover',row:'Jamie'},{op:'pause',ms:1600},{op:'tap'},{op:'push',to:'thread',contact:'Jamie',sub:'mobile'},
       {op:'history',items:[
         {k:'stamp',t:'Sunday|8:20 PM'},{k:'me',t:'porch light’s out again. landlord says tuesday'},{k:'them',t:'ok'},
         {k:'stamp',t:'Tuesday|1:15 PM'},{k:'me',t:'sublet deposit cleared 👍 the room is yours too when you’re here'},{k:'them',t:'👍'},
@@ -943,9 +945,9 @@ const FALLBACK_SHOW = [
         {k:'stamp',t:'Yesterday|1:30 PM'},{k:'me',t:'landed?'},
         {k:'stamp',t:'Yesterday|4:40 PM'},{k:'me',t:'I read it. please call me'},
         {k:'stamp',t:'Yesterday|9:30 PM'},{k:'me',t:'I’m not angry. just talk to me'},{k:'rcpt',t:'Delivered'}]},
-      {op:'pause',ms:700},
-      {op:'stampline',t:'Today|9:41 AM'},{op:'type',pace:'hesitant',t:'I’m not sure that I can do this without you'},
-      {op:'pause',ms:400},
+      {op:'pause',ms:3200},
+      {op:'stampline',t:'Today|9:41 AM'},{op:'pause',ms:1800},{op:'type',pace:'slow',t:'I’m not sure that I can do this without you'},
+      {op:'pause',ms:2600},
       {op:'send'},{op:'rcpt',t:'Delivered'}]},
  {id:'1.3',kind:'lyric',trig:'“Give me a day, Jamie!” — Delivered turns to READ',
   what:'Delivered → READ, 9:44. He is awake. He is holding his phone.',
@@ -959,19 +961,19 @@ const FALLBACK_SHOW = [
   hold:'The cruellest silence available in Year 5.',
   do:[{op:'untyping'}]},
  {id:'1.6',kind:'lyric',trig:'“Jamie is over and where can I turn?” — she goes to the memories',
-  what:'AUTO-PLAYS from this GO (~14 s). She leaves the thread and opens the Memories the notification offered: four cards scroll past — the bear (last year), the wedding, the ring, the couch — then she drifts back up to the bear and holds on it.',
+  what:'AUTO-PLAYS from this GO (~40 s — slowed by direction: each card’s caption centers, then the eye drifts down into the photograph). She leaves the thread and opens the Memories the notification offered: four cards scroll past — the bear (last year), the wedding, the ring, the couch — then she drifts back up to the bear and holds on it.',
   hold:'The bear card is the last thing she looks at. Let the camera sit.',
   do:[{op:'openapp',icon:'Facebook',to:'memories'},
-      {op:'pause',ms:500},
+      {op:'pause',ms:1800},
       {op:'mem',scroll:'reluctant',yr:'1 year ago',who:'Cathy Wellerstein',av:'C',col:'#c2447a',when:'June 12',
        txt:'he drove me to Ohio and left a bear on the pillow 🧸',media:'M2 — Jamie giving Cathy the bear',likes:64},
-      {op:'pause',ms:1500},
+      {op:'pause',ms:5000},
       {op:'mem',scroll:'drag',yr:'2 years ago',who:'Cathy Wellerstein',av:'C',col:'#c2447a',when:'June 12',
        txt:'married three weeks and 600 miles apart. worth it.',media:'M4 — the wedding portrait',likes:402},
-      {op:'pause',ms:1400},
+      {op:'pause',ms:5000},
       {op:'mem',scroll:'peek',yr:'3 years ago',who:'Cathy Wellerstein',av:'C',col:'#c2447a',when:'June 12',
        txt:'he asked. I said yes before he finished 💍',media:'M3a — the ring, the rowboat',likes:341},
-      {op:'pause',ms:1400},
+      {op:'pause',ms:5000},
       {op:'mem',scroll:'flick',yr:'4 years ago',who:'Cathy Wellerstein',av:'C',col:'#c2447a',when:'June 12',
        txt:'nine months in and our apartment has a name. it is called The Couch.',media:'M15 — the hideous couch',likes:88},
       {op:'pause',ms:1800},
@@ -1147,7 +1149,7 @@ const FALLBACK_SHOW = [
   what:'The pages settle BACK to the engagement — JUNE · YEAR 2.',
   do:[{op:'clock',t:'4:44',d:'Monday, June 12, 2023'},{op:'stamp',t:'the rowboat'}]},
  {id:'8.4',kind:'music',trig:'FINAL CHORD — the lights fade on the boat. END OF ACT ONE',
-  what:'INTERMISSION: the falling pages return with an Intermission page. Holds through the break; the first GO of Act Two (9.1) clears it.',
+  what:'INTERMISSION: the calendar’s top page reads Intermission and holds, still, through the break; the first GO of Act Two (9.1) tears it off.',
   do:[{op:'intermission'}]},
 ]},
 
@@ -2850,7 +2852,7 @@ async function playCue(cue, st, tok){
       const prevDate=st.date, prevTm=st.tm; applyOp(st,o);
       // TIME CHANGES ONLY ON THE ERA ARTIFACT: the pages tear (forward) or settle
       // back (backward); the phone appears already at the new time
-      if(st.inter){ st.inter=false; loopMode('off'); const kD=st.date, kF=st.foot; st.date=prevDate; st.foot=''; setStamp(st); paintAll(st); st.date=kD; st.foot=kF; await wait(700); if(tok!==animTok) return; }
+      if(st.inter){ st.inter=false; const kD=st.date, kF=st.foot; st.date=prevDate; st.foot=''; paintAll(st); await tearTop(st,tok); st.date=kD; st.foot=kF; if(tok!==animTok) return; await wait(300); if(tok!==animTok) return; }
       if(o.d && prevDate!==o.d){ const A=new Date(prevDate), B=new Date(o.d);
         if(!isNaN(A)&&!isNaN(B)) await eraRoll(A,B,tok,st, ci===1); if(tok!==animTok) return; }
       stacks().forEach(k=>{ const shell=k.closest('.screen'); if(!shell) return;
@@ -2860,7 +2862,7 @@ async function playCue(cue, st, tok){
       setStamp(st);
       continue; }
     if(o.op==='stamp'){ applyOp(st,o); setStamp(st); continue; }
-    if(o.op==='notif'){ applyOp(st,o); sfx(o.app==='Mail'?'mail':'notif',{seed:'n'+cue.id});
+    if(o.op==='notif'){ applyOp(st,o); if(o.snd!==false) sfx(o.app==='Mail'?'mail':'notif',{seed:'n'+cue.id});
       stacks().forEach(k=>{ const ns=k.querySelector('.nstack'); if(!ns) return;
         const d=document.createElement('div'); d.className='notif inbound';
         const art=ICON[o.app];
@@ -2948,15 +2950,15 @@ async function playCue(cue, st, tok){
       const text=o.t;
       const TR=prng('type'+cue.id+text.length);
       const pace=o.pace||'normal';
-      const SP = pace==='angry' ? .62 : pace==='hesitant' ? 1.5 : 1;
+      const SP = pace==='angry' ? .62 : pace==='hesitant' ? 1.5 : pace==='slow' ? 2.6 : 1;
       // plan seeded typos: wrong char typed, noticed, backspaced. angry gets more; hesitant almost none.
-      const typoRate = pace==='angry' ? 28 : pace==='hesitant' ? 90 : 48;
+      const typoRate = pace==='angry' ? 28 : pace==='hesitant' ? 90 : pace==='slow' ? 400 : 48;
       const typoAt=new Set();
       for(let i=4;i<text.length-2;i++) if(text[i]!==' ' && TR()<1/typoRate && typoAt.size<3) typoAt.add(i);
       const NEIGH={a:'s',s:'a',e:'r',r:'e',t:'y',o:'i',i:'o',n:'m',m:'n',h:'j',l:'k',u:'y',c:'v',d:'f'};
       for(let i=0;i<text.length;i++){
         if(tok!==animTok) return;
-        const ch=text[i]; sfx('click',{seed:cue.id+':'+i,soft:ch===' '});
+        const ch=text[i]; sfx('click',{keys:!!(cue&&cue.keys),seed:cue.id+':'+i,soft:ch===' '});
         stacks().forEach(k=>{
           const f=k.querySelector('.field'); if(f){ f.textContent=text.slice(0,i+1); f.style.color='#000'; }
           const sb=k.querySelector('.sendbtn'); if(sb) sb.classList.add('on');
@@ -3010,7 +3012,7 @@ async function playCue(cue, st, tok){
       applyOp(st,o);
       for(let i=text.length;i>=0;i--){
         if(tok!==animTok) return;
-        if(i%2===0) sfx('click',{seed:'w'+cue.id+':'+i,soft:true});
+        if(i%2===0) sfx('click',{keys:!!(cue&&cue.keys),seed:'w'+cue.id+':'+i,soft:true});
         stacks().forEach(k=>{ const f=k.querySelector('.field');
           if(f){ f.textContent=i?text.slice(0,i):'iMessage'; if(!i) f.style.color=''; }
           const key=k.querySelector('.key[data-k="⌫"]'); if(key){ key.classList.add('hit'); setTimeout(()=>key.classList.remove('hit'),50); }});
@@ -3087,7 +3089,7 @@ async function playCue(cue, st, tok){
       await wait(120);
       await Promise.all(stacks().map(k=>{const f=k.querySelector('.memfeed'); if(!f) return null;
         return humanScroll(f,(f.querySelectorAll('.memscreen').length-1)*f.clientHeight,memSeed,tok,{gesture:o.scroll});}));
-      camPush('.memfeed .memscreen:last-child', CAM_FILL_(), 60, 'top'); camPush('.memfeed .memscreen:last-child .media', 2.6, 1500, 'center', 1.6); await wait(520); continue; }
+      camPush('.memfeed .memscreen:last-child .body', 2.6, 60, null, null, true); camPush('.memfeed .memscreen:last-child .media', 2.0, 2600, 'center', 3.2, true); await wait(520); continue; }
     if(o.op==='post'){ applyOp(st,o); swapLayer(st,null); sfx('swipe',{soft:true,seed:'post'+cue.id});
       stacks().forEach(k=>{ const f=k.querySelector('.fbfeed'); if(!f) return;
         const posts=f.querySelectorAll('.post');
@@ -3102,7 +3104,7 @@ async function playCue(cue, st, tok){
         st.typing=true; swapLayer(st,null); scrollThreads();
         await wait(480+Math.floor(prng('ty'+cue.id)()*420));
         st.typing=false;
-        if(tok!==animTok){ if(o.op==='them') sfx('receive',{seed:'r'+cue.id}); applyOp(st,o); return; } }
+        if(tok!==animTok){ if(o.op==='them'&&o.snd!==false) sfx('receive',{seed:'r'+cue.id}); applyOp(st,o); return; } }
       applyOp(st,o); swapLayer(st,null);
       stacks().forEach(k=>{const bs=k.querySelectorAll('.thread .bub');
         const b=bs[bs.length-1]; if(b) b.classList.add('pop');});
@@ -3139,7 +3141,7 @@ async function playCue(cue, st, tok){
       await Promise.all(stacks().map(k=>{const f=k.querySelector('.memfeed'); if(!f) return null;
         const cards=f.querySelectorAll('.memscreen'); const i=Math.max(0,Math.min(cards.length-1,o.i||0));
         return humanScroll(f,i*f.clientHeight,'memgo'+cue.id,tok,{gesture:'drag',flicks:2});}));
-      camPush(`.memfeed .memscreen:nth-child(${(o.i||0)+1})`, CAM_FILL_(), 0, 'top'); camPush(`.memfeed .memscreen:nth-child(${(o.i||0)+1}) .media`, 2.6, 1400, 'center', 1.6);
+      camPush(`.memfeed .memscreen:nth-child(${(o.i||0)+1}) .body`, 2.6, 0, null, null, true); camPush(`.memfeed .memscreen:nth-child(${(o.i||0)+1}) .media`, 2.0, 2600, 'center', 3.2, true);
       await wait(400); continue; }
     if(o.op==='black'||o.op==='curtain'){
       // the phone drops away, then the era returns to center (or the curtain falls)
@@ -3148,10 +3150,10 @@ async function playCue(cue, st, tok){
       if(ph.length){ ph.forEach(e=>e.classList.add('drop')); await wait(520); if(tok!==animTok) return; }
       applyOp(st,o); paintAll(st); setStamp(st);
       document.body.classList.toggle('blk', blk||stageBlack(st)); continue; }
-    if(o.op==='prologue'){
+    if(o.op==='prologue'){   // the title page holds for `ms`, then tears off — the era beneath it
       st.prologueLive=true; setStamp(st);
-      await prologueWind(o.ms||50000, tok); if(tok!==animTok){ st.prologueLive=false; return; }
-      st.prologueLive=false; loopMode('off'); paintAll(st); setStamp(st); continue; }
+      if(o.ms){ await wait(o.ms); if(tok!==animTok){ st.prologueLive=false; return; } }
+      st.prologueLive=false; paintAll(st); await tearTop(st,tok); if(tok!==animTok) return; continue; }
     if(o.op==='docline'){ applyOp(st,o); paintAll(st); scrollThreads(); await wait(240); continue; }
     applyOp(st,o); paintAll(st);
   }
@@ -3258,7 +3260,7 @@ function estDuration(cue){
       case 'pause': t+=o.ms||800; break;
       case 'device': t+=800; break;
       case 'clock': t+=o.d?2600:0; break;
-      case 'prologue': t+=o.ms||50000; break;
+      case 'prologue': t+=(o.ms||0)+1100; break;
       case 'black': case 'curtain': t+=520; break;
       case 'memgo': t+=1400+1600; break;
       case 'notiftap': t+=980; break;
@@ -3269,7 +3271,7 @@ function estDuration(cue){
       case 'push': t+=430; break;
       case 'history': t+=200; break;
       case 'stampline': t+=120; break;
-      case 'type': t+=340+(o.t||'').length*(o.pace==='hesitant'?80:o.pace==='angry'?34:52); break;
+      case 'type': t+=340+(o.t||'').length*(o.pace==='hesitant'?80:o.pace==='angry'?34:o.pace==='slow'?140:52); break;
       case 'send': t+=300; break;
       case 'wipe': t+=260+((o.t||'').length||20)*16; break;
       case 'rcpt': t+=700; break;
@@ -3557,7 +3559,7 @@ function paintAll(st){
   const cpH=Math.min(S.h, S.w*(1-ERA_ZONE_())*9/16);
   const pj=document.getElementById('projDevice');
   if(pj){ pj.innerHTML = phoneUp(st) ? '<div class="stagecam"><div class="drift">'+deviceHTML(st, st.dev==='macbook'?macW:st.dev==='carplay'?cpH:h)+'</div></div>' : ''; }
-  loopMode(isPreshow()?'preshow':(st.inter?'inter':'off'));
+  loopMode('off');   // the falling pages are cut (David, Sept 19 night)
   frameDevice(st);
   if(view==='presenter'){
     // the preview is a scaled projection: a 16:9 frame, the device at the stage's own proportions, the same camera
@@ -3576,14 +3578,26 @@ function setStamp(st){
   const era=document.getElementById('era'); if(!era) return;
   if(!era.dataset.torn){ era.dataset.torn='1'; era.querySelectorAll('.sheet').forEach((el,i)=>el.style.clipPath=tornPath('top',i+3)); era.querySelector('.strip .stop').style.clipPath=tornPath('top',9); }
   const p=eraParts(st), q=s=>era.querySelector(s);
-  q('.yr').textContent=p.mo?'YEAR':''; q('.ynum').textContent=p.mo?p.yr:''; q('.mo').textContent=p.mo; q('.foot').textContent=st.foot||'';
-  era.querySelectorAll('.tear,.settle').forEach(e=>e.remove());   // no stray pages from a cancelled roll
+  // the still pad carries the house: the title page before the show, the intermission page at the break (David, Sept 19 night — no falling pages)
+  const face = (st.prologueLive||isPreshow()) ? 'title' : (st.inter ? 'inter' : '');
+  era.querySelector('.pad').classList.toggle('house', !!face);
+  if(face){ q('.yr').textContent= face==='title' ? 'Redline Performing Arts' : 'Act Two'; q('.ttl').innerHTML= face==='title' ? 'The Last<br>Five Years' : 'Intermission';
+    q('.ynum').textContent=''; q('.mo').textContent=''; q('.foot').textContent=''; }
+  else { q('.ttl').innerHTML=''; q('.yr').textContent=p.mo?'YEAR':''; q('.ynum').textContent=p.mo?p.yr:''; q('.mo').textContent=p.mo; q('.foot').textContent=st.foot||''; }
+  if(!st.tearing) era.querySelectorAll('.tear,.settle').forEach(e=>e.remove());   // no stray pages from a cancelled roll
   q('.smo').textContent=p.abbr; q('.snum').textContent=p.yr;
-  const hidden = isPreshow() || !!st.inter || !!st.curtain || !!st.prologueLive || !p.mo;
+  const hidden = !!st.curtain || (!face && !p.mo);
   const wasHidden=era.classList.contains('hidden');
   era.classList.toggle('hidden', hidden);
   setEraHome(era, phoneUp(st)?'docked':'center', wasHidden||hidden);
   const pe=document.getElementById('prevEra'); if(pe) pe.innerHTML=escTxt(eraLabel(st)).replace(/ · /g,'<br>');
+}
+/* the top page tears off and falls (the title page at the first GO, the intermission page at 9.1) */
+async function tearTop(st,tok){
+  const era=document.getElementById('era'); const pad=era&&era.querySelector('.pad'), top=pad&&pad.querySelector('.top'); if(!top) return;
+  const old=top.cloneNode(true); old.classList.remove('top'); old.classList.add('tear'); old.style.clipPath=tornPath('top',31); pad.appendChild(old);
+  st.tearing=true; setStamp(st); st.tearing=false;
+  await wait(1000); old.remove(); if(tok!==animTok) return;
 }
 /* the artifact never disappears — it transforms between its two homes (FLIP) */
 function setEraHome(era, home, instant){
@@ -3648,12 +3662,13 @@ function tornPath(side,seed){
   // a real tear: jittered spacing, two or three slow lobes, fine jitter, one or two deep notches
   const R=prng('torn:'+seed); const n=40, pts=[]; let t=0; const l1=R()*6.28, l2=R()*6.28, n1=3+Math.floor(R()*n*0.7), n2=3+Math.floor(R()*n*0.7);
   for(let i=0;i<=n;i++){ if(i) t+=(R()*1.6+0.4)/n*100; const x=i===n?100:Math.min(100,t);
-    let j=1.5+Math.sin(x/100*6.28*1.3+l1)*1.2+Math.sin(x/100*6.28*2.7+l2)*0.7+(R()-0.5)*1.2; if(i===n1||i===n2) j+=4+R()*3; j=Math.max(0.2,j);
+    let j=0.9+Math.sin(x/100*6.28*1.3+l1)*0.7+Math.sin(x/100*6.28*2.7+l2)*0.4+(R()-0.5)*0.7; if(i===n1||i===n2) j+=2.2+R()*1.6; j=Math.max(0.15,j);
     pts.push(side==='top'?`${x.toFixed(2)}% ${j.toFixed(2)}%`:`${(100-j).toFixed(2)}% ${x.toFixed(2)}%`); }
   return side==='top'?`polygon(0 100%, ${pts.join(',')}, 100% 100%)`:`polygon(0 0, ${pts.join(',')}, 0 100%)`;
 }
 function loopMode(mode){
-  const L=document.getElementById('loop'); if(!L) return; buildLoop();
+  const L=document.getElementById('loop'); if(!L) return; L.classList.remove('on'); L.dataset.mode='off'; return;   // cut: the still pad carries preshow and intermission
+  buildLoop();
   if(L.dataset.mode===mode) return;
   const prev=L.dataset.mode; L.dataset.mode=mode;
   if(mode!=='winddown' && prev==='winddown'){ L.querySelectorAll('.fall').forEach(f=>f.classList.remove('gone','blow')); }
@@ -3683,7 +3698,7 @@ async function prologueWind(ms,tok){
    so a target is never cropped, and the phone never shows black above or below once it is taller than the frame.
    Moves are fast out of the gate and land slowly, so the eye arrives before the reading beat. The MacBook and the
    dash (CarPlay) fill the frame natively and need no camera. The presenter preview runs the same math. */
-function ERA_ZONE_(){ return 0.15; }   // the docked strip owns the right 15% of the frame; the rest is the window (hoisted: boot code runs before this block)
+function ERA_ZONE_(){ return 0.17; }   // the docked strip owns the right 15% of the frame; the rest is the window (hoisted: boot code runs before this block)
 function CAM_FILL_(){ return 3.6; }
 var CAM_ST=null;                       // the state being played (playCue) — the resting anchor depends on the register
 function camFrame(c){ return c.closest('#projection')||c.closest('#previewInner')||c.parentElement; }
@@ -3698,32 +3713,40 @@ function camGeom(c){
 }
 function CAM_T_(){ return CAM_T_.a||(CAM_T_.a=[]); }   // hoisted: boot code runs before this block
 function camTimersClear(){ CAM_T_().forEach(clearTimeout); CAM_T_().length=0; }
+function camTempo(){ return ({0:1.9, 6:1.5, 9:1.5, 13:1.6})[typeof si==='number'?si:0]||1; }   // Still Hurting, Christmas, See I'm Smiling, Goodbye Until Tomorrow: slow songs, slow eyes
 function camApply(c,g,z,qx,qy,anchor,instant,dur){
   const {F,P0x,P0y,d1,d2,dw,dh,uw,ux,H}=g; const Cx=ux+uw/2, Cy=F.top+H/2;
   let tx = z*dw<uw ? Cx-P0x-z*(d1.x+d2.x)/2 : Cx-P0x-z*qx;
   let ty = anchor==='top' ? F.top-P0y-z*d1.y : anchor==='bottom' ? F.bottom-P0y-z*d2.y : (z*dh<H ? Cy-P0y-z*(d1.y+d2.y)/2 : Cy-P0y-z*qy);
   if(z*dh>=H){ ty=Math.min(ty, F.top-P0y-z*d1.y); ty=Math.max(ty, F.bottom-P0y-z*d2.y); }
   if(z*dw>=uw){ tx=Math.min(tx, ux-P0x-z*d1.x); tx=Math.max(tx, ux+uw-P0x-z*d2.x); }
-  c.style.transition = instant ? 'none' : dur ? `transform ${dur}s cubic-bezier(.3,.05,.2,1)` : (anchor==='center' ? 'transform .95s cubic-bezier(.16,.8,.22,1)' : 'transform .85s cubic-bezier(.3,.05,.2,1)');
+  c.style.transition = instant ? 'none' : `transform ${((dur||1.4)*camTempo()).toFixed(2)}s cubic-bezier(.33,.02,.16,1)`;   // slow, quiet, a long soft landing — never a snap
   const dr=c.firstElementChild; if(dr&&dr.classList.contains('drift')) dr.style.transformOrigin = anchor==='top'?'50% 0%':anchor==='bottom'?'50% 100%':'50% 50%';
   c.style.transform=`translate(${tx.toFixed(1)}px,${ty.toFixed(1)}px) scale(${z.toFixed(3)})`; c.dataset.z=z.toFixed(2);
 }
 function camRest(instant){
-  const st=CAM_ST||CUR||{}; const bottom=['thread','findmy'].includes(st.app);
+  const st=CAM_ST||CUR||{}; const bottom=['findmy'].includes(st.app);   // a thread opens at its TOP (the name, the history); typing glides it to the field
   camEls().forEach(c=>{ const g=camGeom(c); if(!g) return;
     if(!g.dev.classList.contains('iphone')){ c.style.transition=instant?'none':'transform .8s cubic-bezier(.4,0,.2,1)'; c.style.transform=''; c.dataset.z=''; return; }
     const z=Math.min(CAM_FILL_(), g.uw/g.dw);
     camApply(c,g,z,(g.d1.x+g.d2.x)/2,(g.d1.y+g.d2.y)/2, bottom?'bottom':'top', instant); });
 }
 function camWide(instant){ camRest(instant); }
-function camPush(sel,z,delay,anchor,dur){
+/* THE FOLLOW RULE (David, Sept 19 night — "some really jerky movements"): a push happens only when the target is NOT
+   already in frame. When it is, the eye finds it; the camera holds. When it is not, the camera keeps its zoom if the
+   target fits at that zoom (a pan, not a re-zoom) and only re-zooms when it must. Every move is one slow glide. */
+function camPush(sel,z,delay,anchor,dur,force){
   const t0=animTok; const id=setTimeout(()=>{ if(t0!==animTok) return; camEls().forEach(c=>{
     const el=c.querySelector(sel); if(!el) return; const g=camGeom(c); if(!g) return;
     const T=el.getBoundingClientRect(); if(!T.width) return; const p1=g.loc(T.left,T.top), p2=g.loc(T.right,T.bottom);
     const qx=(p1.x+p2.x)/2, qy=(p1.y+p2.y)/2, tw=Math.max(p2.x-p1.x,1), th=Math.max(p2.y-p1.y,1);
-    if(anchor==='top'||anchor==='bottom'){ z=Math.max(1,Math.min(z, g.uw/g.dw)); camApply(c,g,z,qx,qy,anchor,false,dur); return; }
-    z=Math.max(1,Math.min(z, g.uw*0.88/tw, g.H*0.86/th));
-    camApply(c,g,z,qx,qy,'center',false,dur); }); }, delay||0); CAM_T_().push(id);
+    const F=g.F, mTop=F.top+F.height*0.08, mBot=F.bottom-F.height*0.08, uR=g.ux+g.uw;
+    if(!force && T.left>=g.ux && T.right<=uR && T.top>=mTop && T.bottom<=mBot) return;      // already in frame: hold
+    if(anchor==='top'||anchor==='bottom'){ z=Math.max(1,Math.min(z, g.uw/g.dw)); camApply(c,g,z,qx,qy,anchor,false,dur||1.4); return; }
+    const cur=parseFloat(c.dataset.z)||1;
+    const fitZ=Math.min(g.uw*0.88/tw, g.H*0.84/th);
+    z = (cur>=1.05 && cur<=fitZ) ? cur : Math.max(1,Math.min(z,fitZ));           // pan at the current zoom when the target fits; re-zoom only when it must
+    camApply(c,g,z,qx,qy,'center',false,dur||1.4); }); }, delay||0); CAM_T_().push(id);
 }
 function deviceHTML(st,h){
   if(st.dev==='full'){
@@ -3769,14 +3792,14 @@ function interHTML(){ return `<div class="house"><div class="ht">Intermission</d
    Sound plays from the window the operator started with a click (the laptop
    feeding the house); a programmatically opened projection window stays silent. */
 var SOUND_HOST, AC, MASTER, SFX_VOL;
-function sfxVol(){ if(SFX_VOL===undefined){ let v=0.8; try{ v=+(localStorage.getItem('l5y_vol')||0.8); }catch(e){} SFX_VOL=v; } return SFX_VOL; }
+function sfxVol(){ if(SFX_VOL===undefined){ let v=0.35; try{ const st=localStorage.getItem('l5y_vol2'); if(st!==null) v=+st; }catch(e){} SFX_VOL=v; } return SFX_VOL; }   // quiet by default
 function soundHostInit(v){
   let saved=null; try{ saved=localStorage.getItem('l5y_soundhost_'+v); }catch(e){}
   SOUND_HOST = saved!==null ? saved==='1' : (/[?&]view=projection/.test(location.search) ? false : !!(navigator.userActivation && navigator.userActivation.hasBeenActive));   // a window we opened ourselves stays silent
   if(SOUND_HOST) audioInit();
 }
 function audioInit(){ if(AC) return AC; try{ AC=new (window.AudioContext||window.webkitAudioContext)(); MASTER=AC.createGain(); MASTER.gain.value=sfxVol(); MASTER.connect(AC.destination); sfxLoad(); }catch(e){ AC=null; } return AC; }
-function setVol(v){ SFX_VOL=Math.max(0,Math.min(1,+v)); try{localStorage.setItem('l5y_vol',SFX_VOL);}catch(e){} if(MASTER) MASTER.gain.setTargetAtTime(SFX_VOL,AC.currentTime,.02); }
+function setVol(v){ SFX_VOL=Math.max(0,Math.min(1,+v)); try{localStorage.setItem('l5y_vol2',SFX_VOL);}catch(e){} if(MASTER) MASTER.gain.setTargetAtTime(SFX_VOL,AC.currentTime,.02); }
 function sfxOn(){ return SOUND_HOST && audioInit() && AC.state!=='closed'; }
 function noiseBuf(){ if(noiseBuf.b) return noiseBuf.b; const n=AC.sampleRate*2, b=AC.createBuffer(1,n,AC.sampleRate), d=b.getChannelData(0); for(let i=0;i<n;i++) d[i]=Math.random()*2-1; noiseBuf.b=b; return b; }
 function tone(freq,t0,dur,o={}){ const {type='sine',gain=.2,attack=.005,release=.08,detune=0}=o;
@@ -3793,8 +3816,9 @@ function noise(t0,dur,o={}){ const {gain=.2,lo=200,hi=4000,q=1,attack=.004,sweep
   s.connect(hp).connect(lp).connect(g).connect(MASTER); s.start(t0); s.stop(t0+dur+.05); }
 function sfx(name,o={}){
   if(!sfxOn()) return; if(AC.state==='suspended'){ try{AC.resume();}catch(e){} }
+  if(!SFX_KEEP_()[name] && !(name==='click'&&o.keys)) return;                 // not a phone sound → silence
   const t=AC.currentTime+.01, R=prng('sfx:'+name+':'+(o.seed||''));
-  if(!(name==='swipe'&&o.soft) && sample(name,{gain:(SFX_TRIM_()[name]==null?1:SFX_TRIM_()[name])*(o.soft?.5:1)})) return;   // the real iOS sound when we have it
+  if(sample(name,{gain:(SFX_TRIM_()[name]==null?.7:SFX_TRIM_()[name])*(o.soft?.5:1)})) return;   // the real iOS sound when we have it
   switch(name){
     case 'click': noise(t,.035,{gain:o.soft?.045:.085,lo:900+R()*600,hi:3200+R()*1500,attack:.002}); break;
     case 'tap': noise(t,.05,{gain:.07,lo:300,hi:1800,attack:.003}); tone(1900+R()*200,t,.04,{gain:.03}); break;
@@ -3814,8 +3838,9 @@ function sfx(name,o={}){
   }
 }
 var RING=null;
-function sfxRing(kind){ sfxRingStop(); if(!sfxOn()) return; RING={kind,timer:null};
-  if(kind!=='ringback'){ const src=sample(kind,{loop:true,gain:kind==='ftring'?.9:.8}); if(src){ RING.src=src; return; } }   // the real FaceTime ring / ringtone, looped
+function sfxRing(kind){ sfxRingStop(); if(!sfxOn()) return; if(kind==='ringback') return;   // ringback lives in the earpiece: silent on stage
+  RING={kind,timer:null};
+  const src=sample(kind,{loop:true,gain:kind==='ftring'?.65:.55}); if(src){ RING.src=src; } return;   // the real ring, looped and quiet — or nothing
   const beat=()=>{ if(!RING||RING.kind!==kind) return; const t=AC.currentTime+.02;
     if(kind==='ringback'){ tone(440,t,1.9,{gain:.07,attack:.02,release:.12}); tone(480,t,1.9,{gain:.07,attack:.02,release:.12}); RING.timer=setTimeout(beat,6000); }
     else if(kind==='ring'){ [[1568,0],[1318,.18],[1760,.36],[1318,.54],[1568,.9],[1318,1.08],[1976,1.26]].forEach(([f,d])=>tone(f,t+d,.22,{gain:.09,type:'triangle',attack:.004,release:.12})); RING.timer=setTimeout(beat,3200); }
@@ -3823,8 +3848,7 @@ function sfxRing(kind){ sfxRingStop(); if(!sfxOn()) return; RING={kind,timer:nul
   beat(); }
 function sfxRingStop(){ if(RING){ clearTimeout(RING.timer); if(RING.src){ try{ RING.src.stop(); }catch(e){} } RING=null; } }
 var AMB, AMB_N;
-function sfxAmbience(on){
-  if(!on){ if(AMB){ clearTimeout(AMB); AMB=null; } return; }
+function sfxAmbience(on){ if(AMB){ clearTimeout(AMB); AMB=null; } return;   // cut (David): no ambience, ever
   if(AMB) return;
   const tick=()=>{ if(!AMB) return; AMB_N=(AMB_N||0)+1; sfx('rustle',{seed:'amb'+AMB_N}); AMB=setTimeout(tick,1800+prng('ambt'+AMB_N)()*3200); };
   AMB=setTimeout(tick,600);
@@ -3932,6 +3956,7 @@ function paperTexB(seed,tone,N){
 function paperTex(seed,tone,N){ return paperTexB(seed,tone,N); }   // round 2B is the show paper
 function paperInit(){
   const root=document.documentElement, given=(window.L5Y_PAPER||[]).filter(Boolean);
+  if(!given.length) return;   // the generated crumple is CUT (David, Sept 19 night): sheets stay flat unless real scans are supplied in assets/paper/
   const tones=[[236,233,226],[231,223,207],[218,216,212],[233,229,221]];   // white · cream · grey · off-white — David's four
   for(let i=0;i<4;i++) setTimeout(()=>{ const url=given.length?given[i%given.length]:paperTex('sheet'+(i+1),tones[i],1024); root.style.setProperty('--pp'+(i+1),`url("${url}")`); }, 20+i*40);
 }
@@ -3945,8 +3970,12 @@ paperInit();
 function SFX_BUF_(){ return SFX_BUF_.o||(SFX_BUF_.o={}); }   // hoisted accessors — no top-level state that boot code could reach first
 function SFX_MAP_(){ return {send:'SentMessage.caf',receive:'ReceivedMessage.caf',notif:'sms-received1.caf',mail:'new-mail.caf',mailsent:'mail-sent.caf',
   click:'key_press_click.caf',del:'key_press_delete.caf',tap:'Tock.caf',tink:'Tink.caf',lock:'lock.caf',unlock:'unlock.caf',swipe:'Swish.m4r',
-  connect:'vc~invitation-accepted.caf',end:'vc~ended.caf',ftring:'vc~ringing.caf',ring:'Reflection.m4r',busy:'ct-busy.caf',error:'ct-error.caf',keytone:'ct-keytone2.caf'}; }
-function SFX_TRIM_(){ return {click:.55,tap:.6,send:.85,receive:.85,notif:.8,mail:.8,swipe:.5,connect:.8,end:.8,unlock:.6,lock:.6}; }
+  connect:'vc~invitation-accepted.caf',end:'vc~ended.caf',ftring:'vc~ringing.caf',ring:'vibrate.mp3',busy:'ct-busy.caf',error:'ct-error.caf',keytone:'ct-keytone2.caf'}; }
+function SFX_TRIM_(){ return {click:.35,send:.7,receive:.7,notif:.7,mail:.7,mailsent:.7,connect:.7,end:.7,lock:.5,ring:.55,ftring:.65}; }
+/* THE SOUND LAW (David, Sept 19 night): the screen makes ONLY the sounds a real iPhone makes with its volume up, and
+   quietly. No paper, no ambience, no taps, no swipes, no unlock (iOS has none), no ringback (that lives in the earpiece).
+   Keyboard clicks are off, as on most phones (a cue may ask for them with keys:true). */
+function SFX_KEEP_(){ return {send:1,receive:1,notif:1,mail:1,mailsent:1,lock:1,ftring:1,ring:1,end:1,connect:1}; }
 function b64bytes(str){ const i=str.indexOf(','); const bin=atob(i>=0?str.slice(i+1):str); const u=new Uint8Array(bin.length); for(let k=0;k<bin.length;k++) u[k]=bin.charCodeAt(k); return u; }
 function cafDecode(u){
   if(!(u[0]===0x63&&u[1]===0x61&&u[2]===0x66&&u[3]===0x66)) throw new Error('not caf');
