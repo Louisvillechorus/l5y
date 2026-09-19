@@ -43,7 +43,7 @@ must exist in both sets (a missing entry renders the greeked placeholder).
 They meet Sept 3, 2021, so Facebook "On This Day" (June 12) can only reach back to 2022:
 **2022** nine months in — the couch (M15) · **2023** the proposal, June 12 (the rowboat day
 The Next Ten Minutes returns to) · **2024** married three weeks, 600 miles apart (Ohio is forty
-miles east of Cincinnati per the script) · **2025** Ohio round two, day one — the bear (M2 — Jamie IS in the frame: he is giving her the bear, David Sept 19). The pier (M1, July 19, 2025) is Song 3's post only — it can never be a June 12
+miles east of Cincinnati per the script) · **2025** Ohio round two, day one — the bear (M2 — Jamie IS in the frame: he is giving her the bear; the caption is “Ohio round 2 day 1” — David, Sept 19). The pier (M1, July 19, 2025) is Song 3's post only — it can never be a June 12
 memory. Never reintroduce a 2021 card.
 
 ## Song 7 is special
