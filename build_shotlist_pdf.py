@@ -52,7 +52,7 @@ N = S['naming']
 out.append('<div class="rules">')
 out.append(f'<b>NAMING RULE</b> — {e(N["rule"])}<br>')
 out.append('<b>EXAMPLES</b> — ' + ' &nbsp;·&nbsp; '.join(f'<code>{e(x)}</code>' for x in N['examples']) + '<br>')
-out.append(f'<b>PHOTOS</b> — {e(N["photos"])}<br><b>VIDEO</b> — {e(N["video"])}<br><b>WHERE</b> — {e(N["folder"])}')
+out.append(f'<b>PHOTOS</b> — {e(N["photos"])}<br><b>VIDEO</b> — {e(N["video"])}<br><b>THE LOOP</b> — {e(N.get("loop",""))}<br><b>WHERE</b> — {e(N["folder"])}')
 out.append('</div>')
 
 groups = [('confirmed', 'SHOOT — every photo and video the locked build needs'),

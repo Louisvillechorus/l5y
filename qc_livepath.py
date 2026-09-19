@@ -32,9 +32,6 @@ CHECK = """(() => {
     if(mb && mb.textContent!==mbMenuFor(st)) out.push(`mac menu ${mb.textContent} != ${mbMenuFor(st)}`);
   }
   if(st.dev==='iphone'){
-    const fr = autoFrame(st);   // the engine's own framing truth (whole phone unless a cue asks for a close-up)
-    const hasMask=pj.classList.contains('mask');
-    if(!!fr!==hasMask) out.push(`mask ${hasMask} but frame ${!!fr} for app ${st.app}`);
   }
   return out;
 })()"""

@@ -22,8 +22,8 @@ def sound_for(ops):
 def onscreen(o):
     """The verbatim content a cue puts on the glass."""
     op=o['op']
-    if op=='stamp': return [('STAMP → ', f"“{o['t']}”")]
-    if op=='clock': return [('LOCK CLOCK — ', f"{o['t']}" + (f" · {o['d']}" if o.get('d') else ''))]
+    if op=='stamp': return ([('ERA FOOT LINE → ', f"“{o['t']}”")] if o.get('t') else [])
+    if op=='clock': return [('TIME → ', f"{o['t']}" + (f" · {o['d']}" if o.get('d') else '')) + (' — the calendar pages roll to it (forward tears, backward settles) before any phone appears' if o.get('d') else '')]
     if op=='notif':
         t=o.get('title'); head=o['app']+(f' · {t}' if t and t!=o['app'] else '')
         return [(f"NOTIFICATION — {head} ({o.get('w','now')}): ", f"“{o['t']}”")]
@@ -121,6 +121,8 @@ def onscreen(o):
                      (f" · Sharing My Location ✓ {p['sharing']} (green) · [Stop Sharing My Location] (red)" if p.get('sharing') else ' · [Share My Location] (blue)'))]
         return [('FIND MY — People: ', ' · '.join(f"{r['n']}: {r['s']}" for r in o.get('rows',[])))]
     if op=='pause': return [('  … a beat (auto-timed, ', f"{o.get('ms',800)/1000:.1f} s)")]
+    if op=='prologue': return [('PROLOGUE WIND-DOWN — ', f"the falling pages thin out over ~{int(o.get('ms',50000))//1000} s; the last one blows away; the calendar lands")]
+    if op=='curtain': return [('CURTAIN — ', 'true black; the calendar goes')]
     if op=='intermission': return [('INTERMISSION CARD — ', 'the house sees “Intermission”; it holds until Act Two’s first GO')]
     if op=='books': return [('BOOKS — his novel, open on her phone: ', f"“{o.get('page','')}” · {o.get('pos','')}")]
     if op=='mapsdrive':
@@ -166,7 +168,7 @@ def onscreen(o):
     if op=='match':
         return [('IT’S A MATCH — full-screen overlay: ', f"You and {o.get('n','')} have liked each other"),
                 ('  buttons: ', '[Send a Message] · [Keep Swiping]')]
-    if op=='black': return [('HOUSE BLACK — ', 'the phone vanishes into it')]
+    if op=='black': return [('PHONE AWAY — ', 'the phone drops; the calendar returns to center-stage')]
     if op=='notifDismiss': return [('notification SWIPED AWAY — ', 'slides off and is gone')]
     return []
 

@@ -10,7 +10,8 @@
   ],
   "photos": "JPG (convert HEIC). Long side at least 1600 px. Keep each file under 8 MB so it travels through the Drive connector.",
   "video": "MP4 (H.264), 1920×1080 landscape. The video is larger than the Drive transfer limit: upload it to the GitHub repo (Add file → Upload files, into assets/) or give it to the show laptop — tell me which.",
-  "folder": "One Google Drive folder named  L5Y ASSETS , files flat inside it (no subfolders). Tell me when files land — I pull them and place every one by its code. A missing file keeps its placeholder, so partial uploads never break the show."
+  "folder": "One Google Drive folder named  L5Y ASSETS , files flat inside it (no subfolders). Tell me when files land — I pull them and place every one by its code. A missing file keeps its placeholder, so partial uploads never break the show.",
+  "loop": "Every photo also falls in the preshow / intermission loop. Extra photos for the loop only: name them S00-LOOP-<what>-ML.jpg / -AC.jpg / -SHARED.jpg; up to ~30 total."
  },
  "assets": [
   {
@@ -23,7 +24,7 @@
    "shoot": "Jamie alone, candid, early-relationship feel (2021). It is HER wallpaper, so it is a photo she took of him: relaxed, looking near the camera, warm light. No text, nothing busy in the top third (the clock sits there). (A lock screen needs a wallpaper; this is the realism default. If you would rather she has a plain wallpaper, skip this one.)",
    "who": "Jamie only",
    "era": "September–October 2021",
-   "appears": "Song 1 — her lock screen, the first image of the show; Song 10 and Song 14 — her lock screen again",
+   "appears": "Songs 1, 10, 14 — her lock screen (and the falling-pages loop)",
    "song": 1,
    "slug": "cathy-wallpaper-jamie"
   },
@@ -37,7 +38,7 @@
    "shoot": "The two of them on a genuinely ugly secondhand couch in the first apartment, deliriously happy — this is her “nine months in and our apartment has a name. it is called The Couch.” post, and it is the photo that fills the whole screen to close Song 1. Make it the best photo of the set.",
    "who": "Both",
    "era": "June 2022 — nine months in, the first apartment",
-   "appears": "Song 1 prologue — Facebook Memory, 4 years ago; and full-screen to close Song 1",
+   "appears": "Song 1 — Facebook Memory, 4 years ago (and the falling-pages loop)",
    "song": 1,
    "slug": "the-couch-nine-months"
   },
@@ -51,7 +52,7 @@
    "shoot": "The engagement: her hand with the ring in the foreground, the Central Park rowboat / water behind (or a rowboat-dock stand-in). Attached to “he asked. I said yes before he finished 💍”.",
    "who": "Cathy's hand + ring (Jamie optional, background)",
    "era": "June 12, 2023",
-   "appears": "Song 1 prologue — Facebook Memory, 3 years ago",
+   "appears": "Song 1 — Facebook Memory, 3 years ago (and the falling-pages loop)",
    "song": 1,
    "slug": "ring-rowboat"
   },
@@ -61,13 +62,13 @@
    "shared": false,
    "kind": "photo",
    "format": "4:3 landscape",
-   "title": "Ohio cast photo, day one — no Jamie",
-   "shoot": "Cathy with her summer-stock castmates on the first day in Ohio, 2025 — a group/company photo, theater lobby or rehearsal room. Jamie is NOT in it; that is the point. Attached to “Ohio, round two. day one 🎭”.",
-   "who": "Cathy + castmates (no Jamie)",
-   "era": "June 12, 2025 — Ohio, second summer",
-   "appears": "Song 1 prologue — Facebook Memory, 1 year ago (the card she is not ready for)",
+   "title": "Jamie giving Cathy the bear",
+   "shoot": "Jamie handing Cathy a teddy bear (or the bear on her pillow in the Ohio room, with him) — the Memory card she lands on at the end of Still Hurting. Caption on the card: “he drove me to Ohio and left a bear on the pillow 🧸”. Shoot both casts.",
+   "who": "Both (the bear in frame)",
+   "era": "June · Year 4 (the second Ohio summer, day one)",
+   "appears": "Song 1 — the last Memories card (and the falling-pages loop)",
    "song": 1,
-   "slug": "ohio-cast-day-one"
+   "slug": "jamie-cathy-bear"
   },
   {
    "code": "M4",
@@ -79,7 +80,7 @@
    "shoot": "The two of them in wedding attire, classic portrait — the one they'd post. Attached to “married three weeks and 600 miles apart. worth it.” It is also the card the feed rests on, full screen, when the memories return late in Song 1.",
    "who": "Both",
    "era": "May 18, 2024",
-   "appears": "Song 1 prologue — Facebook Memory, 2 years ago; and full-screen when the memories return",
+   "appears": "Song 1 — Facebook Memory, 2 years ago (and the falling-pages loop)",
    "song": 1,
    "slug": "wedding-portrait"
   },

@@ -97,18 +97,42 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
 - **Song 3 is `who:'both'`** by direction: Jamie's calls appear inside Cathy's song; she has
   no phone in it (her pier post was cut Sept 18).
 
-## THE LINE-BY-LINE BUILD (David, Sept 18 — the spec; 72 cues)
-- **1** prologue memories auto-play from ONE GO (the waltz); black on the first bar; at the
-  m.58 interlude she picks up the phone and sends her text (auto sequence); then READ 9:44,
-  his typing bubble, it stops — the thread stays up to the cutoff (the memories return is CUT).
-- **2** as built (drafts, the send, her typing bubble, her call); same-night compression kept.
+## TORN SCORE (David, Sept 19 — the facelift; supersedes anything above it contradicts)
+- **Stage**: dark ground; the phone bezel-less and squared, center, 92% of the stage height; NO rails.
+  **THE ERA IS ONE CONTINUOUS ARTIFACT** (`#era`): a torn calendar pad center-stage when the phone
+  is away, a torn paper strip beside the phone (3-letter month, YEAR, the number, the owner's name)
+  when it is up. It transforms between homes (`setEraHome`), it never disappears.
+- **TIME ONLY EVER CHANGES ON THE CALENDAR** (`eraRoll`): forward = pages tear off and fall;
+  backward = pages rise and settle. Long journeys skip months (≤16 pages, ~3 s at a song top,
+  ~2 s mid-song). The phone never rolls; a dated `clock` op rolls the era, then `device` docks it
+  and the phone rises already at the new time. `stamp` is now the calendar's FOOT line.
+- **YEAR 1…5**, never real years on stage: Year N = years since the night they met (Sept 3);
+  the real dates stay in cues.js (`yearN()` derives the label). The wedding is May · Year 3.
+- **The phone only comes up when it is used.** Calendar-only songs: 5, 8 (three moves), 11.
+- **Preshow / intermission**: the falling torn pages loop (photos, text, score) with a title page.
+  **Prologue** = one GO: the title lifts, the pages thin out and the last blows away (~52 s),
+  then the calendar lands. **Curtain** (`curtain` op) = true black.
+- **The camera ("the eyes")**: `camPush(sel,z)` pushes toward the action inside the phone's own
+  frame (never crops a target: z fits the target), `camWide()` on register changes. Product-demo
+  grammar: establish → push → hold → release. `frame:'wide'` per cue if ever needed.
+- **Sound** is synthesized in the engine (`sfx`, `sfxRing`, `sfxAmbience`), seeded per cue, and
+  plays only from the window the operator clicked Start in; speaker button → volume popover.
+- **Presenter**: song + cast + character, NOW with progress, the GO card, THEN, the whole queue,
+  BLACKOUT and MENU buttons. Nothing else.
+- Restore point before this sprint: git tag `restore-sept18-line-by-line`.
+
+## THE LINE-BY-LINE BUILD (David, Sept 18 — the spec; 65 cues after Sept 19)
+- **1** prologue = the falling pages wind down (one GO, no phone); on her verse-2 line the phone
+  rises and she sends her text (auto); READ 9:44, his typing bubble, it stops; then she opens the
+  Memories — four cards, the BEAR (M2) last, she drifts back up to it; cutoff = phone away.
+- **2** 2.1 the roll then his lock screen; 2.2 = ONE ~50 s piece (three drafts → “home safe?” →
+  Delivered → her typing bubble); 2.3 her call; 2.4 hang up. Same-night compression kept.
 - **3** era-center only for her; Jamie's three calls (Whitfield ×2, Rob — he dials, per the
   script) with return rolls; hang-up on the downbeat of 4.
-- **4** her Stelmyer call (dial → connect → end), then his notifications. **5** ONE THING:
-  Books on her phone, the last page — “For Cathy” (rendered; no photo). **6** his lock screen,
+- **4** her Stelmyer call (dial → connect → end), then his notifications. **5** calendar only (the dedication is CUT). **6** his lock screen,
   Christmas wallpaper, whole song. **7** the FaceTime arc (ring → V2 → Call Ended → black).
-- **8** her lock screen marks the time, back and forth; **8.4 = INTERMISSION card** (holds
-  until 9.1). **9** notifications only. **10** “break a leg” before her first note, two
+- **8** calendar only: engagement → wedding → engagement on the singers' lines; **8.4 = INTERMISSION**
+  (the falling pages; holds until 9.1). **9** notifications only. **10** “break a leg” before her first note, two
   rejection emails, black, the bell-tone FLASHBACK to NOVEMBER 2023 (his long text), return.
 - **11** timeline only (one cue). **12** THE DRIVE: Apple Maps for the whole song, time-based
   (`mapsdrive`, `dur` seconds to arrival — tune in tech), the phone clock runs with it.
@@ -117,7 +141,8 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
 - **14** era flips with the singer; her one animation (his “home safe?” lands, she opens it,
   types, never sends); his last verse rolls to JUNE 2026 and holds; FINAL BLACKOUT = true black.
 - Instrumental passages auto-play from one GO using `{op:'pause', ms}` beats — tunable in tech.
-- Assets that remain: M24, M15, M3a, M2, M4 (Song 1), M23 (Song 6), V2 (Song 7). CUT: M1, M7/M7b, M12.
+- Assets: M24, M15, M3a, M2 (now THE BEAR), M4 (Song 1), M23 (Song 6), V2 (Song 7), plus loop-only
+  photos (S00-LOOP-…). CUT: M1, M7/M7b, M12.
 - **Never quote the script in chat.** Trigger fragments live only in `cues.js`, short.
 - **LINES LAW (supreme)**: trigger lines come ONLY from the licensed script. Every line
   not yet checked against it carries a ⚠CONFIRM flag in the cue data and documents.
