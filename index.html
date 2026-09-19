@@ -2890,7 +2890,7 @@ async function playCue(cue, st, tok){
       // no touch dot (cut by direction) — the beat, then the notification opens
       await wait(560); if(tok!==animTok) return; sfx('tap');
       applyOp(st,o); swapLayer(st,'appOpen'); camWide(); await wait(420); continue; }
-    if(o.op==='unlock'){ sfx('unlock'); camWide();
+    if(o.op==='unlock'){ sfx('unlock');   // no camera move on the unlock: the home screen rests where the lock did
       const hasLock=stacks().some(k=>k.querySelector('.lockL'));
       if(hasLock){
         stacks().forEach(k=>{const l=k.querySelector('.lockL'); if(l) l.classList.add('lockUp');});
@@ -2911,7 +2911,7 @@ async function playCue(cue, st, tok){
       // a beat on the home screen, then the icon presses and the app opens
       // (no touch dot, by direction — the icon's press animation carries the tap)
       await wait(520); if(tok!==animTok) return;
-      camPush(`.happ[data-app="${o.icon}"]`, 2.8, 0); sfx('tap');
+      /* no pan to the icon: the app opens 400 ms later and would override it (David: no jerks) */ sfx('tap');
       stacks().forEach(k=>{const ic=k.querySelector(`.happ[data-app="${o.icon}"]`); if(ic) ic.classList.add('tapped');});
       await wait(380); if(tok!==animTok) return;
       applyOp(st,o); swapLayer(st,'appOpen'); camWide(); await wait(420); continue; }
@@ -3130,7 +3130,7 @@ async function playCue(cue, st, tok){
         contactcard:'contact',findmy:'findmy',calevent:'calevent',settings2:'settings2',reminders:'reminders',
         ftrecents:'ftrecents',maps:'maps',music:'music',shot:'shot',note:'note',vm:'vm',igreq:'igreq',
         books:'books',mapsdrive:'mapsdrive'};
-      swapLayer(st, appMap[o.op]&&wasApp!==st.app ? 'appOpen' : 'fadeUp'); camWide();
+      swapLayer(st, appMap[o.op]&&wasApp!==st.app ? 'appOpen' : 'fadeUp'); if(wasApp!==st.app) camWide();   // the camera rests only when the register changes
       if(o.op==='mapsdrive' && st.dev!=='carplay') camPush('.mapsdrive .dv-map', 2.2, 900);   // on a phone: a medium shot on the road (the dash needs none)
       if(o.op==='findmy') camPush('.fmcard', 2.6, 500);                         // her card: the sheet with Share My Location
       await wait(o.op==='swipe'?520:300); continue; }
