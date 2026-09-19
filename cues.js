@@ -323,10 +323,10 @@ window.L5Y_SHOW = [
   hold:'The contrast IS the cue: three seconds of effort in February, a paragraph in November.',
   do:[{op:'clock',t:'9:48',d:'Wednesday, November 8, 2023'},{op:'stamp',t:'three months earlier'},
       {op:'device',dev:'iphone',who:'cathy'},
-      {op:'pause',ms:600},
+      {op:'pause',ms:1500},
       {op:'notif',app:'Messages',w:'now',title:'Jamie 💙',
        t:'You are going to walk in there tomorrow and be the best thing they see all week. I mean it. Whatever happens in that room, you are already the real thing — I have known that since the first night. Go get it, and call me the second you are out. I love you.'},
-      {op:'pause',ms:1800},
+      {op:'pause',ms:4200},
       {op:'notiftap',to:'thread',contact:'Jamie 💙',sub:'mobile'},
       {op:'history',items:[
         {k:'stamp',t:'Tuesday|8:15 PM'},{k:'me',t:'callback thursday. 9am. help'},
@@ -348,11 +348,11 @@ window.L5Y_SHOW = [
 /* ============ 12 · I CAN DO BETTER THAN THAT — CATHY · THE DRIVE ============ */
 {n:12,t:'I Can Do Better Than That',who:'cathy',cues:[
  {id:'12.1',kind:'music',trig:'TOP OF I CAN DO BETTER THAN THAT — the first note of the vamp',
-  what:'The calendar rolls BACK — MARCH · YEAR 5 → NOVEMBER · YEAR 1 — and docks; the dash lights up — CarPlay, already navigating: Apple Maps, New York → the Eastern Shore, the car’s display filling the frame. The drive really moves for the whole song: the puck rides the route, the miles and minutes fall, each maneuver counts down, and the dash clock runs 4:05 → 7:45. Arrival lands five minutes after this GO.',
-  hold:'`dur` (seconds to arrival) lives on this cue in cues.js — match it to the song in tech. After arrival the screen holds on “You have arrived.”',
-  do:[{op:'clock',t:'4:05',d:'Saturday, November 6, 2021'},{op:'stamp',t:'the drive'},
+  what:'The calendar rolls BACK — MARCH · YEAR 5 → NOVEMBER · YEAR 1 — and docks; the dash lights up — CarPlay, already navigating: Apple Maps, New York → the Eastern Shore, the car’s display filling the frame. The drive really moves for the whole song: the puck rides the route, the miles and minutes fall, each maneuver counts down, and the drive runs in REAL TIME (rate:1): they are on I-95 past Wilmington with the Delaware Memorial Bridge exit four miles ahead — the exit comes mid-song, the miles fall at highway speed, the dash clock runs 5:53 → about 5:58, arrival 7:45 PM holds.',
+  hold:'`rate` (trip minutes per real minute; 1 = real time) and `startAt` (fraction of the trip at GO) live on this cue — tune in tech. At rate:1 she never arrives during the song; that is the point.',
+  do:[{op:'clock',t:'5:53',d:'Saturday, November 6, 2021'},{op:'stamp',t:'the drive'},
       {op:'device',dev:'carplay',who:'cathy'},
-      {op:'mapsdrive',key:'12',dur:300,mins:220,miles:214,startMin:965,arrive:'7:45 PM',dest:'St. Michaels — the Eastern Shore'}]},
+      {op:'mapsdrive',key:'12',rate:1,startAt:.49,mins:220,miles:214,startMin:1073,arrive:'7:45 PM',dest:'St. Michaels — the Eastern Shore'}]},
  {id:'12.2',kind:'music',trig:'FINAL CHORD — the last note of the song',
   what:'The dash goes dark; NOVEMBER · YEAR 1 holds center.',
   do:[{op:'black'}]},

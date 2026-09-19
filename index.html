@@ -1208,10 +1208,10 @@ const FALLBACK_SHOW = [
   hold:'The contrast IS the cue: three seconds of effort in February, a paragraph in November.',
   do:[{op:'clock',t:'9:48',d:'Wednesday, November 8, 2023'},{op:'stamp',t:'three months earlier'},
       {op:'device',dev:'iphone',who:'cathy'},
-      {op:'pause',ms:600},
+      {op:'pause',ms:1500},
       {op:'notif',app:'Messages',w:'now',title:'Jamie 💙',
        t:'You are going to walk in there tomorrow and be the best thing they see all week. I mean it. Whatever happens in that room, you are already the real thing — I have known that since the first night. Go get it, and call me the second you are out. I love you.'},
-      {op:'pause',ms:1800},
+      {op:'pause',ms:4200},
       {op:'notiftap',to:'thread',contact:'Jamie 💙',sub:'mobile'},
       {op:'history',items:[
         {k:'stamp',t:'Tuesday|8:15 PM'},{k:'me',t:'callback thursday. 9am. help'},
@@ -1233,11 +1233,11 @@ const FALLBACK_SHOW = [
 /* ============ 12 · I CAN DO BETTER THAN THAT — CATHY · THE DRIVE ============ */
 {n:12,t:'I Can Do Better Than That',who:'cathy',cues:[
  {id:'12.1',kind:'music',trig:'TOP OF I CAN DO BETTER THAN THAT — the first note of the vamp',
-  what:'The calendar rolls BACK — MARCH · YEAR 5 → NOVEMBER · YEAR 1 — and docks; the dash lights up — CarPlay, already navigating: Apple Maps, New York → the Eastern Shore, the car’s display filling the frame. The drive really moves for the whole song: the puck rides the route, the miles and minutes fall, each maneuver counts down, and the dash clock runs 4:05 → 7:45. Arrival lands five minutes after this GO.',
-  hold:'`dur` (seconds to arrival) lives on this cue in cues.js — match it to the song in tech. After arrival the screen holds on “You have arrived.”',
-  do:[{op:'clock',t:'4:05',d:'Saturday, November 6, 2021'},{op:'stamp',t:'the drive'},
+  what:'The calendar rolls BACK — MARCH · YEAR 5 → NOVEMBER · YEAR 1 — and docks; the dash lights up — CarPlay, already navigating: Apple Maps, New York → the Eastern Shore, the car’s display filling the frame. The drive really moves for the whole song: the puck rides the route, the miles and minutes fall, each maneuver counts down, and the drive runs in REAL TIME (rate:1): they are on I-95 past Wilmington with the Delaware Memorial Bridge exit four miles ahead — the exit comes mid-song, the miles fall at highway speed, the dash clock runs 5:53 → about 5:58, arrival 7:45 PM holds.',
+  hold:'`rate` (trip minutes per real minute; 1 = real time) and `startAt` (fraction of the trip at GO) live on this cue — tune in tech. At rate:1 she never arrives during the song; that is the point.',
+  do:[{op:'clock',t:'5:53',d:'Saturday, November 6, 2021'},{op:'stamp',t:'the drive'},
       {op:'device',dev:'carplay',who:'cathy'},
-      {op:'mapsdrive',key:'12',dur:300,mins:220,miles:214,startMin:965,arrive:'7:45 PM',dest:'St. Michaels — the Eastern Shore'}]},
+      {op:'mapsdrive',key:'12',rate:1,startAt:.49,mins:220,miles:214,startMin:1073,arrive:'7:45 PM',dest:'St. Michaels — the Eastern Shore'}]},
  {id:'12.2',kind:'music',trig:'FINAL CHORD — the last note of the song',
   what:'The dash goes dark; NOVEMBER · YEAR 1 holds center.',
   do:[{op:'black'}]},
@@ -2141,7 +2141,7 @@ function mapsDriveHTML(st){
   if(!DRIVE_T0[key]) DRIVE_T0[key]=performance.now();
   const pts=DRIVE_ROUTE.map(p=>p.join(',')).join(' ');
   return `<div class="layer fs mapsdrive" data-key="${key}" data-dur="${d.dur||300}" data-mins="${d.mins||220}"
-      data-miles="${d.miles||214}" data-start="${d.startMin||965}"
+      data-miles="${d.miles||214}" data-start="${d.startMin||965}" data-rate="${d.rate||0}" data-at0="${d.startAt||0}"
       style="background:#171a21;display:flex;flex-direction:column;overflow:hidden;color:#fff">
     <div class="dv-banner"><div class="dv-ico">⬆</div>
       <div style="min-width:0;flex:1"><div class="dv-dist">Starting route</div>
@@ -2183,7 +2183,8 @@ function driveTick(){
     if(!el.getClientRects().length) return;   // hidden stage (presenter view): nothing to measure
     const key=el.dataset.key, t0=DRIVE_T0[key]; if(!t0) return;
     const dur=(+el.dataset.dur||300)*1000, mins=+el.dataset.mins||220, miles=+el.dataset.miles||214, start=+el.dataset.start||965;
-    const p=Math.min(1,(performance.now()-t0)/dur);
+    const rate=+el.dataset.rate||0, at0=+el.dataset.at0||0;
+    const p=rate ? Math.min(1, at0+((performance.now()-t0)/60000)*rate/mins) : Math.min(1,(performance.now()-t0)/dur);   // rate: trip minutes per real minute (1 = real time)
     const path=el.querySelector('.dv-route'); if(!path||!path.getTotalLength) return;
     const L=path.getTotalLength(), a=path.getPointAtLength(L*p), b=path.getPointAtLength(Math.min(L,L*p+6));
     const ang=(b.x===a.x&&b.y===a.y)?0:Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI+90;
@@ -2202,8 +2203,8 @@ function driveTick(){
     el.querySelector('.dv-miles').textContent=(done?0:(left>=10?Math.round(left):+left.toFixed(1)))+' mi';
     el.classList.toggle('arrived',done);
     // the phone's own clock advances with the trip — 3 h 40 of road in one song
-    const scr=el.closest('.screen'); if(scr){ const sb=scr.querySelector('.statusbar span'); if(sb) sb.textContent=fmtClock(start+mins*p); }
-    const cp=el.closest('.carplay'); if(cp){ const t=cp.querySelector('.cp-time'); if(t) t.textContent=fmtClock(start+mins*p); }
+    const scr=el.closest('.screen'); if(scr){ const sb=scr.querySelector('.statusbar span'); if(sb) sb.textContent=fmtClock(start+mins*(p-at0)); }
+    const cp=el.closest('.carplay'); if(cp){ const t=cp.querySelector('.cp-time'); if(t) t.textContent=fmtClock(start+mins*(p-at0)); }
   });
 }
 setInterval(driveTick,200);
@@ -2886,7 +2887,7 @@ async function playCue(cue, st, tok){
         k.appendChild(d); });
       camPush('.inbanner', 3.2, 200);
       continue; }
-    if(o.op==='notiftap'){
+    if(o.op==='notiftap'){ st.camBottom=true;
       // no touch dot (cut by direction) — the beat, then the notification opens
       await wait(560); if(tok!==animTok) return; sfx('tap');
       applyOp(st,o); swapLayer(st,'appOpen'); camWide(); await wait(420); continue; }
@@ -3267,7 +3268,7 @@ function estDuration(cue){
     switch(o.op){
       case 'pause': t+=o.ms||800; break;
       case 'device': t+=800; break;
-      case 'clock': t+=o.d?2600:0; break;
+      case 'clock': t+=o.d?6000:0; break;
       case 'prologue': t+=(o.ms||0)+1100; break;
       case 'black': case 'curtain': t+=520; break;
       case 'memgo': t+=1400+1600; break;
@@ -3631,8 +3632,9 @@ async function eraRoll(A,B,tok,st,long){
   const era=document.getElementById('era'); if(!era||era.classList.contains('hidden')) return;
   const total=(B.getFullYear()-A.getFullYear())*12+(B.getMonth()-A.getMonth()); if(!total) return;
   const dir=total>0?1:-1, n=Math.min(Math.abs(total), long?16:12);
-  let rollMs=0; for(let i=1;i<=n;i++) rollMs+=(i<=2?200:(i===n?380:(i>n-3?260:135)))*(long?1.15:1);
-  warpStart(rollMs+700);   // the Time Warp music rides the roll: in on the first page, out as the last one settles
+  const ROLL_MS=6000; let base=0; for(let i=1;i<=n;i++) base+=(i<=2?200:(i===n?380:(i>n-3?260:135)));
+  const scale=(ROLL_MS-700)/base;   // every roll lasts 6 s — the Time Warp music, five clock ticks (David); the pages share it
+  warpStart(ROLL_MS);
   const docked=era.dataset.home==='docked';
   const pad=era.querySelector(docked?'.strip':'.pad'), top=era.querySelector(docked?'.strip .stop':'.pad .top');
   const fill=(el,m,y)=>{ const q=s=>el.querySelector(s);
@@ -3647,7 +3649,7 @@ async function eraRoll(A,B,tok,st,long){
     else { sfx('settle',{seed:'settle'+A.getTime()+i}); const nu=top.cloneNode(true); nu.classList.remove('top','stop'); fill(nu,m,y); nu.classList.add('settle'); nu.style.setProperty('--pp','var(--pp'+(1+(i%4))+')'); pad.appendChild(nu);
       setTimeout(()=>{ if(tok!==animTok){ nu.remove(); return; } if(nu.isConnected){ fill(top,m,y); nu.remove(); } },620); }
     const pe=document.getElementById('prevEra'); if(pe) pe.innerHTML=(MO_(m)+'<br>YEAR '+y).toUpperCase();
-    const t=(i<=2?200:(i===n?380:(i>n-3?260:135)))*(long?1.15:1);
+    const t=(i<=2?200:(i===n?380:(i>n-3?260:135)))*scale;
     await wait(t);
   }
 }
@@ -3727,7 +3729,7 @@ function camGeom(c){
 }
 function CAM_T_(){ return CAM_T_.a||(CAM_T_.a=[]); }   // hoisted: boot code runs before this block
 function camTimersClear(){ CAM_T_().forEach(clearTimeout); CAM_T_().length=0; }
-function camTempo(){ return ({0:1.9, 5:1.5, 7:1.5, 9:1.5, 12:1.6, 13:1.6})[typeof si==='number'?si:0]||1; }   // Still Hurting, Christmas, See I'm Smiling, Goodbye Until Tomorrow: slow songs, slow eyes
+function camTempo(){ return ({0:1.9, 5:1.5, 7:1.5, 12:1.6, 13:1.6})[typeof si==='number'?si:0]||1; }   // Climbing Uphill reads fast: no slow glides there   // Still Hurting, Christmas, See I'm Smiling, Goodbye Until Tomorrow: slow songs, slow eyes
 function camApply(c,g,z,qx,qy,anchor,instant,dur){
   const {F,P0x,P0y,d1,d2,dw,dh,uw,ux,H}=g; const Cx=ux+uw/2, Cy=F.top+H/2;
   let tx = z*dw<uw ? Cx-P0x-z*(d1.x+d2.x)/2 : Cx-P0x-z*qx;

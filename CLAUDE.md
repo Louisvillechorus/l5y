@@ -111,8 +111,8 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
 - **TIME ONLY EVER CHANGES ON THE CALENDAR** (`eraRoll`), and every roll rides the TIME WARP MUSIC
   (`assets/sfx/timewarp.mp3`, David's file, `warpStart`: in on the first page, out as the last settles,
   stopped on a scrub): forward = pages tear off and fall;
-  backward = pages rise and settle. Long journeys skip months (≤16 pages, ~3 s at a song top,
-  ~2 s mid-song). The phone never rolls; a dated `clock` op rolls the era, then `device` docks it
+  backward = pages rise and settle. Long journeys skip months (≤16 pages). **EVERY ROLL LASTS EXACTLY 6 s** (David, Sept 19 — the
+  Time Warp music, five clock ticks; the pages share the 6 s whatever their number). The phone never rolls; a dated `clock` op rolls the era, then `device` docks it
   and the phone rises already at the new time. `stamp` is now the calendar's FOOT line.
 - **YEAR 1…5**, never real years on stage: Year N = years since the night they met (Sept 3);
   the real dates stay in cues.js (`yearN()` derives the label). The wedding is May · Year 3.
@@ -188,8 +188,10 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   9.4, 9.5, 9.6 carry `confirm:true` (⚠CONFIRM) until David ticks them on the worksheet; the
   attribution “— Elise” was removed from the 9.5 trigger (the score does not name her). Her
   interpolation has no cue — David's call whether the phone drops on her lines.
-- **11** timeline only (one cue). **12** THE DRIVE on CARPLAY: Apple Maps on the dash for the whole
-  song, time-based (`mapsdrive`, `dur` seconds to arrival — tune in tech), the dash clock runs with it.
+- **11** timeline only (one cue). **12** THE DRIVE on CARPLAY, IN REAL TIME (David, Sept 19 — “driving 500 mph” was cut): `rate:1`,
+  `startAt:.49` — on I-95 past Wilmington, the Delaware Memorial Bridge exit four miles ahead comes
+  mid-song, the miles fall at highway speed, the dash clock runs 5:53 onward; she never arrives in
+  the song. (`dur` mode still exists for a compressed trip.)
 - **13** two beats: her text lands (5:05 AM — before dawn means before the 5:24 sunrise) and he
   swipes it away; on his last line, Find My → Share My Location → Share Indefinitely (it was OFF
   before the song; never shown turning off). Her Ohio is **Mount Orab, OH** (forty miles east of
