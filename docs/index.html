@@ -704,21 +704,22 @@
   /* ---- the era artifact ---- */
   #era{position:absolute;z-index:6;opacity:1;transition:opacity .8s ease;will-change:transform}
   #era.hidden{opacity:0;pointer-events:none}
-  #era.center{inset:0;margin:auto;width:min(42vw,760px);height:calc(min(42vw,760px)*1.18)}
+  #era.center{inset:0;margin:auto;width:78vh;height:92vh}   /* the pad fills the stage height (David, Sept 19 night: the type must fill the paper) */
   #era.docked{inset:0;margin:auto 1.6vw auto auto;width:14.4vw;height:93vh}
   #era .pad,#era .strip{position:absolute;inset:0;transition:opacity .35s ease}
   #era.docked .pad{opacity:0;pointer-events:none} #era.center .strip{opacity:0;pointer-events:none}
-  #era .sheet{position:absolute;inset:0;padding:6% 7% 8%;display:flex;flex-direction:column;justify-content:flex-end;transform-origin:8% 0%;
+  #era .sheet{position:absolute;inset:0;padding:4.5% 5% 4%;display:flex;flex-direction:column;justify-content:space-between;align-items:center;text-align:center;transform-origin:8% 0%;
     box-shadow:0 30px 60px rgba(0,0,0,.6),0 2px 4px rgba(0,0,0,.45)}
   #era .sheet.u1{transform:translate(2.4%,2%) rotate(-2.6deg);--pp:var(--pp2,none);filter:brightness(.92)}
   #era .sheet.u2{transform:translate(-2%,4.6%) rotate(3deg);--pp:var(--pp3,none);filter:brightness(.84)}
-  #era .yr{font-family:'Courier Prime',monospace;font-weight:700;font-size:clamp(16px,2.4vw,46px);letter-spacing:.4em;color:#000;text-transform:uppercase}
-  #era .ynum{font-family:'Fraunces',Georgia,serif;font-weight:800;font-size:clamp(60px,16vw,320px);line-height:.8;color:#000;margin-top:.6vh}
-  #era .mo{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:clamp(28px,4.8vw,96px);line-height:.95;letter-spacing:.01em;color:#000;margin-top:1.2vh;white-space:nowrap}
-  #era .rule{height:1px;background:#bdb7a8;margin:2vh 0 1.2vh}
-  #era .ttl{font-family:'Fraunces',Georgia,serif;font-weight:300;font-size:clamp(30px,5.2vw,104px);line-height:1.02;letter-spacing:.02em;color:#171512;margin-top:1.4vh}
+  #era .yr{font-family:'Courier Prime',monospace;font-weight:700;font-size:5.2vh;line-height:1.15;letter-spacing:.32em;margin-right:-.32em;color:#000;text-transform:uppercase}
+  #era .ynum{font-family:'Fraunces',Georgia,serif;font-weight:800;font-size:60vh;line-height:.78;color:#000;margin:0}
+  #era .mo{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:14.5vh;line-height:1;letter-spacing:0;color:#000;margin:0;white-space:nowrap;max-width:100%}
+  #era .rule{height:2px;width:100%;background:#8c877a;margin:0}
+  #era .ttl{font-family:'Fraunces',Georgia,serif;font-weight:400;font-size:11.5vh;line-height:1.04;letter-spacing:.01em;color:#000;margin:0}
+  #era .pad.house .sheet.top{justify-content:center;gap:4vh}
   #era .ttl:empty,#era .ynum:empty,#era .mo:empty{display:none} #era .pad.house .rule,#era .pad.house .foot{display:none}
-  #era .foot{font-family:'Courier Prime',monospace;font-weight:700;color:#2a2722;font-size:clamp(12px,1.9vw,34px);letter-spacing:.3em;color:#8c8a84;text-transform:uppercase;min-height:1.2em}
+  #era .foot{font-family:'Courier Prime',monospace;font-weight:700;font-size:3.6vh;line-height:1.2;letter-spacing:.2em;margin-right:-.2em;color:#1a1815;text-transform:uppercase;min-height:1.2em}
   /* the docked strip (David, Sept 19): no name — it is obvious whose phone it is. The YEAR outranks the month:
      the month small and horizontal at the top, YEAR huge running down the strip, the number at the foot. */
   #era .strip .stop{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:2.6vh 0 1.6vh;

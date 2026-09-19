@@ -106,8 +106,13 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
 - **PAPER (David, Sept 19 night: the crumple is CUT)**: the sheets are flat matte off-white with a
   whisper of grain and quiet torn edges. The generator (`paperTex`) stays in the engine but is
   inert; real scans in `assets/paper/` (embedded by build.py as `window.L5Y_PAPER`) would show
-  through `--pp` if David ever wants texture back. The strip is 12.4vw wide — everything on the
-  right side big (month 4vw, YEAR 8.4vw, the number 17.5vw).
+  through `--pp` if David ever wants texture back. The strip is 14.4vw wide — everything on the
+  right side big (month 4.6vw, YEAR 9.6vw, the number 20vw). **THE PAD FILLS THE PAPER (David, Sept 19
+  night: “too small for the audience”)**: the center pad is 78vh × 92vh; its type is sized to the sheet and
+  centered — YEAR label 5.2vh at the top, the numeral 60vh, the month 14.5vh (“September” clears the sheet with
+  margin), the rule, the foot 3.6vh (22-character foot lines fit; longer ones wrap, never clip). The house
+  faces (title / Intermission) center on the sheet at 11.5vh. The roll clones the top sheet, so every torn
+  page carries the same sizes.
 - **TIME ONLY EVER CHANGES ON THE CALENDAR** (`eraRoll`), and every roll rides the TIME WARP MUSIC
   (`assets/sfx/timewarp.mp3`, David's file, `warpStart`: in on the first page, out as the last settles,
   stopped on a scrub): forward = pages tear off and fall;
