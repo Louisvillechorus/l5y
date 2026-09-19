@@ -126,7 +126,10 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   phone-sized): the docked strip owns the right 15% (`ERA_ZONE`), the screen fills the rest edge
   to edge (`camRest`, `CAM_FILL`=3.6×), anchored to the TOP of the register (a thread opens at its
   top — the name, the history; Find My's card sits at the BOTTOM), with feathers where it leaves
-  the frame. **THE FOLLOW RULE**: a push (`camPush`) moves the camera ONLY when its target is not
+  the frame. A thread rests at its top until she has typed in it, then at its foot for good
+  (`st.camBottom`). The camera never pans to an app icon (the app opens 400 ms later), never moves
+  on the unlock, and rests only when the REGISTER changes (`wasApp!==st.app`); a Find My sheet
+  rises into a frame that already holds it. **THE FOLLOW RULE**: a push (`camPush`) moves the camera ONLY when its target is not
   already in frame; when it is, the camera holds. When it must move it pans at the current zoom if
   the target fits, and re-zooms only when it must. Every move is one slow glide (1.4 s,
   ease-in-out). No drift. Nothing moves while a receipt changes or a bubble lands in frame. The MacBook (song 7) and the dash (song 12) fill
@@ -207,7 +210,7 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   `L5Y-Lines-Worksheet.docx` are the reconciliation path.
 
 ## Workflow law
-1. **Verify before delivering.** Playwright harness must pass: state-integrity (all cues), POV/timeline, legibility QC, `audit_teleports.py` (no register appears without navigation), **`qc_livepath.py` (the operator's GO path: every cue fired via advance(), shell chrome + reading window asserted against settled truth — settled-render sweeps cannot see live-swap bugs)**, zero JS errors — plus a screenshot review of anything visually changed. Never hand David anything unverified.
+1. **Verify before delivering.** Playwright harness must pass: state-integrity (all cues), POV/timeline, legibility QC, `audit_teleports.py` (no register appears without navigation), **`qc_census.py` (the live census: every sound and every camera move of the whole show, by cue — the sound law and the follow rule are checked HERE; any cue with more than three moves must justify itself)**, **`qc_livepath.py` (the operator's GO path: every cue fired via advance(), shell chrome + reading window asserted against settled truth — settled-render sweeps cannot see live-swap bugs)**, zero JS errors — plus a screenshot review of anything visually changed. Never hand David anything unverified.
 2. Rebuild = splice `cues.js` into `FALLBACK_SHOW`, emit `L5Y-Show-STANDALONE.html`, `node --check` the script.
 3. Regenerate the Cue Bible whenever cue content changes: `extract_book.py` → `build_bible_data.py` → `build_bible_docx.js` (DOCX) + `build_bible_pdf.py` (PDF, headless Chromium). Both render the same `bible.json`, so they cannot drift. The Bible carries: ON SCREEN verbatim, PLAYS mechanics, SOUND, PHONES state, gold dramaturgy notes.
 4. Ship: STANDALONE + Bible PDF; push to this repo so the team URL stays current.
