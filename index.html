@@ -707,29 +707,41 @@
   /* ---- the era artifact ---- */
   #era{position:absolute;z-index:6;opacity:1;transition:opacity .8s ease;will-change:transform}
   #era.hidden{opacity:0;pointer-events:none}
-  #era.center{inset:0;margin:auto;width:78vh;height:92vh}   /* the pad fills the stage height (David, Sept 19 night: the type must fill the paper) */
+  /* THE CALENDAR CARD (David, Sept 19 night — his own mockup): a square sheet, YEAR stacked over the
+     numeral in a geometric sans, and one foot row "month | event" under a rule. The ink is hard black
+     with a gritty edge (filter #inkgrit) so the type sits IN the paper, never printed on top of it. */
+  #era.center{inset:0;margin:auto;width:96vh;height:94vh}
   #era.docked{inset:0;margin:auto 1.6vw auto auto;width:14.4vw;height:93vh}
   #era .pad,#era .strip{position:absolute;inset:0;transition:opacity .35s ease}
   #era.docked .pad{opacity:0;pointer-events:none} #era.center .strip{opacity:0;pointer-events:none}
-  #era .sheet{position:absolute;inset:0;padding:4.5% 5% 4%;display:flex;flex-direction:column;justify-content:space-between;align-items:center;text-align:center;transform-origin:8% 0%;
+  #era .sheet{position:absolute;inset:0;padding:4.6vh 6.5vh 4vh;display:flex;flex-direction:column;justify-content:space-between;align-items:center;text-align:center;transform-origin:8% 0%;
     box-shadow:0 30px 60px rgba(0,0,0,.6),0 2px 4px rgba(0,0,0,.45)}
   #era .sheet.u1{transform:translate(2.4%,2%) rotate(-2.6deg);--pp:var(--pp2,none);filter:brightness(.92)}
   #era .sheet.u2{transform:translate(-2%,4.6%) rotate(3deg);--pp:var(--pp3,none);filter:brightness(.84)}
-  #era .yr{font-family:'Courier Prime',monospace;font-weight:700;font-size:5.2vh;line-height:1.15;letter-spacing:.32em;margin-right:-.32em;color:#000;text-transform:uppercase}
-  #era .ynum{font-family:'Fraunces',Georgia,serif;font-weight:800;font-size:60vh;line-height:.78;color:#000;margin:0}
-  #era .mo{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:14.5vh;line-height:1;letter-spacing:0;color:#000;margin:0;white-space:nowrap;max-width:100%}
-  #era .rule{height:2px;width:100%;background:#8c877a;margin:0}
-  #era .ttl{font-family:'Fraunces',Georgia,serif;font-weight:400;font-size:11.5vh;line-height:1.04;letter-spacing:.01em;color:#000;margin:0}
-  #era .pad.house .sheet.top{justify-content:center;gap:4vh}
-  #era .ttl:empty,#era .ynum:empty,#era .mo:empty{display:none} #era .pad.house .rule,#era .pad.house .foot{display:none}
-  #era .foot{font-family:'Courier Prime',monospace;font-weight:700;font-size:3.6vh;line-height:1.2;letter-spacing:.2em;margin-right:-.2em;color:#1a1815;text-transform:uppercase;min-height:1.2em}
+  #era .grp{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;filter:url(#inkgrit)}
+  #era .ft{width:100%;filter:url(#inkgrit)}
+  #era .yr{font-family:'Poppins',sans-serif;font-weight:800;font-size:28vh;line-height:1.02;letter-spacing:-.005em;color:#000}
+  #era .ynum{font-family:'Poppins',sans-serif;font-weight:800;font-size:54vh;line-height:.9;letter-spacing:-.02em;color:#000;margin-top:-1vh}
+  #era .ttl{font-family:'Poppins',sans-serif;font-weight:800;font-size:15vh;line-height:1.04;letter-spacing:-.01em;color:#000;margin-top:2.2vh}
+  #era .rule{height:.5vh;width:100%;background:#000;margin:0 0 1.1vh}
+  #era .frow{display:flex;align-items:center;justify-content:center;gap:2vh;white-space:nowrap;
+    font-family:'Poppins',sans-serif;font-weight:600;font-size:5.2vh;line-height:1.35;color:#000}
+  #era .frow .pipe{width:.4vh;height:4.9vh;background:#000;flex:none}
+  #era .mo,#era .foot{font-family:inherit;font-weight:inherit;font-size:inherit;color:#000;letter-spacing:0;text-transform:none}
+  /* the house pages carry the words only (David: leave those simple) — no rule, no foot, no act number */
+  #era .pad.house .ft{display:none}
+  #era .pad.house .yr{font-size:6vh}
+  #era .ttl:empty,#era .ynum:empty,#era .yr:empty{display:none}
+  #era .frow.solo .pipe,#era .frow.solo .foot:empty{display:none}
+  #era .sheet.tear .grp,#era .sheet.tear .ft,#era .sheet.settle .grp,#era .sheet.settle .ft{filter:none}   /* a page in flight carries no filter */
+  #era .pad.house.inter .ttl{font-size:18vh;margin-top:0}
   /* the docked strip (David, Sept 19): no name — it is obvious whose phone it is. The YEAR outranks the month:
      the month small and horizontal at the top, YEAR huge running down the strip, the number at the foot. */
-  #era .strip .stop{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:2.6vh 0 1.6vh;
+  #era .strip .stop{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:2.6vh 0 1.6vh;filter:url(#inkgrit);
     --pp:var(--pp2,none);box-shadow:0 24px 50px rgba(0,0,0,.6),0 2px 4px rgba(0,0,0,.45);transform-origin:8% 0%}
-  #era .smo{font-family:'Courier Prime',monospace;font-weight:700;font-size:clamp(20px,4.6vw,92px);line-height:1;letter-spacing:.04em;text-transform:uppercase;color:#000}
-  #era .syr{writing-mode:vertical-rl;font-family:'Courier Prime',monospace;font-weight:700;font-size:clamp(34px,9.6vw,192px);line-height:1;letter-spacing:.02em;text-transform:uppercase;color:#000;margin-right:.02em}
-  #era .snum{font-family:'Fraunces',Georgia,serif;font-weight:800;font-size:clamp(60px,20vw,400px);line-height:.78;color:#000}
+  #era .smo{font-family:'Poppins',sans-serif;font-weight:700;font-size:clamp(20px,4.6vw,92px);line-height:1;letter-spacing:.04em;text-transform:uppercase;color:#000}
+  #era .syr{writing-mode:vertical-rl;font-family:'Poppins',sans-serif;font-weight:800;font-size:clamp(34px,9.6vw,192px);line-height:1;letter-spacing:.02em;text-transform:uppercase;color:#000;margin-right:.02em}
+  #era .snum{font-family:'Poppins',sans-serif;font-weight:800;font-size:clamp(60px,20vw,400px);line-height:.78;color:#000}
   .tear{animation:tear 1s cubic-bezier(.55,.05,.5,1) forwards;z-index:9;box-shadow:0 12px 30px rgba(0,0,0,.35)}
   @keyframes tear{0%{transform:rotate(0)}18%{transform:rotate(-3deg) translate(0,-3%)}55%{transform:rotate(-14deg) translate(-4%,8%);opacity:1}100%{transform:rotate(-34deg) translate(-18%,120%);opacity:0}}
   .settle{animation:settle .7s cubic-bezier(.2,.9,.25,1.05) forwards;z-index:9;box-shadow:0 12px 30px rgba(0,0,0,.35)}
@@ -843,9 +855,21 @@
   </defs></svg>
   <div id="loop"></div>
   <div id="projDevice"></div>
+  <svg id="inkdefs" width="0" height="0" style="position:absolute;pointer-events:none" aria-hidden="true">
+    <filter id="inkgrit" x="-8%" y="-8%" width="116%" height="116%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.075" numOctaves="4" seed="9" result="w"/>
+      <feDisplacementMap in="SourceGraphic" in2="w" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.16" numOctaves="2" seed="4" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -0.20 1.00" result="m"/>
+      <feComposite in="d" in2="m" operator="in"/>
+    </filter>
+  </svg>
   <div id="era" class="center hidden" data-home="center">
     <div class="pad"><div class="sheet u2"></div><div class="sheet u1"></div>
-      <div class="sheet top"><div class="yr"></div><div class="ttl"></div><div class="ynum"></div><div class="mo"></div><div class="rule"></div><div class="foot"></div></div></div>
+      <div class="sheet top">
+        <div class="grp"><div class="yr"></div><div class="ynum"></div><div class="ttl"></div></div>
+        <div class="ft"><div class="rule"></div><div class="frow"><span class="mo"></span><i class="pipe"></i><span class="foot"></span></div></div>
+      </div></div>
     <div class="strip"><div class="stop"><div class="smo"></div><div class="syr">year</div><div class="snum"></div></div></div>
   </div>
   <div id="rotNote"></div>
@@ -3542,6 +3566,16 @@ function MO_(i){ return ['January','February','March','April','May','June','July
 function MA_(i){ return ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'][i]; }
 /* YEAR N = years since the night they met (their September anniversary) */
 function yearN(d){ const y=d.getFullYear(); return d>=new Date(y,8,3) ? y-2020 : y-2021; }
+function fitPad(era){   // the card is fixed; the words are not. Anything wider than the sheet shrinks to fit.
+  const sh=era.querySelector('.pad .sheet.top'); if(!sh) return;
+  const cs=getComputedStyle(sh), inner=sh.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);
+  if(!(inner>0)) return;
+  ['.yr','.ynum','.ttl','.frow'].forEach(sel=>{ const e=sh.querySelector(sel); if(!e) return;
+    e.style.fontSize=''; if(!e.textContent.trim()) return;
+    const w=e.scrollWidth; if(w<=inner) return;
+    const base=parseFloat(getComputedStyle(e).fontSize);
+    e.style.fontSize=(base*inner/w*0.985).toFixed(2)+'px'; });
+}
 function eraParts(st){ const d=new Date(st.date||''); if(isNaN(d)) return {mo:'',abbr:'',yr:''}; return {mo:MO_(d.getMonth()),abbr:MA_(d.getMonth()),yr:yearN(d)}; }
 function eraLabel(st){ const p=eraParts(st); if(!p.mo) return ''; return (p.mo+' · YEAR '+p.yr+(st.foot?' · '+st.foot:'')).toUpperCase(); }
 function isPreshow(){ return si===0&&ci===0; }
@@ -3597,9 +3631,13 @@ function setStamp(st){
   // the still pad carries the house: the title page before the show, the intermission page at the break (David, Sept 19 night — no falling pages)
   const face = (st.prologueLive||isPreshow()) ? 'title' : (st.inter ? 'inter' : '');
   era.querySelector('.pad').classList.toggle('house', !!face);
-  if(face){ q('.yr').textContent= face==='title' ? 'Redline Performing Arts' : 'Act Two'; q('.ttl').innerHTML= face==='title' ? 'The Last<br>Five Years' : 'Intermission';
+  era.querySelector('.pad').classList.toggle('inter', face==='inter');
+  if(face){ q('.yr').textContent = face==='title' ? 'Redline Performing Arts' : '';
+    q('.ttl').innerHTML = face==='title' ? 'THE LAST<br>FIVE<br>YEARS' : 'INTER<br>MISSION';
     q('.ynum').textContent=''; q('.mo').textContent=''; q('.foot').textContent=''; }
   else { q('.ttl').innerHTML=''; q('.yr').textContent=p.mo?'YEAR':''; q('.ynum').textContent=p.mo?p.yr:''; q('.mo').textContent=p.mo; q('.foot').textContent=st.foot||''; }
+  { const fr=q('.frow'); if(fr) fr.classList.toggle('solo', !(st.foot||'')); }
+  fitPad(era);
   if(!st.tearing) era.querySelectorAll('.tear,.settle').forEach(e=>e.remove());   // no stray pages from a cancelled roll
   q('.smo').textContent=p.abbr; q('.snum').textContent=p.yr;
   const hidden = !!st.curtain || (!face && !p.mo);

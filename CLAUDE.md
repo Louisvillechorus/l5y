@@ -107,12 +107,18 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   whisper of grain and quiet torn edges. The generator (`paperTex`) stays in the engine but is
   inert; real scans in `assets/paper/` (embedded by build.py as `window.L5Y_PAPER`) would show
   through `--pp` if David ever wants texture back. The strip is 14.4vw wide — everything on the
-  right side big (month 4.6vw, YEAR 9.6vw, the number 20vw). **THE PAD FILLS THE PAPER (David, Sept 19
-  night: “too small for the audience”)**: the center pad is 78vh × 92vh; its type is sized to the sheet and
-  centered — YEAR label 5.2vh at the top, the numeral 60vh, the month 14.5vh (“September” clears the sheet with
-  margin), the rule, the foot 3.6vh (22-character foot lines fit; longer ones wrap, never clip). The house
-  faces (title / Intermission) center on the sheet at 11.5vh. The roll clones the top sheet, so every torn
-  page carries the same sizes.
+  right side big (month 4.6vw, YEAR 9.6vw, the number 20vw), in Poppins to match the pad.
+  **THE CARD (David, Sept 19 night — his own mockup, “this is the move”)**: the center pad is a SQUARE sheet,
+  96vh × 94vh, and every card is that same size (the house pages too — the falling photos must read behind
+  them). The face is **Poppins**: the word YEAR at 28vh directly over the NUMERAL at 54vh, both weight 800,
+  hard black, and one foot row under a rule — **month │ event**, 5.2vh weight 600, split by a vertical pipe.
+  `fitPad()` shrinks any element wider than the sheet, so no month or foot line can ever run off.
+  **THE INK HAS GRIT** (`#inkgrit`): a low-amplitude displacement roughens the glyph CONTOUR so the type sits
+  in the paper, with only a whisper of interior mottle — the fill stays hard black (a fine interior screen
+  greys the letter out at 25 ft and is wrong). A page in flight drops the filter (16 filtered clones cost frames).
+  **The house pages carry the words only** (David: leave those simple): the title page is REDLINE PERFORMING
+  ARTS over THE LAST / FIVE / YEARS — no act number, no author credit; the intermission page is INTER /
+  MISSION alone — no “Act Two”. Photos fall behind both (the files are still outstanding).
 - **TIME ONLY EVER CHANGES ON THE CALENDAR** (`eraRoll`), and every roll rides the TIME WARP MUSIC
   (`assets/sfx/timewarp.mp3`, David's file, `warpStart`: in on the first page, out as the last settles,
   stopped on a scrub): forward = pages tear off and fall;
