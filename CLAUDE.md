@@ -175,6 +175,14 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
 - **8** calendar only: engagement → wedding → engagement on the singers' lines; **8.4 = INTERMISSION**
   (the falling pages; holds until 9.1). **9** notifications only. **10** “break a leg” before her first note, two
   rejection emails, black, the bell-tone FLASHBACK to NOVEMBER 2023 (his long text), return.
+- **9** (dramaturg pass, Sept 19): one device, one era (Fri Oct 18 2024 = OCTOBER · YEAR 4, “five months
+  married”, the wedding portrait M4 as his wallpaper); the stack is only what a real phone shows —
+  Instagram COMMENTS preview text (a stranger's DM never does; a request says “wants to send you a
+  message”), the book's growth arrives from Linda Whitfield (Goodreads pushes nothing like it),
+  Elise is “Elise (Random House)”, the clock ticks 11:22 → 11:25 → 11:29 across the number. 9.2,
+  9.4, 9.5, 9.6 carry `confirm:true` (⚠CONFIRM) until David ticks them on the worksheet; the
+  attribution “— Elise” was removed from the 9.5 trigger (the score does not name her). Her
+  interpolation has no cue — David's call whether the phone drops on her lines.
 - **11** timeline only (one cue). **12** THE DRIVE on CARPLAY: Apple Maps on the dash for the whole
   song, time-based (`mapsdrive`, `dur` seconds to arrival — tune in tech), the dash clock runs with it.
 - **13** two beats: her text lands (5:05 AM — before dawn means before the 5:24 sunrise) and he

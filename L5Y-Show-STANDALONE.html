@@ -674,7 +674,7 @@
      time only ever changes on it. Falling torn pages for preshow and intermission. */
   #projection{background:#0a0a0b radial-gradient(ellipse at 50% 60%,#17171a 0%,#0a0a0b 68%) !important}
   #railL,#railR,#barTop,#projOwner,#projStamp{display:none !important}
-  .paper,#era .sheet,#era .strip .stop{background:var(--pp,var(--pp1,none)) center/cover no-repeat #ece9e2;color:#171512}   /* flat matte sheets (the crumple is cut — David); a real scan in assets/paper/ still shows through --pp */
+  .paper,#era .sheet,#era .strip .stop{background:var(--pp,var(--pp1,none)) 0 0/512px 512px repeat #f3f0e9;color:#000}   /* light paper: a fine tiled grain (paperGrain), never a crumple; a real scan in assets/paper/ replaces it */
   .paper{box-shadow:0 30px 60px rgba(0,0,0,.6),0 2px 4px rgba(0,0,0,.45)}
   /* the sheets are photographs of crumpled paper generated in the engine (paperTex): facets, fold creases, fibre grain — see PAPER below */
   .paper::before,#era .sheet::before,#era .strip .stop::before{content:'';position:absolute;inset:0;pointer-events:none;mix-blend-mode:multiply;opacity:.09;
@@ -705,27 +705,27 @@
   #era{position:absolute;z-index:6;opacity:1;transition:opacity .8s ease;will-change:transform}
   #era.hidden{opacity:0;pointer-events:none}
   #era.center{inset:0;margin:auto;width:min(42vw,760px);height:calc(min(42vw,760px)*1.18)}
-  #era.docked{inset:0;margin:auto 2vw auto auto;width:12.4vw;height:88vh}
+  #era.docked{inset:0;margin:auto 1.6vw auto auto;width:14.4vw;height:93vh}
   #era .pad,#era .strip{position:absolute;inset:0;transition:opacity .35s ease}
   #era.docked .pad{opacity:0;pointer-events:none} #era.center .strip{opacity:0;pointer-events:none}
   #era .sheet{position:absolute;inset:0;padding:6% 7% 8%;display:flex;flex-direction:column;justify-content:flex-end;transform-origin:8% 0%;
     box-shadow:0 30px 60px rgba(0,0,0,.6),0 2px 4px rgba(0,0,0,.45)}
   #era .sheet.u1{transform:translate(2.4%,2%) rotate(-2.6deg);--pp:var(--pp2,none);filter:brightness(.92)}
   #era .sheet.u2{transform:translate(-2%,4.6%) rotate(3deg);--pp:var(--pp3,none);filter:brightness(.84)}
-  #era .yr{font-family:'Courier Prime',monospace;font-weight:700;font-size:clamp(14px,2vw,38px);letter-spacing:.5em;color:#6b675e;text-transform:uppercase}
-  #era .ynum{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:clamp(60px,15vw,300px);line-height:.82;color:#171512;margin-top:.6vh}
-  #era .mo{font-family:'Fraunces',Georgia,serif;font-weight:300;font-size:clamp(28px,4.6vw,92px);line-height:.95;letter-spacing:.01em;color:#171512;margin-top:1.2vh;white-space:nowrap}
+  #era .yr{font-family:'Courier Prime',monospace;font-weight:700;font-size:clamp(16px,2.4vw,46px);letter-spacing:.4em;color:#000;text-transform:uppercase}
+  #era .ynum{font-family:'Fraunces',Georgia,serif;font-weight:800;font-size:clamp(60px,16vw,320px);line-height:.8;color:#000;margin-top:.6vh}
+  #era .mo{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:clamp(28px,4.8vw,96px);line-height:.95;letter-spacing:.01em;color:#000;margin-top:1.2vh;white-space:nowrap}
   #era .rule{height:1px;background:#bdb7a8;margin:2vh 0 1.2vh}
   #era .ttl{font-family:'Fraunces',Georgia,serif;font-weight:300;font-size:clamp(30px,5.2vw,104px);line-height:1.02;letter-spacing:.02em;color:#171512;margin-top:1.4vh}
   #era .ttl:empty,#era .ynum:empty,#era .mo:empty{display:none} #era .pad.house .rule,#era .pad.house .foot{display:none}
-  #era .foot{font-family:'Courier Prime',monospace;font-weight:700;font-size:clamp(12px,1.9vw,34px);letter-spacing:.3em;color:#8c8a84;text-transform:uppercase;min-height:1.2em}
+  #era .foot{font-family:'Courier Prime',monospace;font-weight:700;color:#2a2722;font-size:clamp(12px,1.9vw,34px);letter-spacing:.3em;color:#8c8a84;text-transform:uppercase;min-height:1.2em}
   /* the docked strip (David, Sept 19): no name — it is obvious whose phone it is. The YEAR outranks the month:
      the month small and horizontal at the top, YEAR huge running down the strip, the number at the foot. */
-  #era .strip .stop{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:3.2vh 0 2vh;
+  #era .strip .stop{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:2.6vh 0 1.6vh;
     --pp:var(--pp2,none);box-shadow:0 24px 50px rgba(0,0,0,.6),0 2px 4px rgba(0,0,0,.45);transform-origin:8% 0%}
-  #era .smo{font-family:'Courier Prime',monospace;font-weight:700;font-size:clamp(18px,4vw,80px);line-height:1;letter-spacing:.06em;text-transform:uppercase;color:#6b675e}
-  #era .syr{writing-mode:vertical-rl;font-family:'Courier Prime',monospace;font-weight:400;font-size:clamp(30px,8.4vw,168px);line-height:1;letter-spacing:.04em;text-transform:uppercase;color:#6b675e;margin-right:.04em}
-  #era .snum{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:clamp(50px,17.5vw,350px);line-height:.8;color:#171512}
+  #era .smo{font-family:'Courier Prime',monospace;font-weight:700;font-size:clamp(20px,4.6vw,92px);line-height:1;letter-spacing:.04em;text-transform:uppercase;color:#000}
+  #era .syr{writing-mode:vertical-rl;font-family:'Courier Prime',monospace;font-weight:700;font-size:clamp(34px,9.6vw,192px);line-height:1;letter-spacing:.02em;text-transform:uppercase;color:#000;margin-right:.02em}
+  #era .snum{font-family:'Fraunces',Georgia,serif;font-weight:800;font-size:clamp(60px,20vw,400px);line-height:.78;color:#000}
   .tear{animation:tear 1s cubic-bezier(.55,.05,.5,1) forwards;z-index:9;box-shadow:0 12px 30px rgba(0,0,0,.35)}
   @keyframes tear{0%{transform:rotate(0)}18%{transform:rotate(-3deg) translate(0,-3%)}55%{transform:rotate(-14deg) translate(-4%,8%);opacity:1}100%{transform:rotate(-34deg) translate(-18%,120%);opacity:0}}
   .settle{animation:settle .7s cubic-bezier(.2,.9,.25,1.05) forwards;z-index:9;box-shadow:0 12px 30px rgba(0,0,0,.35)}
@@ -765,11 +765,11 @@
   .stagecam>.drift{animation:none}   /* the drift was cut (David, Sept 19 night): nothing moves without a reason */
   @keyframes camdrift{from{transform:scale(1)}to{transform:scale(1.014)}}
   #previewInner{background:#0a0a0b;overflow:hidden;border-radius:3px;flex:0 0 auto}
-  .prevStrip{position:absolute;right:2%;top:6%;height:88%;width:12.4%;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:3% 0 2%;
-    background:var(--pp2,none) center/cover no-repeat #ece9e2;color:#171512;box-shadow:0 10px 30px rgba(0,0,0,.6);clip-path:polygon(0 100%,0 2%,8% 0,16% 2.4%,25% .6%,33% 2.6%,42% .8%,50% 2.2%,58% .4%,67% 2.4%,75% .8%,84% 2.6%,92% .6%,100% 2%,100% 100%)}
-  .prevStrip span{font-family:'Courier Prime',monospace;font-weight:700;font-size:1.5vw;letter-spacing:.06em;color:#6b675e}
-  .prevStrip b{writing-mode:vertical-rl;font-family:'Courier Prime',monospace;font-weight:400;font-size:3.2vw;line-height:1;letter-spacing:.04em;color:#6b675e}
-  .prevStrip i{font-style:normal;font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:6.6vw;line-height:.8}
+  .prevStrip{position:absolute;right:1.6%;top:3.5%;height:93%;width:14.4%;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:3% 0 2%;
+    background:var(--pp2,none) 0 0/512px 512px repeat #f3f0e9;color:#000;box-shadow:0 10px 30px rgba(0,0,0,.6);clip-path:polygon(0 100%,0 2%,8% 0,16% 2.4%,25% .6%,33% 2.6%,42% .8%,50% 2.2%,58% .4%,67% 2.4%,75% .8%,84% 2.6%,92% .6%,100% 2%,100% 100%)}
+  .prevStrip span{font-family:'Courier Prime',monospace;font-weight:700;font-size:1.7vw;letter-spacing:.04em;color:#000}
+  .prevStrip b{writing-mode:vertical-rl;font-family:'Courier Prime',monospace;font-weight:700;font-size:3.6vw;line-height:1;letter-spacing:.02em;color:#000}
+  .prevStrip i{font-style:normal;font-family:'Fraunces',Georgia,serif;font-weight:800;font-size:7.6vw;line-height:.78;color:#000}
   body.blk #era,body.blk #projDevice,body.blk #loop{opacity:0 !important}
   body.blk #projection{background:#000 !important}
   body.portrait #era.docked{display:none}
@@ -1166,23 +1166,27 @@ window.L5Y_SHOW = [
 {n:9,t:'A Miracle Would Happen',who:'jamie',cues:[
  {id:'9.1',kind:'music',trig:'TOP OF ACT TWO — the first notes of the vamp, before he sings',
   what:'The pages clear; the calendar lands and rolls FORWARD — JUNE · YEAR 2 → OCTOBER · YEAR 4 — then docks; his phone rises, locked. Married, at a party, and the phone will not stop. He never touches it; the attention just arrives.',
-  do:[{op:'clock',t:'11:22',d:'Friday, October 18, 2024'},{op:'stamp',t:''},
-      {op:'device',dev:'iphone',who:'jamie'}]},
+  do:[{op:'clock',t:'11:22',d:'Friday, October 18, 2024'},{op:'stamp',t:'five months married'},
+      {op:'device',dev:'iphone',who:'jamie'},{op:'wall',t:'M4 — the wedding portrait'}]},
  {id:'9.2',kind:'lyric',trig:'“…suddenly finds you attractive”',
   what:'A reader.',
-  do:[{op:'notif',app:'Instagram',w:'now',title:'@a.reader.somewhere',t:'okay the ending WRECKED me. how are you real'}]},
+  confirm:true,
+  do:[{op:'notif',app:'Instagram',w:'now',title:'a.reader.somewhere',t:'commented: okay the ending WRECKED me. how are you real'}]},
  {id:'9.3',kind:'lyric',trig:'“And now they’re banging down your door”',
   what:'And another.',
-  do:[{op:'notif',app:'Instagram',w:'now',title:'@lit.with.lena',t:'sent you a message request'}]},
+  do:[{op:'notif',app:'Instagram',w:'now',title:'lit.with.lena',t:'wants to send you a message'}]},
  {id:'9.4',kind:'lyric',trig:'“I’m the grand fromage”',
-  what:'The book keeps growing without him.',
-  do:[{op:'notif',app:'Goodreads',w:'now',title:'Goodreads',t:'Your book passed 10,000 ratings · ★ 4.6'}]},
- {id:'9.5',kind:'lyric',trig:'“Let’s get a cup of coffee.” — Elise',
-  what:'And Elise.',
-  do:[{op:'notif',app:'Messages',w:'now',title:'Elise · Ed.',t:'paperback cover is in 🎉 celebratory drink sometime?'}]},
+  what:'The book keeps growing without him — his agent, not a stranger, says so.',
+  confirm:true,
+  do:[{op:'clock',t:'11:25'},{op:'notif',app:'Messages',w:'now',title:'Linda Whitfield',t:'third printing confirmed. do NOT post it yet 🍾'}]},
+ {id:'9.5',kind:'lyric',trig:'“Let’s get a cup of coffee.”',
+  what:'And Elise (the editor at Random House — the woman in this verse is unnamed in the score; the screen names her).',
+  confirm:true,
+  do:[{op:'notif',app:'Messages',w:'now',title:'Elise (Random House)',t:'paperback cover is in 🎉 celebratory drink sometime?'}]},
  {id:'9.6',kind:'lyric',trig:'“It’s a challenge to resist temptation” — THE SECOND TIME (after the party)',
-  what:'Front row.',
-  do:[{op:'notif',app:'Instagram',w:'now',title:'@novel.annie',t:'front row at your reading tonight 🙋‍♀️'}]},
+  what:'Front row. (⚠CONFIRM which occurrence of the phrase — David pins it on the Cue Sheet.)',
+  confirm:true,
+  do:[{op:'clock',t:'11:29'},{op:'notif',app:'Instagram',w:'now',title:'novel.annie',t:'commented: front row at your reading tonight 🙋‍♀️'}]},
  {id:'9.7',kind:'music',trig:'FINAL CHORD — the last note of the song',
   what:'The phone drops; OCTOBER · YEAR 4 holds center.',
   do:[{op:'black'}]},
@@ -1572,23 +1576,27 @@ const FALLBACK_SHOW = [
 {n:9,t:'A Miracle Would Happen',who:'jamie',cues:[
  {id:'9.1',kind:'music',trig:'TOP OF ACT TWO — the first notes of the vamp, before he sings',
   what:'The pages clear; the calendar lands and rolls FORWARD — JUNE · YEAR 2 → OCTOBER · YEAR 4 — then docks; his phone rises, locked. Married, at a party, and the phone will not stop. He never touches it; the attention just arrives.',
-  do:[{op:'clock',t:'11:22',d:'Friday, October 18, 2024'},{op:'stamp',t:''},
-      {op:'device',dev:'iphone',who:'jamie'}]},
+  do:[{op:'clock',t:'11:22',d:'Friday, October 18, 2024'},{op:'stamp',t:'five months married'},
+      {op:'device',dev:'iphone',who:'jamie'},{op:'wall',t:'M4 — the wedding portrait'}]},
  {id:'9.2',kind:'lyric',trig:'“…suddenly finds you attractive”',
   what:'A reader.',
-  do:[{op:'notif',app:'Instagram',w:'now',title:'@a.reader.somewhere',t:'okay the ending WRECKED me. how are you real'}]},
+  confirm:true,
+  do:[{op:'notif',app:'Instagram',w:'now',title:'a.reader.somewhere',t:'commented: okay the ending WRECKED me. how are you real'}]},
  {id:'9.3',kind:'lyric',trig:'“And now they’re banging down your door”',
   what:'And another.',
-  do:[{op:'notif',app:'Instagram',w:'now',title:'@lit.with.lena',t:'sent you a message request'}]},
+  do:[{op:'notif',app:'Instagram',w:'now',title:'lit.with.lena',t:'wants to send you a message'}]},
  {id:'9.4',kind:'lyric',trig:'“I’m the grand fromage”',
-  what:'The book keeps growing without him.',
-  do:[{op:'notif',app:'Goodreads',w:'now',title:'Goodreads',t:'Your book passed 10,000 ratings · ★ 4.6'}]},
- {id:'9.5',kind:'lyric',trig:'“Let’s get a cup of coffee.” — Elise',
-  what:'And Elise.',
-  do:[{op:'notif',app:'Messages',w:'now',title:'Elise · Ed.',t:'paperback cover is in 🎉 celebratory drink sometime?'}]},
+  what:'The book keeps growing without him — his agent, not a stranger, says so.',
+  confirm:true,
+  do:[{op:'clock',t:'11:25'},{op:'notif',app:'Messages',w:'now',title:'Linda Whitfield',t:'third printing confirmed. do NOT post it yet 🍾'}]},
+ {id:'9.5',kind:'lyric',trig:'“Let’s get a cup of coffee.”',
+  what:'And Elise (the editor at Random House — the woman in this verse is unnamed in the score; the screen names her).',
+  confirm:true,
+  do:[{op:'notif',app:'Messages',w:'now',title:'Elise (Random House)',t:'paperback cover is in 🎉 celebratory drink sometime?'}]},
  {id:'9.6',kind:'lyric',trig:'“It’s a challenge to resist temptation” — THE SECOND TIME (after the party)',
-  what:'Front row.',
-  do:[{op:'notif',app:'Instagram',w:'now',title:'@novel.annie',t:'front row at your reading tonight 🙋‍♀️'}]},
+  what:'Front row. (⚠CONFIRM which occurrence of the phrase — David pins it on the Cue Sheet.)',
+  confirm:true,
+  do:[{op:'clock',t:'11:29'},{op:'notif',app:'Instagram',w:'now',title:'novel.annie',t:'commented: front row at your reading tonight 🙋‍♀️'}]},
  {id:'9.7',kind:'music',trig:'FINAL CHORD — the last note of the song',
   what:'The phone drops; OCTOBER · YEAR 4 holds center.',
   do:[{op:'black'}]},
@@ -1803,7 +1811,7 @@ function applyOp(st,o){
       if(newWho!==st.who){
         // A DIFFERENT PERSON'S PHONE. Nothing carries over — not the thread,
         // not the contact, not the notifications. They are separate devices.
-        st.msgs=[]; st.draft=''; st.kbd=false; st.typing=false; st.notifs=[];
+        st.msgs=[]; st.draft=''; st.kbd=false; st.typing=false; st.notifs=[]; st.camBottom=false;
         st.cards=[]; st.mails=[]; st.thumbs=[]; st.feed=[]; st.call=null; st.ft=null;
         st.deck=[]; st.doclines=0; st.doctext=null; st.search=''; st.searchDone=null; st.focus=null; st.mem=[]; st.msgrows=null; st.mailbox='Inbox'; st.mailmsg=null; st.wall=null;
         st.sheet=null; st.contact2=null; st.fm=null; st.calev=null; st.setg=null; st.rem=null;
@@ -1816,7 +1824,7 @@ function applyOp(st,o){
     case 'stampline': st.msgs.push({k:'stamp',t:o.t}); break;
     case 'history': o.items.forEach(m=>st.msgs.push({...m})); break;
     case 'scrollhist': case 'scrollend': break;
-    case 'type': st.draft=o.t; st.kbd=true; break;
+    case 'type': st.draft=o.t; st.kbd=true; st.camBottom=true; break;   // once she has typed here, the thread rests at its foot
     case 'send': if(st.draft){ st.msgs=st.msgs.filter(m=>m.k!=='rcpt'); st.msgs.push({k:'me',t:st.draft}); } st.draft=''; st.kbd=false; break;
     case 'wipe': st.draft=''; st.kbd=false; break;
     case 'noop': break;
@@ -2088,7 +2096,7 @@ function msglistHTML(st){
     <div class="ml-search">🔍 Search</div>
     ${rows.map(r=>`<div class="mrow2" data-row="${r.n}">
       ${r.un?'<span class="un"></span>':''}
-      <div class="av2" style="background:${r.av}">${r.i}</div>
+      <div class="av2" style="${avStyle(r.n,r.av)}">${avText(r.n,r.i)}</div>
       <div class="mid"><div class="nm2">${r.n}<span class="tm2">${r.w}</span></div>
         <div class="pv2">${r.p}</div></div>
       <span class="chev">›</span></div>`).join('')}
@@ -2108,7 +2116,7 @@ function threadHTML(st){
   const preds = st.draft ? ['I','I don’t','I’m'] : ['I','The','Thanks'];
   return `<div class="layer fs"><div class="imsg" style="flex:1">
     <div class="hdr"><span class="back">‹</span>
-      <div class="av" style="background:${st.who==='cathy'?'#8f95a3':'#c2447a'}">${st.contact.n[0]}</div>
+      <div class="av" style="${avStyle(st.contact.n, st.who==='cathy'?'#8f95a3':'#c2447a')}">${avText(st.contact.n, st.contact.n[0])}</div>
       <div class="nm">${st.contact.n} ›</div></div>
     <div class="thread">${body}</div>
     <div class="bar"><span style="color:#8e8e93;font-size:1.2em">＋</span>
@@ -2189,15 +2197,15 @@ function callHTML(st){
     <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1em">
       <div style="font-size:2.7em;font-weight:500;opacity:.85;text-align:center">${c.n}</div>
       <div style="font-family:'Courier Prime',monospace;font-size:1.05em;letter-spacing:.18em;color:#aeb6cc;text-transform:uppercase">Call Ended</div>
-      <div style="width:7em;height:7em;border-radius:50%;background:#3a4568;display:flex;align-items:center;justify-content:center;font-size:3em;opacity:.6;margin-top:.6em">${(c.n||'?')[0]}</div>
+      <div style="width:7em;height:7em;border-radius:50%;${avStyle(c.n,'#3a4568')};display:flex;align-items:center;justify-content:center;font-size:3em;opacity:.6;margin-top:.6em">${avText(c.n,(c.n||'?')[0])}</div>
     </div></div>`;
   return `<div class="layer fs" style="background:linear-gradient(180deg,#26303f,#0d1118);color:#fff">
     <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:16% 8% 12%">
       <div style="text-align:center"><div style="font-size:2.5em;font-weight:500;line-height:1.1">${c.n}</div>
         <div class="cst" style="font-family:'Courier Prime',monospace;font-size:1.05em;letter-spacing:.18em;color:#aeb6cc;
           text-transform:uppercase;margin-top:.5em">${liveTimerHTML(c.st)}</div></div>
-      <div style="width:6.4em;height:6.4em;border-radius:50%;background:#3a4568;display:flex;align-items:center;
-        justify-content:center;font-size:2.8em">${(c.n||'?')[0]}</div>
+      <div style="width:6.4em;height:6.4em;border-radius:50%;${avStyle(c.n,'#3a4568')};display:flex;align-items:center;
+        justify-content:center;font-size:2.8em">${avText(c.n,(c.n||'?')[0])}</div>
       ${/incoming/i.test(c.st||'')
         ? `<div class="callbtns" style="display:flex;gap:14%;width:100%;justify-content:center">
             <div style="width:4.2em;height:4.2em;border-radius:50%;background:#e0483e;display:flex;align-items:center;justify-content:center;font-size:1.7em">✕</div>
@@ -2214,8 +2222,8 @@ function ftHTML(st){
   const ended=/ended/i.test(f.st||'');
   if(ringing) return `<div class="layer fs" style="background:linear-gradient(180deg,#1c2430,#0b0e14)">
     <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1em;color:#fff">
-      <div style="width:6.5em;height:6.5em;border-radius:50%;background:#3a4568;display:flex;align-items:center;
-        justify-content:center;font-size:2.6em;animation:ftpulse 1.6s ease-in-out infinite">${(f.n||'?')[0]}</div>
+      <div style="width:6.5em;height:6.5em;border-radius:50%;${avStyle(f.n,'#3a4568')};display:flex;align-items:center;
+        justify-content:center;font-size:2.6em;animation:ftpulse 1.6s ease-in-out infinite">${avText(f.n,(f.n||'?')[0])}</div>
       <div style="font-size:2em;font-weight:500">${f.n||''}</div>
       <div style="font-family:'Courier Prime',monospace;font-size:1em;letter-spacing:.18em;color:#aeb6cc;text-transform:uppercase">FaceTime…</div></div>
     <div style="position:absolute;bottom:1.2em;left:50%;transform:translateX(-50%);width:3.4em;height:3.4em;
@@ -2223,8 +2231,8 @@ function ftHTML(st){
   </div>`;
   if(ended) return `<div class="layer fs" style="background:linear-gradient(180deg,#1c2430,#0b0e14)">
     <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1em;color:#fff">
-      <div style="width:6.5em;height:6.5em;border-radius:50%;background:#3a4568;display:flex;align-items:center;
-        justify-content:center;font-size:2.6em;opacity:.7">${(f.n||'?')[0]}</div>
+      <div style="width:6.5em;height:6.5em;border-radius:50%;${avStyle(f.n,'#3a4568')};display:flex;align-items:center;
+        justify-content:center;font-size:2.6em;opacity:.7">${avText(f.n,(f.n||'?')[0])}</div>
       <div style="font-size:2em;font-weight:500;opacity:.85">${f.n||''}</div>
       <div style="font-family:'Courier Prime',monospace;font-size:1.1em;letter-spacing:.18em;color:#aeb6cc;text-transform:uppercase">Call Ended</div></div>
   </div>`;
@@ -2360,8 +2368,8 @@ function contactHTML(st){
   return `<div class="layer fs" style="background:#f2f2f7;display:flex;flex-direction:column;overflow:hidden">
     ${iosNav('‹ Contacts', c.editing?'Done':'Edit')}
     <div style="text-align:center;padding:.4em 1em .8em">
-      <div style="width:3.6em;height:3.6em;border-radius:50%;background:${c.col||'#8f95a3'};color:#fff;font-size:1.5em;
-        display:flex;align-items:center;justify-content:center;margin:0 auto .3em">${(c.n||'?')[0]}</div>
+      <div style="width:3.6em;height:3.6em;border-radius:50%;${avStyle(c.n,c.col||'#8f95a3')};color:#fff;font-size:1.5em;
+        display:flex;align-items:center;justify-content:center;margin:0 auto .3em">${avText(c.n,(c.n||'?')[0])}</div>
       ${c.rename?`<div style="font-size:1.15em;color:#8e8e93;text-decoration:line-through">${c.rename.from}</div>
         <div style="font-size:1.5em;font-weight:600;color:#000">${c.rename.to}<span class="caret2"></span></div>`
       :`<div style="font-size:1.5em;font-weight:600;color:#000">${c.n||''}</div>`}
@@ -2389,14 +2397,14 @@ function findmyHTML(st){
     return `<div class="layer fs" style="background:#f2f2f7;display:flex;flex-direction:column;overflow:hidden">
       <div style="flex:1;min-height:0;background:repeating-linear-gradient(45deg,#dfe9dc 0 14px,#d3e2d0 14px 28px);position:relative">
         <div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 46%, rgba(194,68,122,.22), transparent 28%)"></div>
-        <div style="position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:2.4em;height:2.4em;border-radius:50%;background:${p.col||'#c2447a'};
-          color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1em;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.35)">${(p.n||'?')[0]}</div>
+        <div style="position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:2.4em;height:2.4em;border-radius:50%;${avStyle(p.n,p.col||'#c2447a')};
+          color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1em;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.35)">${avText(p.n,(p.n||'?')[0])}</div>
         ${p.mapLabel?`<div style="position:absolute;left:50%;top:44%;transform:translate(-50%,1.6em);font-size:.68em;font-weight:600;color:#3a4a3f;background:rgba(255,255,255,.8);border-radius:.4em;padding:.1em .45em;white-space:nowrap">${p.mapLabel}</div>`:''}
       </div>
       <div class="fmcard" style="background:#fff;border-radius:1em 1em 0 0;margin-top:-.8em;position:relative;padding:.5em .8em .8em;box-shadow:0 -2px 10px rgba(0,0,0,.08)">
         <div style="width:2.4em;height:.3em;border-radius:.2em;background:#d8d8dc;margin:0 auto .5em"></div>
         <div style="display:flex;align-items:center;gap:.6em">
-          <div style="width:2.4em;height:2.4em;border-radius:50%;background:${p.col||'#c2447a'};color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700">${(p.n||'?')[0]}</div>
+          <div style="width:2.4em;height:2.4em;border-radius:50%;${avStyle(p.n,p.col||'#c2447a')};color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700">${avText(p.n,(p.n||'?')[0])}</div>
           <div style="min-width:0;flex:1"><div style="font-size:1.15em;font-weight:700;color:#000">${p.n}</div>
             <div style="font-size:.78em;color:#8e8e93">${p.loc||''}${p.when?` · ${p.when}`:''}</div></div>
           <span style="width:1.7em;height:1.7em;border-radius:50%;background:#e5e5ea;color:#6e6e73;display:flex;align-items:center;justify-content:center;font-size:.9em">✕</span></div>
@@ -2757,7 +2765,7 @@ function memoriesHTML(st){
       ${mem.map(m=>`<div class="memscreen">
         <div class="memyear">${m.yr}</div>
         <div class="post" style="margin:0;border-radius:0;box-shadow:none;flex:1;display:flex;flex-direction:column">
-          <div class="ph"><div class="pav" style="background:${m.col||'#c2447a'}">${m.av||'C'}</div>
+          <div class="ph"><div class="pav" style="${avStyle(m.who,m.col||'#c2447a')}">${avText(m.who,m.av||'C')}</div>
             <div><div class="pn">${m.who}</div><div class="pt">${m.when}</div></div></div>
           <div class="body" style="font-size:1.12em;line-height:1.4">${m.txt}</div>
           ${m.media?`<div class="media" style="flex:1;aspect-ratio:auto"><div class="mi">📷</div>
@@ -2771,7 +2779,7 @@ function fbFeedHTML(st){
     <div class="top"><span class="logo">facebook</span></div>
     <div class="fbfeed">
     ${st.feed.map(f=>`<div class="post"><div class="ph">
-      <div class="pav" style="background:${f.col||'#c2447a'}">${f.av||'C'}</div>
+      <div class="pav" style="${avStyle(f.who,f.col||'#c2447a')}">${avText(f.who,f.av||'C')}</div>
       <div><div class="pn">${f.who}</div><div class="pt">${f.when||''}</div></div></div>
       <div class="body">${f.txt||''}</div>
       ${f.media?`<div class="media"><div class="mi">📷</div><div class="ml">${f.media}</div></div>`:''}
@@ -3277,7 +3285,7 @@ async function playCue(cue, st, tok){
       setStamp(st);
       continue; }
     if(o.op==='stamp'){ applyOp(st,o); setStamp(st); continue; }
-    if(o.op==='notif'){ applyOp(st,o); if(o.snd!==false) sfx(o.app==='Mail'?'mail':'notif',{seed:'n'+cue.id});
+    if(o.op==='notif'){ applyOp(st,o); if(o.snd!==false && (!o.w||o.w==='now')) sfx(o.app==='Mail'?'mail':'notif',{seed:'n'+cue.id});
       stacks().forEach(k=>{ const ns=k.querySelector('.nstack'); if(!ns) return;
         const d=document.createElement('div'); d.className='notif inbound';
         const art=ICON[o.app];
@@ -3462,7 +3470,7 @@ async function playCue(cue, st, tok){
     if(o.op==='inbox'){ applyOp(st,o); swapLayer(st,null); await wait(80); continue; }
     if(o.op==='sheet'){ applyOp(st,o); swapLayer(st,null);
       stacks().forEach(k=>{const w=k.querySelector('.sheetwrap'); if(w) w.classList.add('rise');});
-      camPush('.sheetwrap', 2.6, 380); await wait(420); continue; }
+      await wait(420); continue; }   // the sheet rises into a frame that already holds it (David: no jerks)
     if(o.op==='sheetDismiss'){
       stacks().forEach(k=>{const w=k.querySelector('.sheetwrap'); if(w) w.style.transform='translateY(115%)';
         const d=k.querySelector('.sheetdim'); if(d) d.style.opacity='0';});
@@ -3480,7 +3488,7 @@ async function playCue(cue, st, tok){
     if(o.op==='call'){ sfxRing(o.dir==='in'?'ring':'ringback'); }
     if(o.op==='facetime' && /facetime|ring|calling/i.test(o.st||'')){ sfxRing('ftring'); }
     if(o.op==='callState'||o.op==='ftState'){
-      if(/connected/i.test(o.st||'')){ sfxRingStop(); sfx('connect'); }
+      if(/connected/i.test(o.st||'')){ sfxRingStop(); if(o.op==='ftState') sfx('connect'); }   // a phone call connects silently; FaceTime chimes
       if(/ended/i.test(o.st||'')){ sfxRingStop(); sfx('end'); } }
     if(o.op==='callState'){
       // the call screen stays put: only its status line changes (no re-render, no flash)
@@ -3504,7 +3512,7 @@ async function playCue(cue, st, tok){
       await wait(120);
       await Promise.all(stacks().map(k=>{const f=k.querySelector('.memfeed'); if(!f) return null;
         return humanScroll(f,(f.querySelectorAll('.memscreen').length-1)*f.clientHeight,memSeed,tok,{gesture:o.scroll});}));
-      camPush('.memfeed .memscreen:last-child .body', 2.6, 60, null, null, true); camPush('.memfeed .memscreen:last-child .media', 2.0, 2600, 'center', 3.2, true); await wait(520); continue; }
+      camPush('.memfeed .memscreen:last-child .body', 2.6, 60, null, null, true); camPush('.memfeed .memscreen:last-child .media', 2.2, 2600, 'center', 3.2, true, true); await wait(520); continue; }
     if(o.op==='post'){ applyOp(st,o); swapLayer(st,null); sfx('swipe',{soft:true,seed:'post'+cue.id});
       stacks().forEach(k=>{ const f=k.querySelector('.fbfeed'); if(!f) return;
         const posts=f.querySelectorAll('.post');
@@ -3556,7 +3564,7 @@ async function playCue(cue, st, tok){
       await Promise.all(stacks().map(k=>{const f=k.querySelector('.memfeed'); if(!f) return null;
         const cards=f.querySelectorAll('.memscreen'); const i=Math.max(0,Math.min(cards.length-1,o.i||0));
         return humanScroll(f,i*f.clientHeight,'memgo'+cue.id,tok,{gesture:'drag',flicks:2});}));
-      camPush(`.memfeed .memscreen:nth-child(${(o.i||0)+1}) .body`, 2.6, 0, null, null, true); camPush(`.memfeed .memscreen:nth-child(${(o.i||0)+1}) .media`, 2.0, 2600, 'center', 3.2, true);
+      camPush(`.memfeed .memscreen:nth-child(${(o.i||0)+1}) .body`, 2.6, 0, null, null, true); camPush(`.memfeed .memscreen:nth-child(${(o.i||0)+1}) .media`, 2.2, 2600, 'center', 3.2, true, true);
       await wait(400); continue; }
     if(o.op==='black'||o.op==='curtain'){
       // the phone drops away, then the era returns to center (or the curtain falls)
@@ -3617,7 +3625,7 @@ function paintChrome(){
     kd.textContent = kind==='music'?'♩ MUSIC CUE':kind==='stage'?'✋ STAGE ACTION':'♪ SUNG LINE';
     $('trigLbl').textContent = kind==='music'?'GO ON THIS MUSICAL MOMENT'
       : kind==='stage'?'GO WHEN YOU SEE THIS':'GO ON THIS LINE';
-    $('trigLine').innerHTML=trigHTML(nxt.trig, kind);
+    $('trigLine').innerHTML=(nxt.confirm?'<span class="ev" style="color:#ff6b6b">⚠CONFIRM</span> ':'')+trigHTML(nxt.trig, kind);   // LINES LAW: unverified lines wear the flag in the booth
     $('trigLine').parentElement.className='trigger '+kind;
     const est=estDuration(nxt);
     $('nextWhat').innerHTML='<b>WHAT HAPPENS</b> &nbsp;'+(est>2500?'<b style="color:var(--go)">AUTO ~'+Math.round(est/1000)+' s</b> &nbsp;':'')+escTxt(nxt.what);
@@ -3779,6 +3787,11 @@ let CAST='ml'; try{ const c=localStorage.getItem('l5y_cast'); if(CAST_NAMES[c]) 
 /* per-cast media: asset code -> image/video URL (or data URI baked at build).
    Filled in as real files arrive; a missing entry renders the greeked placeholder. */
 const CAST_ASSETS={ml:{},ac:{}};
+/* CONTACT PHOTOS (David, Sept 19): they wind up in each other's phone books. Jamie's photo is M24, Cathy's is M25;
+   when the file exists every avatar of that person (rows, thread header, calls, FaceTime, Find My, Facebook) shows it. */
+function avAsset(name){ const n=String(name||''); return /^jamie/i.test(n)?assetFor('M24'):/^cathy/i.test(n)?assetFor('M25'):null; }
+function avStyle(name,fallback){ const u=avAsset(name); return u ? `background:url('${u}') center/cover no-repeat` : `background:${fallback}`; }
+function avText(name,fallback){ return avAsset(name) ? '' : fallback; }
 function assetFor(label){
   const m=/^\s*([MV]\d+[a-z]?)\b/.exec(label||''); if(!m) return null;
   return (CAST_ASSETS[CAST]||{})[m[1]]||null;
@@ -4113,7 +4126,7 @@ async function prologueWind(ms,tok){
    so a target is never cropped, and the phone never shows black above or below once it is taller than the frame.
    Moves are fast out of the gate and land slowly, so the eye arrives before the reading beat. The MacBook and the
    dash (CarPlay) fill the frame natively and need no camera. The presenter preview runs the same math. */
-function ERA_ZONE_(){ return 0.17; }   // the docked strip owns the right 15% of the frame; the rest is the window (hoisted: boot code runs before this block)
+function ERA_ZONE_(){ return 0.19; }   // the docked strip owns the right 15% of the frame; the rest is the window (hoisted: boot code runs before this block)
 function CAM_FILL_(){ return 3.6; }
 var CAM_ST=null;                       // the state being played (playCue) — the resting anchor depends on the register
 function camFrame(c){ return c.closest('#projection')||c.closest('#previewInner')||c.parentElement; }
@@ -4128,7 +4141,7 @@ function camGeom(c){
 }
 function CAM_T_(){ return CAM_T_.a||(CAM_T_.a=[]); }   // hoisted: boot code runs before this block
 function camTimersClear(){ CAM_T_().forEach(clearTimeout); CAM_T_().length=0; }
-function camTempo(){ return ({0:1.9, 6:1.5, 9:1.5, 13:1.6})[typeof si==='number'?si:0]||1; }   // Still Hurting, Christmas, See I'm Smiling, Goodbye Until Tomorrow: slow songs, slow eyes
+function camTempo(){ return ({0:1.9, 5:1.5, 7:1.5, 9:1.5, 12:1.6, 13:1.6})[typeof si==='number'?si:0]||1; }   // Still Hurting, Christmas, See I'm Smiling, Goodbye Until Tomorrow: slow songs, slow eyes
 function camApply(c,g,z,qx,qy,anchor,instant,dur){
   const {F,P0x,P0y,d1,d2,dw,dh,uw,ux,H}=g; const Cx=ux+uw/2, Cy=F.top+H/2;
   let tx = z*dw<uw ? Cx-P0x-z*(d1.x+d2.x)/2 : Cx-P0x-z*qx;
@@ -4140,7 +4153,7 @@ function camApply(c,g,z,qx,qy,anchor,instant,dur){
   c.style.transform=`translate(${tx.toFixed(1)}px,${ty.toFixed(1)}px) scale(${z.toFixed(3)})`; c.dataset.z=z.toFixed(2);
 }
 function camRest(instant){
-  const st=CAM_ST||CUR||{}; const bottom=['findmy'].includes(st.app);   // a thread opens at its TOP (the name, the history); typing glides it to the field
+  const st=CAM_ST||CUR||{}; const bottom=['findmy'].includes(st.app) || (st.app==='thread' && !!(st.kbd||st.camBottom));   // a thread opens at its TOP (the name, the history); once the keyboard is up it rests at the BOTTOM
   camEls().forEach(c=>{ const g=camGeom(c); if(!g) return;
     if(!g.dev.classList.contains('iphone')){ c.style.transition=instant?'none':'transform .8s cubic-bezier(.4,0,.2,1)'; c.style.transform=''; c.dataset.z=''; return; }
     const z=Math.min(CAM_FILL_(), g.uw/g.dw);
@@ -4150,7 +4163,7 @@ function camWide(instant){ camRest(instant); }
 /* THE FOLLOW RULE (David, Sept 19 night — "some really jerky movements"): a push happens only when the target is NOT
    already in frame. When it is, the eye finds it; the camera holds. When it is not, the camera keeps its zoom if the
    target fits at that zoom (a pan, not a re-zoom) and only re-zooms when it must. Every move is one slow glide. */
-function camPush(sel,z,delay,anchor,dur,force){
+function camPush(sel,z,delay,anchor,dur,force,nofit){
   const t0=animTok; const id=setTimeout(()=>{ if(t0!==animTok) return; camEls().forEach(c=>{
     const el=c.querySelector(sel); if(!el) return; const g=camGeom(c); if(!g) return;
     const T=el.getBoundingClientRect(); if(!T.width) return; const p1=g.loc(T.left,T.top), p2=g.loc(T.right,T.bottom);
@@ -4160,7 +4173,7 @@ function camPush(sel,z,delay,anchor,dur,force){
     if(anchor==='top'||anchor==='bottom'){ z=Math.max(1,Math.min(z, g.uw/g.dw)); camApply(c,g,z,qx,qy,anchor,false,dur||1.4); return; }
     const cur=parseFloat(c.dataset.z)||1;
     const fitZ=Math.min(g.uw*0.88/tw, g.H*0.84/th);
-    z = (cur>=1.05 && cur<=fitZ) ? cur : Math.max(1,Math.min(z,fitZ));           // pan at the current zoom when the target fits; re-zoom only when it must
+    z = nofit ? Math.max(1,Math.min(z,g.uw/g.dw)) : force ? Math.max(1,Math.min(z,fitZ)) : (cur>=1.05 && cur<=fitZ) ? cur : Math.max(1,Math.min(z,fitZ));   // pan at the current zoom when the target fits; re-zoom only when it must
     camApply(c,g,z,qx,qy,'center',false,dur||1.4); }); }, delay||0); CAM_T_().push(id);
 }
 function deviceHTML(st,h){
@@ -4369,9 +4382,26 @@ function paperTexB(seed,tone,N){
   cx.putImageData(img,0,0); return cv.toDataURL('image/jpeg',0.9);
 }
 function paperTex(seed,tone,N){ return paperTexB(seed,tone,N); }   // round 2B is the show paper
+/* paperGrain: a sheet of good paper, not a crumple — fine fibre noise, a faint warm mottle, low contrast; tiles seamlessly at 512px */
+function paperGrain(seed,tone,N){
+  N=N||512; const R=prng('grain:'+seed); const cv=document.createElement('canvas'); cv.width=cv.height=N; const cx=cv.getContext('2d');
+  const img=cx.createImageData(N,N), D=img.data;
+  const lat=f=>{ const a=new Float32Array(f*f); for(let i=0;i<a.length;i++) a[i]=R(); return {f,a}; };
+  const smp=(L,x,y)=>{ const f=L.f, gx=x*f/N, gy=y*f/N; const i=Math.floor(gx), j=Math.floor(gy); let fx=gx-i, fy=gy-j; fx=fx*fx*(3-2*fx); fy=fy*fy*(3-2*fy);
+    const a=L.a, i0=i%f, i1=(i+1)%f, j0=j%f, j1=(j+1)%f; return (a[j0*f+i0]*(1-fx)+a[j0*f+i1]*fx)*(1-fy)+(a[j1*f+i0]*(1-fx)+a[j1*f+i1]*fx)*fy; };
+  const M1=lat(4), M2=lat(9), G1=lat(64), G2=lat(128);
+  let h=2166136261; const hash=()=>{ h=Math.imul(h^(h>>>15),2246822507); h=Math.imul(h^(h>>>13),3266489909); return ((h^=h>>>16)>>>0)/4294967296; };
+  const noise=new Float32Array(N*N); for(let i=0;i<noise.length;i++) noise[i]=hash()-0.5;
+  for(let y=0;y<N;y++) for(let x=0;x<N;x++){
+    let v=(smp(M1,x,y)-0.5)*0.05+(smp(M2,x,y)-0.5)*0.035+(smp(G1,x,y)-0.5)*0.03+(smp(G2,x,y)-0.5)*0.025;
+    let fib=0; for(let k=-3;k<=3;k++) fib+=noise[y*N+((x+k+N)%N)]; v+=fib/7*0.06+noise[y*N+x]*0.025;   // fibres run with the grain
+    const g=1+v, o=(y*N+x)*4; D[o]=Math.max(0,Math.min(255,tone[0]*g)); D[o+1]=Math.max(0,Math.min(255,tone[1]*g)); D[o+2]=Math.max(0,Math.min(255,tone[2]*g)); D[o+3]=255; }
+  cx.putImageData(img,0,0); return cv.toDataURL('image/jpeg',0.92);
+}
 function paperInit(){
   const root=document.documentElement, given=(window.L5Y_PAPER||[]).filter(Boolean);
-  if(!given.length) return;   // the generated crumple is CUT (David, Sept 19 night): sheets stay flat unless real scans are supplied in assets/paper/
+  if(!given.length){ const tones=[[243,240,233],[241,236,226],[238,236,231],[244,241,235]];
+    for(let i=0;i<4;i++) setTimeout(()=>{ try{ root.style.setProperty('--pp'+(i+1),`url("${paperGrain('sheet'+(i+1),tones[i],512)}")`); }catch(e){} }, 20+i*30); return; }
   const tones=[[236,233,226],[231,223,207],[218,216,212],[233,229,221]];   // white · cream · grey · off-white — David's four
   for(let i=0;i<4;i++) setTimeout(()=>{ const url=given.length?given[i%given.length]:paperTex('sheet'+(i+1),tones[i],1024); root.style.setProperty('--pp'+(i+1),`url("${url}")`); }, 20+i*40);
 }

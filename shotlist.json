@@ -24,9 +24,23 @@
    "shoot": "Jamie alone, candid, early-relationship feel (2021). It is HER wallpaper, so it is a photo she took of him: relaxed, looking near the camera, warm light. No text, nothing busy in the top third (the clock sits there). (A lock screen needs a wallpaper; this is the realism default. If you would rather she has a plain wallpaper, skip this one.)",
    "who": "Jamie only",
    "era": "September–October 2021",
-   "appears": "Songs 1, 10, 14 — her lock screen (and the falling-pages loop)",
+   "appears": "Songs 1, 10, 14 — her lock screen; AND his contact photo in HER phone: every avatar of Jamie (Messages row, thread header, calls, FaceTime)",
    "song": 1,
    "slug": "cathy-wallpaper-jamie"
+  },
+  {
+   "code": "M25",
+   "status": "confirmed",
+   "shared": false,
+   "kind": "photo",
+   "format": "SQUARE (contact photo, 1:1 — a head-and-shoulders portrait, face centered; shoot 4:5 and we crop)",
+   "title": "Cathy — his contact photo of her",
+   "shoot": "Cathy alone, candid, early-relationship (2021): the photo Jamie saved for her contact. Warm, close, looking near the camera. It is the avatar every time she appears in HIS phone — the Messages row, the thread header, her calls, Find My, FaceTime — and her Facebook avatar.",
+   "who": "Cathy only",
+   "era": "September–October 2021",
+   "appears": "Every avatar of Cathy in his phone (songs 2, 4, 6, 9, 13) and her Facebook posts (song 1)",
+   "song": 2,
+   "slug": "cathy-contact-photo"
   },
   {
    "code": "M15",

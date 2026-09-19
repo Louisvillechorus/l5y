@@ -241,7 +241,7 @@ for s in data['songs']:
             pl=plays(o,c,s['who'])
             if pl and pl not in mech: mech.append(pl)
         entries.append({
-            'id':c['id'],'kind':c['kind'],'trig':c['trig'],'what':c['what'],
+            'id':c['id'],'kind':c['kind'],'trig':(('⚠CONFIRM · ' if c.get('confirm') else '')+c['trig']),'what':c['what'],
             'hold':c['hold'],'cut':c['cut'],
             'screen':'BOTH' if s['who']=='both' else ('SR' if c['who']=='cathy' else 'SL'),
             'who':c['who'].upper(),'app':APPNAME.get(c['app'],c['app']),
