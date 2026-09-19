@@ -163,13 +163,23 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   rustle) stays synthesized. Ringback (outgoing phone) is synthesized — it is a network tone.
   Sound plays only from the window the operator clicked Start in; a window we opened ourselves
   (`?view=projection`) is silent unless its checkbox says otherwise; speaker button → volume popover.
+  **THE LOW-BATTERY CHIME (David, Sept 19 night)**: a `batt` op that crosses below 20% plays the licensed
+  `low_power.caf` once, on the play path only (never in `applyOp`, which replays on every state rebuild);
+  `snd:false` mutes it. It lands once in the show: his 9% before dawn, 13.1.
+- **THE TYPE IS EMBEDDED (David, Sept 19 night)**: `fetch_fonts.py` pulls the latin woff2 subsets into
+  `assets/fonts/` and build.py inlines them as base64 `@font-face` in the STANDALONE and docs, so the
+  projection machine never waits on — or goes without — theatre Wi-Fi. Before this, a machine with no
+  internet ran the whole show in fallback Georgia/Courier. The Google Fonts `<link>` stays for `index.html`.
 - **OPERATOR SAFETY (Sept 19 review)**: one `setBlackout()` for key, button and the other window;
   a RELOADED presenter resumes at the saved cue (`l5y_pos`, reload only, 3 h); resize never cancels
   a running cue; `hardRender` stops rings and clears camera timers; GO keys are ignored while the
   volume slider has focus; Esc does nothing in the projection window; Google Fonts load
   non-blocking (theatre Wi-Fi must never stall the engine).
-- **Presenter**: song + cast + character, NOW with progress, the GO card, THEN, the whole queue,
-  BLACKOUT and MENU buttons. Nothing else.
+- **THE PRESENTER IS THE CUE SHEET (David, Sept 19 night)**: the operator has a SECOND MONITOR showing the
+  audience view, so the presenter carries NO projection preview — the whole window is the cue sheet and
+  every element is scaled up (the GO line is `clamp(30px,4.1vw,80px)`). The WHAT HAPPENS paragraph under
+  NEXT GO is CUT; THEN moves up under the GO card and is larger, in gold. What is left: song + cast +
+  character, NOW with progress, the GO card, THEN, the whole queue, BLACKOUT and MENU. Nothing else.
 - Restore point before this sprint: git tag `restore-sept18-line-by-line`.
 
 ## THE LINE-BY-LINE BUILD (David, Sept 18 — the spec; 65 cues after Sept 19)

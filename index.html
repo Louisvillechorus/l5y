@@ -6,7 +6,7 @@
 <title>L5Y — Cue System</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300..700&family=Courier+Prime:wght@400;700&family=Fraunces:opsz,wght@9..144,300..700&family=Inter:wght@300..800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300..700&family=Courier+Prime:wght@400;700&family=Fraunces:opsz,wght@9..144,300..700&family=Inter:wght@300..800&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <style>
   :root{--ink:#0b0e18;--paper:#f3efe4;--dim:#8b8fa3;--gold:#e9c766;
     --cathy:#e07a9e;--jamie:#5fb8c9;--go:#3ddc84;--sf:'Inter',-apple-system,sans-serif;}
@@ -151,13 +151,16 @@
   #rotNote.on{opacity:1}
 
   /* ================= PRESENTER ================= */
-  #presenter{position:fixed;inset:0 0 34px 0;display:none;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:0}
+  /* THE OPERATOR HAS A SECOND MONITOR showing the audience view (David, Sept 19 night), so the presenter
+     carries NO preview at all — the whole window is the cue sheet, as large as it will go. */
+  #presenter{position:fixed;inset:0 0 34px 0;display:none;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);gap:0}
   body.v-presenter #presenter{display:grid}
+  .pleft{display:none}
   .pcol{min-height:0;min-width:0;display:flex;flex-direction:column}
   .pleft{border-right:1px solid rgba(243,239,228,.12);background:#080b12}
-  .phead{padding:10px 16px;border-bottom:1px solid rgba(243,239,228,.12);display:flex;align-items:baseline;gap:12px}
-  .phead .song{font-family:'Fraunces',serif;font-size:17px}
-  .phead .cnt{font-family:'Courier Prime',monospace;font-size:11px;color:var(--dim);margin-left:auto}
+  .phead{padding:12px 30px;border-bottom:1px solid rgba(243,239,228,.12);display:flex;align-items:baseline;gap:18px;background:#080b12}
+  .phead .song{font-family:'Fraunces',serif;font-size:clamp(20px,2vw,34px)}
+  .phead .cnt{font-family:'Courier Prime',monospace;font-size:clamp(12px,1.05vw,17px);color:var(--dim);margin-left:auto;letter-spacing:.12em}
   #preview{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:12px;
     background:radial-gradient(ellipse at 50% 45%,#131926,#05070c 72%)}
   .prevwrap{height:100%;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2vh}
@@ -179,62 +182,62 @@
   /* right column */
   .pright{background:#0a0e17}
   /* ON SCREEN NOW — one compact strip; the GO card below gets the room */
-  .now{padding:10px 18px 9px;border-bottom:1px solid rgba(243,239,228,.12);flex:0 0 auto}
-  .now .tag{font-family:'Courier Prime',monospace;font-size:9.5px;letter-spacing:.24em;color:var(--dim);
+  .now{padding:14px 30px 12px;border-bottom:1px solid rgba(243,239,228,.12);flex:0 0 auto}
+  .now .tag{font-family:'Courier Prime',monospace;font-size:clamp(10px,.82vw,14px);letter-spacing:.24em;color:var(--dim);
     text-transform:uppercase;margin-bottom:4px}
   .nowrow{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
-  .now .cid{font-family:'Courier Prime',monospace;font-size:21px;font-weight:700;line-height:1}
-  .now .cid span{font-size:11px;font-weight:400;margin-left:8px;letter-spacing:.14em}
-  .now .what{font-size:12.5px;color:#b9bdc9;margin-top:5px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-  .prog{height:7px;background:rgba(243,239,228,.1);border-radius:4px;margin-top:8px;position:relative;overflow:visible;opacity:0;transition:opacity .3s}
+  .now .cid{font-family:'Courier Prime',monospace;font-size:clamp(24px,2.5vw,44px);font-weight:700;line-height:1}
+  .now .cid span{font-size:clamp(12px,1.1vw,18px);font-weight:400;margin-left:8px;letter-spacing:.14em}
+  .now .what{font-size:clamp(14px,1.25vw,22px);color:#b9bdc9;margin-top:7px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .prog{height:11px;background:rgba(243,239,228,.1);border-radius:4px;margin-top:8px;position:relative;overflow:visible;opacity:0;transition:opacity .3s}
   .prog.on{opacity:1}
   .prog i{display:block;height:100%;width:0;border-radius:4px;background:var(--go);transition:width .12s linear}
   .prog.done i{background:#5b8f72}
   .prog{margin-bottom:14px}
-  .prog span{position:absolute;right:0;top:10px;font-family:'Courier Prime',monospace;font-size:10px;letter-spacing:.14em;color:var(--dim);text-transform:uppercase;white-space:nowrap}
+  .prog span{position:absolute;right:0;top:14px;font-family:'Courier Prime',monospace;font-size:clamp(11px,.95vw,16px);letter-spacing:.14em;color:var(--dim);text-transform:uppercase;white-space:nowrap}
   .pov{display:inline-block;font-family:'Courier Prime',monospace;font-size:10px;
     letter-spacing:.14em;border-radius:99px;padding:2px 10px;text-transform:uppercase}
   .pov.c{background:rgba(224,122,158,.18);color:var(--cathy);border:1px solid rgba(224,122,158,.5)}
   .pov.j{background:rgba(95,184,201,.18);color:var(--jamie);border:1px solid rgba(95,184,201,.5)}
   .pov.cut{background:rgba(233,199,102,.2);color:var(--gold);border:1px solid rgba(233,199,102,.6)}
-  .now .dev{display:inline-block;font-family:'Courier Prime',monospace;font-size:10px;letter-spacing:.12em;
+  .now .dev{display:inline-block;font-family:'Courier Prime',monospace;font-size:clamp(11px,1vw,17px);letter-spacing:.12em;
     border:1px solid rgba(243,239,228,.3);border-radius:99px;padding:2px 9px;color:var(--dim)}
 
   /* THE GO CARD — the one thing the operator reads from across the booth */
-  .standby{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;padding:16px 18px 10px;overflow:hidden}
+  .standby{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;padding:22px 30px 14px;overflow:hidden}
   .sbTag{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-  .sbTag .dot{width:12px;height:12px;border-radius:50%;background:var(--gold);flex:none;
+  .sbTag .dot{width:18px;height:18px;border-radius:50%;background:var(--gold);flex:none;
     animation:pulse 1.5s ease-in-out infinite}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-  .sbTag b{font-family:'Courier Prime',monospace;font-size:15px;letter-spacing:.22em;color:var(--gold)}
-  .sbTag .kind{margin-left:auto;font-family:'Courier Prime',monospace;font-size:11px;letter-spacing:.16em;
+  .sbTag b{font-family:'Courier Prime',monospace;font-size:clamp(17px,1.7vw,30px);letter-spacing:.22em;color:var(--gold)}
+  .sbTag .kind{margin-left:auto;font-family:'Courier Prime',monospace;font-size:clamp(12px,1.1vw,19px);letter-spacing:.16em;
     padding:3px 11px;border-radius:99px;border:1px solid;text-transform:uppercase;white-space:nowrap}
   .sbTag .kind.lyric{color:var(--gold);border-color:rgba(233,199,102,.6);background:rgba(233,199,102,.12)}
   .sbTag .kind.music{color:var(--jamie);border-color:rgba(95,184,201,.6);background:rgba(95,184,201,.12)}
   .sbTag .kind.stage{color:var(--cathy);border-color:rgba(224,122,158,.6);background:rgba(224,122,158,.12)}
-  .trigger{background:#131a2a;border:2px solid rgba(233,199,102,.5);border-left:9px solid var(--gold);border-radius:10px;
+  .trigger{background:#131a2a;border:2px solid rgba(233,199,102,.5);border-left:14px solid var(--gold);border-radius:10px;
     padding:13px 18px 16px;margin-bottom:12px;box-shadow:0 12px 40px rgba(0,0,0,.5)}
   .trigger.music{border-color:rgba(95,184,201,.5);border-left-color:var(--jamie)}
   .trigger.stage{border-color:rgba(224,122,158,.5);border-left-color:var(--cathy)}
-  .trigger .lbl{font-family:'Courier Prime',monospace;font-size:10.5px;letter-spacing:.24em;color:var(--dim);
+  .trigger .lbl{font-family:'Courier Prime',monospace;font-size:clamp(12px,1.1vw,18px);letter-spacing:.24em;color:var(--dim);
     text-transform:uppercase;margin-bottom:8px}
-  .trigger .line{font-family:'Archivo',sans-serif;font-size:clamp(22px,2.4vw,33px);line-height:1.22;color:#fff;font-weight:600}
+  .trigger .line{font-family:'Archivo',sans-serif;font-size:clamp(30px,4.1vw,80px);line-height:1.18;color:#fff;font-weight:600}
   .trigger .line q{quotes:none;color:var(--gold);font-family:'Fraunces',serif;font-weight:600}
   .trigger .line q::before{content:'“'} .trigger .line q::after{content:'”'}
   .trigger .line .ev{color:var(--jamie);font-family:'Courier Prime',monospace;letter-spacing:.05em;font-weight:700}
   .trigger.stage .line .ev{color:var(--cathy)}
   .trigger .line .rest{color:#d6d9e3;font-weight:400;font-size:.74em}
-  .nextwhat{font-size:14px;color:#c9cdd8;line-height:1.45}
-  .nextwhat b{color:var(--paper);font-family:'Courier Prime',monospace;font-size:11px;letter-spacing:.14em}
+  .nextwhat{display:none}   /* cut (David, Sept 19 night): the GO line and THEN carry the cue */
+  .nextwhat b{color:var(--paper);font-family:'Courier Prime',monospace;font-size:clamp(12px,1.1vw,19px);letter-spacing:.14em}
   .hold{margin-top:10px;background:rgba(233,199,102,.13);border:1px solid rgba(233,199,102,.4);
-    border-radius:7px;padding:8px 11px;font-size:12.5px;color:var(--gold)}
-  .then{margin-top:auto;padding-top:10px;border-top:1px dashed rgba(243,239,228,.14);font-size:12px;color:var(--dim);line-height:1.4;
-    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-  .then b{color:#9aa0b3;font-family:'Courier Prime',monospace;letter-spacing:.1em}
+    border-radius:7px;padding:11px 15px;font-size:clamp(14px,1.3vw,23px);color:var(--gold)}
+  .then{margin-top:18px;padding-top:16px;border-top:1px dashed rgba(243,239,228,.14);font-size:clamp(17px,1.75vw,32px);color:#9aa0b3;line-height:1.35;
+    display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .then b{color:var(--gold);font-family:'Courier Prime',monospace;letter-spacing:.1em}
 
-  .queue{border-top:1px solid rgba(243,239,228,.12);padding:8px 0 6px;max-height:27%;overflow:hidden;flex:0 0 auto}
-  .qrow{display:flex;gap:10px;padding:4px 18px;font-size:11.5px;color:var(--dim);align-items:baseline}
-  .qrow .qid{font-family:'Courier Prime',monospace;font-size:11px;min-width:44px;color:var(--dim)}
+  .queue{border-top:1px solid rgba(243,239,228,.12);padding:10px 0 8px;max-height:30%;overflow:hidden;flex:0 0 auto}
+  .qrow{display:flex;gap:16px;padding:6px 30px;font-size:clamp(13px,1.15vw,20px);color:var(--dim);align-items:baseline}
+  .qrow .qid{font-family:'Courier Prime',monospace;font-size:clamp(12px,1.05vw,18px);min-width:72px;color:var(--dim)}
   .qrow.cur{background:rgba(233,199,102,.1);color:var(--paper)}
   .qrow.cur .qid{color:var(--gold);font-weight:700}
   .qrow.done{opacity:.35}
@@ -850,11 +853,7 @@
 
 <!-- PRESENTER -->
 <div id="presenter">
-  <div class="pcol pleft">
-    <div class="phead"><span class="song" id="pSong">—</span><span class="cnt" id="pCount"></span></div>
-    <div id="preview"><div class="prevwrap"><div id="prevOwner"></div><div id="prevStamp"></div><div id="previewInner"></div></div></div>
-    <div class="plabel">what the audience sees right now — the whole phone, exactly as projected</div>
-  </div>
+  <div class="phead"><span class="song" id="pSong">—</span><span class="cnt" id="pCount"></span></div>
   <div class="pcol pright">
     <div class="now">
       <div class="tag">on screen now</div>
@@ -2497,7 +2496,6 @@ const wait=ms=>new Promise(r=>setTimeout(r,ms));
 function stages(){ // every container that shows the device
   const out=[];
   const a=document.getElementById('projDevice'); if(a) out.push(a);
-  if(view==='presenter'){ const b=document.getElementById('previewInner'); if(b) out.push(b); }
   return out;
 }
 const stacks=()=>stages().map(s=>s.querySelector('.screenstack')).filter(Boolean);
@@ -2661,7 +2659,7 @@ function paintAll(st){
                  : st.black ? '' : deviceHTML(st, st.dev==='macbook'?macW:h);
   }
   frameDevice(st);
-  if(view==='presenter'){
+  if(view==='presenter' && document.getElementById('previewInner')){
     const pv=document.getElementById('previewInner');
     const ph=Math.min(pv.parentElement.clientHeight-16,620);
     // era-center in the preview looks like era-center on stage: the gold era, big
@@ -3070,6 +3068,7 @@ async function playCue(cue, st, tok){
       await wait(340); if(tok!==animTok) return;
       applyOp(st,o); swapLayer(st,null); await wait(200); continue; }
     if(o.op==='vmState'||o.op==='musicBanner'||o.op==='match'){ applyOp(st,o); swapLayer(st,'fadeUp'); await wait(300); continue; }
+    if(o.op==='batt' && o.snd!==false && o.v<=20 && (st.batt==null?100:st.batt)>20) sfx('lowbat');   // iOS chimes once as the battery crosses 20% (David, Sept 19 night)
     if(o.op==='call'){ sfxRing(o.dir==='in'?'ring':'ringback'); }
     if(o.op==='facetime' && /facetime|ring|calling/i.test(o.st||'')){ sfxRing('ftring'); }
     if(o.op==='callState'||o.op==='ftState'){
@@ -3578,8 +3577,8 @@ function paintAll(st){
   if(pj){ pj.innerHTML = phoneUp(st) ? '<div class="stagecam"><div class="drift">'+deviceHTML(st, st.dev==='macbook'?macW:st.dev==='carplay'?cpH:h)+'</div></div>' : ''; }
   loopMode('off');   // the falling pages are cut (David, Sept 19 night)
   frameDevice(st);
-  if(view==='presenter'){
-    // the preview is a scaled projection: a 16:9 frame, the device at the stage's own proportions, the same camera
+  if(view==='presenter' && document.getElementById('previewInner')){
+    // (no preview in the presenter any more — the operator watches the projection on a second monitor)
     const pv=document.getElementById('previewInner'), box=pv.parentElement; const bw=box.clientWidth, bh=Math.max(120,box.clientHeight-8);
     const fw=Math.min(bw, bh*16/9), fh=fw*9/16; pv.style.width=fw+'px'; pv.style.height=fh+'px';
     pv.innerHTML = isPreshow()?houseHTML():st.inter?interHTML()
@@ -3845,6 +3844,7 @@ function sfx(name,o={}){
   switch(name){
     case 'click': noise(t,.035,{gain:o.soft?.045:.085,lo:900+R()*600,hi:3200+R()*1500,attack:.002}); break;
     case 'del': noise(t,.04,{gain:.07,lo:600+R()*300,hi:2400+R()*900,attack:.002}); break;
+    case 'lowbat': tone(1046,t,.16,{gain:.06,type:'sine'}); tone(784,t+.17,.24,{gain:.055,type:'sine'}); break;
     case 'keymod': noise(t,.035,{gain:.05,lo:700+R()*300,hi:2600+R()*900,attack:.002}); break;
     case 'tap': noise(t,.05,{gain:.07,lo:300,hi:1800,attack:.003}); tone(1900+R()*200,t,.04,{gain:.03}); break;
     case 'unlock': noise(t,.08,{gain:.06,lo:500,hi:6000,sweepTo:900}); tone(1320,t+.02,.06,{gain:.04}); break;
@@ -4012,12 +4012,13 @@ paperInit();
 function SFX_BUF_(){ return SFX_BUF_.o||(SFX_BUF_.o={}); }   // hoisted accessors — no top-level state that boot code could reach first
 function SFX_MAP_(){ return {send:'SentMessage.caf',receive:'ReceivedMessage.caf',notif:'sms-received1.caf',mail:'new-mail.caf',mailsent:'mail-sent.caf',
   click:'key_press_click.caf',del:'key_press_delete.caf',keymod:'key_press_modifier.caf',tap:'Tock.caf',tink:'Tink.caf',lock:'lock.caf',unlock:'unlock.caf',swipe:'Swish.m4r',
-  connect:'vc~invitation-accepted.caf',end:'vc~ended.caf',ftring:'vc~ringing.caf',ring:'vibrate.mp3',busy:'ct-busy.caf',error:'ct-error.caf',keytone:'ct-keytone2.caf'}; }
-function SFX_TRIM_(){ return {click:.35,del:.35,keymod:.35,send:.7,receive:.7,notif:.7,mail:.7,mailsent:.7,connect:.7,end:.7,lock:.5,ring:.55,ftring:.65}; }
+  connect:'vc~invitation-accepted.caf',end:'vc~ended.caf',ftring:'vc~ringing.caf',ring:'vibrate.mp3',busy:'ct-busy.caf',error:'ct-error.caf',keytone:'ct-keytone2.caf',
+  lowbat:'low_power.caf'}; }
+function SFX_TRIM_(){ return {click:.35,del:.35,keymod:.35,lowbat:.55,send:.7,receive:.7,notif:.7,mail:.7,mailsent:.7,connect:.7,end:.7,lock:.5,ring:.55,ftring:.65}; }
 /* THE SOUND LAW (David, Sept 19 night): the screen makes ONLY the sounds a real iPhone makes with its volume up, and
    quietly. No paper, no ambience, no taps, no swipes, no unlock (iOS has none), no ringback (that lives in the earpiece).
    Keyboard clicks are ON for every typing beat (David, Sept 19 night — the real key_press_click / _delete / _modifier); a cue may mute them with keys:false. */
-function SFX_KEEP_(){ return {send:1,receive:1,notif:1,mail:1,mailsent:1,lock:1,ftring:1,ring:1,end:1,connect:1}; }
+function SFX_KEEP_(){ return {send:1,receive:1,notif:1,mail:1,mailsent:1,lock:1,ftring:1,ring:1,end:1,connect:1,lowbat:1}; }
 function b64bytes(str){ const i=str.indexOf(','); const bin=atob(i>=0?str.slice(i+1):str); const u=new Uint8Array(bin.length); for(let k=0;k<bin.length;k++) u[k]=bin.charCodeAt(k); return u; }
 function cafDecode(u){
   if(!(u[0]===0x63&&u[1]===0x61&&u[2]===0x66&&u[3]===0x66)) throw new Error('not caf');
