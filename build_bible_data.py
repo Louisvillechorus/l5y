@@ -30,7 +30,7 @@ def onscreen(o):
         if o.get('d'):
             try:
                 import datetime as _dt; d=_dt.datetime.strptime(o['d'],'%A, %B %d, %Y'); y=d.year; n=(y-2020) if d>=_dt.datetime(y,9,3) else (y-2021)
-                lab=f" — the house reads {d.strftime('%B').upper()} · YEAR {n}; the calendar pages roll to it (forward tears, backward settles) before any device appears"
+                lab=f" — the house reads {d.strftime('%B').upper()} · YEAR {n}; the calendar pages roll to it under the TIME WARP music (forward tears, backward settles) before any device appears"
             except Exception: lab=' — the calendar pages roll to it'
         return [('TIME → ', f"{o['t']}" + (f" · {o['d']}" if o.get('d') else '') + lab)]
     if op=='notif':

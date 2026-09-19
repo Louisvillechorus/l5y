@@ -3249,6 +3249,7 @@ function paintChrome(){
 }
 function hardRender(){          // no animation — scrub, resize, view swap, remote sync
   if(typeof BED!=='undefined' && BED && BED.si!==si) bedStop(1.2);   // the bed belongs to its song
+  if(typeof WARP!=='undefined' && WARP) warpStop(.2);
   animTok++; animRunning=false; if(typeof playStart!=='undefined') playStart=0; sfxRingStop(); camTimersClear();
   CUR=buildState(song(), ci);
   CAM_ST=CUR; paintAll(CUR); camWide(true);
@@ -3630,7 +3631,8 @@ async function eraRoll(A,B,tok,st,long){
   const era=document.getElementById('era'); if(!era||era.classList.contains('hidden')) return;
   const total=(B.getFullYear()-A.getFullYear())*12+(B.getMonth()-A.getMonth()); if(!total) return;
   const dir=total>0?1:-1, n=Math.min(Math.abs(total), long?16:12);
-  sfx('flutter',{n:n,long:!!long,seed:'roll'+A.getTime()+'-'+B.getTime()});
+  let rollMs=0; for(let i=1;i<=n;i++) rollMs+=(i<=2?200:(i===n?380:(i>n-3?260:135)))*(long?1.15:1);
+  warpStart(rollMs+700);   // the Time Warp music rides the roll: in on the first page, out as the last one settles
   const docked=era.dataset.home==='docked';
   const pad=era.querySelector(docked?'.strip':'.pad'), top=era.querySelector(docked?'.strip .stop':'.pad .top');
   const fill=(el,m,y)=>{ const q=s=>el.querySelector(s);
@@ -3638,7 +3640,7 @@ async function eraRoll(A,B,tok,st,long){
     if(q('.smo')) q('.smo').textContent=MA_(m); if(q('.snum')) q('.snum').textContent=y; };
   fill(top,A.getMonth(),yearN(A));   // the top page reads where we are leaving from, foot cleared
   for(let i=1;i<=n;i++){
-    if(tok!==animTok) return;
+    if(tok!==animTok){ warpStop(.25); return; }
     const k=Math.round(i*Math.abs(total)/n); const d=new Date(A.getFullYear(),A.getMonth()+dir*k,15); const m=d.getMonth(), y=yearN(d);
     if(dir>0){ sfx('tear',{seed:'tear'+A.getTime()+i}); const old=top.cloneNode(true); old.classList.remove('top','stop'); old.classList.add('tear'); old.style.clipPath=tornPath('top',20+i); old.style.setProperty('--pp','var(--pp'+(1+(i%4))+')'); pad.appendChild(old);
       fill(top,m,y); old.addEventListener('animationend',()=>old.remove()); setTimeout(()=>old.remove(),1200); }
@@ -4037,6 +4039,15 @@ function sfxLoad(){ if(sfxLoad.done||!AC) return; sfxLoad.done=true; const S=win
     if(u[0]===0x63&&u[1]===0x61&&u[2]===0x66&&u[3]===0x66) SFX_BUF_()[name]=cafDecode(u);   // sniff the magic: some .caf files are WAV inside
     else AC.decodeAudioData(u.buffer.slice(u.byteOffset,u.byteOffset+u.byteLength)).then(b=>{ SFX_BUF_()[name]=b; }).catch(e=>console.warn('sfx decode',name,e));
   }catch(e){ console.warn('sfx',name,e); } }); }
+var WARP=null;
+function warpStart(durMs){ if(!sfxOn()) return; warpStop(0.15); const b=SFX_BUF_()['timewarp.mp3']; if(!b) return;
+  const src=AC.createBufferSource(); src.buffer=b; const g=AC.createGain(); const t=AC.currentTime, d=Math.max(0.8,durMs/1000);
+  g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(.8,t+.12);
+  const tail=Math.min(.9,d*.35); g.gain.setValueAtTime(.8,t+d-tail); g.gain.exponentialRampToValueAtTime(0.0001,t+d);
+  src.connect(g).connect(MASTER); src.start(t); src.stop(t+d+.05); WARP={src,g}; }
+function warpStop(fade){ if(!WARP) return; const {src,g}=WARP; WARP=null; const t=AC.currentTime, f=fade==null?.3:fade;
+  try{ g.gain.cancelScheduledValues(t); g.gain.setValueAtTime(Math.max(g.gain.value,0.0001),t); g.gain.exponentialRampToValueAtTime(0.0001,t+Math.max(.05,f)); }catch(e){}
+  setTimeout(()=>{ try{ src.stop(); }catch(e){} }, f*1000+100); }
 var BED=null;
 function bedStart(file,fade,gain){ if(!sfxOn()) return; bedStop(0.6); const b=SFX_BUF_()[file]; if(!b) return;
   const src=AC.createBufferSource(); src.buffer=b; src.loop=true; const g=AC.createGain(); const t=AC.currentTime;

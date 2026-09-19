@@ -108,7 +108,9 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   inert; real scans in `assets/paper/` (embedded by build.py as `window.L5Y_PAPER`) would show
   through `--pp` if David ever wants texture back. The strip is 12.4vw wide — everything on the
   right side big (month 4vw, YEAR 8.4vw, the number 17.5vw).
-- **TIME ONLY EVER CHANGES ON THE CALENDAR** (`eraRoll`): forward = pages tear off and fall;
+- **TIME ONLY EVER CHANGES ON THE CALENDAR** (`eraRoll`), and every roll rides the TIME WARP MUSIC
+  (`assets/sfx/timewarp.mp3`, David's file, `warpStart`: in on the first page, out as the last settles,
+  stopped on a scrub): forward = pages tear off and fall;
   backward = pages rise and settle. Long journeys skip months (≤16 pages, ~3 s at a song top,
   ~2 s mid-song). The phone never rolls; a dated `clock` op rolls the era, then `device` docks it
   and the phone rises already at the new time. `stamp` is now the calendar's FOOT line.
