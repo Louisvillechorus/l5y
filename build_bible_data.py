@@ -132,6 +132,7 @@ def onscreen(o):
     if op=='pause': return [('  … a beat (auto-timed, ', f"{o.get('ms',800)/1000:.1f} s)")]
     if op=='prologue': return [('PROLOGUE WIND-DOWN — ', f"the falling pages thin out over ~{int(o.get('ms',50000))//1000} s; the last one blows away; the calendar lands")]
     if op=='curtain': return [('CURTAIN — ', 'true black; the calendar goes')]
+    if op=='bed': return [('SOUND BED — ', (f"fades out over {o.get('fade',4)} s" if o.get('stop') else f"{o.get('file','')} fades in over {o.get('fade',4)} s and loops under the whole song"))]
     if op=='intermission': return [('INTERMISSION CARD — ', 'the house sees “Intermission”; it holds until Act Two’s first GO')]
     if op=='books': return [('BOOKS — his novel, open on her phone: ', f"“{o.get('page','')}” · {o.get('pos','')}")]
     if op=='mapsdrive':

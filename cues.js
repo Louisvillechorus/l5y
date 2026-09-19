@@ -147,7 +147,7 @@ window.L5Y_SHOW = [
 {n:3,t:'See I’m Smiling',who:'both',cues:[
  {id:'3.1',kind:'music',trig:'TOP OF SEE I’M SMILING — the first chord (the pier)',
   what:'No phone for her, by direction. The calendar rolls FORWARD, page by page — SEPTEMBER · YEAR 1 → JULY · YEAR 4, her birthday in Ohio — and holds while she sings.',
-  do:[{op:'black'},{op:'clock',t:'6:12',d:'Saturday, July 19, 2025'},{op:'stamp',t:'Ohio · her birthday'}]},
+  do:[{op:'bed',file:'lake.mp3',fade:5,gain:.45},{op:'black'},{op:'clock',t:'6:12',d:'Saturday, July 19, 2025'},{op:'stamp',t:'Ohio · her birthday'}]},
  {id:'3.2',kind:'lyric',trig:'“And you’re mine… We’re doing fine.” — JAMIE DIALS. Time snaps back.',
   what:'The calendar rolls BACK to SEPTEMBER · YEAR 1 and docks; HIS phone rises already dialing — a cold call to the agent, via Dr. Adler (“Ms. Whitfield (office)”, from Adler’s text). Ringback under it.',
   do:[{op:'clock',t:'2:41',d:'Tuesday, September 7, 2021'},{op:'stamp',t:''},
@@ -180,7 +180,7 @@ window.L5Y_SHOW = [
   do:[{op:'callState',st:'connected · 00:00'}]},
  {id:'3.10',kind:'music',trig:'DOWNBEAT OF MOVING TOO FAST — he hangs up',
   what:'Call Ended on the downbeat; the phone drops; one page tears — OCTOBER · YEAR 1, center-stage.',
-  do:[{op:'black'},{op:'clock',t:'2:14',d:'Friday, October 8, 2021'},{op:'stamp',t:''}]},
+  do:[{op:'bed',stop:true,fade:5},{op:'black'},{op:'clock',t:'2:14',d:'Friday, October 8, 2021'},{op:'stamp',t:''}]},
 ]},
 
 /* ============ 4 · MOVING TOO FAST — JAMIE (with Cathy’s gig call) ============ */

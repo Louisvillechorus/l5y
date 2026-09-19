@@ -171,7 +171,7 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   BEAR (M2) last, she drifts back up to it; cutoff = phone away.
 - **2** 2.1 the roll then his lock screen; 2.2 = ONE ~50 s piece (three drafts → “home safe?” →
   Delivered → her typing bubble); 2.3 her call; 2.4 hang up. Same-night compression kept.
-- **3** era-center only for her; Jamie's three calls (Whitfield ×2, Rob — he dials, per the
+- **3** the LAKE BED (`{op:'bed',file:'lake.mp3'}` on 3.1, fades in 5 s; `stop` on 3.10, fades out 5 s — David's licensed lake ambience, quiet, under the whole song; a `bed` is by cue only and dies with its song or the curtain). Era-center only for her; Jamie's three calls (Whitfield ×2, Rob — he dials, per the
   script) with return rolls; hang-up on the downbeat of 4.
 - **4** her Stelmyer call (dial → connect → end), then his notifications. **5** calendar only (the dedication is CUT). **6** his lock screen,
   Christmas wallpaper, whole song. **7** the FaceTime arc (ring → V2 → Call Ended → black).
