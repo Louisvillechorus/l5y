@@ -148,8 +148,10 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   with its volume up, and QUIETLY (default 0.35, trims ≤ .7). Send, receive, the lock-screen tone,
   mail, the FaceTime ring / accept / end. **NO RINGTONES (David)**: an incoming call BUZZES — the
   phone vibrating on the table (`assets/sfx/vibrate.mp3`, David's licensed file). NO paper sounds, NO
-  ambience, NO taps, swipes, unlock or ringback; keyboard clicks are off unless a cue says
-  `keys:true`; any notification/bubble may be silenced with `snd:false`. A noise every five
+  ambience, NO taps, swipes, unlock or ringback; **KEYBOARD CLICKS ARE ON for every typing beat (David, Sept 19
+  night — “the haptics back in”): the real key_press_click per key, key_press_modifier on the space bar,
+  key_press_delete on every backspace (typos, the wipes), all at the .35 trim; a cue mutes them with `keys:false`**;
+  any notification/bubble may be silenced with `snd:false`. A noise every five
   seconds is a trope — sound is color and context, never a beat of its own.
 - **SOUND FILES (David, Sept 19 — the licensed iOS set)**: the real system sounds live in `assets/sfx/`
   (SentMessage, ReceivedMessage, sms-received1 = the lock-screen text tone, new-mail, mail-sent,

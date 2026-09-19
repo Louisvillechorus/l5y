@@ -3383,7 +3383,7 @@ async function playCue(cue, st, tok){
       const NEIGH={a:'s',s:'a',e:'r',r:'e',t:'y',o:'i',i:'o',n:'m',m:'n',h:'j',l:'k',u:'y',c:'v',d:'f'};
       for(let i=0;i<text.length;i++){
         if(tok!==animTok) return;
-        const ch=text[i]; sfx('click',{keys:!!(cue&&cue.keys),seed:cue.id+':'+i,soft:ch===' '});
+        const ch=text[i]; sfx(ch===' '?'keymod':'click',{keys:!(cue&&cue.keys===false),seed:cue.id+':'+i});
         stacks().forEach(k=>{
           const f=k.querySelector('.field'); if(f){ f.textContent=text.slice(0,i+1); f.style.color='#000'; }
           const sb=k.querySelector('.sendbtn'); if(sb) sb.classList.add('on');
@@ -3404,9 +3404,11 @@ async function playCue(cue, st, tok){
           stacks().forEach(k=>{const f=k.querySelector('.field');
             if(f) f.textContent=text.slice(0,i+1).slice(0,-1)+wrong;});
           await wait(200+TR()*260); if(tok!==animTok) return;   // the glance that catches it
+          sfx('del',{keys:!(cue&&cue.keys===false),seed:cue.id+':bs'+i});
           stacks().forEach(k=>{const f=k.querySelector('.field');
             if(f) f.textContent=text.slice(0,i);});
           await wait(90+TR()*80); if(tok!==animTok) return;
+          sfx('click',{keys:!(cue&&cue.keys===false),seed:cue.id+':re'+i});
           stacks().forEach(k=>{const f=k.querySelector('.field');
             if(f) f.textContent=text.slice(0,i+1);});
         }
@@ -3437,7 +3439,7 @@ async function playCue(cue, st, tok){
       applyOp(st,o);
       for(let i=text.length;i>=0;i--){
         if(tok!==animTok) return;
-        if(i%2===0) sfx('click',{keys:!!(cue&&cue.keys),seed:'w'+cue.id+':'+i,soft:true});
+        if(i%4===0) sfx('del',{keys:!(cue&&cue.keys===false),seed:'w'+cue.id+':'+i});
         stacks().forEach(k=>{ const f=k.querySelector('.field');
           if(f){ f.textContent=i?text.slice(0,i):'iMessage'; if(!i) f.style.color=''; }
           const key=k.querySelector('.key[data-k="⌫"]'); if(key){ key.classList.add('hit'); setTimeout(()=>key.classList.remove('hit'),50); }});
@@ -4255,11 +4257,14 @@ function noise(t0,dur,o={}){ const {gain=.2,lo=200,hi=4000,q=1,attack=.004,sweep
   s.connect(hp).connect(lp).connect(g).connect(MASTER); s.start(t0); s.stop(t0+dur+.05); }
 function sfx(name,o={}){
   if(!sfxOn()) return; if(AC.state==='suspended'){ try{AC.resume();}catch(e){} }
-  if(!SFX_KEEP_()[name] && !(name==='click'&&o.keys)) return;                 // not a phone sound → silence
+  const KEYB = name==='click'||name==='del'||name==='keymod';
+  if(!SFX_KEEP_()[name] && !(KEYB && o.keys!==false)) return;                 // not a phone sound → silence (keyboard clicks are ON unless the cue says keys:false — David, Sept 19 night)
   const t=AC.currentTime+.01, R=prng('sfx:'+name+':'+(o.seed||''));
   if(sample(name,{gain:(SFX_TRIM_()[name]==null?.7:SFX_TRIM_()[name])*(o.soft?.5:1)})) return;   // the real iOS sound when we have it
   switch(name){
     case 'click': noise(t,.035,{gain:o.soft?.045:.085,lo:900+R()*600,hi:3200+R()*1500,attack:.002}); break;
+    case 'del': noise(t,.04,{gain:.07,lo:600+R()*300,hi:2400+R()*900,attack:.002}); break;
+    case 'keymod': noise(t,.035,{gain:.05,lo:700+R()*300,hi:2600+R()*900,attack:.002}); break;
     case 'tap': noise(t,.05,{gain:.07,lo:300,hi:1800,attack:.003}); tone(1900+R()*200,t,.04,{gain:.03}); break;
     case 'unlock': noise(t,.08,{gain:.06,lo:500,hi:6000,sweepTo:900}); tone(1320,t+.02,.06,{gain:.04}); break;
     case 'send': noise(t,.32,{gain:.12,lo:300,hi:900,sweepTo:5200,attack:.02}); tone(1567,t+.12,.16,{gain:.05,type:'triangle'}); break;
@@ -4425,12 +4430,12 @@ paperInit();
    sound in sfx() still plays, so the show never goes silent. */
 function SFX_BUF_(){ return SFX_BUF_.o||(SFX_BUF_.o={}); }   // hoisted accessors — no top-level state that boot code could reach first
 function SFX_MAP_(){ return {send:'SentMessage.caf',receive:'ReceivedMessage.caf',notif:'sms-received1.caf',mail:'new-mail.caf',mailsent:'mail-sent.caf',
-  click:'key_press_click.caf',del:'key_press_delete.caf',tap:'Tock.caf',tink:'Tink.caf',lock:'lock.caf',unlock:'unlock.caf',swipe:'Swish.m4r',
+  click:'key_press_click.caf',del:'key_press_delete.caf',keymod:'key_press_modifier.caf',tap:'Tock.caf',tink:'Tink.caf',lock:'lock.caf',unlock:'unlock.caf',swipe:'Swish.m4r',
   connect:'vc~invitation-accepted.caf',end:'vc~ended.caf',ftring:'vc~ringing.caf',ring:'vibrate.mp3',busy:'ct-busy.caf',error:'ct-error.caf',keytone:'ct-keytone2.caf'}; }
-function SFX_TRIM_(){ return {click:.35,send:.7,receive:.7,notif:.7,mail:.7,mailsent:.7,connect:.7,end:.7,lock:.5,ring:.55,ftring:.65}; }
+function SFX_TRIM_(){ return {click:.35,del:.35,keymod:.35,send:.7,receive:.7,notif:.7,mail:.7,mailsent:.7,connect:.7,end:.7,lock:.5,ring:.55,ftring:.65}; }
 /* THE SOUND LAW (David, Sept 19 night): the screen makes ONLY the sounds a real iPhone makes with its volume up, and
    quietly. No paper, no ambience, no taps, no swipes, no unlock (iOS has none), no ringback (that lives in the earpiece).
-   Keyboard clicks are off, as on most phones (a cue may ask for them with keys:true). */
+   Keyboard clicks are ON for every typing beat (David, Sept 19 night — the real key_press_click / _delete / _modifier); a cue may mute them with keys:false. */
 function SFX_KEEP_(){ return {send:1,receive:1,notif:1,mail:1,mailsent:1,lock:1,ftring:1,ring:1,end:1,connect:1}; }
 function b64bytes(str){ const i=str.indexOf(','); const bin=atob(i>=0?str.slice(i+1):str); const u=new Uint8Array(bin.length); for(let k=0;k<bin.length;k++) u[k]=bin.charCodeAt(k); return u; }
 function cafDecode(u){
