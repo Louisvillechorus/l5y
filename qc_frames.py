@@ -20,11 +20,13 @@ Per sample it records:
   * the inline font-size fitPad() has written onto the calendar card, against
     that element's stylesheet value — the shrink bug
 
-Violations: TINY, STALE, GHOST, OVERLAY, ZOOMJUMP, GAP, PADSHRINK, JSERROR.
+Violations: CAMRESET, STALE, OVERLAY, GHOST, PADSHRINK, ZOOMJUMP, GAP, TINY,
+TIMERFMT, JSERROR.
 Usage: CHROMIUM_PATH=/opt/pw-browsers/chromium python3 qc_frames.py [--json out.json]
 """
 import json
 import os
+import re
 import sys
 import time
 
@@ -206,7 +208,13 @@ window.__probe = function(settled){
         seen.add(key);
         if(px < window.__MINPX) (isChrome ? chrome : tiny).push(rec);
       }
-      if(settled && stack && stack.contains(el)) inWin.push(raw);
+      /* live-by-design nodes are NOT measured against the settled state:
+         a call timer ticks past its own state value, and the CarPlay route
+         model advances the maneuver/trip cards in real time. */
+      if(settled && stack && stack.contains(el)
+         && !el.closest('.calltimer') && !/calltimer/.test(cls)
+         && st.app !== 'mapsdrive')
+        inWin.push([cls.slice(0,26), raw]);
     }
   }
 
@@ -245,6 +253,15 @@ window.__probe = function(settled){
     });
   }
 
+  /* a real iPhone call reads 0:07, never 00:07 — liveTimerHTML echoes the
+     cue's own string on its first frame and the ticking overwrites it */
+  const badtimer = [];
+  document.querySelectorAll('#projDevice .calltimer').forEach(el => {
+    const t = (el.textContent||'').trim();
+    if(/^\d{2,}:\d{2}$/.test(t) && t.split(':')[0].length > 1 && +t.split(':')[0] < 10)
+      badtimer.push(t);
+  });
+
   /* ---- fitPad's inline shrink against the sheet's own stylesheet size ---- */
   const pad = [];
   const top = eraEl && eraEl.querySelector('.pad .sheet.top');
@@ -282,6 +299,7 @@ window.__probe = function(settled){
     tiny: tiny.slice(0,14), chrome: chrome.slice(0,8),
     minpx: minpx === null ? null : +minpx.toFixed(1), minwhat: minwhat,
     layers: layers, ghosts: ghosts.slice(0,6), overlay: overlay.slice(0,4),
+    badtimer: badtimer.slice(0,2),
     pad: pad,
     inwin: settled ? inWin.slice(0,400) : null
   };
@@ -396,6 +414,10 @@ def run():
                     viol.append((cid, 'OVERLAY',
                                  f"calendar <{o['c']}> covers {o['pct']}% of the reading window "
                                  f"at opacity {o['op']} — “{o['s']}”"))
+                for t in st.get('badtimer', []):
+                    viol.append((cid, 'TIMERFMT',
+                                 f"connected call reads “{t}” — a real iPhone drops the leading "
+                                 f"zero on the minutes"))
                 for q in st['pad']:
                     if q['r'] < PAD_SHRINK:
                         viol.append((cid, 'PADSHRINK',
@@ -409,11 +431,18 @@ def run():
 
                 # stale text at rest: in the stack but not in screenHTML(CUR)
                 if st['inwin']:
-                    norm = pg.evaluate('(a)=>a.map(s=>window.__tok(s)).filter(Boolean)', st['inwin'])
-                    foreign = sorted({t for t in norm if t not in exp})
-                    for f in foreign[:6]:
+                    norm = pg.evaluate(
+                        '(a)=>a.map(p=>[p[0], window.__tok(p[1])]).filter(p=>p[1])', st['inwin'])
+                    fseen = set()
+                    for cls, tk in norm:
+                        if tk in exp or tk in fseen:
+                            continue
+                        fseen.add(tk)
+                        if len(fseen) > 6:
+                            break
                         viol.append((cid, 'STALE',
-                                     f"text in the window that screenHTML(CUR) does not paint — “{f[:48]}”"))
+                                     f"<{cls or '?'}> shows “{tk[:48]}”, which the settled state "
+                                     f"({app}) does not paint — left behind by the live DOM"))
 
                 # ---------- mid-animation ----------
                 mid_bad = {}
@@ -428,6 +457,8 @@ def run():
                     if s['layers'] > 1:
                         mid_bad[('STALE', 'layers', str(s['layers']))] = \
                             mid_bad.get(('STALE', 'layers', str(s['layers'])), 0) + 1
+                    for t in s.get('badtimer', []):
+                        mid_bad[('TIMERFMT', t, '')] = 1
                     for q in s['pad']:
                         if q['r'] < PAD_SHRINK:
                             key = ('PADSHRINK', q['sel'], q['s'])
@@ -458,6 +489,10 @@ def run():
                     elif kind == 'TINY':
                         viol.append((cid, 'TINY',
                                      f"MID-CUE: {v}px projected <{a}> — “{bdetail}”"))
+                    elif kind == 'TIMERFMT':
+                        viol.append((cid, 'TIMERFMT',
+                                     f"MID-CUE: connected call reads “{a}” — a real iPhone drops "
+                                     f"the leading zero on the minutes"))
 
                 # ---------- the zoom, settled to settled ----------
                 z = st['z']
@@ -542,9 +577,32 @@ if __name__ == '__main__':
         sys.exit(0)
 
     order = {'CAMRESET': 0, 'STALE': 1, 'OVERLAY': 2, 'GHOST': 3, 'PADSHRINK': 4,
-             'ZOOMJUMP': 5, 'GAP': 6, 'TINY': 7, 'JSERROR': 8}
+             'ZOOMJUMP': 5, 'GAP': 6, 'TINY': 7, 'TIMERFMT': 8, 'JSERROR': 9}
     viol.sort(key=lambda v: (order.get(v[1], 9), v[0]))
     print(f'FRAME QC: {len(viol)} violation(s)\n')
-    for i, (cue, kind, det) in enumerate(viol, 1):
-        print(f'{i:>3}. [{kind}] {cue}  {det}')
+
+    # one defect that lands on twenty cues is ONE defect: group by shape (the
+    # detail with its numbers and its quoted text taken out) and list the cues.
+    def shape(kind, det):
+        d = re.sub(r'-?[0-9]+(\.[0-9]+)?', '#', det)
+        d = re.sub(r'\u201c[^\u201d]*\u201d', '\u201c\u2026\u201d', d)
+        return (kind, d)
+
+    groups = {}
+    for cue, kind, det in viol:
+        groups.setdefault(shape(kind, det), []).append((cue, det))
+    n = 0
+    for (kind, _), items in sorted(groups.items(),
+                                   key=lambda kv: (order.get(kv[0][0], 9), -len(kv[1]))):
+        n += 1
+        cue, det = items[0]
+        if len(items) == 1:
+            print(f'{n:>3}. [{kind}] {cue}  {det}')
+        else:
+            print(f'{n:>3}. [{kind}] {len(items)} cues \u2014 '
+                  + ', '.join(c for c, _ in items))
+            for c, d in items[:3]:
+                print(f'       {c}: {d}')
+            if len(items) > 3:
+                print(f'       (\u2026{len(items)-3} more of the same shape)')
     sys.exit(1)

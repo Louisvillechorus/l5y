@@ -317,6 +317,43 @@
   .castbtn.sel{opacity:1;border-color:var(--gold);color:var(--gold);
     box-shadow:0 0 0 1px var(--gold),0 0 18px rgba(233,199,102,.25)}
 
+  /* ================= JUMP — the song/cue selector (David, Sept 20: the Menu must never dead-end) =========
+     Presenter only. The projection window never paints it, so the audience never sees the operator think. */
+  #jump{position:fixed;inset:0;background:rgba(6,8,14,.97);z-index:120;display:none;
+    flex-direction:column;padding:20px 26px 16px;font-family:'Archivo',sans-serif}
+  body.jumping.v-presenter #jump{display:flex}
+  #jump .jhead{display:flex;align-items:baseline;gap:16px;flex:0 0 auto;padding-bottom:12px;
+    border-bottom:1px solid rgba(243,239,228,.14)}
+  #jump .jhead h2{font-family:'Fraunces',serif;font-size:26px;margin:0}
+  #jump .jhead .jn{font-family:'Courier Prime',monospace;font-size:11px;letter-spacing:.22em;color:var(--dim)}
+  #jump .jhead .sp{margin-left:auto;display:flex;gap:9px}
+  #jump .jcols{flex:1 1 auto;display:grid;grid-template-columns:minmax(260px,1fr) minmax(360px,1.7fr);
+    gap:0 22px;min-height:0;padding-top:12px}
+  #jump .jcol{min-height:0;overflow:auto;padding-right:8px}
+  #jump .jcol h3{font-family:'Courier Prime',monospace;font-size:10px;letter-spacing:.24em;color:var(--dim);
+    margin:0 0 8px;text-transform:uppercase;position:sticky;top:0;background:rgba(6,8,14,.97);padding:2px 0 6px}
+  .jsong{display:flex;gap:10px;align-items:baseline;padding:7px 10px;border-radius:6px;cursor:pointer;
+    font-size:14px;color:var(--paper);border:1px solid transparent}
+  .jsong .n{font-family:'Courier Prime',monospace;color:var(--dim);min-width:20px;text-align:right}
+  .jsong .c{margin-left:auto;font-family:'Courier Prime',monospace;font-size:10px;color:var(--go)}
+  .jsong:hover{background:rgba(233,199,102,.12)}
+  .jsong.sel{border-color:var(--gold);background:rgba(233,199,102,.16)}
+  .jsong.here .n{color:var(--gold)}
+  .jsong.dead{color:#4d5364;cursor:default}
+  .jsong.dead:hover{background:none}
+  .jcue{display:grid;grid-template-columns:52px 1fr;gap:10px;padding:7px 10px;border-radius:6px;cursor:pointer;
+    font-size:13px;color:var(--paper);align-items:baseline;border:1px solid transparent}
+  .jcue .i{font-family:'Courier Prime',monospace;font-size:11px;color:var(--gold)}
+  .jcue .tg{color:#b9c0d0;line-height:1.35;font-size:12.5px}
+  .jcue:hover{background:rgba(233,199,102,.12)}
+  .jcue.here{border-color:var(--gold);background:rgba(233,199,102,.16)}
+  .jcue.here .tg{color:var(--paper)}
+  .jcue.live .i:after{content:' ◂ NOW';color:var(--go);font-size:9px;letter-spacing:.1em}
+  #jump .jfoot{flex:0 0 auto;display:flex;gap:12px;align-items:center;padding-top:10px;margin-top:8px;
+    border-top:1px solid rgba(243,239,228,.14);font-family:'Courier Prime',monospace;font-size:11px;color:var(--dim)}
+  #jump .jfoot kbd{border:1px solid rgba(243,239,228,.3);border-radius:4px;padding:0 6px;color:var(--paper)}
+  #jump .jwarn{color:var(--gold)}
+
   /* ================= DEVICE SHELLS ================= */
   .iphone{height:100%;aspect-ratio:9/19.5;background:#000;border-radius:calc(var(--ph,800px) * 0.062);padding:10px;
     box-shadow:0 0 0 3px var(--case,#2a2d35),0 0 0 7px #0d0f14,0 34px 80px rgba(0,0,0,.8);
@@ -972,6 +1009,28 @@
   <div class="keys">
     <kbd>space</kbd>/<kbd>→</kbd> GO &nbsp; <kbd>←</kbd> back &nbsp; <kbd>[</kbd> <kbd>]</kbd> song &nbsp;
     <kbd>B</kbd> blackout &nbsp; <kbd>V</kbd> swap view &nbsp; <kbd>F</kbd> fullscreen &nbsp; <kbd>esc</kbd> menu
+  </div>
+</div>
+
+<!-- JUMP: the operator's song + cue selector. Presenter only; never broadcast, never on the projector. -->
+<div id="jump">
+  <div class="jhead">
+    <h2>Jump to a cue</h2>
+    <span class="jn" id="jNow">—</span>
+    <span class="sp">
+      <button class="mbtn" onclick="jumpClose()">✕ close — back to the show</button>
+    </span>
+  </div>
+  <div class="jcols">
+    <div class="jcol"><h3>Running order</h3><div id="jSongs"></div></div>
+    <div class="jcol"><h3 id="jCueHead">Cues</h3><div id="jCues"></div></div>
+  </div>
+  <div class="jfoot">
+    <span><kbd>esc</kbd> close</span><span><kbd>↑</kbd><kbd>↓</kbd> move</span><span><kbd>enter</kbd> jump</span>
+    <span class="jwarn">Jumping scrubs the stage to that cue — the audience sees it. Blackout first if they are watching.</span>
+    <label class="mbtn" style="cursor:pointer;margin-left:auto">↥ Load a cue file…
+      <input type="file" id="cueFile2" accept=".js,.json" style="display:none"></label>
+    <span id="buildTag2"></span>
   </div>
 </div>
 
@@ -3539,7 +3598,6 @@ async function playCue(cue, st, tok){
       await wait(340); if(tok!==animTok) return;
       applyOp(st,o); swapLayer(st,null); await wait(200); continue; }
     if(o.op==='vmState'||o.op==='musicBanner'||o.op==='match'){ applyOp(st,o); swapLayer(st,'fadeUp'); await wait(300); continue; }
-    if(o.op==='batt' && o.snd!==false && o.v<=20 && (st.batt==null?100:st.batt)>20) sfx('lowbat');   // iOS chimes once as the battery crosses 20% (David, Sept 19 night)
     if(o.op==='call'){ sfxRing(o.dir==='in'?'ring':'ringback'); }
     if(o.op==='facetime' && /facetime|ring|calling/i.test(o.st||'')){ sfxRing('ftring'); }
     if(o.op==='callState'||o.op==='ftState'){
@@ -3977,6 +4035,7 @@ if(ch) ch.onmessage=e=>{ const m=e.data; if(m.from===CID) return;
 addEventListener('keydown',e=>{
   if(!started) return;
   if(document.body.classList.contains('needgate')) return;   // the gate owns the keyboard too
+  if(document.body.classList.contains('jumping')){ jumpKey(e); return; }   // the picker owns it while it is open
   if(e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)){ if(e.key==='Escape'){ e.target.blur(); const p=document.getElementById('volPop'); if(p) p.classList.remove('on'); } return; }   // the volume slider keeps its keys
   if(e.key===' '||e.key==='ArrowRight'){e.preventDefault();next();}
   else if(e.key==='ArrowLeft'){e.preventDefault();prev();}
@@ -3985,7 +4044,8 @@ addEventListener('keydown',e=>{
   else if(e.key==='v'||e.key==='V'){setView(view==='presenter'?'projection':'presenter');}
   else if(e.key==='f'||e.key==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
   else if(e.key==='r'||e.key==='R'){if(view==='projection')setRot(rot===0?90:rot===90?270:0);}
-  else if(e.key==='Escape'){ if(view==='projection') return; started=false;document.body.classList.remove('started');}
+  else if(e.key==='j'||e.key==='J'){ jumpToggle(); }
+  else if(e.key==='Escape'){ if(view==='projection') return; jumpOpen(); }   // Esc opens the picker — it never un-starts the show (David, Sept 20)
 });
 /* one blackout for key, button and the other window — never a stale class after a hardRender */
 function setBlackout(v){ blk=!!v; document.body.classList.toggle('blk', blk||(CUR&&stageBlack(CUR))); paintChrome(); persistPos(); try{ ch.postMessage({from:CID,blk}); }catch(e){} }
@@ -3998,7 +4058,67 @@ document.getElementById('volRange').oninput=e=>{ setVol(e.target.value/100); };
 document.getElementById('volHost').onchange=e=>{ SOUND_HOST=e.target.checked; try{localStorage.setItem('l5y_soundhost_'+view, SOUND_HOST?'1':'0');}catch(x){}
   const b=document.getElementById('btnVol'); if(b) b.style.opacity=SOUND_HOST?'':'.4';
   if(SOUND_HOST){ audioInit(); claimSound(); } };
-document.getElementById('btnMenu').onclick=()=>{ started=false; document.body.classList.remove('started'); };
+/* ============ JUMP: the song + cue selector (David, Sept 20) ============================
+   The Menu used to un-start the show and strand the operator on a screen with no way back.
+   It now opens a picker: every song, every cue, one click to land on it. Presenter only —
+   the projection window ignores the key and never paints the panel, so the house sees nothing.
+   Jumping is a scrub, not a GO: hardRender() settles the stage at that cue with no animation. */
+var JSEL=0, JROW=0;                        // the song highlighted in the panel, and the cue row cursor
+function jumpOpen(){
+  if(view!=='presenter') return;
+  JSEL=si; JROW=ci;
+  document.body.classList.add('jumping');
+  jumpPaint();
+  const el=document.querySelector('#jCues .jcue.here'); if(el) el.scrollIntoView({block:'center'});
+}
+function jumpClose(){ document.body.classList.remove('jumping'); }
+function jumpToggle(){ document.body.classList.contains('jumping') ? jumpClose() : jumpOpen(); }
+function jumpTo(n, c){
+  const i=SHOW.findIndex(s=>s.n===n); if(i<0) return;
+  si=i; ci=Math.max(0, Math.min(c|0, SHOW[i].cues.length));
+  jumpClose(); hardRender(); sync();
+}
+function jumpPaint(){
+  const have=new Map(SHOW.map(s=>[s.n,s]));
+  const now=SHOW[si];
+  const nw=document.getElementById('jNow');
+  if(nw) nw.textContent='NOW: '+(now?('SONG '+now.n+' · CUE '+(ci>=now.cues.length?'END':(now.cues[ci]&&now.cues[ci].id||ci))):'—');
+  document.getElementById('jSongs').innerHTML=RUNNING_ORDER.map(([n,t])=>{
+    const s=have.get(n); const cls=['jsong']; if(!s) cls.push('dead');
+    if(s && SHOW[JSEL] && SHOW[JSEL].n===n) cls.push('sel');
+    if(s && SHOW[si] && SHOW[si].n===n) cls.push('here');
+    return `<div class="${cls.join(' ')}" data-song="${n}"><span class="n">${n}</span><span>${escTxt(t)}</span>`+
+           `<span class="c">${s?s.cues.length+' cues':'not built'}</span></div>`;
+  }).join('');
+  document.querySelectorAll('#jSongs .jsong:not(.dead)').forEach(el=>{
+    el.onclick=()=>{ const i=SHOW.findIndex(s=>s.n===+el.dataset.song);
+      if(i>=0){ JSEL=i; JROW=(i===si?ci:0); jumpPaint(); } };
+    el.ondblclick=()=>jumpTo(+el.dataset.song, 0);
+  });
+  const sg=SHOW[JSEL];
+  document.getElementById('jCueHead').textContent = sg ? ('Song '+sg.n+' · '+sg.t) : 'Cues';
+  document.getElementById('jCues').innerHTML = !sg ? '' : sg.cues.map((q,k)=>{
+    const cls='jcue'+(k===JROW?' here':'')+((JSEL===si&&k===ci)?' live':'');
+    return `<div class="${cls}" data-k="${k}"><span class="i">${escTxt(q.id||('#'+k))}</span>`+
+           `<span class="tg">${escTxt(String(q.trig||q.what||'').slice(0,150))}</span></div>`;
+  }).join('');
+  document.querySelectorAll('#jCues .jcue').forEach(el=>{
+    el.onclick=()=>jumpTo(sg.n, +el.dataset.k); });
+}
+/* the panel owns the keyboard while it is open: GO must never fire behind it */
+function jumpKey(e){
+  if(e.key==='Escape'){ e.preventDefault(); jumpClose(); return true; }
+  const sg=SHOW[JSEL]; if(!sg) return true;
+  if(e.key==='ArrowDown'){ e.preventDefault(); JROW=Math.min(sg.cues.length-1, JROW+1); jumpPaint();
+    const el=document.querySelector('#jCues .jcue.here'); if(el) el.scrollIntoView({block:'nearest'}); return true; }
+  if(e.key==='ArrowUp'){ e.preventDefault(); JROW=Math.max(0, JROW-1); jumpPaint();
+    const el=document.querySelector('#jCues .jcue.here'); if(el) el.scrollIntoView({block:'nearest'}); return true; }
+  if(e.key===']'||e.key==='ArrowRight'){ e.preventDefault(); JSEL=(JSEL+1)%SHOW.length; JROW=0; jumpPaint(); return true; }
+  if(e.key==='['||e.key==='ArrowLeft'){ e.preventDefault(); JSEL=(JSEL-1+SHOW.length)%SHOW.length; JROW=0; jumpPaint(); return true; }
+  if(e.key==='Enter'){ e.preventDefault(); jumpTo(sg.n, JROW); return true; }
+  return true;   // swallow everything else — no GO, no blackout toggle, no view swap behind the panel
+}
+document.getElementById('btnMenu').onclick=e=>{ jumpToggle(); e.currentTarget.blur(); };
 document.getElementById('btnBlack').onclick=e=>{ setBlackout(!blk); e.currentTarget.blur(); };
 function paintOrder(){
   const have=new Map(SHOW.map(s=>[s.n,s]));
@@ -4021,6 +4141,8 @@ paintOrder();
       '<div style="color:#ff8f6b;font-size:11px;margin-bottom:6px">⚠ '+probs.length+' POV rule violation(s) — see console</div>'); }
 })();
 document.getElementById('buildTag').textContent='build: '+BUILD+' · '+SHOW.length+'/'+RUNNING_ORDER.length+' songs';
+document.getElementById('buildTag2').textContent='build: '+BUILD+' · '+SHOW.length+'/'+RUNNING_ORDER.length+' songs';
+document.getElementById('cueFile2').onchange=ev=>document.getElementById('cueFile').onchange(ev);
 document.getElementById('cueFile').onchange=ev=>{
   const f=ev.target.files[0]; if(!f) return;
   const r=new FileReader();
@@ -4449,7 +4571,6 @@ function sfx(name,o={}){
   switch(name){
     case 'click': noise(t,.035,{gain:o.soft?.045:.085,lo:900+R()*600,hi:3200+R()*1500,attack:.002}); break;
     case 'del': noise(t,.04,{gain:.07,lo:600+R()*300,hi:2400+R()*900,attack:.002}); break;
-    case 'lowbat': tone(1046,t,.16,{gain:.06,type:'sine'}); tone(784,t+.17,.24,{gain:.055,type:'sine'}); break;
     case 'keymod': noise(t,.035,{gain:.05,lo:700+R()*300,hi:2600+R()*900,attack:.002}); break;
     case 'tap': noise(t,.05,{gain:.07,lo:300,hi:1800,attack:.003}); tone(1900+R()*200,t,.04,{gain:.03}); break;
     case 'unlock': noise(t,.08,{gain:.06,lo:500,hi:6000,sweepTo:900}); tone(1320,t+.02,.06,{gain:.04}); break;
@@ -4625,12 +4746,12 @@ function SFX_BUF_(){ return SFX_BUF_.o||(SFX_BUF_.o={}); }   // hoisted accessor
 function SFX_MAP_(){ return {send:'SentMessage.caf',receive:'ReceivedMessage.caf',notif:'sms-received1.caf',mail:'new-mail.caf',mailsent:'mail-sent.caf',
   click:'key_press_click.caf',del:'key_press_delete.caf',keymod:'key_press_modifier.caf',tap:'Tock.caf',tink:'Tink.caf',lock:'lock.caf',unlock:'unlock.caf',swipe:'Swish.m4r',
   connect:'vc~invitation-accepted.caf',end:'vc~ended.caf',ftring:'vc~ringing.caf',ring:'vibrate.mp3',busy:'ct-busy.caf',error:'ct-error.caf',keytone:'ct-keytone2.caf',
-  lowbat:'low_power.caf'}; }
-function SFX_TRIM_(){ return {click:.35,del:.35,keymod:.35,lowbat:.55,tink:.6,send:.7,receive:.7,notif:.7,mail:.7,mailsent:.7,connect:.7,end:.7,lock:.5,ring:.55,ftring:.65}; }
+  }; }   /* low battery: CUT (David, Sept 20) */
+function SFX_TRIM_(){ return {click:.35,del:.35,keymod:.35,tink:.6,send:.7,receive:.7,notif:.7,mail:.7,mailsent:.7,connect:.7,end:.7,lock:.5,unlock:.45,ring:.55,ftring:.65}; }
 /* THE SOUND LAW (David, Sept 19 night): the screen makes ONLY the sounds a real iPhone makes with its volume up, and
    quietly. No paper, no ambience, no taps, no swipes, no unlock (iOS has none), no ringback (that lives in the earpiece).
    Keyboard clicks are ON for every typing beat (David, Sept 19 night — the real key_press_click / _delete / _modifier); a cue may mute them with keys:false. */
-function SFX_KEEP_(){ return {send:1,receive:1,notif:1,mail:1,mailsent:1,lock:1,ftring:1,ring:1,end:1,connect:1,lowbat:1,tink:1}; }
+function SFX_KEEP_(){ return {send:1,receive:1,notif:1,mail:1,mailsent:1,lock:1,unlock:1,ftring:1,ring:1,end:1,connect:1,tink:1}; }
 function b64bytes(str){ const i=str.indexOf(','); const bin=atob(i>=0?str.slice(i+1):str); const u=new Uint8Array(bin.length); for(let k=0;k<bin.length;k++) u[k]=bin.charCodeAt(k); return u; }
 function cafDecode(u){
   if(!(u[0]===0x63&&u[1]===0x61&&u[2]===0x66&&u[3]===0x66)) throw new Error('not caf');
