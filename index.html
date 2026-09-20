@@ -4760,7 +4760,12 @@ function pileStart(){
 }
 function pileDrop(){
   const L=document.getElementById('loop'); if(!L) return;
-  const S=PILE_S(), C=PILE_CFG(), list=pileList(), n=list.length || 12;   // no files yet → greeked prints, so the motion can be judged
+  const S=PILE_S(), C=PILE_CFG(), list=pileList(), n=list.length;
+  // NO PHOTOGRAPHS → NOTHING FALLS. The greeked S00-LOOP print was a bench affordance for judging the
+  // motion before the photographs arrived; on stage it reads as a grey rectangle drifting over the black
+  // (David saw one at the top-left of 8.6). CLAUDE.md: a renderer never invents filler — if the cue has
+  // no asset, the screen is empty. The bed wakes up unchanged the moment window.L5Y_LOOP has entries.
+  if(!n){ L.classList.remove('on'); if(S.t){ clearTimeout(S.t); S.t=null; } return; }
   if(!S.order || S.order.length!==n){ const R=prng('pile'+CAST+':'+n); S.order=[...Array(n).keys()];
     for(let k=n-1;k>0;k--){ const j=Math.floor(R()*(k+1)); [S.order[k],S.order[j]]=[S.order[j],S.order[k]]; } }
   const ent=list[S.order[S.i % n]], R=prng('fall'+CAST+':'+S.i);

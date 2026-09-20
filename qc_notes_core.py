@@ -359,6 +359,7 @@ def a_105_hold(pg):
 
 # ---------- D-035 · the photo bed falls, never piles, never goes blank ----------
 def a_photo_bed(pg):
+    """With photographs it falls; with none it shows NOTHING (a renderer never invents filler)."""
     bad = []
     cfg = pg.evaluate('PILE_CFG()')
     if cfg['h'] != 25:
@@ -372,15 +373,21 @@ def a_photo_bed(pg):
         bad.append('the prints do not fall all the way off the bottom of the stage')
     boot(pg)
     pg.evaluate("(()=>{ const st=buildState(SHOW[0],0); st.housecard=true; setStamp(st); })()")
-    pg.wait_for_timeout(300)
-    if not pg.evaluate("document.getElementById('loop').classList.contains('on')"):
-        bad.append('the bed does not run behind the house card')
-    # at the real cadence, several prints are always in the air and none are left behind
-    fall_lo = pg.evaluate('PILE_CFG().fall[0]')
-    inflight = fall_lo / hi
-    if inflight < 3:
-        bad.append(f'only ~{inflight:.1f} prints in flight — the stage goes empty between them')
-    pg.evaluate("pileStop(); pileReset();")
+    pg.wait_for_timeout(400)
+    # 1 · NO PHOTOGRAPHS YET: the stage stays empty. A greeked placeholder drifting over the black
+    #     is invented filler and the audience saw one at 8.6.
+    if pg.evaluate("(pileList()||[]).length") == 0:
+        pg.evaluate('pileStop(); pileReset(); pileDrop();')
+        pg.wait_for_timeout(300)
+        if pg.evaluate("document.querySelectorAll('#loop .print').length"):
+            bad.append('the bed invents a placeholder print when no photographs are loaded')
+    # 2 · WITH PHOTOGRAPHS: it falls, it never accumulates, it never runs dry
+    pg.evaluate("""(()=>{ const px='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+        window.L5Y_LOOP={ml:[],ac:[]};
+        for(let i=0;i<8;i++){ const e={k:'img',s:px,r:1.5}; window.L5Y_LOOP.ml.push(e); window.L5Y_LOOP.ac.push(e); }
+        pileStop(); pileReset(); })()""")
+    if pg.evaluate("(pileList()||[]).length") != 8:
+        return bad + ['could not load test photographs into the bed']
     pg.evaluate("(()=>{ for(let i=0;i<6;i++){ pileDrop(); const S=PILE_S(); if(S.t){clearTimeout(S.t); S.t=null;} } })()")
     pg.wait_for_timeout(300)
     n = pg.evaluate("document.querySelectorAll('#loop .print').length")
@@ -388,18 +395,20 @@ def a_photo_bed(pg):
         bad.append(f'six drops produced {n} prints on screen')
     if not pg.evaluate("[...document.querySelectorAll('#loop .print')].every(e=>/pfall/.test(e.style.animation))"):
         bad.append('a print is on stage without a fall animation — it would just sit there')
-    # nothing is left behind when a fall ends
+    if not pg.evaluate("[...document.querySelectorAll('#loop .print img')].length"):
+        bad.append('the prints render no photograph')
     pg.evaluate("document.querySelectorAll('#loop .print').forEach(e=>e.dispatchEvent(new Event('animationend')))")
     pg.wait_for_timeout(150)
     left = pg.evaluate("document.querySelectorAll('#loop .print').length")
     if left:
         bad.append(f'{left} prints accumulated at the bottom instead of leaving')
-    # and it never runs dry: the order wraps
-    total = pg.evaluate("(pileList()||[]).length") or 12
-    pg.evaluate(f"pileReset(); PILE_S().i={total * 7}; pileDrop();")
+    pg.evaluate("pileReset(); PILE_S().i=8*7; pileDrop();")
     pg.wait_for_timeout(250)
     if pg.evaluate("document.querySelectorAll('#loop .print').length") < 1:
-        bad.append('the bed goes blank after seven passes through the photos')
+        bad.append('the bed goes blank after seven passes through the photographs')
+    inflight = cfg['fall'][0] / hi
+    if inflight < 3:
+        bad.append(f'only ~{inflight:.1f} prints in flight — the stage goes empty between them')
     return bad
 
 

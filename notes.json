@@ -428,8 +428,8 @@
    ],
    "note": "The photo bed falls left to right, a new print every 3-5 s, 25% of stage height, no accumulation, never blank.",
    "proof": "a_photo_bed",
-   "clean": 3,
-   "last_build": "fd2a35488908"
+   "clean": 0,
+   "secs": 1.9
   },
   {
    "id": "D-036",
