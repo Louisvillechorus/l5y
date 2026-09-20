@@ -869,12 +869,12 @@
   },
   {
    "id": "D-063",
-   "status": "open",
+   "status": "confirm",
    "family": "framing",
    "cues": [
     "*"
    ],
-   "note": "ERA_ZONE_ reserves 19% of the frame for a strip that is 16% wide, leaving a 99 px black gutter beside the phone.",
+   "note": "ERA_ZONE_ reserves 19% of the frame for a docked strip that measures 14.4% (276.5 px of 1920), leaving about 58 px of black between the phone and the strip. NOT CHANGING IT TWO DAYS OUT: ERA_ZONE_ feeds camFill, so every framing measurement in the show — the 3.39x resting scale, the notification stack rule, the subject law thresholds, the laptop and CarPlay widths — was tuned against it. Reclaiming 58 px risks re-breaking framing David has already approved. Recommend 0.165 as a post-run change, measured and re-gated. David's call.",
    "proof": "a_no_gutter",
    "clean": 0
   },
