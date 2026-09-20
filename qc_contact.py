@@ -48,9 +48,12 @@ def run(want):
             pg.wait_for_timeout(250)
             for k in range(pg.evaluate(f'SHOW[{i}].cues.length')):
                 cid = pg.evaluate(f'SHOW[{i}].cues[{k}].id')
-                pg.evaluate('advance()')
+                # DO NOT await advance(): it is async, so `pg.evaluate('advance()')` blocks until the
+                # whole cue has finished and every "mid-flight" frame is really settled + 450 ms. Fire
+                # it detached, the way qc_census.py does, or this tool cannot see a transition at all.
+                pg.evaluate('setTimeout(()=>advance(),0)')
                 pg.wait_for_timeout(450)
-                shots.append((f'{cid} +0.45s', pg.screenshot()))      # mid-flight: where the jarring lives
+                shots.append((f'{cid} +0.45s', pg.screenshot()))      # genuinely mid-flight
                 waited = 450
                 while waited < 40000 and pg.evaluate('animRunning'):
                     pg.wait_for_timeout(200)
