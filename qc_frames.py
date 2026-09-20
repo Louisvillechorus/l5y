@@ -142,8 +142,9 @@ window.__probe = function(settled){
   const cam = document.querySelector('#projDevice .stagecam');
   const eraEl = document.getElementById('era');
 
-  let z = null;
+  let z = null, camz = null;
   if(cam){
+    camz = cam.dataset.z || '';     // '' means camApply() never ran on this .stagecam
     try{
       const m = new DOMMatrix(getComputedStyle(cam).transform);
       z = Math.sqrt(Math.abs(m.a*m.d - m.b*m.c)) || 1;
@@ -272,7 +273,7 @@ window.__probe = function(settled){
 
   return {
     app: st.app || null, black: !!st.black, dev: devkind,
-    z: z === null ? null : +z.toFixed(3), restZ: restZ, fsPx: fsPx,
+    z: z === null ? null : +z.toFixed(3), camz: camz, restZ: restZ, fsPx: fsPx,
     win: [Math.round(win.l), Math.round(win.t), Math.round(win.r), Math.round(win.b)],
     devR: devR ? [Math.round(devR.l), Math.round(devR.t), Math.round(devR.r), Math.round(devR.b)] : null,
     gap: +gap.toFixed(3),
@@ -376,10 +377,13 @@ def run():
                             and abs(st['z'] - 1.0) < 0.005 and st['restZ']
                             and st['restZ'] > 1.2)
                 if camreset:
+                    why = ("camApply() never ran on this .stagecam (camGeom() returned null: the "
+                           "frame or the wrapper measured zero)" if not st['camz']
+                           else f".stagecam data-z={st['camz']} — camApply ran and computed 1.0")
                     viol.append((cid, 'CAMRESET',
                                  f"camera at 1.00x — the phone is at native size; camRest() would "
                                  f"hold it at {st['restZ']:.2f}x. Body text projects "
-                                 f"{st['fsPx']:.0f}px instead of ~{st['fsPx']*st['restZ']:.0f}px"))
+                                 f"{st['fsPx']:.0f}px instead of ~{st['fsPx']*st['restZ']:.0f}px. " + why))
 
                 if st['layers'] > 1:
                     viol.append((cid, 'STALE',
