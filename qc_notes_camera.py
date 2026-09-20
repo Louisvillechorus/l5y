@@ -254,7 +254,11 @@ def _tap_beat(pg, si, ci, cid, icon):
     fire_async(pg)
     vis = held = 0
     step = 60
-    for _ in range(140):
+    # 1.2 is a FIFTY-SECOND cue and its icon press lands at 9.7 s. The old 140-step window stopped
+    # looking after 8.4 s and reported the press missing on a beat that plays perfectly. The loop
+    # still exits the moment the press has been seen and released, so the cost is only paid when
+    # something really is wrong.
+    for _ in range(1000):
         pg.wait_for_timeout(step)
         m = pg.evaluate("""(()=>{const P=document.getElementById('projection');
           const e=P.querySelector('.happ.tapped'); if(!e) return null; const b=e.getBoundingClientRect();
