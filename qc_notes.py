@@ -79,6 +79,7 @@ def run():
         for n in reg:
             if fast and n['proof'] in SLOW:
                 rows.append((n, 'SKIPPED', []))
+                print(f"  ~ {n['id']} skipped (slow)", flush=True)
                 continue
             fn = pr.get(n['proof'])
             if not callable(fn):
@@ -111,6 +112,8 @@ def run():
             if ok and n['status'] == 'fixed' and n.get('clean', 0) >= 2:
                 n['status'] = 'closed'
             rows.append((n, 'PASS' if ok else 'FAIL', bad))
+            print(f"  {'✓' if ok else '✗'} {n['id']} {n.get('secs', 0):>5.1f}s {n['status']:<8}"
+                  f"{'' if ok else '  ' + bad[0][:90]}", flush=True)
             if bad and n['status'] in ('fixed', 'closed'):
                 failed.append(n['id'])
         b.close()
