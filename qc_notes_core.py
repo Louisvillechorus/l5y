@@ -209,9 +209,12 @@ def a_perf_fill(pg):
         const cs=getComputedStyle(sh), inner=sh.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);
         // measure the TYPE, not the box: .fl is display:block, so its rect always spans the sheet
         // whatever size the letters are. A Range around the text gives the ink's real width.
+        // …and measure it in the SAME SPACE as the box: clientWidth is layout, a Range rect is screen,
+        // and the house cards carry a declared scale (--hsc), so the ink is divided back out of it.
+        const K=parseFloat(getComputedStyle(sh.closest('.pad')||sh).getPropertyValue('--hsc'))||1;
         const fl=[...sh.querySelectorAll('.fl')].map(e=>{
           const r=document.createRange(); r.selectNodeContents(e);
-          return r.getBoundingClientRect().width; });
+          return r.getBoundingClientRect().width/K; });
         const grp=sh.querySelector('.grp');
         const vbound = !!(grp && grp.scrollHeight > grp.clientHeight - 2);
         return {inner, fl, vbound}; })()""")

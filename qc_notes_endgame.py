@@ -410,6 +410,16 @@ def a_bows(page, minutes=3.3):
     if kb != len(ids) - 1:
         bad.append('the bows cue is not the last GO of the show')
 
+    # THE BED NEEDS FILM IN IT. D-021 is about the MECHANISM - a print every 0.9-1.5 s against a
+    # 15-20 s fall, so the bows can never go blank however long the company stays out. With no
+    # photographs on disk the renderer correctly shows nothing (D-047: a renderer never invents
+    # filler), and grading that as a failure would only re-report the missing files, which are
+    # D-065's to chase. Load a stand-in set, grade the mechanism, restore the real bed after.
+    page.evaluate("""() => { const px='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+      window.__bedKeep=window.L5Y_LOOP;
+      const mk=n=>Array.from({length:n},(_,i)=>({k:'img',r:i%3?0.75:1.4,s:px}));
+      window.L5Y_LOOP={ml:mk(40),ac:mk(40)}; pileReset(); }""")
+
     # play the end of the show for real: ... -> curtain -> bows
     _goto(page, last, max(0, kb - 1))
     _fire(page)                       # the curtain
@@ -522,6 +532,8 @@ def a_bows(page, minutes=3.3):
     if drop['kind'] != 'img':
         bad.append('with real files present the bed still rendered %r instead of a photograph'
                    % drop['kind'])
+    page.evaluate("""() => { if(window.__bedKeep!==undefined){ window.L5Y_LOOP=window.__bedKeep;
+        delete window.__bedKeep; pileReset(); pileStop(); } }""")
     return bad
 
 

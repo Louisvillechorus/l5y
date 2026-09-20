@@ -873,6 +873,16 @@
      pages run wide, and the title page is set in the house language — THE LAST and YEARS justified
      edge to edge (fitPad tracks them out), the 5 the hero between them. */
   #era .pad.house .sheet{left:-18%;right:-18%;padding:4.6vh 4vh 4vh}
+  /* THE HOUSE CARDS LEAVE ROOM FOR THE BED (David, Sept 20: "the preshow and home screens are too
+     large right now, we won't be able to see the falling photos behind them"). At full size the title
+     page and its two understack sheets covered 86% of the frame and the photographs had nowhere to
+     read. The whole card scales as one — sheet, understack, torn edge and type together — so the
+     proportions David approved in his mockup are untouched and only the footprint changes. The date
+     cards keep their size: nothing falls behind them. The money minute scales less (the QR must still
+     scan), and the intermission BAND is already a strip with 70% of the stage open above and below. */
+  #era .pad.house{--hsc:.66;transform:scale(var(--hsc));transform-origin:50% 50%}
+  #era .pad.house.next5{--hsc:.78}
+  #era .pad.house.inter{--hsc:1}
   #era .pad.house .rule{display:none}
   #era .pad.house.title .yr,#era .pad.house.title .sub{font-size:16vh;line-height:1.04}
   #era .pad.house.title .ynum{font-size:43vh;line-height:.82;margin-top:0}
@@ -923,8 +933,12 @@
   #era .pad.ghost{z-index:8}
   .cardin{animation:cardIn .84s cubic-bezier(.24,.62,.26,1) both}
   .cardout{animation:cardOut .72s cubic-bezier(.5,0,.78,.42) both}
-  @keyframes cardIn{0%{transform:translateY(-142vh) rotate(-2.4deg)}72%{transform:translateY(0) rotate(.4deg)}100%{transform:translateY(0) rotate(0)}}
-  @keyframes cardOut{0%{transform:translateY(0) rotate(0)}14%{transform:translateY(1.6vh) rotate(.9deg)}100%{transform:translateY(148vh) rotate(6deg)}}
+  /* EVERY STEP CARRIES THE HOUSE SCALE. A keyframe's transform REPLACES the element's own, so without
+     scale(var(--hsc,1)) here a house page fell at full size and snapped smaller the instant it landed —
+     and fitPad, which trusts the declared scale, sized the type against a card that wasn't wearing it.
+     A date card has no --hsc, so scale(1) leaves these two animations exactly as they were. */
+  @keyframes cardIn{0%{transform:translateY(-142vh) rotate(-2.4deg) scale(var(--hsc,1))}72%{transform:translateY(0) rotate(.4deg) scale(var(--hsc,1))}100%{transform:translateY(0) rotate(0) scale(var(--hsc,1))}}
+  @keyframes cardOut{0%{transform:translateY(0) rotate(0) scale(var(--hsc,1))}14%{transform:translateY(1.6vh) rotate(.9deg) scale(var(--hsc,1))}100%{transform:translateY(148vh) rotate(6deg) scale(var(--hsc,1))}}
   /* ---- the phone: no bezel, squared, as tall as the stage ---- */
   .iphone{padding:0 !important;background:transparent !important;border-radius:0 !important;
     box-shadow:0 40px 90px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.06) !important}
@@ -5097,13 +5111,23 @@ function fitPad(era){   // the card is fixed; the words are not. Anything wider 
   const sh=era.querySelector('.pad .sheet.top'); if(!sh) return;
   const cs=getComputedStyle(sh), inner=sh.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);
   if(!(inner>200)) return;   // mid-transition or unlaid-out: never fit against a collapsed box
+  // MEASURE IN ONE SPACE. `inner` is a LAYOUT width (clientWidth); inkWidth is a Range rect, which is in
+  // SCREEN space and therefore already multiplied by any transform on an ancestor. The house cards are
+  // scaled (David, Sept 20), so the raw ink read 66% of its true width and every fit below thought it had
+  // half again as much paper — the title ran off the sheet and the tracking over-filled. Divide the ink
+  // back into layout space and the whole function is correct at any scale, including 1.
+  // Read the scale from the DECLARED custom property, never by measuring the DOM: during a morph or a
+  // tear the pad carries a transient animation transform, and a measured factor made the fit jump
+  // mid-flight (it broke the 1.2 card-to-strip glide). --hsc is the only scale we intend.
+  const K=parseFloat(getComputedStyle(sh.closest('.pad')||sh).getPropertyValue('--hsc'))||1;
+  const IW=e=>inkWidth(e)/K;
   ['.mo','.yr','.ynum'].forEach(sel=>{ const e=sh.querySelector(sel); if(e){ e.style.fontSize=''; e.style.letterSpacing=''; e.style.marginRight=''; } });
   const fls=[...sh.querySelectorAll('.fl')];
   fls.forEach(e=>{                                   // FILL: every line of a name spans the same width
     e.style.fontSize=''; const t=e.textContent.trim(); if(!t) return;
-    const base=parseFloat(getComputedStyle(e).fontSize), w=inkWidth(e); if(!(w>0)) return;
+    const base=parseFloat(getComputedStyle(e).fontSize), w=IW(e); if(!(w>0)) return;
     e.style.fontSize=Math.min(base*inner/w*0.99, inner*0.62).toFixed(2)+'px';   // the 0.42 cap was tuned for an 897px sheet; the widened house sheets left short names short
-    const w2=inkWidth(e);                  // one correction pass: font metrics are not perfectly linear
+    const w2=IW(e);                  // one correction pass: font metrics are not perfectly linear
     if(w2>0 && Math.abs(w2-inner)/inner>0.01){
       const f=parseFloat(e.style.fontSize);
       e.style.fontSize=Math.min(f*inner/w2*0.995, inner*0.62).toFixed(2)+'px'; } });
@@ -5117,13 +5141,13 @@ function fitPad(era){   // the card is fixed; the words are not. Anything wider 
   sh.querySelectorAll('.flt').forEach(e=>{           // JUSTIFY BY TRACKING: the size keeps the hierarchy,
     e.style.letterSpacing=''; e.style.marginRight='';//   the tracking uses the black either side (D-012)
     const t=e.textContent.trim(); if(!t) return;
-    const w=inkWidth(e), n=t.length; if(!(w>0)||!n) return;
+    const w=IW(e), n=t.length; if(!(w>0)||!n) return;
     if(w>=inner){ const base=parseFloat(getComputedStyle(e).fontSize); e.style.fontSize=(base*inner/w*0.985).toFixed(2)+'px'; return; }
     const ls=(inner-w)/n; e.style.letterSpacing=ls.toFixed(2)+'px'; e.style.marginRight=(-ls).toFixed(2)+'px'; });
   ['.yr','.ynum','.sub','.ttl','.frow'].forEach(sel=>{ const e=sh.querySelector(sel); if(!e) return;
     if(e.querySelector('.fl,.flt')) return;            // a filled/tracked line manages itself
     e.style.fontSize=''; if(!e.textContent.trim()) return;
-    const w=inkWidth(e); if(w<=inner) return;
+    const w=IW(e); if(w<=inner) return;
     const base=parseFloat(getComputedStyle(e).fontSize);
     e.style.fontSize=(base*inner/w*0.985).toFixed(2)+'px'; });
 }

@@ -120,6 +120,20 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   **THE INK HAS GRIT** (`#inkgrit`): a low-amplitude displacement roughens the glyph CONTOUR so the type sits
   in the paper, with only a whisper of interior mottle — the fill stays hard black (a fine interior screen
   greys the letter out at 25 ft and is wrong). A page in flight drops the filter (16 filtered clones cost frames).
+  **THE HOUSE PAGES LEAVE THE BED ROOM (David, Sept 20: "the preshow and home screens are too large right
+  now, we won't be able to see the falling photos behind them")**: the title page, the performer page and
+  the bows card scale to `--hsc:.66` and the money minute to `.78` (the QR must still scan — verified by
+  decoding the rendered card down to 600 px wide), so a house page covers ~30% of the stage instead of 69%
+  and the photographs read around and behind it. The whole card scales as one — sheet, understack, torn
+  edge and type — so the mockup's proportions are untouched and only the footprint changes. The
+  INTERMISSION band is unscaled: it is already a strip with 70% of the stage open above and below. The DATE
+  cards are unscaled too — nothing falls behind them. Proof: `a_house_leaves_bed` (D-066). This caps D-012:
+  the house pages are still LANDSCAPE and still tracked edge to edge, they just no longer take the width.
+  **MEASURE IN ONE SPACE (the corollary that bit immediately)**: `clientWidth` is a LAYOUT width and a
+  `Range` rect is a SCREEN rect, so under a scaled card every fit read 34% short and the title ran off the
+  paper. `fitPad` divides the ink back out by the DECLARED `--hsc` (never by a measured transform — during
+  a morph or a tear the pad carries a transient one, and measuring it made the 1.2 glide jump), and the QA
+  that grades the fit does the same.
   **THE TITLE PAGE IS ITSELF A DATE CARD** (David, Sept 19 night — his second mockup): THE LAST over a huge
   **5** over YEARS, with *Redline Performing Arts* at the foot. No act number, no author credit.
   **INTERMISSION is ONE WORD on a wide torn BAND** across the middle of the stage (`.pad.inter .sheet` insets

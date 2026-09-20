@@ -400,7 +400,10 @@ def a_cards_fall(page):
         if min(tops) > -H * 0.5:
             bad.append(f'{cid}: the incoming page never rises above the frame (highest y={min(tops):.0f}) '
                        f'— it appears out of thin air instead of falling in from above')
-        if abs(tops[-1]) > 120:
+        # IT LANDS ON STAGE — not at a fixed y. The house cards are scaled so the photo bed reads behind
+        # them (David, Sept 20), so a settled page sits centred, not flush to the top of the frame. What
+        # the note is about is that it LANDS: on stage, below the top edge, not still in flight.
+        if not (-40 <= tops[-1] <= H * 0.34):
             bad.append(f'{cid}: the incoming page settles at y={tops[-1]:.0f} instead of landing on stage')
         gy = [r['ghost'][1] for r in live if r['ghost']]
         if max(gy) < H * 0.85 or (max(gy) - min(gy)) < H * 0.8:
@@ -424,9 +427,12 @@ def a_title_fills(page):
       const sh=e.querySelector('.pad .sheet.top'); if(!sh) return null;
       const b=sh.getBoundingClientRect(), cs=getComputedStyle(sh);
       const inner=sh.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);
+      // ONE SPACE: clientWidth is layout, a Range rect is screen. The house cards carry a scale, so the
+      // ink must be divided back out of it or every fill reads 34% short (the same trap as fitPad).
+      const K=parseFloat(getComputedStyle(sh.closest('.pad')||sh).getPropertyValue('--hsc'))||1;
       const line=s=>{const el=sh.querySelector(s); if(!el||!el.textContent.trim()) return null;
         const r=document.createRange(); r.selectNodeContents(el); const rb=r.getBoundingClientRect();
-        return {w:+rb.width.toFixed(1), t:el.textContent.trim()};};
+        return {w:+(rb.width/K).toFixed(1), t:el.textContent.trim()};};
       return {face:e.dataset.face, w:+b.width.toFixed(1), h:+b.height.toFixed(1), inner:+inner.toFixed(1),
               yr:line('.yr'), sub:line('.sub'), num:line('.ynum'), ttl:line('.ttl')};})()"""
     # the title page
@@ -435,9 +441,14 @@ def a_title_fills(page):
     if not t or t['face'] != 'title':
         bad.append('the title page is not on stage at song 1 cue 0')
     else:
-        if t['w'] <= H * 0.99:
-            bad.append(f'the title sheet is {t["w"]:.0f} px wide — no wider than the square date card, '
-                       f'so the black left and right is still wasted')
+        # THE SHAPE, NOT THE FOOTPRINT. D-012 asked the house pages to stop being square and use the
+        # black left and right; David's Sept 20 note ("the preshow and home screens are too large right
+        # now, we won't be able to see the falling photos behind them") caps how much of that black they
+        # may take. Both hold at once: the card stays a LANDSCAPE page, tracked edge to edge, and leaves
+        # the bed room. The footprint ceiling itself is D-066's to prove.
+        if t['w'] / max(t['h'], 1) < 1.25:
+            bad.append(f'the title sheet is {t["w"]:.0f}×{t["h"]:.0f} — squarer than {1.25:.2f}:1, so it '
+                       f'reads as a date card instead of a house page')
         for k, nm in (('yr', 'THE LAST'), ('sub', 'YEARS')):
             ln = t[k]
             if not ln:
@@ -464,8 +475,9 @@ def a_title_fills(page):
         page.wait_for_timeout(1400)
         p = page.evaluate("""(()=>{const sh=document.querySelector('#era .pad .sheet.top');
             const cs=getComputedStyle(sh); const inner=sh.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);
+            const K=parseFloat(getComputedStyle(sh.closest('.pad')||sh).getPropertyValue('--hsc'))||1;
             return [...sh.querySelectorAll('.fl')].map(e=>{const r=document.createRange();
-              r.selectNodeContents(e); return {t:e.textContent, f:+(r.getBoundingClientRect().width/inner).toFixed(3)};});})()""")
+              r.selectNodeContents(e); return {t:e.textContent, f:+(r.getBoundingClientRect().width/K/inner).toFixed(3)};});})()""")
         for ln in p:
             if ln['f'] < 0.84:
                 bad.append(f'the performer line “{ln["t"]}” fills only {ln["f"]*100:.0f}% of the sheet')
@@ -574,6 +586,71 @@ def a_typed_foot(page):
 
 
 # --------------------------------------------------------------------------- D-014
+def a_house_leaves_bed(page):
+    """D-066 — David, Sept 20: "the preshow and home screens are too large right now, we won't be
+    able to see the falling photos behind them." Every page the photo bed plays under must leave the
+    bed room: real open stage on all four sides of a square card, and above and below the band. The
+    date cards are not in this note and must be untouched — nothing falls behind them."""
+    bad = []
+    _boot(page)
+    page.evaluate("PERF='Gayle King'")
+    M = """(()=>{const e=document.getElementById('era');const pad=e.querySelector('.pad');
+      if(!pad) return null; const sh=[...pad.querySelectorAll('.sheet')].map(x=>x.getBoundingClientRect())
+        .filter(r=>r.width>4&&r.height>4);
+      if(!sh.length) return null;
+      const L=Math.min(...sh.map(r=>r.left)), R=Math.max(...sh.map(r=>r.right));
+      const T=Math.min(...sh.map(r=>r.top)), B=Math.max(...sh.map(r=>r.bottom));
+      return {cls:pad.className, L:+L.toFixed(1), R:+R.toFixed(1), T:+T.toFixed(1), B:+B.toFixed(1),
+              hsc:getComputedStyle(pad).getPropertyValue('--hsc').trim(),
+              area:+(((R-L)*(B-T))/(innerWidth*innerHeight)*100).toFixed(1)};})()"""
+
+    def look(tag, si, ci, fire=False):
+        _goto_cue(page, si, ci)
+        if fire:
+            page.evaluate('setTimeout(()=>advance(),0)')
+            page.wait_for_timeout(2600)
+        return tag, page.evaluate(M)
+
+    shots = [look('preshow (the title page)', 0, 0)]
+    loc = _cue_index(page, '1.0a')
+    if loc:
+        shots.append(look('1.0a (the performer page)', loc[0], loc[1], fire=True))
+    for cid, tag in (('8.4', '8.4 (the intermission band)'), ('8.5', '8.5 (the money minute)')):
+        loc = _cue_index(page, cid)
+        if loc:
+            shots.append(look(tag, loc[0], loc[1], fire=True))
+
+    for tag, m in shots:
+        if not m:
+            bad.append(f'{tag}: no calendar page on stage to measure')
+            continue
+        band = 'inter' in m['cls']
+        top, bot = m['T'], H - m['B']
+        left, right = m['L'], W - m['R']
+        if band:
+            # the band is meant to run wide; the bed reads above and below it
+            if min(top, bot) < H * 0.22:
+                bad.append(f'{tag}: only {min(top, bot):.0f} px of open stage above/below the band '
+                           f'({H*0.22:.0f} px needed) — the photographs have nowhere to fall')
+        else:
+            if m['area'] > 50:
+                bad.append(f'{tag}: the page covers {m["area"]:.0f}% of the stage (50% ceiling) — the '
+                           f'falling photographs cannot read behind it')
+            if min(left, right) < W * 0.07:
+                bad.append(f'{tag}: only {min(left, right):.0f} px of open stage at the side '
+                           f'({W*0.07:.0f} px needed)')
+            if min(top, bot) < H * 0.07:
+                bad.append(f'{tag}: only {min(top, bot):.0f} px of open stage above/below '
+                           f'({H*0.07:.0f} px needed)')
+
+    # …and the date cards are untouched: nothing falls behind them, so they keep the full sheet.
+    _goto_cue(page, 2, 0)
+    d = page.evaluate(M)
+    if d and d['hsc'] and abs(float(d['hsc']) - 1) > 0.001:
+        bad.append(f'a date card is scaled ({d["hsc"]}) — the note is about the house pages only')
+    return bad
+
+
 def a_92_no_inter_flash(page):
     """Intermission never shows up in a square frame — not at the tear, not at the top of 9.2."""
     bad = []
