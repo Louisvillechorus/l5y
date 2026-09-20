@@ -106,8 +106,11 @@ def run():
             ok = not bad
             # THE CLOSURE LAW: a clean run only counts if the build has changed since the last one,
             # and only a FULL run counts at all — a targeted check cannot close a loop.
-            if ok and not partial:
-                if n.get('last_build') != bid:
+            if ok:
+                # A PARTIAL RUN NEVER ADVANCES A LOOP — and must never UNDO one either. This used to
+                # fall through to the reset on a passing --only run, knocking notes that were one
+                # clean build from closure back to zero for having been spot-checked.
+                if not partial and n.get('last_build') != bid:
                     n['clean'] = n.get('clean', 0) + 1
                     n['last_build'] = bid
             else:
