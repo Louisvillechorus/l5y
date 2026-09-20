@@ -674,6 +674,211 @@
    "clean": 1,
    "secs": 527.5,
    "last_build": "39eb3cbee994"
+  },
+  {
+   "id": "D-048",
+   "status": "fixed",
+   "family": "framing",
+   "cues": [
+    "*"
+   ],
+   "note": "THE SUBJECT LAW (the family rule behind 2.2, 9.x, 4.x and 14.4): content may leave the frame with feathers, but the SUBJECT of a cue — whatever the camera was last aimed at — must sit WHOLE inside the reading window when the glide settles. One gate, swept across all 14 songs, so this defect cannot return in a song nobody looked at.",
+   "proof": "a_subject_never_sliced",
+   "clean": 0
+  },
+  {
+   "id": "D-049",
+   "status": "fixed",
+   "family": "operator",
+   "cues": [
+    "*"
+   ],
+   "note": "BLACKOUT WAS PICTURE ONLY. The operator hit it and the lake, the Time Warp music and the phone buzzing on the table all played on to a black stage. It now takes the bed, the warp and the ring with it.",
+   "proof": "a_blackout_is_silent",
+   "clean": 0
+  },
+  {
+   "id": "D-050",
+   "status": "fixed",
+   "family": "sound",
+   "cues": [
+    "*"
+   ],
+   "note": "Two embedded sound files never decoded on any boot — Reflection.m4r, an iOS RINGTONE shipped under a law that says NO RINGTONES, and Swish.m4r, mapped to a swipe the law already silences. Both out of the build; 24 of 24 files now decode.",
+   "proof": "a_all_sounds_decode",
+   "clean": 0
+  },
+  {
+   "id": "D-051",
+   "status": "fixed",
+   "family": "sound",
+   "cues": [
+    "3.4",
+    "3.7",
+    "3.10",
+    "4.3"
+   ],
+   "note": "The hang-up tone was reported firing twice per call. Not reproducible on the merged build — swept every call, black and device cue in the show; it fires once. Kept as a standing guard.",
+   "proof": "a_one_hangup",
+   "clean": 0
+  },
+  {
+   "id": "D-052",
+   "status": "fixed",
+   "family": "sound",
+   "cues": [
+    "*"
+   ],
+   "note": "The time-warp taper is a 0.3 s collapse and the reverb never rings out, so every roll ends in about 1.2 s of silence — not the taper David asked for.",
+   "proof": "a_warp_tapers",
+   "clean": 0
+  },
+  {
+   "id": "D-053",
+   "status": "fixed",
+   "family": "sound",
+   "cues": [
+    "*"
+   ],
+   "note": "reverse_timewarp.mp3 is 7.4 s inside a 6.0 s roll: 1.4 s of David's clip is never reached.",
+   "proof": "a_warp_fits_roll",
+   "clean": 0
+  },
+  {
+   "id": "D-054",
+   "status": "fixed",
+   "family": "sound",
+   "cues": [
+    "2.2",
+    "2.3"
+   ],
+   "note": "73% of backspaces are silent during the draft wipes — David asked for key_press_delete on every one.",
+   "proof": "a_every_backspace",
+   "clean": 0
+  },
+  {
+   "id": "D-055",
+   "status": "fixed",
+   "family": "sound",
+   "cues": [
+    "3.3",
+    "3.6",
+    "3.9",
+    "4.2"
+   ],
+   "note": "The ringback does not stop when the call is answered — up to 1.9 s of ringing tolls over the connected call.",
+   "proof": "a_ring_stops_on_answer",
+   "clean": 0
+  },
+  {
+   "id": "D-056",
+   "status": "fixed",
+   "family": "sound",
+   "cues": [
+    "4.6"
+   ],
+   "note": "The bank alert's bell was 22 milliseconds long — inaudible as an event. A bank alert is a text message and iOS gives it the text tone; the special case is gone.",
+   "proof": "a_bell_audible",
+   "clean": 0
+  },
+  {
+   "id": "D-057",
+   "status": "open",
+   "family": "lines",
+   "cues": [
+    "*"
+   ],
+   "note": "LINES LAW BREACH: 20 quoted trigger lines are unverified, unflagged and have no reconciliation path. Only David can resolve this.",
+   "proof": "a_lines_flagged",
+   "clean": 0
+  },
+  {
+   "id": "D-058",
+   "status": "open",
+   "family": "lines",
+   "cues": [
+    "*"
+   ],
+   "note": "The confirm flag is silently dropped between cues.js and the Cue Bible, so the printed documents show unverified lines as verified.",
+   "proof": "a_confirm_survives_bible",
+   "clean": 0
+  },
+  {
+   "id": "D-059",
+   "status": "open",
+   "family": "canon",
+   "cues": [
+    "6"
+   ],
+   "note": "Song 6 is calendar-only in the build but a Christmas lock screen in the law, the Bible and the shot list.",
+   "proof": "a_song6_agrees",
+   "clean": 0
+  },
+  {
+   "id": "D-060",
+   "status": "open",
+   "family": "canon",
+   "cues": [
+    "14.4"
+   ],
+   "note": "On the first night her contact for him reads 'Jamie' — the 2026 name. 'Jamie ✨' never appears in the show.",
+   "proof": "a_contact_name_era",
+   "clean": 0
+  },
+  {
+   "id": "D-061",
+   "status": "open",
+   "family": "canon",
+   "cues": [
+    "9"
+   ],
+   "note": "Linda Whitfield exists as two contacts with no chain of custody for the second.",
+   "proof": "a_one_whitfield",
+   "clean": 0
+  },
+  {
+   "id": "D-062",
+   "status": "open",
+   "family": "qa",
+   "cues": [
+    "*"
+   ],
+   "note": "The census's FAST CAMERA test cannot fail — its match list covers every transition string the engine emits. A gate that cannot fail proves nothing.",
+   "proof": "a_census_can_fail",
+   "clean": 0
+  },
+  {
+   "id": "D-063",
+   "status": "open",
+   "family": "framing",
+   "cues": [
+    "*"
+   ],
+   "note": "ERA_ZONE_ reserves 19% of the frame for a strip that is 16% wide, leaving a 99 px black gutter beside the phone.",
+   "proof": "a_no_gutter",
+   "clean": 0
+  },
+  {
+   "id": "D-064",
+   "status": "open",
+   "family": "engine",
+   "cues": [
+    "*"
+   ],
+   "note": "The stage/camera render layer is defined twice in index.html; the first copy is dead pre-Sept-19 code and has already caused one wrong-copy edit.",
+   "proof": "a_no_dead_renderer",
+   "clean": 0
+  },
+  {
+   "id": "D-065",
+   "status": "open",
+   "family": "house",
+   "cues": [
+    "*"
+   ],
+   "note": "The photo bed, once photographs land: prints clip off the right edge, the bed runs at 46% opacity, 62% of prints fall behind the opaque card, the per-print tilt never renders, and the order repeats verbatim.",
+   "proof": "a_bed_quality",
+   "clean": 0
   }
  ]
 }

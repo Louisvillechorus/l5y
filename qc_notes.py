@@ -114,7 +114,25 @@ def run():
             if bad and n['status'] in ('fixed', 'closed'):
                 failed.append(n['id'])
         b.close()
-    json.dump(doc, open('notes.json', 'w'), indent=1, ensure_ascii=False)
+    # MERGE, NEVER CLOBBER. This used to write back the whole document it read at start, so any note
+    # added to notes.json while a 40-minute run was in flight was silently erased on completion —
+    # it cost the entire law audit once. Re-read the file now and touch ONLY the fields this run
+    # actually decided, for the notes it actually ran.
+    try:
+        live = json.load(open('notes.json'))
+    except Exception:
+        live = doc
+    ran = {n['id']: n for n, _, _ in rows}
+    for n in live['notes']:
+        r = ran.get(n['id'])
+        if not r:
+            continue
+        for k in ('status', 'clean', 'last_build', 'secs'):
+            if k in r:
+                n[k] = r[k]
+            elif k in n and k in ('last_build',):
+                n.pop(k, None)
+    json.dump(live, open('notes.json', 'w'), indent=1, ensure_ascii=False)
     show_all = '--all' in sys.argv
     for n, verdict, bad in rows:
         mark = {'PASS': '✓', 'FAIL': '✗', 'NO PROBE': '·', 'SKIPPED': '~'}[verdict]
