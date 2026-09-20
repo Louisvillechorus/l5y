@@ -733,10 +733,14 @@
   #era .pad.house .rule{display:none}
   #era .pad.house.title .yr,#era .pad.house.title .sub{font-size:9vh}
   #era .pad.house.title .frow{font-size:6.4vh;font-weight:700;letter-spacing:.01em}
-  #era .pad.house.perf .ft,#era .pad.house.inter .ft{display:none}
+  #era .pad.house.perf .ft,#era .pad.house.inter .ft,#era .pad.house.next5 .ft{display:none}
   /* INTERMISSION is one word on a wide torn BAND across the middle (David, Sept 19 night) */
   #era .pad.inter .sheet{top:36%;bottom:36%;left:-4%;right:-4%;padding:0 5vh}
   #era .pad.inter .grp{justify-content:center}
+  #era .qr{display:none;width:70vh;height:70vh;mix-blend-mode:multiply;filter:none}   /* printed ON the paper: multiply drops the code's white, the modules stay black */
+  #era .pad.next5 .qr{display:block}
+  #era .pad.next5 .grp{filter:none;gap:1.6vh}                      /* the code must stay crisp: no ink grit */
+  #era .pad.next5 .yr{font-size:7vh;filter:url(#inkgrit)}          /* …the words still carry it */
   #era .sub{font-family:'Poppins',sans-serif;font-weight:600;font-size:9vh;line-height:1.05;letter-spacing:-.01em;color:#000;margin-top:-1vh}
   #era .ttl:empty,#era .ynum:empty,#era .yr:empty,#era .sub:empty{display:none}
   #era .frow.solo .pipe,#era .frow.solo .foot:empty{display:none}
@@ -813,16 +817,25 @@
   .prevEraNote,.prevblack{color:#8b8fa3;font-family:'Courier Prime',monospace;letter-spacing:.24em;font-size:11px;margin-top:14px;text-align:center}
   .house{background:transparent !important}
   .house .ht{font-family:'Fraunces',Georgia,serif !important;font-weight:300 !important;letter-spacing:.1em !important}
+  /* THE GATE OWNS THE SCREEN (David, Sept 19 night): nothing is clickable, no key works and the show
+     cannot start until tonight's ingredients are chosen and a second person has confirmed them. */
+  #gatewrap{position:fixed;inset:0;z-index:300;background:#05070c;display:none;
+    align-items:center;justify-content:center;padding:5vh 6vw;overflow:auto}
+  body.needgate #gatewrap{display:flex}
+  #gatewrap #gate{width:min(1100px,92vw)}
   #gate .gstep{display:none} #gate .gstep.on{display:block}
-  #gate .gq{font-family:'Fraunces',serif;font-size:19px;margin:14px 0 4px}
-  #gate .gsub{font-size:12.5px;color:var(--dim);margin-bottom:9px;line-height:1.45}
+  #gate .gq{font-family:'Fraunces',serif;font-size:clamp(24px,3vw,44px);margin:0 0 6px}
+  #gate .gsub{font-size:clamp(14px,1.3vw,20px);color:var(--dim);margin-bottom:18px;line-height:1.5}
   #gate .gwrap{flex-wrap:wrap}
   #gate .gsel.on{border-color:var(--gold);color:var(--gold);background:rgba(233,199,102,.14)}
-  #gate .gcard{display:flex;gap:34px;flex-wrap:wrap;background:#0f1320;border:1px solid rgba(243,239,228,.2);
-    border-radius:10px;padding:14px 18px;margin:4px 0 12px}
+  #gatewrap .mbtn{font-size:clamp(14px,1.25vw,20px);padding:14px 22px}
+  #gate .gtag{font-family:'Courier Prime',monospace;font-size:clamp(10px,.9vw,13px);letter-spacing:.3em;
+    color:var(--gold);text-transform:uppercase;margin-bottom:26px;display:block}
+  #gate .gcard{display:flex;gap:44px;flex-wrap:wrap;background:#0f1320;border:1px solid rgba(243,239,228,.2);
+    border-radius:12px;padding:20px 26px;margin:6px 0 20px}
   #gate .gcard i{display:block;font-family:'Courier Prime',monospace;font-style:normal;font-size:10px;
     letter-spacing:.24em;color:var(--dim);margin-bottom:5px}
-  #gate .gcard b{font-family:'Fraunces',serif;font-size:21px;color:var(--paper)}
+  #gate .gcard b{font-family:'Fraunces',serif;font-size:clamp(22px,2.4vw,38px);color:var(--paper)}
 </style>
 
 <style id="sfxui">
@@ -837,11 +850,7 @@
 </head>
 <body class="v-presenter">
 
-<div id="menu">
-  <h1>Cue System</h1>
-  <div class="sub">Two windows, one clicker. Open this file twice: leave one as <b>Presenter</b> on the operator's laptop,
-  set the other to <b>Projection</b> and drag it to the projector. They stay in sync automatically —
-  fire a cue in either and both move.</div>
+<div id="gatewrap">
   <div id="gate">
     <div class="gstep" data-step="1">
       <div class="gq"><b>1 · Who is your cast tonight?</b></div>
@@ -879,6 +888,14 @@
       <div class="row"><button class="mbtn" onclick="gateBack()">change tonight’s settings</button></div>
     </div>
   </div>
+</div>
+
+<div id="menu">
+  <h1>Cue System</h1>
+  <div class="sub">Two windows, one clicker. Open this file twice: leave one as <b>Presenter</b> on the operator's laptop,
+  set the other to <b>Projection</b> and drag it to the projector. They stay in sync automatically —
+  fire a cue in either and both move.</div>
+  </div>
   <div id="orderList"></div>
   <div class="row" style="margin-top:2px">
     <label class="mbtn" style="cursor:pointer">↥ Load a cue file…
@@ -909,7 +926,7 @@
   <div id="era" class="center hidden" data-home="center">
     <div class="pad"><div class="sheet u2"></div><div class="sheet u1"></div>
       <div class="sheet top">
-        <div class="grp"><div class="yr"></div><div class="ynum"></div><div class="sub"></div><div class="ttl"></div></div>
+        <div class="grp"><div class="yr"></div><div class="ynum"></div><div class="sub"></div><div class="ttl"></div><img class="qr" alt=""></div>
         <div class="ft"><div class="rule"></div><div class="frow"><span class="mo"></span><i class="pipe"></i><span class="foot"></span></div></div>
       </div></div>
     <div class="strip"><div class="stop"><div class="smo"></div><div class="syr">year</div><div class="snum"></div></div></div>
@@ -1219,7 +1236,14 @@ const FALLBACK_SHOW = [
   what:'The pages settle BACK to the engagement — JUNE · YEAR 2.',
   do:[{op:'clock',t:'4:44',d:'Monday, June 12, 2023'},{op:'stamp',t:'the rowboat'}]},
  {id:'8.4',kind:'music',trig:'FINAL CHORD — the lights fade on the boat. END OF ACT ONE',
-  what:'INTERMISSION: the calendar’s top page reads Intermission and holds, still, through the break; the first GO of Act Two (9.1) tears it off.',
+  what:'INTERMISSION: the torn band reads Intermission and holds, still, through the break.',
+  do:[{op:'intermission'}]},
+ {id:'8.5',kind:'stage',trig:'THE MONEY MINUTE — the speaker picks up the handheld mic',
+  what:'THE NEXT 5 YEARS: the pad turns to the fundraising card — the words over Redline’s QR code, printed on the paper. No grit on the code; it has to scan from the house.',
+  hold:'Holds for the whole ask. The next GO puts the break back.',
+  do:[{op:'next5'}]},
+ {id:'8.6',kind:'stage',trig:'THE ASK IS OVER — the mic goes down',
+  what:'Back to Intermission: the same torn band as before, still, until the first GO of Act Two (9.1) tears it off.',
   do:[{op:'intermission'}]},
 ]},
 
@@ -1438,6 +1462,7 @@ function applyOp(st,o){
       if(o.to==='thread'&&o.contact){st.contact={n:o.contact,sub:o.sub||''};st.msgs=[];} break;
     case 'unlock': st.app='home'; break;
     case 'wall': st.wall=o.t; break;
+    case 'next5': st.black=true; st.inter=false; st.next5=true; break;   // the money minute: the words and the code
     case 'perf': st.perfcard=true; break;          // the preshow performer's page is up
     case 'prologue': st.perfcard=false; break;     // …and the prologue tears whatever page is on top
     case 'batt': st.batt=o.v; break;
@@ -1452,7 +1477,7 @@ function applyOp(st,o){
     case 'pause': break;                        // animation-only beat (playCue waits); no state
     case 'prologue': break;                     // the falling pages wind down (live only); the era lands after
     case 'curtain': st.curtain=true; st.black=true; break;
-    case 'intermission': st.black=true; st.inter=true; break;
+    case 'intermission': st.black=true; st.inter=true; st.next5=false; break;
     case 'notifDismiss': st.notifs.shift(); break;
     case 'books': st.app='books'; st.book=o; st.sheet=null; break;
     case 'mapsdrive': st.app='mapsdrive'; st.drive=o; st.sheet=null; break;
@@ -3222,7 +3247,9 @@ async function playCue(cue, st, tok){
         return humanScroll(f,i*f.clientHeight,'memgo'+cue.id,tok,{gesture:'drag',flicks:2});}));
       camPush(`.memfeed .memscreen:nth-child(${(o.i||0)+1}) .body`, 2.6, 0, null, null, true); camPush(`.memfeed .memscreen:nth-child(${(o.i||0)+1}) .media`, 2.2, 2600, 'center', 3.2, true, true);
       await wait(400); continue; }
-    if(o.op==='curtain') bedStop(2);
+    if(o.op==='curtain'){ bedStop(2); SHOW_OVER=true;
+      setTimeout(()=>{ if(!SHOW_OVER) return; GATE.step=1; GATE.cast=null; GATE.perf=null; gatePaint();
+        document.body.classList.add('needgate'); }, 2600); }   // the night is over: ask the questions again
     if(o.op==='black'||o.op==='curtain'){
       // the phone drops away, then the era returns to center (or the curtain falls)
       const ph=stages().map(x=>x.querySelector('.iphone,.macbook,.carplay,.fullstage')).filter(Boolean);
@@ -3232,6 +3259,7 @@ async function playCue(cue, st, tok){
       document.body.classList.toggle('blk', blk||stageBlack(st)); continue; }
     if(o.op==='bed'){ if(o.stop) bedStop(o.fade); else bedStart(o.file,o.fade,o.gain); continue; }   // an ambience under the song, by cue only
     if(o.op==='perf'){ applyOp(st,o); setStamp(st); await wait(300); continue; }   // the preshow performer's name takes the pad
+    if(o.op==='next5'){ applyOp(st,o); paintAll(st); setStamp(st); await wait(400); continue; }   // the money minute card
     if(o.op==='prologue'){   // the title page holds for `ms`, then tears off — the era beneath it
       st.prologueLive=true; setStamp(st);
       if(o.ms){ await wait(o.ms); if(tok!==animTok){ st.prologueLive=false; return; } }
@@ -3420,12 +3448,16 @@ function render(){ hardRender(); }
 function sync(){ persistPos(); try{ ch.postMessage({from:CID,si,ci,blk,started:true,cast:CAST,perf:PERF}); }catch(e){} }
 function next(){ if(ci<cues().length){ advance(); sync(); }
   else if(si<SHOW.length-1){ si++; ci=0; hardRender(); sync(); } }
-function prev(){ if(ci>0){ci--; hardRender(); sync();}
+let SHOW_OVER=false;
+function prev(){ if(SHOW_OVER) return;   // past the final curtain there is no rewind (David, Sept 19 night)
+  if(ci>0){ci--; hardRender(); sync();}
   else if(si>0){ si--; ci=cues().length; hardRender(); sync(); } }
 function goSong(d){ si=(si+d+SHOW.length)%SHOW.length; ci=0; hardRender(); sync(); }
 function setView(v){ view=v; document.body.classList.remove('v-presenter','v-projection');
   document.body.classList.add('v-'+v); hardRender(); }
 function startAs(v){ soundHostInit(v);
+  document.body.classList.remove('needgate');
+  if(SHOW_OVER){ SHOW_OVER=false; si=0; ci=0; blk=false; try{ localStorage.removeItem('l5y_pos'); }catch(e){} }
   // crash recovery: a RELOADED presenter picks the show up where it was (never a fresh open — that is a new night)
   if(v==='presenter' && si===0 && ci===0){ try{ const nav=performance.getEntriesByType('navigation')[0]; const p=JSON.parse(localStorage.getItem('l5y_pos')||'null');
     if(nav && nav.type==='reload' && p && Date.now()-p.t<3*3600e3 && !(p.si===0&&p.ci===0)){ si=p.si; ci=p.ci; blk=!!p.blk; } }catch(e){} }
@@ -3569,6 +3601,7 @@ if(ch) ch.onmessage=e=>{ const m=e.data; if(m.from===CID) return;
 
 addEventListener('keydown',e=>{
   if(!started) return;
+  if(document.body.classList.contains('needgate')) return;   // the gate owns the keyboard too
   if(e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)){ if(e.key==='Escape'){ e.target.blur(); const p=document.getElementById('volPop'); if(p) p.classList.remove('on'); } return; }   // the volume slider keeps its keys
   if(e.key===' '||e.key==='ArrowRight'){e.preventDefault();next();}
   else if(e.key==='ArrowLeft'){e.preventDefault();prev();}
@@ -3634,6 +3667,7 @@ if(params.has('rot')){ rot=(params.get('rot')==='90')?90:(params.get('rot')==='2
 if(params.has('cast') && CAST_NAMES[params.get('cast')]){ CAST=params.get('cast');
   try{ localStorage.setItem('l5y_cast',CAST); }catch(e){} }
 paintCastUI(); gatePaint();
+if(params.get('view')!=='projection') document.body.classList.add('needgate');
 if(params.get('view')==='projection'){ startAs('projection'); }
 else render();
 
@@ -3707,10 +3741,11 @@ function setStamp(st){
   if(!era.dataset.torn){ era.dataset.torn='1'; era.querySelectorAll('.sheet').forEach((el,i)=>el.style.clipPath=tornPath('top',i+3)); era.querySelector('.strip .stop').style.clipPath=tornPath('top',9); }
   const p=eraParts(st), q=s=>era.querySelector(s);
   // the still pad carries the house: the title page before the show, the intermission page at the break (David, Sept 19 night — no falling pages)
-  let face = st.perfcard ? 'perf' : ((st.prologueLive||isPreshow()) ? 'title' : (st.inter ? 'inter' : ''));
+  let face = st.next5 ? 'next5' : st.perfcard ? 'perf' : ((st.prologueLive||isPreshow()) ? 'title' : (st.inter ? 'inter' : ''));
   era.querySelector('.pad').classList.toggle('house', !!face);
   const pad=era.querySelector('.pad');
   pad.classList.toggle('inter', face==='inter');
+  pad.classList.toggle('next5', face==='next5');
   pad.classList.toggle('title', face==='title');
   pad.classList.toggle('perf', face==='perf' && !!PERF);
   if(face==='perf' && !PERF) face='title';          // NONE was chosen: the title page simply stays up
@@ -3720,6 +3755,9 @@ function setStamp(st){
     q('.ttl').innerHTML='INTERMISSION'; q('.mo').textContent=''; q('.foot').textContent=''; }
   else if(face==='perf'){ q('.yr').textContent=''; q('.ynum').textContent=''; q('.sub').textContent='';
     q('.ttl').innerHTML=escTxt(PERF).replace(/ /g,'<br>'); q('.mo').textContent=''; q('.foot').textContent=''; }
+  else if(face==='next5'){ q('.yr').textContent='THE NEXT 5 YEARS'; q('.ynum').textContent=''; q('.sub').textContent='';
+    q('.ttl').innerHTML=''; q('.mo').textContent=''; q('.foot').textContent='';
+    const im=q('.qr'), src=(window.L5Y_IMG||{})['qr-next5']; if(im && src && im.src!==src) im.src=src; }
   else { q('.ttl').innerHTML=''; q('.sub').textContent=''; q('.yr').textContent=p.mo?'YEAR':''; q('.ynum').textContent=p.mo?p.yr:''; q('.mo').textContent=p.mo; q('.foot').textContent=st.foot||''; }
   { const fr=q('.frow'); if(fr) fr.classList.toggle('solo', !(st.foot||'')); }
   fitPad(era);

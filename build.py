@@ -25,11 +25,17 @@ for f in sorted(glob.glob('assets/fonts/*.woff2')):
     faces.append("@font-face{font-family:'%s';font-style:%s;font-weight:%s;font-display:block;src:url(data:font/woff2;base64,%s) format('woff2')}"
                  %(fam,sty,wt.replace('_',' '),base64.b64encode(open(f,'rb').read()).decode()))
 fontcss='<style id="l5yfonts">'+''.join(faces)+'</style>'
-assets='<script id="l5yassets">window.L5Y_SFX=%s;window.L5Y_PAPER=%s;</script>'%(json.dumps(sfx),json.dumps(paper))
+img={}
+for f in sorted(glob.glob('assets/img/*')):
+    ext=f.lower().rsplit('.',1)[-1]
+    if ext in ('png','jpg','jpeg','webp','svg'):
+        mt={'jpg':'jpeg','svg':'svg+xml'}.get(ext,ext)
+        img[os.path.basename(f).rsplit('.',1)[0]]='data:image/%s;base64,%s'%(mt,base64.b64encode(open(f,'rb').read()).decode())
+assets='<script id="l5yassets">window.L5Y_SFX=%s;window.L5Y_PAPER=%s;window.L5Y_IMG=%s;</script>'%(json.dumps(sfx),json.dumps(paper),json.dumps(img))
 out=eng.replace('<script src="cues.js"></script>',assets+'\n<script>\n'+cues+'\n</script>')
 out=out.replace('</head>', fontcss+'\n</head>', 1)
 open('L5Y-Show-STANDALONE.html','w').write(out)
 print('embedded fonts:',len(faces))
-print('embedded sounds:',len(sfx),'paper scans:',len(paper))
+print('embedded sounds:',len(sfx),'paper scans:',len(paper),'images:',len(img))
 open('docs/index.html','w').write(open('L5Y-Show-STANDALONE.html').read())
 print('built: index.html, L5Y-Show-STANDALONE.html, docs/index.html')

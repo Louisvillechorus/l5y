@@ -120,13 +120,23 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   **5** over YEARS, with *Redline Performing Arts* at the foot. No act number, no author credit.
   **INTERMISSION is ONE WORD on a wide torn BAND** across the middle of the stage (`.pad.inter .sheet` insets
   to a strip) — never split across lines. Photos fall behind both; the photo files are still outstanding.
-- **THE OPERATOR'S GATE (David, Sept 19 night)**: the app cannot start until the questionnaire is answered —
-  (1) tonight's cast, (2) tonight's preshow performer (Gayle King · Kenneth Bailey · Taylor Thomas ·
-  Elijah Pahls · none), (3) a summary of both with “is this right?”, (4) **a SECOND person must confirm**,
-  and only then do the Start buttons appear. The choice is stored (`l5y_perf`) and synced to the projection
-  window. **Cue 1.0** (new; the existing ids are unchanged) turns the pad to the performer's name; choosing
-  none leaves the title page up so the GO is a harmless no-op. The next GO (1.1) tears whatever page is on
-  top, so the prologue works either way.
+- **THE OPERATOR'S GATE (David, Sept 19 night — “think of it like choosing your ingredients”)**: `#gatewrap`
+  is a FULL-SCREEN MODAL over everything (z-index 300, opaque). While `body.needgate` is set NOTHING is
+  clickable and NO key does anything — the keydown handler returns first — so there is no play, no recipe and
+  no work-around until tonight is chosen: (1) cast, (2) preshow performer (Gayle King · Kenneth Bailey ·
+  Taylor Thomas · Elijah Pahls · none), (3) both read back with “is this right?”, (4) **a SECOND person
+  confirms**, and only then do the Start buttons exist. Stored as `l5y_perf`, synced to the projection window;
+  a `?view=projection` window is never gated. **Cue 1.0** turns the pad to the performer's name; “none” leaves
+  the title page up so that GO is a harmless no-op, and 1.1 tears whatever page is on top either way.
+- **THE FINAL CURTAIN LOCKS (David, Sept 19 night)**: the `curtain` op sets `SHOW_OVER` — `prev()` does
+  nothing (there is no rewind past the end) and ~2.6 s later the questionnaire comes back up for the next
+  performance. Starting again from the gate resets to the top of the show and clears the saved position.
+- **THE INTERMISSION IS THREE CUES (David, Sept 19 night)**: 8.4 the torn INTERMISSION band · **8.5 THE MONEY
+  MINUTE** — “THE NEXT 5 YEARS” over Redline's QR code, fired when the speaker picks up the handheld mic ·
+  8.6 the same band again when the ask is over. The QR (`assets/img/qr-next5.png`, embedded by build.py as
+  `window.L5Y_IMG`) prints ONTO the paper with `mix-blend-mode:multiply` and **carries no ink grit** — a
+  filtered QR does not scan. It resolves to https://qrfy.io/xdf5ivr784 and was verified by decoding the
+  rendered 1920×1080 card down to 400 px wide.
 - **TIME ONLY EVER CHANGES ON THE CALENDAR** (`eraRoll`), and every roll rides the TIME WARP MUSIC
   (`assets/sfx/timewarp.mp3`, David's file, `warpStart`: in on the first page, out as the last settles,
   stopped on a scrub): forward = pages tear off and fall;
