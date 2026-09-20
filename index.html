@@ -717,10 +717,10 @@
      time only ever changes on it. Falling torn pages for preshow and intermission. */
   #projection{background:#0a0a0b radial-gradient(ellipse at 50% 60%,#17171a 0%,#0a0a0b 68%) !important}
   #railL,#railR,#barTop,#projOwner,#projStamp{display:none !important}
-  .paper,#era .sheet,#era .strip .stop{background:var(--pp,var(--pp1,none)) 0 0/512px 512px repeat #f3f0e9;color:#000}   /* light paper: a fine tiled grain (paperGrain), never a crumple; a real scan in assets/paper/ replaces it */
+  .paper,#era .pf{background:var(--pp,var(--pp1,none)) 0 0/512px 512px repeat #f3f0e9;color:#000}   /* light paper: a fine tiled grain (paperGrain), never a crumple; a real scan in assets/paper/ replaces it */
   .paper{box-shadow:0 30px 60px rgba(0,0,0,.6),0 2px 4px rgba(0,0,0,.45)}
   /* the sheets are photographs of crumpled paper generated in the engine (paperTex): facets, fold creases, fibre grain — see PAPER below */
-  .paper::before,#era .sheet::before,#era .strip .stop::before{content:'';position:absolute;inset:0;pointer-events:none;mix-blend-mode:multiply;opacity:.09;
+  .paper::before,#era .pf::before{content:'';position:absolute;inset:0;pointer-events:none;mix-blend-mode:multiply;opacity:.09;
     background:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="220" height="220"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .1 0"/></filter><rect width="100%" height="100%" filter="url(%23n)"/></svg>')}
   /* ---- falling loop ---- */
   /* THE PHOTO BED (David, Sept 20): prints accumulate behind the house cards. One lands every few
@@ -759,21 +759,37 @@
   .ltitle .sub{font-family:'Courier Prime',monospace;font-size:clamp(14px,1.7vw,32px);letter-spacing:.5em;margin-top:2.4vh;color:#5a574f;text-transform:uppercase}
   .ltitle.gone{transform:translate(-50%,60vh) rotate(9deg);opacity:0}
   /* ---- the era artifact ---- */
-  #era{position:absolute;z-index:6;opacity:1;transition:opacity .8s ease;will-change:transform}
+  #era{position:absolute;z-index:6;opacity:1;transition:opacity .8s ease}
   #era.hidden{opacity:0;pointer-events:none}
   /* THE CALENDAR CARD (David, Sept 19 night — his own mockup): a square sheet, YEAR stacked over the
      numeral in a geometric sans, and one foot row "month | event" under a rule. The ink is hard black
-     with a gritty edge (filter #inkgrit) so the type sits IN the paper, never printed on top of it. */
+     with a gritty edge (filter #inkgrit) so the type sits IN the paper, never printed on top of it.
+     ONE FACE, TWO LAYOUTS (David, Sept 20 — D-010): there is no second "strip" element any more.
+     The same YEAR, the same numeral, the same month live in both homes; the home classes only
+     re-lay them out, and setEraHome() FLIPs every piece of type from where it was to where it is
+     going. Nothing cross-dissolves, because there is nothing to dissolve into. */
   #era.center{inset:0;margin:auto;width:96vh;height:94vh}
   #era.docked{inset:0;margin:auto 1.6vw auto auto;width:14.4vw;height:93vh}
-  #era .pad,#era .strip{position:absolute;inset:0;transition:opacity .35s ease}
-  #era.docked .pad{opacity:0;pointer-events:none} #era.center .strip{opacity:0;pointer-events:none}
-  #era .sheet{position:absolute;inset:0;padding:4.6vh 6.5vh 4vh;display:flex;flex-direction:column;justify-content:space-between;align-items:center;text-align:center;transform-origin:8% 0%;
-    box-shadow:0 30px 60px rgba(0,0,0,.6),0 2px 4px rgba(0,0,0,.45)}
-  #era .sheet.u1{transform:translate(2.4%,2%) rotate(-2.6deg);--pp:var(--pp2,none);filter:brightness(.92)}
-  #era .sheet.u2{transform:translate(-2%,4.6%) rotate(3deg);--pp:var(--pp3,none);filter:brightness(.84)}
-  #era .grp{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;filter:url(#inkgrit)}
-  #era .ft{width:100%;filter:url(#inkgrit)}
+  #era .pad{position:absolute;inset:0}
+  #era .sheet{position:absolute;inset:0;padding:4.6vh 6.5vh 4vh;display:flex;flex-direction:column;justify-content:space-between;align-items:center;text-align:center;transform-origin:8% 0%}
+  /* the paper is its own layer inside the sheet: the sheet hosts the ink (which travels as type),
+     the .pf carries the grain, the torn edge and the shadow (and takes the paper's own FLIP). */
+  #era .pf{position:absolute;inset:0;transform-origin:0 0;--pfb:translate(0%,0%) rotate(0deg);
+    transform:var(--pfb);box-shadow:0 30px 60px rgba(0,0,0,.6),0 2px 4px rgba(0,0,0,.45)}
+  /* only the TOP page makes the journey. The pages under it drop out the instant the card
+     launches — otherwise they sit at their new full-card size, rotated, behind a sheet that is
+     still in flight — and bloom back as it lands. */
+  #era .sheet.u1,#era .sheet.u2{transition:opacity .34s ease .12s}
+  #era.morphing .sheet.u1,#era.morphing .sheet.u2{opacity:0;transition:none}
+  #era .sheet.u1{--pp:var(--pp2,none);filter:brightness(.92)}
+  #era .sheet.u1 .pf{--pfb:translate(2.4%,2%) rotate(-2.6deg)}
+  #era .sheet.u2{--pp:var(--pp3,none);filter:brightness(.84)}
+  #era .sheet.u2 .pf{--pfb:translate(-2%,4.6%) rotate(3deg)}
+  /* the ink always sits ON the paper: .pf is transformed (a stacking context) and the docked month
+     rides `order:-1`, which paints a flex item BEFORE its absolutely positioned siblings — z-index 1
+     is what keeps the type above the sheet in both homes. */
+  #era .grp{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;filter:url(#inkgrit);position:relative;z-index:1}
+  #era .ft{width:100%;filter:url(#inkgrit);position:relative;z-index:1}
   #era .yr{font-family:'Poppins',sans-serif;font-weight:800;font-size:28vh;line-height:1.02;letter-spacing:-.005em;color:#000}
   #era .ynum{font-family:'Poppins',sans-serif;font-weight:800;font-size:54vh;line-height:.9;letter-spacing:-.02em;color:#000;margin-top:-1vh}
   #era .ttl{font-family:'Poppins',sans-serif;font-weight:800;font-size:15vh;line-height:1.04;letter-spacing:-.01em;color:#000;margin-top:2.2vh}
@@ -782,37 +798,81 @@
     font-family:'Poppins',sans-serif;font-weight:600;font-size:5.2vh;line-height:1.35;color:#000}
   #era .frow .pipe{width:.4vh;height:4.9vh;background:#000;flex:none}
   #era .mo,#era .foot{font-family:inherit;font-weight:inherit;font-size:inherit;color:#000;letter-spacing:0;text-transform:none}
-  /* THE TITLE PAGE IS A DATE CARD (David, Sept 19 night — his mockup): THE LAST over a huge 5 over YEARS,
-     the company at the foot. No rule, no act number, no author credit. */
+  /* THE DOCKED STRIP (David, Sept 19): the month small and horizontal at the top, YEAR huge running
+     DOWN the strip, the number at the foot. writing-mode:vertical-rl sets the identical latin run
+     turned 90° clockwise — the same glyphs, so the FLIP out of the card is a rigid rotation, not a
+     redraw. Only the sizes change between homes; weight, tracking and leading are held equal so the
+     travelling type never has to reshape itself in the air. */
+  #era.docked .sheet{padding:2.6vh .9vh 1.6vh}
+  /* the grit filter follows the MONTH, not the foot row: the row's hidden event line is nowrap and
+     runs far outside the strip, and an SVG filter over that bounding box renders nothing at all. */
+  #era.docked .ft{position:relative;z-index:1;order:-1;width:100%;filter:none}
+  #era.docked .mo{filter:url(#inkgrit)}
+  #era .rule,#era .pipe,#era .foot{transition:opacity .34s ease}
+  #era.docked .rule{position:absolute;left:0;right:0;top:0;margin:0;opacity:0}
+  #era.docked .frow{gap:0}
+  #era.docked .pipe{position:absolute;left:50%;top:0;opacity:0}
+  #era.docked .foot{position:absolute;left:50%;top:0;opacity:0}
+  #era.docked .mo{font-size:8.6vh}
+  #era.docked .grp{justify-content:space-between}
+  #era.docked .yr{writing-mode:vertical-rl;font-size:9.6vw}
+  #era.docked .ynum{font-size:20vw;margin-top:0}
+  /* THE HOUSE CARDS USE THE BLACK (David, Sept 20 — D-012): the date cards stay square, the house
+     pages run wide, and the title page is set in the house language — THE LAST and YEARS justified
+     edge to edge (fitPad tracks them out), the 5 the hero between them. */
+  #era .pad.house .sheet{left:-18%;right:-18%;padding:4.6vh 4vh 4vh}
   #era .pad.house .rule{display:none}
-  #era .pad.house.title .yr,#era .pad.house.title .sub{font-size:9vh}
+  #era .pad.house.title .yr,#era .pad.house.title .sub{font-size:16vh;line-height:1.04}
+  #era .pad.house.title .ynum{font-size:43vh;line-height:.82;margin-top:0}
   #era .pad.house.title .frow{font-size:6.4vh;font-weight:700;letter-spacing:.01em}
   #era .pad.house.perf .ft,#era .pad.house.inter .ft,#era .pad.house.next5 .ft{display:none}
   /* INTERMISSION is one word on a wide torn BAND across the middle (David, Sept 19 night) */
-  #era .pad.inter .sheet{top:36%;bottom:36%;left:-4%;right:-4%;padding:0 5vh}
+  #era .pad.inter .sheet{top:35%;bottom:35%;left:-28%;right:-28%;padding:0 4vh}
   #era .pad.inter .grp{justify-content:center}
   #era .qr{display:none;width:70vh;height:70vh;mix-blend-mode:multiply;filter:none}   /* printed ON the paper: multiply drops the code's white, the modules stay black */
   #era .pad.next5 .qr{display:block}
   #era .pad.next5 .grp{filter:none;gap:1.6vh}                      /* the code must stay crisp: no ink grit */
-  #era .pad.next5 .yr{font-size:7vh;filter:url(#inkgrit)}          /* …the words still carry it */
+  #era .pad.next5 .yr{font-size:12vh;filter:url(#inkgrit)}         /* …the words still carry it */
   #era .sub{font-family:'Poppins',sans-serif;font-weight:600;font-size:9vh;line-height:1.05;letter-spacing:-.01em;color:#000;margin-top:-1vh}
   #era .ttl:empty,#era .ynum:empty,#era .yr:empty,#era .sub:empty{display:none}
   #era .frow.solo .pipe,#era .frow.solo .foot:empty{display:none}
-  #era .sheet.tear .grp,#era .sheet.tear .ft,#era .sheet.settle .grp,#era .sheet.settle .ft{filter:none}   /* a page in flight carries no filter */
-  #era .pad.house.inter .ttl{font-family:'Poppins',sans-serif;font-weight:500;font-size:13vh;line-height:1.02;letter-spacing:-.01em;margin-top:0;white-space:nowrap}
+  #era .sheet.tear .grp,#era .sheet.tear .ft,#era .sheet.settle .grp,#era .sheet.settle .ft,
+  #era .pad.cardin .grp,#era .pad.cardin .ft,#era .pad.cardin .mo,
+  #era .pad.ghost .grp,#era .pad.ghost .ft,#era .pad.ghost .mo,
+  #era.morphing .grp,#era.morphing .ft,#era.morphing .mo{filter:none}   /* a page in flight carries no filter */
+  #era .pad.cardin,#era .pad.ghost{will-change:transform}
+  /* …and no blend mode and no deep shadow while it flies: mix-blend-mode on the grain keeps the
+     sheet off the compositor, and a 60 px shadow over a 1400 px card repaints every frame — on a
+     software rasteriser that stalls the animation for a second. The grain is opacity .09; nobody
+     sees it go for 800 ms, and everybody sees the stall. */
+  #era .pad.cardin .pf::before,#era .pad.ghost .pf::before,#era.morphing .pf::before,
+  #era .sheet.tear .pf::before,#era .sheet.settle .pf::before{display:none}
+  #era .pad.cardin .pf,#era .pad.ghost .pf,#era.morphing .pf,
+  #era .sheet.tear .pf,#era .sheet.settle .pf{box-shadow:0 16px 34px rgba(0,0,0,.5)}
+  #era.morphing .pf,#era.morphing .yr,#era.morphing .ynum,#era.morphing .mo{will-change:transform}
+  #era .pad.house.inter .ttl{font-family:'Poppins',sans-serif;font-weight:700;font-size:17vh;line-height:1.02;letter-spacing:-.01em;margin-top:0;white-space:nowrap;width:100%}
   #era .pad.house.perf .ttl{font-size:17vh;margin-top:0;width:100%}
-  #era .pad.house.perf .fl{display:block;white-space:nowrap;line-height:.98}
-  /* the docked strip (David, Sept 19): no name — it is obvious whose phone it is. The YEAR outranks the month:
-     the month small and horizontal at the top, YEAR huge running down the strip, the number at the foot. */
-  #era .strip .stop{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:2.6vh 0 1.6vh;filter:url(#inkgrit);
-    --pp:var(--pp2,none);box-shadow:0 24px 50px rgba(0,0,0,.6),0 2px 4px rgba(0,0,0,.45);transform-origin:8% 0%}
-  #era .smo{font-family:'Poppins',sans-serif;font-weight:700;font-size:clamp(20px,4.6vw,92px);line-height:1;letter-spacing:.04em;text-transform:uppercase;color:#000}
-  #era .syr{writing-mode:vertical-rl;font-family:'Poppins',sans-serif;font-weight:800;font-size:clamp(34px,9.6vw,192px);line-height:1;letter-spacing:.02em;text-transform:uppercase;color:#000;margin-right:.02em}
-  #era .snum{font-family:'Poppins',sans-serif;font-weight:800;font-size:clamp(60px,20vw,400px);line-height:.78;color:#000}
-  .tear{animation:tear 1s cubic-bezier(.55,.05,.5,1) forwards;z-index:9;box-shadow:0 12px 30px rgba(0,0,0,.35)}
+  #era .pad.house .fl{display:block;width:fit-content;margin:0 auto;white-space:nowrap;line-height:.98}
+  #era .pad.house .flt{display:block;white-space:nowrap}           /* justified by tracking, not by size */
+  .tear{animation:tear 1s cubic-bezier(.55,.05,.5,1) forwards;z-index:9}
+  #era .sheet.tear .pf,#era .sheet.settle .pf{box-shadow:0 12px 30px rgba(0,0,0,.35)}
   @keyframes tear{0%{transform:rotate(0)}18%{transform:rotate(-3deg) translate(0,-3%)}55%{transform:rotate(-14deg) translate(-4%,8%);opacity:1}100%{transform:rotate(-34deg) translate(-18%,120%);opacity:0}}
-  .settle{animation:settle .7s cubic-bezier(.2,.9,.25,1.05) forwards;z-index:9;box-shadow:0 12px 30px rgba(0,0,0,.35)}
+  .settle{animation:settle .7s cubic-bezier(.2,.9,.25,1.05) forwards;z-index:9}
   @keyframes settle{0%{transform:rotate(22deg) translate(18%,130%);opacity:0}30%{opacity:1}100%{transform:rotate(0) translate(0,0);opacity:1}}
+  /* a page torn off the DOCKED strip falls down its own narrow lane — a wide swing would carry the
+     paper across the phone, and nothing ever overlays the phone (D-036). */
+  #era.docked .sheet.tear{animation-name:tearStrip}
+  @keyframes tearStrip{0%{transform:rotate(0)}18%{transform:rotate(-1.4deg) translate(0,-3%)}55%{transform:rotate(-4deg) translate(0,9%);opacity:1}100%{transform:rotate(-8deg) translate(-2%,122%);opacity:0}}
+  #era.docked .sheet.settle{animation-name:settleStrip}
+  @keyframes settleStrip{0%{transform:translate(0,130%);opacity:0}30%{opacity:1}100%{transform:translate(0,0);opacity:1}}   /* straight up its own lane: a tilt swings the page's far corner left, across the phone */
+  /* THE HOUSE CARDS FALL (David, Sept 20 — D-011): one heavy sheet, gravity, a whisper of rotation.
+     The outgoing page is a clone of the whole pad (so it keeps its own face) and drops clear off the
+     bottom; the new page falls in from above the frame and lands. Nothing appears out of thin air. */
+  #era .pad.ghost{z-index:8}
+  .cardin{animation:cardIn .84s cubic-bezier(.24,.62,.26,1) both}
+  .cardout{animation:cardOut .72s cubic-bezier(.5,0,.78,.42) both}
+  @keyframes cardIn{0%{transform:translateY(-142vh) rotate(-2.4deg)}72%{transform:translateY(0) rotate(.4deg)}100%{transform:translateY(0) rotate(0)}}
+  @keyframes cardOut{0%{transform:translateY(0) rotate(0)}14%{transform:translateY(1.6vh) rotate(.9deg)}100%{transform:translateY(148vh) rotate(6deg)}}
   /* ---- the phone: no bezel, squared, as tall as the stage ---- */
   .iphone{padding:0 !important;background:transparent !important;border-radius:0 !important;
     box-shadow:0 40px 90px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.06) !important}
@@ -991,12 +1051,11 @@
     </filter>
   </svg>
   <div id="era" class="center hidden" data-home="center">
-    <div class="pad"><div class="sheet u2"></div><div class="sheet u1"></div>
-      <div class="sheet top">
+    <div class="pad"><div class="sheet u2"><div class="pf"></div></div><div class="sheet u1"><div class="pf"></div></div>
+      <div class="sheet top"><div class="pf"></div>
         <div class="grp"><div class="yr"></div><div class="ynum"></div><div class="sub"></div><div class="ttl"></div><img class="qr" alt=""></div>
         <div class="ft"><div class="rule"></div><div class="frow"><span class="mo"></span><i class="pipe"></i><span class="foot"></span></div></div>
       </div></div>
-    <div class="strip"><div class="stop"><div class="smo"></div><div class="syr">year</div><div class="snum"></div></div></div>
   </div>
   <div id="rotNote"></div>
 </div>
@@ -3305,7 +3364,8 @@ async function playCue(cue, st, tok){
     }
     if(o.op==='pause'){ await wait(o.ms||800); continue; }
     if(o.op==='intermission'){ applyOp(st,o); paintAll(st); setStamp(st);
-      document.body.classList.toggle('blk', blk||stageBlack(st)); continue; }
+      document.body.classList.toggle('blk', blk||stageBlack(st));
+      await wait(900); continue; }   // the band falls in; the GO is not over until it has landed (D-011)
     if(o.op==='notifDismiss'){
       // the top notification slides off under his thumb, then the stack closes up
       camPush('.nstack .notif', 3.2, 0); await wait(500); if(tok!==animTok) return; sfx('swipe');
@@ -3336,7 +3396,7 @@ async function playCue(cue, st, tok){
         const ld=k.querySelector('.lk-date'); if(ld&&o.d) ld.textContent=lockDate(st.date); });
       setStamp(st);
       continue; }
-    if(o.op==='stamp'){ applyOp(st,o); setStamp(st); continue; }
+    if(o.op==='stamp'){ applyOp(st,o); setStamp(st); await typeFoot(st,tok,cue.id,!(cue&&cue.keys===false)); if(tok!==animTok) return; continue; }   // the scene name types itself onto the card (D-013)
     if(o.op==='notif'){ applyOp(st,o); if(o.snd!==false && (!o.w||o.w==='now')) sfx(o.app==='Mail'?'mail':(o.app==='Chase'?'tink':'notif'),{seed:'n'+cue.id});
       stacks().forEach(k=>{ const ns=k.querySelector('.nstack'); if(!ns) return;
         const d=document.createElement('div'); d.className='notif inbound';
@@ -3632,12 +3692,13 @@ async function playCue(cue, st, tok){
       applyOp(st,o); paintAll(st); setStamp(st);
       document.body.classList.toggle('blk', blk||stageBlack(st)); continue; }
     if(o.op==='bed'){ if(o.stop) bedStop(o.fade); else bedStart(o.file,o.fade,o.gain); continue; }   // an ambience under the song, by cue only
-    if(o.op==='perf'||o.op==='house'){ applyOp(st,o); setStamp(st); await wait(300); continue; }   // the performer's name, then the house card again
-    if(o.op==='next5'){ applyOp(st,o); paintAll(st); setStamp(st); await wait(400); continue; }   // the money minute card
+    if(o.op==='perf'||o.op==='house'){ applyOp(st,o); setStamp(st); await wait(900); continue; }   // the old page falls off the bottom, the new one falls in (D-011)
+    if(o.op==='next5'){ applyOp(st,o); paintAll(st); setStamp(st); await wait(900); continue; }   // the money minute card, falling in the same way
     if(o.op==='prologue'){   // the title page holds for `ms`, then tears off — the era beneath it
       st.prologueLive=true; setStamp(st);
       if(o.ms){ await wait(o.ms); if(tok!==animTok){ st.prologueLive=false; return; } }
-      st.prologueLive=false; st.perfcard=false; st.housecard=false; paintAll(st); await tearTop(st,tok); if(tok!==animTok) return; continue; }
+      st.prologueLive=false; st.perfcard=false; st.housecard=false; paintAll(st); await tearTop(st,tok); if(tok!==animTok) return;
+      await typeFoot(st,tok,cue.id,!(cue&&cue.keys===false)); if(tok!==animTok) return; continue; }
     if(o.op==='docline'){ applyOp(st,o); paintAll(st); scrollThreads(); await wait(240); continue; }
     applyOp(st,o); paintAll(st);
   }
@@ -3746,6 +3807,7 @@ function estDuration(cue){
       case 'pause': t+=o.ms||800; break;
       case 'device': t+=800; break;
       case 'clock': t+=o.d?6000:0; break;
+      case 'stamp': t+=(String(o.t||'').trim()?340+String(o.t).length*70:0); break;   // the scene name types itself (D-013)
       case 'prologue': t+=(o.ms||0)+1100; break;
       case 'black': case 'curtain': t+=520; break;
       case 'memgo': t+=1400+1600; break;
@@ -4060,6 +4122,11 @@ function footSolo(root){   // month │ event — the divider exists only when t
   root.querySelectorAll('.frow').forEach(fr=>{ const f=fr.querySelector('.foot');
     fr.classList.toggle('solo', !(f && f.textContent.trim())); });
 }
+function inkWidth(e){   // the width of the TYPE, not of the block it sits in (a block's scrollWidth is its box)
+  const r=document.createRange(); r.selectNodeContents(e);
+  const b=r.getBoundingClientRect(); r.detach&&r.detach();
+  return Math.max(b.width, e.scrollWidth>e.clientWidth?e.scrollWidth:0);
+}
 function fitPad(era){   // the card is fixed; the words are not. Anything wider than the sheet shrinks to fit.
   // ONLY measure the pad in its CENTER home. Docked, the pad still has layout at strip width, and a
   // measurement there would lock a tiny inline font-size that survives the trip back (David, Sept 20).
@@ -4067,17 +4134,44 @@ function fitPad(era){   // the card is fixed; the words are not. Anything wider 
   const sh=era.querySelector('.pad .sheet.top'); if(!sh) return;
   const cs=getComputedStyle(sh), inner=sh.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);
   if(!(inner>200)) return;   // mid-transition or unlaid-out: never fit against a collapsed box
-  sh.querySelectorAll('.fl').forEach(e=>{            // FILL: every line of a name spans the same width
+  ['.mo','.yr','.ynum'].forEach(sel=>{ const e=sh.querySelector(sel); if(e){ e.style.fontSize=''; e.style.letterSpacing=''; e.style.marginRight=''; } });
+  const fls=[...sh.querySelectorAll('.fl')];
+  fls.forEach(e=>{                                   // FILL: every line of a name spans the same width
     e.style.fontSize=''; const t=e.textContent.trim(); if(!t) return;
-    const base=parseFloat(getComputedStyle(e).fontSize), w=e.scrollWidth; if(!(w>0)) return;
+    const base=parseFloat(getComputedStyle(e).fontSize), w=inkWidth(e); if(!(w>0)) return;
     e.style.fontSize=Math.min(base*inner/w*0.99, inner*0.42).toFixed(2)+'px'; });
+  if(fls.length){                                    // …and the stack of them still has to fit the sheet
+    const grp=sh.querySelector('.grp');
+    if(grp && grp.clientHeight>40 && grp.scrollHeight>grp.clientHeight){
+      const k=grp.clientHeight/grp.scrollHeight*0.985;
+      fls.forEach(e=>{ const f=parseFloat(e.style.fontSize||getComputedStyle(e).fontSize); if(f>0) e.style.fontSize=(f*k).toFixed(2)+'px'; });
+    }
+  }
+  sh.querySelectorAll('.flt').forEach(e=>{           // JUSTIFY BY TRACKING: the size keeps the hierarchy,
+    e.style.letterSpacing=''; e.style.marginRight='';//   the tracking uses the black either side (D-012)
+    const t=e.textContent.trim(); if(!t) return;
+    const w=inkWidth(e), n=t.length; if(!(w>0)||!n) return;
+    if(w>=inner){ const base=parseFloat(getComputedStyle(e).fontSize); e.style.fontSize=(base*inner/w*0.985).toFixed(2)+'px'; return; }
+    const ls=(inner-w)/n; e.style.letterSpacing=ls.toFixed(2)+'px'; e.style.marginRight=(-ls).toFixed(2)+'px'; });
   ['.yr','.ynum','.sub','.ttl','.frow'].forEach(sel=>{ const e=sh.querySelector(sel); if(!e) return;
-    if(e.querySelector('.fl')) return;                 // a filled name manages its own lines
+    if(e.querySelector('.fl,.flt')) return;            // a filled/tracked line manages itself
     e.style.fontSize=''; if(!e.textContent.trim()) return;
-    const w=e.scrollWidth; if(w<=inner) return;
+    const w=inkWidth(e); if(w<=inner) return;
     const base=parseFloat(getComputedStyle(e).fontSize);
     e.style.fontSize=(base*inner/w*0.985).toFixed(2)+'px'; });
 }
+function fitStrip(era){   // the docked strip is narrow: a long month shrinks to the lane, nothing else moves
+  const sh=era.querySelector('.pad .sheet.top'); if(!sh) return;
+  const cs=getComputedStyle(sh), inner=sh.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);
+  if(!(inner>40)) return;
+  ['.mo','.ynum'].forEach(sel=>{ const e=sh.querySelector(sel); if(!e) return;
+    e.style.fontSize=''; e.style.letterSpacing=''; e.style.marginRight='';
+    if(!e.textContent.trim()) return;
+    const w=inkWidth(e); if(!(w>inner)) return;
+    const base=parseFloat(getComputedStyle(e).fontSize);
+    e.style.fontSize=(base*inner/w*0.98).toFixed(2)+'px'; });
+}
+function fitEra(era){ if(!era) return; if(era.classList.contains('center')) fitPad(era); else fitStrip(era); }
 function eraParts(st){ const d=new Date(st.date||''); if(isNaN(d)) return {mo:'',abbr:'',yr:''}; return {mo:MO_(d.getMonth()),abbr:MA_(d.getMonth()),yr:yearN(d)}; }
 function eraLabel(st){ const p=eraParts(st); if(!p.mo) return ''; return (p.mo+' · YEAR '+p.yr+(st.foot?' · '+st.foot:'')).toUpperCase(); }
 function isPreshow(){ return si===0&&ci===0; }
@@ -4127,60 +4221,197 @@ function paintAll(st){
     if(phoneUp(st)){ const pe=eraParts(st); if(pe.mo) pv.insertAdjacentHTML('beforeend',`<div class="prevStrip"><span>${pe.abbr}</span><b>YEAR</b><i>${pe.yr}</i></div>`); }
   }
 }
+function isHouseFace(f){ return f==='title'||f==='perf'||f==='inter'||f==='next5'; }
+/* THE HOUSE CARDS FALL (D-011). The outgoing page is a clone of the WHOLE pad, so it keeps its own
+   face classes on the way out (which is also what killed the square "Intermission" flash — D-014);
+   the real pad drops in from above. Every ghost is stamped with the animTok that made it, so a
+   cancelled cue can never strand one: the next setStamp sweeps anything from an older token. */
+function padGhost(era){
+  const pad=era.querySelector('.pad'); if(!pad) return null;
+  const g=pad.cloneNode(true); g.classList.add('ghost'); g.dataset.tok=animTok;
+  g.querySelectorAll('.tear,.settle').forEach(e=>e.classList.remove('tear','settle'));
+  g.querySelectorAll('.cardin,.cardout').forEach(e=>e.classList.remove('cardin','cardout'));
+  era.appendChild(g); return g;
+}
+/* NOTHING IS LEFT ON THE STAGE (David, Sept 20 — D-047). Every page this engine clones — a
+   falling house card, a torn-off title page, a month tearing away in a roll — is stamped with
+   the animTok that made it. Anything from an older token is swept the moment the calendar is
+   touched again, so a cancelled or overlapping cue can never strand a grey rectangle. */
+function eraStamp(el){ if(el) el.dataset.tok=animTok; return el; }
+function eraGhostSweep(era){
+  era.querySelectorAll('.pad.ghost').forEach(g=>{ if(+g.dataset.tok!==animTok) g.remove(); });
+  era.querySelectorAll('.sheet.tear,.sheet.settle').forEach(e=>{
+    const own=e.dataset.tok!=null?e:(e.closest('.pad.ghost')||{dataset:{}});
+    if(+own.dataset.tok!==animTok) e.remove(); });
+}
+function eraPre(era){                        // where every travelling piece is RIGHT NOW
+  const m=new Map(), pad=era.querySelector('.pad');
+  if(!pad || era.classList.contains('hidden')) return m;
+  ERA_PARTS_().forEach(p=>{ const el=pad.querySelector('.sheet.top '+p[0]); if(!el) return;
+    const b=eraBox(el); if(b.w>0&&b.h>0) m.set(el,b); });
+  return m;
+}
 function setStamp(st){
   const era=document.getElementById('era'); if(!era) return;
-  if(!era.dataset.torn){ era.dataset.torn='1'; era.querySelectorAll('.sheet').forEach((el,i)=>el.style.clipPath=tornPath('top',i+3)); era.querySelector('.strip .stop').style.clipPath=tornPath('top',9); }
-  const p=eraParts(st), q=s=>era.querySelector(s);
+  if(!era.dataset.torn){ era.dataset.torn='1'; era.querySelectorAll('.sheet .pf').forEach((el,i)=>el.style.clipPath=tornPath('top',i+3)); }
+  const p=eraParts(st), q=s=>era.querySelector('.pad '+s);
   // the still pad carries the house: the title page before the show, the intermission page at the break (David, Sept 19 night — no falling pages)
   let face = st.next5 ? 'next5' : st.perfcard ? 'perf' : ((st.housecard||st.prologueLive||isPreshow()) ? 'title' : (st.inter ? 'inter' : ''));
-  era.querySelector('.pad').classList.toggle('house', !!face);
+  if(face==='perf' && !PERF) face='title';          // NONE was chosen: the title page simply stays up
   const pad=era.querySelector('.pad');
+  const prevFace=era.dataset.face==null?face:era.dataset.face;
+  eraGhostSweep(era);
+  // a HOUSE page never changes out of thin air: the old one falls off the bottom, the new one falls in
+  const pre = eraPre(era);                   // …measured before a single letter changes
+  const falling = animRunning && !st.tearing && face!==prevFace && era.dataset.home!=='docked'
+                  && !era.classList.contains('hidden') && (isHouseFace(face)||isHouseFace(prevFace));
+  const ghost = falling ? padGhost(era) : null;
+  era.dataset.face=face;
+  pad.classList.toggle('house', !!face);
   pad.classList.toggle('inter', face==='inter');
   pad.classList.toggle('next5', face==='next5');
   pad.classList.toggle('title', face==='title');
-  pad.classList.toggle('perf', face==='perf' && !!PERF);
-  if(face==='perf' && !PERF) face='title';          // NONE was chosen: the title page simply stays up
-  if(face==='title'){ q('.yr').textContent='THE LAST'; q('.ynum').textContent='5'; q('.sub').textContent='YEARS';
+  pad.classList.toggle('perf', face==='perf');
+  if(face==='title'){ q('.yr').innerHTML='<span class="flt">THE LAST</span>'; q('.ynum').textContent='5'; q('.sub').innerHTML='<span class="flt">YEARS</span>';
     q('.ttl').innerHTML=''; q('.mo').textContent='Redline Performing Arts'; q('.foot').textContent=''; }
   else if(face==='inter'){ q('.yr').textContent=''; q('.ynum').textContent=''; q('.sub').textContent='';
-    q('.ttl').innerHTML='INTERMISSION'; q('.mo').textContent=''; q('.foot').textContent=''; }
+    q('.ttl').innerHTML='<span class="fl">INTERMISSION</span>'; q('.mo').textContent=''; q('.foot').textContent=''; }
   else if(face==='perf'){ q('.yr').textContent=''; q('.ynum').textContent=''; q('.sub').textContent='';
     q('.ttl').innerHTML=escTxt(PERF).trim().split(/\s+/).map(w=>'<span class="fl">'+w+'</span>').join(''); q('.mo').textContent=''; q('.foot').textContent=''; }
-  else if(face==='next5'){ q('.yr').textContent='THE NEXT 5 YEARS'; q('.ynum').textContent=''; q('.sub').textContent='';
+  else if(face==='next5'){ q('.yr').innerHTML='<span class="flt">THE NEXT 5 YEARS</span>'; q('.ynum').textContent=''; q('.sub').textContent='';
     q('.ttl').innerHTML=''; q('.mo').textContent=''; q('.foot').textContent='';
     const im=q('.qr'), src=(window.L5Y_IMG||{})['qr-next5']; if(im && src && im.src!==src) im.src=src; }
   else { q('.ttl').innerHTML=''; q('.sub').textContent=''; q('.yr').textContent=p.mo?'YEAR':''; q('.ynum').textContent=p.mo?p.yr:''; q('.mo').textContent=p.mo; q('.foot').textContent=st.foot||''; }
-  footSolo(era);
+  footSolo(pad);
   if(face && !st.curtain && !blk) pileStart(); else pileStop();   // the prints belong to the house, never to the show
-  fitPad(era);
-  if(!st.tearing) era.querySelectorAll('.tear,.settle').forEach(e=>e.remove());   // no stray pages from a cancelled roll
-  q('.smo').textContent=p.abbr; q('.snum').textContent=p.yr;
+  fitEra(era);
+  eraGhostSweep(era);                        // no stray pages from a cancelled roll or an overlapping cue
   const hidden = !!st.curtain || (!face && !p.mo);
   const wasHidden=era.classList.contains('hidden');
   era.classList.toggle('hidden', hidden);
-  setEraHome(era, phoneUp(st)?'docked':'center', wasHidden||hidden);
+  setEraHome(era, phoneUp(st)?'docked':'center', wasHidden||hidden, pre);
+  if(ghost) padFall(era, pad, ghost);
   const pe=document.getElementById('prevEra'); if(pe) pe.innerHTML=escTxt(eraLabel(st)).replace(/ · /g,'<br>');
 }
-/* the top page tears off and falls (the title page at the first GO, the intermission page at 9.1) */
-async function tearTop(st,tok){
-  const era=document.getElementById('era'); const pad=era&&era.querySelector('.pad'), top=pad&&pad.querySelector('.top'); if(!top) return;
-  const old=top.cloneNode(true); old.classList.remove('top'); old.classList.add('tear'); old.style.clipPath=tornPath('top',31); pad.appendChild(old);
-  st.tearing=true; setStamp(st); st.tearing=false;
-  await wait(1000); old.remove(); if(tok!==animTok) return;
+function padFall(era, pad, ghost){
+  const tok=animTok;
+  ghost.classList.add('cardout');
+  const done=()=>{ if(ghost.isConnected) ghost.remove(); };
+  const goneH=e=>{ if(e.target!==ghost) return; ghost.removeEventListener('animationend',goneH); done(); };
+  ghost.addEventListener('animationend', goneH); setTimeout(done, 2600);
+  pad.classList.remove('cardin'); void pad.offsetWidth; pad.classList.add('cardin');
+  // .cardin also suspends the ink grit while the page flies — it must never be left on
+  const clr=()=>{ pad.removeEventListener('animationend',landed); pad.classList.remove('cardin'); if(tok!==animTok) done(); };
+  const landed=e=>{ if(e.target===pad) clr(); };
+  pad.addEventListener('animationend', landed); setTimeout(clr, 2600);
 }
-/* the artifact never disappears — it transforms between its two homes (FLIP) */
-function setEraHome(era, home, instant){
+/* the top page tears off and falls (the title page at the first GO, the intermission page at 9.1).
+   The clone is the WHOLE pad, so the page that falls keeps the face it was wearing. */
+async function tearTop(st,tok){
+  const era=document.getElementById('era'); const pad=era&&era.querySelector('.pad'); if(!pad) return;
+  const ghost=padGhost(era); if(!ghost) return;
+  const top=ghost.querySelector('.sheet.top');
+  if(top){ top.classList.add('tear'); const pf=top.querySelector('.pf'); if(pf) pf.style.clipPath=tornPath('top',31); }
+  st.tearing=true; setStamp(st); st.tearing=false;
+  await wait(1000); ghost.remove(); if(tok!==animTok) return;
+}
+/* ===== THE MORPH (David, Sept 20 — D-010 / D-036) =====
+   The pieces of type that exist in BOTH homes, and how the docked one is turned relative to the
+   card one. writing-mode:vertical-rl sets the same latin run rotated 90° clockwise, so YEAR is a
+   rigid rotation between the homes — the glyphs never reshape, they turn. */
+function ERA_PARTS_(){ return ERA_PARTS_.o||(ERA_PARTS_.o=[
+  ['.yr',90,'u'], ['.ynum',0,'u'], ['.mo',0,'u'], ['.foot',0,'u'], ['.pipe',0,'u'], ['.rule',0,'xy']]); }
+/* center→docked must be OVER before the device paints 560 ms later — nothing ever overlays the
+   phone. The trip home has the stage to itself, so it can breathe. */
+function ERA_DUR_(){ return ERA_DUR_.o||(ERA_DUR_.o={dock:420, home:780}); }
+function ERA_EASE_(){ return 'cubic-bezier(.42,0,.2,1)'; }
+function eraBox(el){ const b=el.getBoundingClientRect(); return {x:b.left+b.width/2,y:b.top+b.height/2,w:b.width,h:b.height}; }
+function eraBase(el){ const v=(getComputedStyle(el).getPropertyValue('--pfb')||'').trim();
+  return v && v!=='none' ? v : 'translate(0%,0%) rotate(0deg)'; }
+function eraMorphClear(era){
+  era.querySelectorAll('.pad .pf').forEach(el=>{ el.style.transition=''; el.style.transform=''; });
+  ERA_PARTS_().forEach(p=>{ const el=era.querySelector('.pad .sheet.top '+p[0]); if(el){ el.style.transition=''; el.style.transform=''; el.style.transformOrigin=''; delete el.dataset.flipFrom; } });
+}
+/* The artifact never disappears and it never cross-dissolves: it has ONE face and two layouts, and
+   every piece of it TRAVELS. Measure where each piece is (first), switch the home, measure where it
+   has landed (last), put it back where it was with a transform, then play that transform to nothing.
+   The paper takes the box's own stretch; the type takes a uniform scale (and, for YEAR, the 90° the
+   strip turns it through) so no glyph is ever distorted on the way. */
+function setEraHome(era, home, instant, pre){
   if(era.dataset.home===home) return;
+  const pad=era.querySelector('.pad');
   const first=era.getBoundingClientRect();
+  const live = !instant && !!first.width && !era.classList.contains('hidden') && animRunning;
+  const parts=[];
+  if(live) ERA_PARTS_().forEach(p=>{ const el=pad&&pad.querySelector('.sheet.top '+p[0]); if(!el) return;
+    const b=(pre&&pre.get(el))||eraBox(el); if(b.w>0&&b.h>0) parts.push({el,rot:p[1],mode:p[2],f:b}); });
   era.classList.remove('center','docked'); era.classList.add(home); era.dataset.home=home;
-  if(instant || !first.width){ era.style.transition='opacity .8s ease'; era.style.transform=''; return; }
+  era.style.transform=''; era.style.transition='opacity .8s ease';
+  eraMorphClear(era);
+  fitEra(era);
+  if(!live){ era.classList.remove('morphing'); return; }
+  era.classList.add('morphing');
   const last=era.getBoundingClientRect();
-  // uniform scale (by height) so the type never stretches; the pad/strip faces crossfade
-  const dx=first.left-last.left, dy=first.top-last.top, k=first.height/last.height;
-  era.style.transition='opacity .8s ease'; era.style.transformOrigin='0 0';
-  era.style.transform=`translate(${dx}px,${dy}px) scale(${k})`;
-  void era.offsetWidth;
-  era.style.transition='transform 1s cubic-bezier(.65,0,.25,1), opacity .8s ease'; era.style.transform='';
+  const toDock = home==='docked';
+  const dur = toDock ? ERA_DUR_().dock : ERA_DUR_().home, ease=ERA_EASE_();
+  // the paper: the sheet box itself, held back on the box it came from
+  const px=first.left-last.left, py=first.top-last.top,
+        sx=first.width/Math.max(last.width,1), sy=first.height/Math.max(last.height,1);
+  const pfs=[...era.querySelectorAll('.pad:not(.ghost) .sheet.top .pf')];
+  const flip=`translate(${px.toFixed(2)}px,${py.toFixed(2)}px) scale(${sx.toFixed(4)},${sy.toFixed(4)})`;
+  pfs.forEach(el=>{ el.dataset.base=eraBase(el); el.style.transition='none'; el.style.transform=flip+' '+el.dataset.base; });
+  parts.forEach(p=>{
+    const l=eraBox(p.el); if(!(l.w>0)||!(l.h>0)) return;
+    const r = toDock ? -p.rot : p.rot;                    // bring the NEW layout back onto the OLD one
+    let tf;
+    if(p.mode==='xy'){ const kx=(r?p.f.h:p.f.w)/l.w, ky=(r?p.f.w:p.f.h)/l.h;
+      tf=`translate(${(p.f.x-l.x).toFixed(2)}px,${(p.f.y-l.y).toFixed(2)}px) rotate(${r}deg) scale(${kx.toFixed(4)},${ky.toFixed(4)})`; }
+    else { const k = r ? Math.sqrt((p.f.w/l.h)*(p.f.h/l.w)) : Math.sqrt((p.f.w/l.w)*(p.f.h/l.h));
+      tf=`translate(${(p.f.x-l.x).toFixed(2)}px,${(p.f.y-l.y).toFixed(2)}px) rotate(${r}deg) scale(${k.toFixed(4)})`; }
+    p.el.style.transition='none'; p.el.style.transformOrigin='50% 50%'; p.el.style.transform=tf;
+    p.el.dataset.flipFrom=p.f.x.toFixed(1)+','+p.f.y.toFixed(1);   // QC reads this (qc_notes_era)
+  });
+  void era.offsetWidth;                                   // commit the held-back frame, then release it
+  pfs.forEach(el=>{ el.style.transition=`transform ${dur}ms ${ease}`; el.style.transform='translate(0px,0px) scale(1,1) '+el.dataset.base; });
+  parts.forEach(p=>{ p.el.style.transition=`transform ${dur}ms ${ease}`; p.el.style.transform='translate(0px,0px) rotate(0deg) scale(1)'; });
+  const tok=animTok;
+  setTimeout(()=>{ era.classList.remove('morphing');
+    if(tok!==animTok) return; if(era.dataset.home!==home) return; eraMorphClear(era); }, dur+90);
+}
+/* THE SCENE NAME IS TYPED (David, Sept 20 — D-013): the foot line of a date card comes in letter by
+   letter with the real key clicks behind it, and one cue in five fumbles a letter and backspaces it.
+   Seeded from the cue id — the same cues fumble every night, so the show is identical. */
+function footTypo(txt, cueId){
+  const R=prng('foot:'+cueId);
+  const hit = R()<0.2;
+  const ix=[]; for(let i=1;i<txt.length;i++) if(/[a-z]/i.test(txt[i])) ix.push(i);
+  if(!hit || !ix.length) return {at:-1,ch:''};
+  const at=ix[Math.floor(R()*ix.length)];
+  const kb='qwertyuiopasdfghjklzxcvbnm';
+  let ch=kb[Math.floor(R()*kb.length)];
+  if(ch===txt[at].toLowerCase()) ch=kb[(kb.indexOf(ch)+7)%kb.length];
+  return {at,ch};
+}
+async function typeFoot(st,tok,cueId,keys){
+  const era=document.getElementById('era'); if(!era||era.classList.contains('hidden')) return;
+  if(!era.classList.contains('center')) return;
+  const pad=era.querySelector('.pad'); if(!pad||pad.classList.contains('house')) return;
+  const el=pad.querySelector('.sheet.top .foot'); if(!el) return;
+  const txt=String(st.foot||''); if(!txt.trim()) return;
+  const P=footTypo(txt,cueId||'x'), R=prng('footpace:'+(cueId||'x'));
+  let shown=''; el.textContent='';
+  const put=s=>{ shown=s; el.textContent=s; };
+  for(let i=0;i<txt.length;i++){
+    if(tok!==animTok){ el.textContent=txt; return; }
+    if(i===P.at){ put(shown+P.ch); sfx('click',{keys,seed:cueId+':ft'+i}); await wait(110+Math.round(R()*60));
+      if(tok!==animTok){ el.textContent=txt; return; }
+      put(shown.slice(0,-1)); sfx('del',{keys,seed:cueId+':fb'+i}); await wait(150+Math.round(R()*70));
+      if(tok!==animTok){ el.textContent=txt; return; } }
+    const c=txt[i]; put(shown+c);
+    sfx(c===' '?'keymod':'click',{keys,seed:cueId+':fk'+i});
+    await wait(c===' '?70+Math.round(R()*40):46+Math.round(R()*54));
+  }
+  el.textContent=txt;
 }
 /* tear-off time: forward pages tear away and fall, backward pages rise and settle */
 async function eraRoll(A,B,tok,st,long){
@@ -4190,18 +4421,23 @@ async function eraRoll(A,B,tok,st,long){
   const ROLL_MS=6000; let base=0; for(let i=1;i<=n;i++) base+=(i<=2?200:(i===n?380:(i>n-3?260:135)));
   const scale=(ROLL_MS-700)/base;   // every roll lasts 6 s — the Time Warp music, five clock ticks (David); the pages share it
   warpStart(ROLL_MS, dir<0);   // 5-4-3-2-1 gets the reverse clip
-  const docked=era.dataset.home==='docked';
-  const pad=era.querySelector(docked?'.strip':'.pad'), top=era.querySelector(docked?'.strip .stop':'.pad .top');
+  const pad=era.querySelector('.pad'), top=pad&&pad.querySelector('.sheet.top'); if(!top) return;
+  const page=()=>{ const c=top.cloneNode(true); c.classList.remove('top');
+    const pf=c.querySelector('.pf'); if(pf){ pf.style.transform=''; pf.style.transition=''; }
+    c.querySelectorAll('.yr,.ynum,.mo,.foot,.pipe,.rule').forEach(e=>{ e.style.transform=''; e.style.transition=''; });
+    return c; };
   const fill=(el,m,y)=>{ const q=s=>el.querySelector(s);
     if(q('.ynum')) q('.ynum').textContent=y; if(q('.mo')) q('.mo').textContent=MO_(m); if(q('.foot')) q('.foot').textContent=''; footSolo(el);
-    if(q('.smo')) q('.smo').textContent=MA_(m); if(q('.snum')) q('.snum').textContent=y; };
+    const mo=q('.mo'); if(!mo) return; mo.style.fontSize='';         // a long month has to fit its lane
+    const cs=getComputedStyle(el), inner=el.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);
+    const w=inkWidth(mo); if(inner>40 && w>inner) mo.style.fontSize=(parseFloat(getComputedStyle(mo).fontSize)*inner/w*0.98).toFixed(2)+'px'; };
   fill(top,A.getMonth(),yearN(A));   // the top page reads where we are leaving from, foot cleared
   for(let i=1;i<=n;i++){
     if(tok!==animTok){ warpStop(.25); return; }
     const k=Math.round(i*Math.abs(total)/n); const d=new Date(A.getFullYear(),A.getMonth()+dir*k,15); const m=d.getMonth(), y=yearN(d);
-    if(dir>0){ sfx('tear',{seed:'tear'+A.getTime()+i}); const old=top.cloneNode(true); old.classList.remove('top','stop'); old.classList.add('tear'); old.style.clipPath=tornPath('top',20+i); old.style.setProperty('--pp','var(--pp'+(1+(i%4))+')'); pad.appendChild(old);
+    if(dir>0){ sfx('tear',{seed:'tear'+A.getTime()+i}); const old=eraStamp(page()); old.classList.add('tear'); const opf=old.querySelector('.pf'); if(opf) opf.style.clipPath=tornPath('top',20+i); old.style.setProperty('--pp','var(--pp'+(1+(i%4))+')'); pad.appendChild(old);
       fill(top,m,y); old.addEventListener('animationend',()=>old.remove()); setTimeout(()=>old.remove(),1200); }
-    else { sfx('settle',{seed:'settle'+A.getTime()+i}); const nu=top.cloneNode(true); nu.classList.remove('top','stop'); fill(nu,m,y); nu.classList.add('settle'); nu.style.setProperty('--pp','var(--pp'+(1+(i%4))+')'); pad.appendChild(nu);
+    else { sfx('settle',{seed:'settle'+A.getTime()+i}); const nu=eraStamp(page()); fill(nu,m,y); nu.classList.add('settle'); nu.style.setProperty('--pp','var(--pp'+(1+(i%4))+')'); pad.appendChild(nu);
       setTimeout(()=>{ if(tok!==animTok){ nu.remove(); return; } if(nu.isConnected){ fill(top,m,y); nu.remove(); } },620); }
     const pe=document.getElementById('prevEra'); if(pe) pe.innerHTML=(MO_(m)+'<br>YEAR '+y).toUpperCase();
     const t=(i<=2?200:(i===n?380:(i>n-3?260:135)))*scale;
