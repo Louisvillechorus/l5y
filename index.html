@@ -804,6 +804,11 @@
      redraw. Only the sizes change between homes; weight, tracking and leading are held equal so the
      travelling type never has to reshape itself in the air. */
   #era.docked .sheet{padding:2.6vh .9vh 1.6vh}
+  /* the pages under the strip sit square in its lane. A 3° lean on a 1004 px sheet throws its
+     bottom corner 52 px to the left — past the strip, onto the widest device on the stage (the
+     CarPlay dash reaches 1593 px). Depth comes from the drop below instead (D-036). */
+  #era.docked .sheet.u1 .pf{--pfb:translate(0%,1.1%) rotate(0deg)}
+  #era.docked .sheet.u2 .pf{--pfb:translate(0%,2.4%) rotate(0deg)}
   /* the grit filter follows the MONTH, not the foot row: the row's hidden event line is nowrap and
      runs far outside the strip, and an SVG filter over that bounding box renders nothing at all. */
   #era.docked .ft{position:relative;z-index:1;order:-1;width:100%;filter:none}
@@ -4347,6 +4352,10 @@ function setEraHome(era, home, instant, pre){
   if(live) ERA_PARTS_().forEach(p=>{ const el=pad&&pad.querySelector('.sheet.top '+p[0]); if(!el) return;
     const b=(pre&&pre.get(el))||eraBox(el); if(b.w>0&&b.h>0) parts.push({el,rot:p[1],mode:p[2],f:b}); });
   era.classList.remove('center','docked'); era.classList.add(home); era.dataset.home=home;
+  // a page still falling out of the home we are LEAVING was aimed across a stage the phone is
+  // about to occupy: the last month of a roll is still in the air when the device paints. The
+  // calendar has arrived; the page it tore off goes with the home it belonged to (D-036).
+  era.querySelectorAll('.sheet.tear,.sheet.settle').forEach(e=>e.remove());
   era.style.transform=''; era.style.transition='opacity .8s ease';
   eraMorphClear(era);
   fitEra(era);
