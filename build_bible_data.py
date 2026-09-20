@@ -124,6 +124,14 @@ def onscreen(o):
         if o.get('toggle'): out.append(('  toggle: ', f"{o['toggle']['l']} — {'ON' if o['toggle'].get('on') else 'OFF'}"))
         return out
     if op=='findmy':
+        if o.get('me'):
+            m=o['me']
+            out=[('FIND MY — the ME tab: ', f"{m.get('n','')} · Share My Location {'ON' if m.get('share') is not False else 'OFF'}" +
+                  (f" · Sharing From: {m['from']}" if m.get('from') else ''))]
+            if m.get('action'): out.append(('  blue row: ', f"[{m['action']}] — tapping it makes THIS iPhone the device that reports his location"))
+            else: out.append(('  ', 'no “Use This iPhone as My Location” row — this iPhone IS the location now'))
+            if m.get('updates'): out.append(('  · ', f"Receive Location Updates — {m['updates']}"))
+            return out
         if o.get('person'):
             p=o['person']
             return [('FIND MY — her card: ', f"{p.get('n','')} · {p.get('loc','')}" +
@@ -179,13 +187,19 @@ def onscreen(o):
         return [('IT’S A MATCH — full-screen overlay: ', f"You and {o.get('n','')} have liked each other"),
                 ('  buttons: ', '[Send a Message] · [Keep Swiping]')]
     if op=='black': return [('PHONE AWAY — ', 'the phone drops; the calendar returns to center-stage')]
-    if op=='notifDismiss': return [('notification SWIPED AWAY — ', 'slides off and is gone')]
+    if op=='notifDismiss':
+        ms=max(120,o.get('ms',380))
+        return [('notification SWIPED AWAY — ', f"it travels the whole width of the glass over {ms/1000:.2f} s and is gone"
+                 + (' (a deliberate erasure, not a flick)' if ms>=1000 else ''))]
+    if op=='screenoff': return [('THE SCREEN GOES DARK — ', f"the display sleeps in her hand over ~{o.get('ms',1400)/1000:.1f} s; the phone stays on stage, black")]
+    if op=='bows': return [('BOWS — ', 'the house comes back: the title page center-stage with the photographs flooding behind it, faster than before the show. It holds until the operator comes off the show.')]
     return []
 
 def plays(o, cue, songwho):
     """Mechanics: what the engine performs on its own — navigation, sound, timing."""
     op=o['op']
-    if op=='device': return f"the {DEV.get(o['dev'],o['dev'])} shell appears — {o['who'].upper()}’s screen"
+    if op=='device': return (f"the {DEV.get(o['dev'],o['dev'])} shell appears — {o['who'].upper()}’s screen"
+                             + (' · THE WHOLE PHONE IS IN FRAME (nothing cropped) so the house watches him unlock it' if o.get('whole') else ''))
     if op=='notiftap': return ("TAP THE NOTIFICATION — a beat on the banner, Face ID passes, "
                                f"and the app opens DIRECTLY onto {APPNAME.get(o['to'],o['to'])}. One motion. No home screen. "
                                '(No touch dot anywhere in the show — cut by direction; the screen’s own feedback carries every tap.)')
@@ -210,6 +224,8 @@ def plays(o, cue, songwho):
     if op=='swipe': return 'sound: whoosh'
     if op=='docline': return 'sound: key-click burst (self-timed)'
     if op=='black': return 'the device drops; the calendar takes center-stage (never black — true black is the curtain only)'
+    if op=='screenoff': return 'the screen fades to black inside the bezel — status bar, thread and home bar with it. No sound: a display going to sleep is silent.'
+    if op=='bows': return 'the title page and the photo bed come back up and stay up; the operator’s questionnaire is held back until the show is left'
     return None
 
 OPS_SILENT={'device','clock'}  # covered inline
