@@ -1,6 +1,21 @@
 """LIVE CENSUS QC: play every cue exactly like the operator (advance) and log every sound that plays and every camera move — name, zoom, anchor, duration. Flags non-phone sounds, fast moves, and busy cues. Usage: CHROMIUM_PATH=... python3 qc_census.py"""
-import os,json,time
+import os,json,re,time
 from playwright.sync_api import sync_playwright
+def _transform_secs(tr):
+    """The duration of the TRANSFORM component of a transition string, in seconds.
+    'transform 1.52s cubic-bezier(...), opacity .8s ease' -> 1.52 (never the opacity's .8)."""
+    if not tr:
+        return None
+    for part in tr.split(','):
+        # a bezier's own commas split it; only the piece that names transform counts
+        if 'transform' not in part:
+            continue
+        m = re.search(r'transform\s+([\d.]+)(ms|s)\b', part)
+        if m:
+            v = float(m.group(1))
+            return v / 1000.0 if m.group(2) == 'ms' else v
+    return None
+
 KEEP={'send','receive','notif','mail','mailsent','lock','ftring','ring','end','connect','click','del','keymod','tink','unlock','ringback'}
 with sync_playwright() as p:
     b=p.chromium.launch(executable_path=os.environ['CHROMIUM_PATH']); pg=b.new_page(viewport={'width':1920,'height':1080}); errs=[]
@@ -36,7 +51,17 @@ for c in out:
     for l in snd:
         if l['n'] not in KEEP: bad.append(f"{c['cue']}: NON-PHONE SOUND {l['n']}")
     for l in cam:
-        if not l['instant'] and ('1.4' not in l['tr'] and '2.' not in l['tr'] and '3.' not in l['tr'] and '4.' not in l['tr'] and '5.' not in l['tr'] and '6.' not in l['tr']): bad.append(f"{c['cue']}: FAST CAMERA {l['tr']}")
+        # THE LAW: every camera move is one slow glide, 1.4 s (times camTempo, so 1.4-2.7 s on stage).
+        # This used to be a substring hack — it asked whether the transition string contained '1.4',
+        # '2.', '3.'… which called a legitimate 1.52 s glide FAST and would have waved through plenty
+        # of genuinely quick ones. Parse the transform's own duration and compare it to the floor.
+        if l['instant']:
+            continue
+        dur = _transform_secs(l['tr'])
+        if dur is None:
+            bad.append(f"{c['cue']}: CAMERA MOVE WITH NO READABLE DURATION {l['tr']!r}")
+        elif dur < 1.39:
+            bad.append(f"{c['cue']}: FAST CAMERA {dur:.2f}s (floor 1.4s) — {l['tr']}")
     if len(cam)>3: bad.append(f"{c['cue']}: {len(cam)} camera moves")
     print(f"{c['cue']:>5} {c['dur']:5.1f}s  sounds={names}  camMoves={len(cam)}  " + ' '.join(f"[z{l['z']} {l['anchor'] or 'c'} {'inst' if l['instant'] else l['tr'].split(' ')[1]}]" for l in cam))
 print('ERRS', errs if errs else 'none'); print('VIOLATIONS', bad if bad else 'none')

@@ -145,14 +145,35 @@ def a_one_whitfield(pg):
 
 # ---------- D-062 · the census's camera test can actually fail ----------
 def a_census_can_fail(pg):
+    """The census flags a camera move that is too fast. Prove the test DISCRIMINATES by feeding it
+    the engine's own transition strings — real slow glides must pass, real fast ones must be
+    caught. A source grep proves nothing; this runs the predicate."""
     bad = []
     src = open('qc_census.py', encoding='utf-8').read()
-    m = re.search(r"FAST[^\n]*\n?[^\n]*", src)
-    # the test matched any transition string containing '1.4','2.','3.'… which is every duration
-    if re.search(r"""\['1\.4','2\.','3\.','4\.','5\.','6\.'\]""", src) or \
-       re.search(r"""'2\.'\s*,\s*'3\.'""", src):
-        bad.append("the FAST CAMERA test matches every transition string the engine emits — "
-                   "a gate that cannot fail proves nothing")
+    m = re.search(r"if not l\['instant'\] and \((.*?)\): bad\.append", src, re.S)
+    if not m:
+        return ['could not find the FAST CAMERA test in qc_census.py — it may have been renamed']
+    expr = m.group(1)
+
+    def flags(tr):
+        return eval(expr, {}, {'l': {'tr': tr}})       # the census's own predicate, verbatim
+
+    # the real strings this engine emits, collected from the page
+    real = pg.evaluate("""(()=>{ const out=[]; const t=camTempo();
+        [1.4, 0.8, 1.0, 0.5, 2.2].forEach(d=>out.push(
+          `transform ${(d*t).toFixed(2)}s cubic-bezier(.33,.02,.16,1)`));
+        out.push('transform .8s cubic-bezier(.4,0,.2,1)');
+        out.push('transform 1s cubic-bezier(.65,0,.25,1), opacity .8s ease');
+        return out; })()""")
+    slow = [t for t in real if float(re.search(r'([\d.]+)s', t).group(1)) >= 1.4]
+    fast = [t for t in real if float(re.search(r'([\d.]+)s', t).group(1)) < 1.4]
+    for t in slow:
+        if flags(t):
+            bad.append(f'the census calls a legitimate slow glide fast: "{t}"')
+    caught = [t for t in fast if flags(t)]
+    if fast and not caught:
+        bad.append('the FAST CAMERA test caught none of '
+                   + '; '.join(f'"{t}"' for t in fast) + ' — it cannot fail')
     return bad
 
 
