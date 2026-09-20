@@ -563,8 +563,10 @@
   .happ .bdg{position:absolute;top:-3.5%;right:-3.5%;min-width:31%;height:31%;border-radius:99px;background:#ff3b30;
     color:#fff;font-size:.72em;font-weight:500;line-height:1;display:flex;align-items:center;justify-content:center;
     padding:0 .34em;z-index:2;font-variant-numeric:tabular-nums}
-  .happ.tapped .gi{animation:tapPress .34s ease}
-  @keyframes tapPress{40%{transform:scale(.84);filter:brightness(1.25)}100%{transform:scale(1)}}
+  /* the finger goes down and STAYS down until the app opens (David, Sept 20: make the click
+     longer — a .34s bounce back to rest was over before the audience found the icon) */
+  .happ.tapped .gi{animation:tapPress .22s cubic-bezier(.4,0,.2,1) forwards}
+  @keyframes tapPress{to{transform:scale(.84);filter:brightness(1.22)}}
   @keyframes ftpulse{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.25)}50%{box-shadow:0 0 0 .8em rgba(255,255,255,0)}}
   /* swipe-up hint on lock */
   .swipehint{margin-top:auto;text-align:center;color:rgba(255,255,255,.6);font-size:.72em;padding-bottom:1.1em}
@@ -1119,22 +1121,22 @@ const FALLBACK_SHOW = [
   hold:'The cruellest silence available in Year 5.',
   do:[{op:'untyping'}]},
  {id:'1.6',kind:'lyric',trig:'“Jamie is over and where can I turn?” — she goes to the memories',
-  what:'AUTO-PLAYS from this GO (~40 s — slowed by direction: each card’s caption centers, then the eye drifts down into the photograph). She leaves the thread and opens the Memories the notification offered: four cards scroll past — the dressing-room mirror (last year, Ohio round 2 day 1), the wedding, the ring, and the bear he brought at nine months — and she stays on the bear.',
+  what:'AUTO-PLAYS from this GO (~46 s — 15% slower by direction, Sept 20: each card’s caption centers, then the eye drifts down into the photograph). She leaves the thread and opens the Memories the notification offered: four cards scroll past — the dressing-room mirror (last year, Ohio round 2 day 1), the wedding, the ring, and the bear he brought at nine months — and she stays on the bear.',
   hold:'The bear card is the last thing she looks at. Let the camera sit.',
   do:[{op:'openapp',icon:'Facebook',to:'memories'},
-      {op:'pause',ms:1800},
+      {op:'pause',ms:2070},
       {op:'mem',scroll:'reluctant',yr:'1 year ago',who:'Cathy Wellerstein',av:'C',col:'#c2447a',when:'June 12',
        txt:'Ohio round 2 day 1',media:'M26 — Cathy in the dressing-room mirror',likes:64},
-      {op:'pause',ms:5000},
+      {op:'pause',ms:5750},
       {op:'mem',scroll:'drag',yr:'2 years ago',who:'Cathy Wellerstein',av:'C',col:'#c2447a',when:'June 12',
        txt:'married three weeks and 600 miles apart. worth it.',media:'M4 — the wedding portrait',likes:402},
-      {op:'pause',ms:5000},
+      {op:'pause',ms:5750},
       {op:'mem',scroll:'peek',yr:'3 years ago',who:'Cathy Wellerstein',av:'C',col:'#c2447a',when:'June 12',
        txt:'he asked. I said yes before he finished 💍',media:'M3a — the ring, the rowboat',likes:341},
-      {op:'pause',ms:5000},
+      {op:'pause',ms:5750},
       {op:'mem',scroll:'flick',yr:'4 years ago',who:'Cathy Wellerstein',av:'C',col:'#c2447a',when:'June 12',
        txt:'nine months in. he brought a bear 🧸',media:'M2 — Jamie giving Cathy the bear',likes:88},
-      {op:'pause',ms:1800},
+      {op:'pause',ms:2070},
       {op:'memgo',i:3}]},
  {id:'1.7',kind:'music',trig:'FINAL CUTOFF — the last chord of Still Hurting',
   what:'The phone drops; the calendar returns to center — JUNE · YEAR 5 holds until his song rolls it back.',
@@ -1144,18 +1146,18 @@ const FALLBACK_SHOW = [
 /* ============ 2 · SHIKSA GODDESS — JAMIE, his iPhone ============ */
 {n:2,t:'Shiksa Goddess',who:'jamie',cues:[
  {id:'2.1',kind:'music',trig:'TOP OF SHIKSA GODDESS — the first chord, as he enters',
-  what:'The calendar rolls BACK five years, page by page — JUNE · YEAR 5 → SEPTEMBER · YEAR 1 — then docks, and HIS phone rises, locked, walking home: three unread on the lock screen, her number on top.',
+  what:'The calendar rolls BACK five years, page by page — JUNE · YEAR 5 → SEPTEMBER · YEAR 1 — then docks, and HIS phone rises, locked, walking home: three unread on the lock screen, hers on top — an unsaved number Siri has already put a name to: “Maybe: Cathy”.',
   do:[{op:'clock',t:'11:38',d:'Friday, September 3, 2021'},{op:'stamp',t:'the first night'},
       {op:'device',dev:'iphone',who:'jamie'},
       {op:'notif',app:'Messages',w:'3h ago',title:'Mom ❤️',t:'dinner sunday. no excuses.'},
       {op:'notif',app:'Messages',w:'1h ago',title:'Rob',t:'well??? how’d it go'},
-      {op:'notif',app:'Messages',w:'56m ago',title:'+1 (917) 555-0148',t:'it’s cathy 😊 — from tonight'}]},
+      {op:'notif',app:'Messages',w:'56m ago',title:'Maybe: Cathy',t:'it’s cathy 😊 — from tonight'}]},
  {id:'2.2',kind:'lyric',trig:'“I’m breaking my mother’s heart” — THE SECOND TIME',
-  what:'ONE PIECE, AUTO-PLAYS from this GO (~50 s). Unlock, Messages, her thread — one message in it: her number. Three drafts die under the backspace key (the overwrought one, the bold one, the honest one) before two words survive: “home safe?” — typed, SENT, Delivered. Then her typing bubble rises… and stays up.',
+  what:'ONE PIECE, AUTO-PLAYS from this GO (~50 s). Unlock, Messages (the camera goes down to the dock and we watch the icon go in), her thread — one message in it, from “Maybe: Cathy”, and his eye keeps going back to it while he types. Three drafts die under the backspace key (the overwrought one, the bold one, the honest one) before two words survive: “home safe?” — typed, SENT, Delivered. Then her typing bubble rises… and stays up.',
   hold:'Nothing to fire until her call. The finale receives this exact text at 11:48.',
   do:[{op:'unlock'},{op:'openapp',icon:'Messages',to:'msglist'},
       {op:'msgrows',rows:[
-        {n:'+1 (917) 555-0148',p:'it’s cathy 😊 — from tonight',w:'10:42 PM',av:'#8f95a3',i:'#',un:true},
+        {n:'Maybe: Cathy',p:'it’s cathy 😊 — from tonight',w:'10:42 PM',av:'#8f95a3',i:'#',un:true},
         {n:'Rob',p:'well??? how’d it go',w:'10:12 PM',av:'#3f7fe0',i:'R',un:true},
         {n:'Mom ❤️',p:'dinner sunday. no excuses.',w:'8:05 PM',av:'#e0783f',i:'M',un:true},
         {n:'Dr. Adler',p:'gave your name to an agent — Ms. Whitfield. call her office.',w:'Yesterday',av:'#8a6d10',i:'A'},
@@ -1164,14 +1166,14 @@ const FALLBACK_SHOW = [
         {n:'S. Rosen',p:'I’ll call you this week',w:'2 wks ago',av:'#b45ac9',i:'S'},
         {n:'Columbia workshop',p:'Adam: notes attached for Thursday',w:'2 wks ago',av:'#7a8699',i:'C'}]},
       {op:'pause',ms:1200},
-      {op:'hover',row:'+1 (917) 555-0148'},{op:'tap'},{op:'push',to:'thread',contact:'+1 (917) 555-0148',sub:'not in contacts'},
+      {op:'hover',row:'Maybe: Cathy'},{op:'tap'},{op:'push',to:'thread',contact:'Maybe: Cathy',sub:'not in contacts'},
       {op:'history',items:[{k:'stamp',t:'Today|10:42 PM'},{k:'them',t:'it’s cathy 😊 — from tonight'}]},
       {op:'pause',ms:1200},
-      {op:'clock',t:'11:39'},{op:'type',pace:'hesitant',t:'Tonight was maybe the best night of my whole life'},
+      {op:'clock',t:'11:39'},{op:'type',pace:'hesitant',look:true,t:'Tonight was maybe the best night of my whole life'},
       {op:'pause',ms:3800},{op:'wipe'},{op:'pause',ms:2000},
-      {op:'type',t:'So when can I see you again. Tomorrow?'},
+      {op:'type',look:true,t:'So when can I see you again. Tomorrow?'},
       {op:'pause',ms:3400},{op:'wipe'},{op:'pause',ms:1800},
-      {op:'clock',t:'11:44'},{op:'type',pace:'hesitant',t:'ok so I know this is fast but'},
+      {op:'clock',t:'11:44'},{op:'type',pace:'hesitant',look:true,t:'ok so I know this is fast but'},
       {op:'pause',ms:2600},{op:'wipe'},{op:'pause',ms:4200},
       {op:'clock',t:'11:48'},{op:'stampline',t:'|11:48 PM'},{op:'type',t:'home safe?'},
       {op:'pause',ms:2400},
@@ -1179,8 +1181,8 @@ const FALLBACK_SHOW = [
       {op:'pause',ms:4200},
       {op:'typing'}]},
  {id:'2.3',kind:'lyric',trig:'“If you had a pierced tongue” — he is ON THE PHONE with Cathy',
-  what:'The bubble never resolves as a text — she called instead. Incoming, then connected; the timer ticks.',
-  do:[{op:'call',n:'+1 (917) 555-0148',st:'incoming call',dir:'in'},{op:'pause',ms:3200},{op:'callState',st:'connected · 00:00'}]},
+  what:'The bubble never resolves as a text — she called instead. Incoming (Decline · Answer), then connected: the camera pulls out to the whole call UI as the buttons become mute · end · speaker, then comes back in on “Maybe: Cathy”. The timer ticks.',
+  do:[{op:'call',n:'Maybe: Cathy',st:'incoming call',dir:'in'},{op:'pause',ms:3200},{op:'callState',st:'connected · 00:00'}]},
  {id:'2.4',kind:'lyric',trig:'“…waiting for someone like—” (cut off) — HE HANGS UP; phone away',
   what:'Call Ended, the phone drops, the calendar returns: SEPTEMBER · YEAR 1 holds. Nothing else until See I’m Smiling.',
   do:[{op:'black'}]},
@@ -1941,29 +1943,34 @@ function mailReadHTML(st){
       ${(m.body||[]).map(p=>`<p style="margin:0 0 .85em">${p}</p>`).join('')}</div>
   </div></div>`;
 }
+/* the control row of a call, by state — Decline/Answer while it rings, mute · end · speaker once
+   it is connected. Its own function because the live handler swaps it in place when he answers. */
+function callBtnsHTML(c){
+  return /incoming/i.test((c&&c.st)||'')
+    ? `<div style="display:flex;gap:14%;width:100%;justify-content:center">
+        <div style="width:4.2em;height:4.2em;border-radius:50%;background:#e0483e;display:flex;align-items:center;justify-content:center;font-size:1.7em">✕</div>
+        <div style="width:4.2em;height:4.2em;border-radius:50%;background:#39c26a;display:flex;align-items:center;justify-content:center;font-size:1.7em">✆</div></div>`
+    : `<div style="display:flex;gap:8%;width:100%;justify-content:center;align-items:center">
+        <div style="width:3.4em;height:3.4em;border-radius:50%;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:1.35em">🔇</div>
+        <div style="width:4.2em;height:4.2em;border-radius:50%;background:#e0483e;display:flex;align-items:center;justify-content:center;font-size:1.7em">✕</div>
+        <div style="width:3.4em;height:3.4em;border-radius:50%;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:1.35em">🔊</div></div>`;
+}
 function callHTML(st){
   const c=st.call||{n:'',st:''};
   if(/ended/i.test(c.st||'')) return `<div class="layer fs" style="background:linear-gradient(180deg,#26303f,#0d1118);color:#fff">
     <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1em">
-      <div style="font-size:2.7em;font-weight:500;opacity:.85;text-align:center">${c.n}</div>
+      <div class="cnm" style="font-size:2.7em;font-weight:500;opacity:.85;text-align:center">${c.n}</div>
       <div style="font-family:'Courier Prime',monospace;font-size:1.05em;letter-spacing:.18em;color:#aeb6cc;text-transform:uppercase">Call Ended</div>
       <div style="width:7em;height:7em;border-radius:50%;${avStyle(c.n,'#3a4568')};display:flex;align-items:center;justify-content:center;font-size:3em;opacity:.6;margin-top:.6em">${avText(c.n,(c.n||'?')[0])}</div>
     </div></div>`;
   return `<div class="layer fs" style="background:linear-gradient(180deg,#26303f,#0d1118);color:#fff">
     <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:16% 8% 12%">
-      <div style="text-align:center"><div style="font-size:2.5em;font-weight:500;line-height:1.1">${c.n}</div>
+      <div style="text-align:center"><div class="cnm" style="font-size:2.5em;font-weight:500;line-height:1.1">${c.n}</div>
         <div class="cst" style="font-family:'Courier Prime',monospace;font-size:1.05em;letter-spacing:.18em;color:#aeb6cc;
           text-transform:uppercase;margin-top:.5em">${liveTimerHTML(c.st)}</div></div>
       <div style="width:6.4em;height:6.4em;border-radius:50%;${avStyle(c.n,'#3a4568')};display:flex;align-items:center;
         justify-content:center;font-size:2.8em">${avText(c.n,(c.n||'?')[0])}</div>
-      ${/incoming/i.test(c.st||'')
-        ? `<div class="callbtns" style="display:flex;gap:14%;width:100%;justify-content:center">
-            <div style="width:4.2em;height:4.2em;border-radius:50%;background:#e0483e;display:flex;align-items:center;justify-content:center;font-size:1.7em">✕</div>
-            <div style="width:4.2em;height:4.2em;border-radius:50%;background:#39c26a;display:flex;align-items:center;justify-content:center;font-size:1.7em">✆</div></div>`
-        : `<div class="callbtns" style="display:flex;gap:8%;width:100%;justify-content:center;align-items:center">
-            <div style="width:3.4em;height:3.4em;border-radius:50%;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:1.35em">🔇</div>
-            <div style="width:4.2em;height:4.2em;border-radius:50%;background:#e0483e;display:flex;align-items:center;justify-content:center;font-size:1.7em">✕</div>
-            <div style="width:3.4em;height:3.4em;border-radius:50%;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:1.35em">🔊</div></div>`}
+      <div class="callbtns" style="width:100%">${callBtnsHTML(c)}</div>
       </div></div>`;
 }
 function ftHTML(st){
@@ -3219,6 +3226,10 @@ async function rubberBand(el,px,tok){  // iOS edge bounce: content stretches pas
   await wait(280); kids.forEach(c=>{c.style.transition='';c.style.transform='';});
 }
 async function humanScroll(el,target,seed,tok,opts={}){
+  /* THE MEMORY CARDS RUN SLOWER (David, Sept 20 — "slow the memory animations 15%"): a
+     single factor on every duration and every stall of the gesture, so the whole beat
+     stretches evenly instead of one part of it dragging. */
+  const K=opts.slow||1, ra=(e,f,t,ms,ez,tk)=>rafTo(e,f,t,ms*K,ez,tk), hold=ms=>wait(ms*K);
   if(!el) return; el.style.scrollBehavior='auto';
   const R=prng(seed); let cur=el.scrollTop;
   const dist=target-cur; if(Math.abs(dist)<4){ el.scrollTop=target; return; }
@@ -3226,49 +3237,49 @@ async function humanScroll(el,target,seed,tok,opts={}){
   const GESTURES=['flick','drag','peek'];
   const g = opts.gesture || GESTURES[Math.floor(R()*GESTURES.length)];
   const bounce=async over=>{ if(atEdge()) await rubberBand(el,Math.abs(over)*Math.sign(dist),tok);
-    else { await rafTo(el,el.scrollTop,target+over*.9,140,p=>p,tok);
-           await rafTo(el,el.scrollTop,target,220+R()*120,easeInOut,tok);} };
+    else { await ra(el,el.scrollTop,target+over*.9,140,p=>p,tok);
+           await ra(el,el.scrollTop,target,220+R()*120,easeInOut,tok);} };
 
   if(g==='flick'){                       // quick and careless: barely touches it
-    await rafTo(el,cur,cur+dist*0.08,60+R()*40,p=>p,tok);
-    await rafTo(el,el.scrollTop,target,210+R()*90,easeOutCubic,tok);
+    await ra(el,cur,cur+dist*0.08,60+R()*40,p=>p,tok);
+    await ra(el,el.scrollTop,target,210+R()*90,easeOutCubic,tok);
     await bounce(14+R()*14);
   }
   else if(g==='drag'){                   // thumb stays down most of the way, slow, 1–2 micro-stalls
     let covered=cur; const stops=1+Math.floor(R()*2);
     for(let i=0;i<stops;i++){
       const seg=covered+dist*(0.28+R()*0.22);
-      await rafTo(el,covered,seg,340+R()*260,easeInOut,tok); covered=seg;
-      await wait(120+R()*260); if(tok!==animTok){el.scrollTop=target;return;} }
-    await rafTo(el,covered,target,260+R()*140,easeOutCubic,tok);
+      await ra(el,covered,seg,340+R()*260,easeInOut,tok); covered=seg;
+      await hold(120+R()*260); if(tok!==animTok){el.scrollTop=target;return;} }
+    await ra(el,covered,target,260+R()*140,easeOutCubic,tok);
     await bounce(5+R()*8);               // gentle: dragged scrolls barely overshoot
   }
   else if(g==='peek'){                   // stalls halfway — looking at what's coming — then commits
     const mid=cur+dist*(0.42+R()*0.16);
-    await rafTo(el,cur,mid,300+R()*160,easeInOut,tok);
-    await wait(480+R()*380); if(tok!==animTok){el.scrollTop=target;return;}
-    await rafTo(el,mid,target,240+R()*110,easeOutCubic,tok);
+    await ra(el,cur,mid,300+R()*160,easeInOut,tok);
+    await hold(480+R()*380); if(tok!==animTok){el.scrollTop=target;return;}
+    await ra(el,mid,target,240+R()*110,easeOutCubic,tok);
     await bounce(10+R()*12);
   }
   else if(g==='reluctant'){              // a flick that doesn't commit: snaps back, waits, drags over
     const shy=cur+dist*(0.30+R()*0.12);
-    await rafTo(el,cur,shy,150+R()*70,easeOutCubic,tok);
-    await rafTo(el,shy,cur,300+R()*140,easeInOut,tok);   // paged feed rejects it — snap back
-    await wait(560+R()*420); if(tok!==animTok){el.scrollTop=target;return;}
-    await rafTo(el,cur,cur+dist*0.7,520+R()*260,easeInOut,tok);
-    await wait(140+R()*160);
-    await rafTo(el,el.scrollTop,target,300+R()*140,easeInOut,tok);
+    await ra(el,cur,shy,150+R()*70,easeOutCubic,tok);
+    await ra(el,shy,cur,300+R()*140,easeInOut,tok);   // paged feed rejects it — snap back
+    await hold(560+R()*420); if(tok!==animTok){el.scrollTop=target;return;}
+    await ra(el,cur,cur+dist*0.7,520+R()*260,easeInOut,tok);
+    await hold(140+R()*160);
+    await ra(el,el.scrollTop,target,300+R()*140,easeInOut,tok);
     await bounce(4+R()*6);
   }
   else {                                 // multi-flick reading scroll (threads): uneven, with corrections
     const flicks=opts.flicks||2;
     for(let i=0;i<flicks;i++){ if(tok!==animTok){el.scrollTop=target;return;}
       const last=(i===flicks-1); const step=last?(target-el.scrollTop):dist/flicks*(0.75+R()*0.5);
-      await rafTo(el,el.scrollTop,el.scrollTop+step*0.22,120+R()*70,p=>p,tok);
-      await rafTo(el,el.scrollTop,last?target:el.scrollTop+step*0.78,300+R()*180,easeOutCubic,tok);
-      if(!last){ await wait(160+R()*300);
-        if(R()<0.3){ await rafTo(el,el.scrollTop,el.scrollTop-Math.sign(step)*(10+R()*22),150,easeInOut,tok);
-                     await wait(120+R()*160);} } }
+      await ra(el,el.scrollTop,el.scrollTop+step*0.22,120+R()*70,p=>p,tok);
+      await ra(el,el.scrollTop,last?target:el.scrollTop+step*0.78,300+R()*180,easeOutCubic,tok);
+      if(!last){ await hold(160+R()*300);
+        if(R()<0.3){ await ra(el,el.scrollTop,el.scrollTop-Math.sign(step)*(10+R()*22),150,easeInOut,tok);
+                     await hold(120+R()*160);} } }
     await bounce(8+R()*10);
   }
   el.scrollTop=target;
@@ -3379,12 +3390,17 @@ async function playCue(cue, st, tok){
         await wait(420); if(tok!==animTok) return;
         const tmp={...st,app:'home'}; swapLayer(tmp,'fadeUp'); await wait(620);   // a beat on the home screen
       }
-      // a beat on the home screen, then the icon presses and the app opens
-      // (no touch dot, by direction — the icon's press animation carries the tap)
-      await wait(520); if(tok!==animTok) return;
-      /* no pan to the icon: the app opens 400 ms later and would override it (David: no jerks) */ sfx('tap');
+      /* WE SEE THE CLICK (David, Sept 20 — "we never see him click the Messages app; move the
+         camera up quicker and make the click longer; EVERYWHERE this happens"). The eye goes to
+         the icon the moment the home screen lands — the dock is outside the resting frame, so
+         without this the press happened off-camera — and the icon then holds its pressed state
+         long enough to read from the house before the app opens. */
+      await wait(240); if(tok!==animTok) return;
+      camPush(`.happ[data-app="${o.icon}"]`, 3.0, 0);
+      await wait(1400*camTempo()+140); if(tok!==animTok) return;     // the one slow glide lands before the finger does
+      sfx('tap');
       stacks().forEach(k=>{const ic=k.querySelector(`.happ[data-app="${o.icon}"]`); if(ic) ic.classList.add('tapped');});
-      await wait(380); if(tok!==animTok) return;
+      await wait(950); if(tok!==animTok) return;                     // the press reads: held, not flicked
       applyOp(st,o); swapLayer(st,'appOpen'); camWide(); await wait(420); continue; }
     if(o.op==='setapp'){ applyOp(st,o); swapLayer(st,'fadeUp'); camWide(); await wait(150); continue; }
     if(o.op==='hover'){ applyOp(st,o);
@@ -3421,6 +3437,15 @@ async function playCue(cue, st, tok){
       stacks().forEach(k=>{const kb=k.querySelector('.kbd'); if(kb) kb.classList.add('up');
         const pr=k.querySelector('.predict'); if(pr) pr.classList.add('up');});
       camPush('.imsg .bar .field', 3.0, 80);   // the eyes go to the field as the keyboard comes up
+      if(o.look){
+        /* HIS MIND GOES BACK AND FORTH (David, Sept 20 — "it should go back and forth, keyboard
+           to message, like his mind, until 'home safe?'"). Mid-draft the camera leaves the keys,
+           reads what she wrote, and comes back down. Only the drafts that die ask for it. */
+        const per=o.pace==='angry'?34:o.pace==='hesitant'?80:o.pace==='slow'?140:52;
+        const est=Math.max(1200,(o.t||'').length*per);
+        camPush('.thread .bub.them', 3.0, Math.round(est*0.34), null, null, true);
+        camPush('.imsg .bar .field', 3.0, Math.round(est*0.34)+1900, null, null, true);
+      }
       await wait(340); if(tok!==animTok) return;
       const text=o.t;
       const TR=prng('type'+cue.id+text.length);
@@ -3512,9 +3537,15 @@ async function playCue(cue, st, tok){
     if(o.op==='typing'){ applyOp(st,o);
       stacks().forEach(k=>{const t=k.querySelector('.thread'); if(!t||t.querySelector('.typing'))return;
         const d=document.createElement('div'); d.className='typing fadeUp'; d.innerHTML='<i></i><i></i><i></i>'; t.appendChild(d);});
-      scrollThreads(); camPush('.thread .typing', 3.0, 80); continue; }
+      /* 1.3 → 1.4 WAS A JUMP CUT (David: "JARRING"). The receipt cue leaves the camera still, and
+         then the bubble was appended and the thread SNAPPED to its foot — the whole conversation
+         hopped inside a frozen frame. iMessage rolls; so does this. */
+      await threadRoll(tok,420); if(tok!==animTok) return;
+      camPush('.thread .typing', 3.0, 80); continue; }
     if(o.op==='untyping'){ applyOp(st,o);
-      stacks().forEach(k=>{const t=k.querySelector('.typing'); if(t) t.remove();}); camPush('.thread > :last-child', 3.0, 200); continue; }
+      stacks().forEach(k=>{const t=k.querySelector('.typing'); if(t) t.remove();});
+      await threadRoll(tok,420); if(tok!==animTok) return;
+      camPush('.thread > :last-child', 3.0, 200); continue; }
     if(o.op==='photoTab'){
       await wait(560); if(tok!==animTok) return;
       applyOp(st,o); swapLayer(st,'fadeUp'); await wait(380); continue; }
@@ -3546,12 +3577,27 @@ async function playCue(cue, st, tok){
       if(/connected/i.test(o.st||'')){ sfxRingStop(); if(o.op==='ftState') sfx('connect'); }   // a phone call connects silently; FaceTime chimes
       if(/ended/i.test(o.st||'')){ sfxRingStop(); sfx('end'); } }
     if(o.op==='callState'){
-      // the call screen stays put: only its status line changes (no re-render, no flash)
+      // the call screen stays put: only its status line and its controls change (no re-render, no flash)
       applyOp(st,o);
       const inPlace=stacks().map(k=>{ const e=k.querySelector('.cst'); if(!e) return false;
-        e.innerHTML=liveTimerHTML(st.call?st.call.st:''); return true; });
+        e.innerHTML=liveTimerHTML(st.call?st.call.st:'');
+        // BUTTONS MATCH STATE (CLAUDE.md): answering swaps Decline/Answer for mute · end · speaker.
+        // The in-place update used to rewrite only the status line, so a connected call was still
+        // offering to answer itself.
+        const bt=k.querySelector('.callbtns'); if(bt) bt.innerHTML=callBtnsHTML(st.call||{});
+        return true; });
       if(!inPlace.length || !inPlace.every(Boolean)) swapLayer(st,null);
-      await wait(200); continue; }
+      await wait(200);
+      if(!/ended/i.test(o.st||'') && st.dev==='iphone'){
+        /* A CONNECTED CALL SHOWS ITS CONTROLS (David, 2.4: "zoom out to the whole call UI
+           first, then quickly in on Maybe: Cathy"). The controls live at the foot of the
+           screen, outside the reading window, so answering moves the camera: out to the whole
+           phone while the buttons change under our eyes, then back in on who it is. It is the
+           only shot in the show allowed to leave black beside the phone, and only for a beat. */
+        camFull(); await wait(1400*camTempo()+1500); if(tok!==animTok) return;   // the glide out, then a beat to READ the controls
+        camPush('.cnm', 3.0, 0, null, null, true); await wait(1500); if(tok!==animTok) return;
+      }
+      continue; }
     if(o.op==='mailopen'){
       await wait(360); if(tok!==animTok) return;
       applyOp(st,o); swapLayer(st,'pushIn'); camPush('.mailbody p:first-child', 2.2, 450); await wait(430); continue; }
@@ -3566,8 +3612,8 @@ async function playCue(cue, st, tok){
         jump(f,Math.max(0,(cards.length-2)*f.clientHeight)); });
       await wait(120);
       await Promise.all(stacks().map(k=>{const f=k.querySelector('.memfeed'); if(!f) return null;
-        return humanScroll(f,(f.querySelectorAll('.memscreen').length-1)*f.clientHeight,memSeed,tok,{gesture:o.scroll});}));
-      camPush('.memfeed .memscreen:last-child .body', 2.6, 60, null, null, true); camPush('.memfeed .memscreen:last-child .media', 2.2, 2600, 'center', 3.2, true, true); await wait(520); continue; }
+        return humanScroll(f,(f.querySelectorAll('.memscreen').length-1)*f.clientHeight,memSeed,tok,{gesture:o.scroll,slow:MEM_SLOW_()});}));
+      camPush('.memfeed .memscreen:last-child .body', 2.6, 60*MEM_SLOW_(), null, null, true); camPush('.memfeed .memscreen:last-child .media', 2.2, 2600*MEM_SLOW_(), 'subjtop', 3.2*MEM_SLOW_(), true, true); await wait(520*MEM_SLOW_()); continue; }
     if(o.op==='post'){ applyOp(st,o); swapLayer(st,null); sfx('swipe',{soft:true,seed:'post'+cue.id});
       stacks().forEach(k=>{ const f=k.querySelector('.fbfeed'); if(!f) return;
         const posts=f.querySelectorAll('.post');
@@ -3606,7 +3652,9 @@ async function playCue(cue, st, tok){
         books:'books',mapsdrive:'mapsdrive'};
       swapLayer(st, appMap[o.op]&&wasApp!==st.app ? 'appOpen' : 'fadeUp'); if(wasApp!==st.app) camWide();   // the camera rests only when the register changes
       if(o.op==='mapsdrive' && st.dev!=='carplay') camPush('.mapsdrive .dv-map', 2.2, 900);   // on a phone: a medium shot on the road (the dash needs none)
-      if(o.op==='findmy') camPush('.fmcard', 2.6, 500);                         // her card: the sheet with Share My Location
+      /* Find My needs no push: CLAUDE.md — "a Find My sheet rises into a frame that already holds
+         it", and camRest already anchors this register to the BOTTOM. The old push re-centred the
+         card, which at the resting fill cut 66px off its head and 52px off its foot. */
       await wait(o.op==='swipe'?520:300); continue; }
     if(o.op==='thumb'){ applyOp(st,o);
       stacks().forEach(k=>{const g=k.querySelector('.grid'); if(!g)return;
@@ -3618,9 +3666,9 @@ async function playCue(cue, st, tok){
       applyOp(st,o);
       await Promise.all(stacks().map(k=>{const f=k.querySelector('.memfeed'); if(!f) return null;
         const cards=f.querySelectorAll('.memscreen'); const i=Math.max(0,Math.min(cards.length-1,o.i||0));
-        return humanScroll(f,i*f.clientHeight,'memgo'+cue.id,tok,{gesture:'drag',flicks:2});}));
-      camPush(`.memfeed .memscreen:nth-child(${(o.i||0)+1}) .body`, 2.6, 0, null, null, true); camPush(`.memfeed .memscreen:nth-child(${(o.i||0)+1}) .media`, 2.2, 2600, 'center', 3.2, true, true);
-      await wait(400); continue; }
+        return humanScroll(f,i*f.clientHeight,'memgo'+cue.id,tok,{gesture:'drag',flicks:2,slow:MEM_SLOW_()});}));
+      camPush(`.memfeed .memscreen:nth-child(${(o.i||0)+1}) .body`, 2.6, 0, null, null, true); camPush(`.memfeed .memscreen:nth-child(${(o.i||0)+1}) .media`, 2.2, 2600*MEM_SLOW_(), 'subjtop', 3.2*MEM_SLOW_(), true, true);
+      await wait(400*MEM_SLOW_()); continue; }
     if(o.op==='curtain'){ bedStop(2); SHOW_OVER=true;
       setTimeout(()=>{ if(!SHOW_OVER) return; GATE.step=1; GATE.cast=null; GATE.perf=null; gatePaint();
         document.body.classList.add('needgate'); }, 2600); }   // the night is over: ask the questions again
@@ -3637,7 +3685,18 @@ async function playCue(cue, st, tok){
     if(o.op==='prologue'){   // the title page holds for `ms`, then tears off — the era beneath it
       st.prologueLive=true; setStamp(st);
       if(o.ms){ await wait(o.ms); if(tok!==animTok){ st.prologueLive=false; return; } }
-      st.prologueLive=false; st.perfcard=false; st.housecard=false; paintAll(st); await tearTop(st,tok); if(tok!==animTok) return; continue; }
+      st.prologueLive=false; st.perfcard=false; st.housecard=false; paintAll(st);
+      /* THE PAGE IN FLIGHT KEEPS ITS FACE (David, Sept 20 — the "really stupid framing thing"
+         between 1.0b and 1.1). tearTop clones the top sheet and then repaints the pad as a date
+         card; the clone lives inside that pad, so the title page was re-typeset in mid-air —
+         THE LAST jumped from 9vh to 28vh and wrapped onto two lines, and the 5 ran off the
+         bottom edge of the sheet for the whole second it fell. Baking the face it is wearing
+         onto the sheet before the clone is taken (and lifting it off the live sheet the moment
+         after) makes the falling page look exactly like the page that was on the pad. */
+      const frz=padFaceFreeze();
+      const falling=tearTop(st,tok);        // the clone is taken synchronously, wearing the frozen face
+      padFaceThaw(frz);
+      await falling; if(tok!==animTok) return; continue; }
     if(o.op==='docline'){ applyOp(st,o); paintAll(st); scrollThreads(); await wait(240); continue; }
     applyOp(st,o); paintAll(st);
   }
@@ -3751,7 +3810,7 @@ function estDuration(cue){
       case 'memgo': t+=1400+1600; break;
       case 'notiftap': t+=980; break;
       case 'unlock': t+=940; break;
-      case 'openapp': t+=1900; break;
+      case 'openapp': t+=2500; break;   // home beat + the glide to the icon + the held press
       case 'setapp': t+=150; break;
       case 'tap': t+=340; break;
       case 'push': t+=430; break;
@@ -3770,7 +3829,8 @@ function estDuration(cue){
       case 'them': t+=1000; break;
       case 'me': t+=340; break;
       case 'mailopen': t+=790; break;
-      case 'ftState': case 'callState': case 'findmy': case 'call': case 'facetime': case 'books': case 'mapsdrive': case 'like': t+=300; break;
+      case 'callState': t+=/ended/i.test(o.st||'')?300:4600; break;   // the wide beat on the controls, then back in
+      case 'ftState': case 'findmy': case 'call': case 'facetime': case 'books': case 'mapsdrive': case 'like': t+=300; break;
       default: break;
     }
   }
@@ -3858,7 +3918,12 @@ const CAST_ASSETS={ml:{},ac:{}};
    when the file exists every avatar of that person (rows, thread header, calls, FaceTime, Find My, Facebook) shows it. */
 function avAsset(name){ const n=String(name||''); return /^jamie/i.test(n)?assetFor('M24'):/^cathy/i.test(n)?assetFor('M25'):null; }
 function avStyle(name,fallback){ const u=avAsset(name); return u ? `background:url('${u}') center/cover no-repeat` : `background:${fallback}`; }
-function avText(name,fallback){ return avAsset(name) ? '' : fallback; }
+/* an unsaved number that Siri has put a name to ("Maybe: Cathy") has no contact card, so iOS
+   draws the generic person, never a monogram — the whole point is that she is not in Contacts */
+function avText(name,fallback){ if(avAsset(name)) return '';
+  return /^\s*maybe:/i.test(name||'')
+    ? '<svg viewBox="0 0 24 24" fill="currentColor" style="width:.68em;height:.68em;opacity:.9"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.2 3.6-6.6 8-6.6s8 2.4 8 6.6z"/></svg>'
+    : fallback; }
 function assetFor(label){
   const m=/^\s*([MV]\d+[a-z]?)\b/.exec(label||''); if(!m) return null;
   return (CAST_ASSETS[CAST]||{})[m[1]]||null;
@@ -4330,6 +4395,11 @@ function camGeom(c){
 }
 function CAM_T_(){ return CAM_T_.a||(CAM_T_.a=[]); }   // hoisted: boot code runs before this block
 function camTimersClear(){ CAM_T_().forEach(clearTimeout); CAM_T_().length=0; }
+function MEM_SLOW_(){ return 1.15; }   // the memory cards run 15% slower than the rest of the show (David, Sept 20)
+/* a thread follows its own foot instead of snapping to it (see the typing op) */
+function threadRoll(tok,ms){ return Promise.all(stacks().map(k=>{ const t=k.querySelector('.thread'); if(!t) return null;
+  const to=t.scrollHeight-t.clientHeight; if(Math.abs(to-t.scrollTop)<2){ t.scrollTop=to; return null; }
+  return rafTo(t,t.scrollTop,to,ms||420,easeOutCubic,tok); })); }
 function camTempo(){ return ({0:1.9, 5:1.5, 7:1.5, 12:1.6, 13:1.6})[typeof si==='number'?si:0]||1; }   // Climbing Uphill reads fast: no slow glides there   // Still Hurting, Christmas, See I'm Smiling, Goodbye Until Tomorrow: slow songs, slow eyes
 function camApply(c,g,z,qx,qy,anchor,instant,dur){
   const {F,P0x,P0y,d1,d2,dw,dh,uw,ux,H}=g; const Cx=ux+uw/2, Cy=F.top+H/2;
@@ -4341,19 +4411,93 @@ function camApply(c,g,z,qx,qy,anchor,instant,dur){
   const dr=c.firstElementChild; if(dr&&dr.classList.contains('drift')) dr.style.transformOrigin = anchor==='top'?'50% 0%':anchor==='bottom'?'50% 100%':'50% 50%';
   c.style.transform=`translate(${tx.toFixed(1)}px,${ty.toFixed(1)}px) scale(${z.toFixed(3)})`; c.dataset.z=z.toFixed(2);
 }
+/* ONE SCALE FOR THE WHOLE SHOW (David, Sept 20 — the same register was rendering at seven
+   different sizes, and 22 cues left black bars down both sides). The resting scale is the scale
+   at which the phone exactly fills the reading window; the camera only ever PANS from there.
+   Nothing is allowed to open a black bar, so this is a floor as well as a rest. */
+function camFill(g){ return Math.min(CAM_FILL_(), g.uw/g.dw); }
+/* THE LOCK SCREEN FRAMES THE STACK, NOT THE TOP CARD (David: "not centred on the 2 texts — the
+   clock is chopped and so is Rob's card"). At the resting fill the window holds a little under
+   three notification cards, so the PAN is chosen, never the zoom: the newest card is always
+   whole, as many of the cards beneath it as fit are whole, and the frame edge never falls inside
+   the clock. When the clock and a second card cannot both be whole, the clock goes — never a
+   card (David's priority). Returns the local y the window must be centred on, or null. */
+function camStackPlan(c,g,z){
+  const cards=[...c.querySelectorAll('.nstack .notif')]; if(!cards.length) return null;
+  const Hl=g.F.height/z;
+  /* measured from LAYOUT, never from getBoundingClientRect: the phone rises on `phoneIn` and each
+     card lands on `bannerIn`, and a rect read mid-animation carries those transforms — which is
+     how the same cue framed itself two different ways on two different nights. */
+  const dev=g.dev, s=g.dh/Math.max(dev.offsetHeight,1);
+  const off=el=>{ let y=0,n=el; while(n){ y+=n.offsetTop; n=n.offsetParent; } return y; };
+  const y0=off(dev);
+  const loc=el=>{ if(!el.offsetHeight) return null;
+    const t=g.d1.y+(off(el)-y0)*s; return {t, b:t+el.offsetHeight*s}; };
+  const box=cards.map(loc).filter(Boolean); if(!box.length) return null;
+  const ck=c.querySelector('.lk-time'), clock=ck?loc(ck):null;
+  const E=0.5, pad=Math.max(6,(Hl-(box[0].b-box[0].t))*0.06);
+  const tries=[]; if(clock) tries.push(clock.t-pad);          // the clock at the top of the frame, whole
+  tries.push(clock?clock.b+2:box[0].t-pad);                   // …or the clock out of frame (clear of it, not flush) and the cards up top
+  for(let k=1;k<=box.length;k++){ tries.push(box[k-1].b+6-Hl); tries.push(box[k-1].b-Hl); }   // …or resting the frame's foot on the k-th card (with a hair of air, or flush when that is all there is room for)
+  let best=null;
+  for(const Y of tries){
+    const B=Y+Hl;
+    if(box[0].t<Y-E || box[0].b>B+E) continue;                          // the newest card is never cut
+    if(clock && clock.b>Y+E && clock.t<Y-E) continue;                   // and the clock is never cut
+    const whole=box.filter(x=>x.t>=Y-E && x.b<=B+E).length;
+    const cut=box.filter(x=>x.b>B+E && x.t<B-E).length;
+    const sc=whole*10-cut+((clock&&clock.t>=Y-E)?1:0);
+    if(!best||sc>best.sc) best={sc,Y};
+  }
+  return best ? best.Y+Hl/2 : null;
+}
 function camRest(instant){
   const st=CAM_ST||CUR||{}; const bottom=['findmy'].includes(st.app) || (st.app==='thread' && !!(st.kbd||st.camBottom));   // a thread opens at its TOP (the name, the history); once the keyboard is up it rests at the BOTTOM
   camEls().forEach(c=>{ const g=camGeom(c); if(!g) return;
     if(!g.dev.classList.contains('iphone')){ c.style.transition=instant?'none':'transform .8s cubic-bezier(.4,0,.2,1)'; c.style.transform=''; c.dataset.z=''; return; }
-    const z=Math.min(CAM_FILL_(), g.uw/g.dw);
+    const z=camFill(g);
+    const plan=camStackPlan(c,g,z);
+    if(plan!=null){ camApply(c,g,z,(g.d1.x+g.d2.x)/2, plan, 'center', instant); return; }
     camApply(c,g,z,(g.d1.x+g.d2.x)/2,(g.d1.y+g.d2.y)/2, bottom?'bottom':'top', instant); });
 }
 function camWide(instant){ camRest(instant); }
+/* THE WIDE BEAT: the whole device in frame. The only shot that is allowed to leave black beside
+   the phone, and only for the moment a cue asks for it — a connected call, where mute / end /
+   speaker have to read on stage (CLAUDE.md: buttons match state; David, 2.4). */
+function camFull(instant,dur){
+  camEls().forEach(c=>{ const g=camGeom(c); if(!g) return;
+    if(!g.dev.classList.contains('iphone')) return;
+    const z=Math.min(camFill(g), g.H*0.965/g.dh);
+    camApply(c,g,z,(g.d1.x+g.d2.x)/2,(g.d1.y+g.d2.y)/2,'center',!!instant,dur); });
+}
+/* A PAGE THAT IS ALREADY FALLING MUST NOT BE RE-TYPESET (see the prologue op). The face a
+   calendar sheet wears comes from classes on the PAD, and the pad changes face underneath a
+   page in flight, so the outgoing page is frozen into inline styles before it is cloned and
+   thawed again the instant after — the live sheet then re-measures for its new face. */
+function padFaceFreeze(){
+  const era=document.getElementById('era'); const sh=era&&era.querySelector('.pad .sheet.top'); if(!sh) return null;
+  const P=['font-size','font-weight','letter-spacing','line-height','margin-top','white-space','display'];
+  const BOX=['top','right','bottom','left','padding-top','padding-right','padding-bottom','padding-left'];
+  const out=[], bake=(el,props)=>{ const cs=getComputedStyle(el); out.push([el,el.getAttribute('style')]);
+    props.forEach(p=>{ const v=cs.getPropertyValue(p); if(v) el.style.setProperty(p,v); }); };
+  bake(sh,BOX);
+  sh.querySelectorAll('*').forEach(el=>bake(el,P));
+  return {era,out};
+}
+function padFaceThaw(f){ if(!f) return;
+  f.out.forEach(([el,prev])=>{ if(prev===null) el.removeAttribute('style'); else el.setAttribute('style',prev); });
+  fitPad(f.era);   // the live sheet measures itself again for the face it now wears
+}
 /* THE FOLLOW RULE (David, Sept 19 night — "some really jerky movements"): a push happens only when the target is NOT
    already in frame. When it is, the eye finds it; the camera holds. When it is not, the camera keeps its zoom if the
    target fits at that zoom (a pan, not a re-zoom) and only re-zooms when it must. Every move is one slow glide. */
 function camPush(sel,z,delay,anchor,dur,force,nofit){
   const t0=animTok; const id=setTimeout(()=>{ if(t0!==animTok) return; camEls().forEach(c=>{
+    /* THE LOCK SCREEN IS ALWAYS FRAMED AS A STACK (D-005/D-044), whatever a cue aims at inside
+       it: one law, one place, so a card is never sliced and the clock is never half on stage. */
+    if(/\.nstack/.test(sel)){ const gs=camGeom(c);
+      if(gs && gs.dev.classList.contains('iphone')){ const zz=camFill(gs), plan=camStackPlan(c,gs,zz);
+        if(plan!=null){ camApply(c,gs,zz,(gs.d1.x+gs.d2.x)/2,plan,'center',false,dur||1.4); return; } } }
     const el=c.querySelector(sel); if(!el) return; const g=camGeom(c); if(!g) return;
     const T=el.getBoundingClientRect(); if(!T.width) return; const p1=g.loc(T.left,T.top), p2=g.loc(T.right,T.bottom);
     const qx=(p1.x+p2.x)/2, qy=(p1.y+p2.y)/2, tw=Math.max(p2.x-p1.x,1), th=Math.max(p2.y-p1.y,1);
@@ -4362,10 +4506,16 @@ function camPush(sel,z,delay,anchor,dur,force,nofit){
     const d1p=Md.transformPoint(new DOMPoint(p1.x,p1.y)), d2p=Md.transformPoint(new DOMPoint(p2.x,p2.y));
     const L=g.P0x+d1p.x, Rr=g.P0x+d2p.x, Tt=g.P0y+d1p.y, Bb=g.P0y+d2p.y;
     if(!force && L>=g.ux && Rr<=uR && Tt>=mTop && Bb<=mBot) return;      // already in frame where the camera lands: hold
-    if(anchor==='top'||anchor==='bottom'){ z=Math.max(1,Math.min(z, g.uw/g.dw)); camApply(c,g,z,qx,qy,anchor,false,dur||1.4); return; }
+    const iph=g.dev.classList.contains('iphone'), fill=camFill(g);
+    /* a subject taller than the reading window (a memory photograph is two thirds of a phone
+       screen) can never sit whole in it without opening black bars. The eye drifts INTO it:
+       its top goes to the top of the frame and the picture fills the window from there. */
+    if(anchor==='subjtop' && iph){ camApply(c,g,fill,qx,p1.y+(g.H/fill)/2,'center',false,dur||1.4); return; }
+    if(anchor==='top'||anchor==='bottom'){ z=iph?fill:Math.max(1,Math.min(z, g.uw/g.dw)); camApply(c,g,z,qx,qy,anchor,false,dur||1.4); return; }
     const cur=parseFloat(c.dataset.z)||1;
     const fitZ=Math.min(g.uw*0.88/tw, g.H*0.84/th);
     z = nofit ? Math.max(1,Math.min(z,g.uw/g.dw)) : force ? Math.max(1,Math.min(z,fitZ)) : (cur>=1.05 && cur<=fitZ) ? cur : Math.max(1,Math.min(z,fitZ));   // pan at the current zoom when the target fits; re-zoom only when it must
+    if(iph) z=Math.max(z, fill);   // a push PANS at the resting scale: it never zooms out and opens a black bar
     camApply(c,g,z,qx,qy,'center',false,dur||1.4); }); }, delay||0); CAM_T_().push(id);
 }
 function deviceHTML(st,h){
