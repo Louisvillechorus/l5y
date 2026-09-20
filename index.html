@@ -853,7 +853,12 @@
   body.carplay #projDevice{width:85%;height:100%;margin-right:auto;padding:0;align-items:center;justify-content:center}
   @keyframes phoneIn{from{opacity:0;transform:translateY(5%)}to{opacity:1;transform:none}}
   @keyframes phoneOut{to{opacity:0;transform:translateY(6%) scale(.97)}}
-  .cam{position:absolute;inset:0;display:flex;flex-direction:column}
+  .cam{position:absolute;inset:0;display:flex;flex-direction:column;transition:opacity .75s ease}
+  /* THE SCREEN GOES DARK (David, Sept 20 — the end of 14.4): the black is baked into the phone, not
+     painted over the stage. The display sleeps in her hand — status bar, thread and home bar with it. */
+  .iphone .screen.off{background:#000}
+  .iphone .screen.off .cam{opacity:0;visibility:hidden;transition:opacity .75s ease, visibility 0s .75s}
+  .iphone .screen.off + .homebar{opacity:0;transition:opacity .75s ease}
   /* THE CAMERA (David, Sept 19): a product-demo camera on the whole device. Wide for navigation; on a reading beat it
      pushes the device into the frame — the phone fills the stage beside the era strip, cropped top and bottom like a
      reading window — and lands softly (fast out of the gate, slow into the frame). A breath of drift keeps it alive. */
@@ -1405,21 +1410,24 @@ const FALLBACK_SHOW = [
   what:'The pages tear FORWARD — NOVEMBER · YEAR 1 → JUNE · YEAR 5, before dawn — and hold. His phone is face-down somewhere it should not be.',
   do:[{op:'black'},{op:'batt',v:9},{op:'clock',t:'5:05',d:'Thursday, June 11, 2026'},{op:'stamp',t:'before dawn'}]},
  {id:'13.2',kind:'lyric',trig:'“Cathy is waiting” — her text lands',
-  what:'AUTO-PLAYS from this GO. The calendar docks; his phone lights on the nightstand — 9% battery — with her good-morning text. He swipes it away immediately, unread, and the phone drops again. JUNE · YEAR 5 holds.',
+  what:'AUTO-PLAYS from this GO. The calendar docks; his phone lights on the nightstand — 9% battery — with her good-morning text. It sits there, readable, for four seconds. Then he pushes it off the screen — slowly, the whole width of the glass, a deliberate erasure and not a flick — unread, and the phone drops again. JUNE · YEAR 5 holds.',
+  hold:'The two pauses (3500 before, 900 after) and the swipe length (`ms` on notifDismiss) are the tuning knobs — David, Sept 20: two more seconds to read it, and a swipe a second and a half longer.',
   do:[{op:'device',dev:'iphone',who:'jamie'},
       {op:'notif',app:'Messages',w:'now',title:'Cathy 💛',t:'good morning. can’t wait to see you — what time does your flight land?'},
-      {op:'pause',ms:1500},{op:'notifDismiss'},{op:'pause',ms:900},{op:'black'}]},
+      {op:'pause',ms:3500},{op:'notifDismiss',ms:1880},{op:'pause',ms:900},{op:'black'}]},
  {id:'13.3',kind:'lyric',trig:'“…in love with someone like you” — his last line; Find My, location back ON',
-  what:'The calendar docks; his phone rises: unlock, Find My, her card — she is in Ohio, and he has not been sharing back. Share My Location → Share Indefinitely. The green check is the last image of the song: the cover-up, filed as devotion.',
-  hold:'Location was OFF before the song (we never see him turn it off). Hold on this screen through the final chord; 14.1 takes it away.',
-  do:[{op:'clock',t:'5:24'},{op:'device',dev:'iphone',who:'jamie'},{op:'unlock'},
+  what:'THE WHOLE PHONE, so the house watches him unlock it. Find My opens on People: Cathy, Mount Orab, OH — she is exactly where she says she is. He taps ME. His own card reads Share My Location ON, Sharing From: Jamie’s iPad — the iPad on the desk at home, where she thinks HE is. One blue row: “Use This iPhone as My Location.” He taps it, and Sharing From becomes Jamie’s iPhone. The map now follows his body. Nothing turns on, nothing turns off — he just moves the dot into his pocket.',
+  hold:'He has been “sharing” with her all along; only the DEVICE changes. This iPhone was never the source and we never see him make the iPad one. Inside Find My there is not one waiting beat — he does not hesitate (David, Sept 20); the only held beat is the locked phone before the unlock (`pause` 900). Hold on the settled card through the final chord; 14.1 takes it away.',
+  do:[{op:'clock',t:'5:24'},{op:'device',dev:'iphone',who:'jamie',whole:true},
+      {op:'pause',ms:900},
+      {op:'unlock'},
       {op:'openapp',icon:'FindMy',to:'findmy'},
-      {op:'findmy',person:{n:'Cathy 💛',loc:'Mount Orab, OH',when:'now',mapLabel:'Mount Orab, Ohio',col:'#c2447a'}},
-      {op:'pause',ms:800},
-      {op:'btnHover',b:'Share My Location'},
-      {op:'sheet',title:'Share your location with Cathy 💛?',opts:['Share for One Hour','Share Until End of Day','Share Indefinitely'],safe:'Cancel'},
-      {op:'btnHover',b:'Share Indefinitely'},{op:'btnTap',b:'Share Indefinitely'},
-      {op:'findmy',person:{n:'Cathy 💛',loc:'Mount Orab, OH',when:'now',mapLabel:'Mount Orab, Ohio',col:'#c2447a',sharing:'Indefinitely'}}]},
+      {op:'findmy',rows:[{n:'Cathy 💛',s:'Mount Orab, OH · now',col:'#c2447a'}],pin2:true},
+      {op:'btnTap',b:'Me'},
+      {op:'findmy',me:{n:'Jamie Wellerstein',share:true,from:'Jamie’s iPad',
+        action:'Use This iPhone as My Location',friendReq:true,updates:'People You Share With'}},
+      {op:'btnHover',b:'Use This iPhone as My Location'},{op:'btnTap',b:'Use This iPhone as My Location'},
+      {op:'findmy',me:{n:'Jamie Wellerstein',share:true,from:'Jamie’s iPhone',friendReq:true,updates:'People You Share With'}}]},
 ]},
 
 /* ============ 14 · GOODBYE UNTIL TOMORROW / I COULD NEVER RESCUE YOU ====
@@ -1435,8 +1443,8 @@ const FALLBACK_SHOW = [
   what:'Back to her: the pages settle BACK to the first night.',
   do:[{op:'clock',t:'11:47',d:'Friday, September 3, 2021'},{op:'stamp',t:'the first night'}]},
  {id:'14.4',kind:'lyric',trig:'CATHY: “I will be waiting for you!” — her LAST line before he stands; his text lands',
-  what:'THE ONE ANIMATION. The calendar docks; her phone lights on the steps: “home safe?” — the text the house watched him send in Shiksa Goddess. She opens it and starts to answer. SHE IS STILL TYPING when his last verse takes the stage.',
-  hold:'Do not send. It is the payoff of Shiksa Goddess, two hours ago.',
+  what:'THE ONE ANIMATION. The calendar docks; her phone lights on the steps: “home safe?” — the text the house watched him send in Shiksa Goddess. She opens it and answers it, slowly, and then she SENDS it — we hear the send. The bubble lands, and her screen goes dark in her hand. Black, inside the phone, as the last thing the audience has of her.',
+  hold:'David, Sept 20 — SHE SENDS (this reverses the earlier “do not send”). The send is stamped 11:51, after the call the house watched him take in Shiksa Goddess, so his phone in Song 2 is not contradicted. Hold the dark phone through his line; 14.5 takes it away.',
   do:[{op:'clock',t:'11:48'},{op:'device',dev:'iphone',who:'cathy'},
       {op:'notif',app:'Messages',w:'now',title:'Jamie',t:'home safe?'},
       {op:'pause',ms:1500},
@@ -1444,14 +1452,23 @@ const FALLBACK_SHOW = [
       {op:'history',items:[{k:'stamp',t:'Today|10:42 PM'},{k:'me',t:'it’s cathy 😊 — from tonight'},
                            {k:'stamp',t:'Today|11:48 PM'},{k:'them',t:'home safe?'}]},
       {op:'pause',ms:500},
-      {op:'type',pace:'hesitant',t:'safe 😊 tonight was'}]},
+      {op:'type',pace:'hesitant',t:'safe 😊 tonight was amazing'},
+      {op:'pause',ms:1400},
+      {op:'clock',t:'11:51'},
+      {op:'send'},{op:'rcpt',t:'Delivered'},
+      {op:'pause',ms:2400},
+      {op:'screenoff',ms:1600}]},
  {id:'14.5',kind:'lyric',trig:'JAMIE: “You never noticed how the wind had changed” — he stands',
-  what:'The phone drops mid-word; the pages tear FORWARD to JUNE · YEAR 5 — the breakup — and hold as the last image while he sings his goodbye.',
+  what:'The dark phone goes; the pages tear FORWARD to JUNE · YEAR 5 — the breakup — and hold as the last image while he sings his goodbye.',
   hold:'Hold it. Do not resolve it.',
   do:[{op:'black'},{op:'clock',t:'4:12',d:'Thursday, June 11, 2026'},{op:'stamp',t:'the last afternoon'}]},
  {id:'14.6',kind:'music',trig:'FINAL BLACKOUT — on the last “Goodbye”',
   what:'Curtain: true black. End of show.',
   do:[{op:'curtain'}]},
+ {id:'14.7',kind:'stage',trig:'BOWS — the company comes back on',
+  what:'The house comes back: the title page center-stage with the photographs flooding behind it, faster than they fell before the show. It holds for as long as the bows run — it never empties and it never ends. The operator’s questionnaire waits until the house lights are up and the show is left.',
+  hold:'Nothing to fire after this. When the bows are over, ☰ MENU (or esc) comes off the show and the gate asks tonight’s questions again for the next performance.',
+  do:[{op:'bows'}]},
 ]},
 
 ];
@@ -1539,7 +1556,13 @@ function applyOp(st,o){
     case 'memgo': st.memAt = (o.i==null?null:o.i); break;
     case 'pause': break;                        // animation-only beat (playCue waits); no state
     case 'prologue': break;                     // the falling pages wind down (live only); the era lands after
-    case 'curtain': st.curtain=true; st.black=true; break;
+    case 'curtain': st.curtain=true; st.black=true; st.bows=false; break;
+    /* THE BOWS (David, Sept 20): after the curtain the house sequence comes back up — the title page
+       with the photographs flooding behind it — and holds for as long as the company bows. */
+    case 'bows': st.bows=true; st.curtain=false; st.black=true; st.inter=false; st.next5=false;
+      st.perfcard=false; st.housecard=true; break;
+    /* the display sleeps: black inside the phone, the phone still on stage */
+    case 'screenoff': st.scroff=true; break;
     case 'intermission': st.black=true; st.inter=true; st.next5=false; break;
     case 'notifDismiss': st.notifs.shift(); break;
     case 'books': st.app='books'; st.book=o; st.sheet=null; break;
@@ -1547,7 +1570,8 @@ function applyOp(st,o){
     case 'device': if(o.fresh){ st.notifs=[]; } {
       st.black=false;   // a device cue puts a screen back on stage — blackout ends
       st.inter=false; st.curtain=false;   // …and the Intermission card / curtain, if up
-      st.frame=null; st.memAt=null;
+      st.frame=null; st.memAt=null; st.scroff=false;   // a device that comes back up is awake
+      st.camWhole=!!o.whole;   // this phone rises with its WHOLE screen in frame, on the live path and on a scrub
       const newWho = (o.who==='cathy'||o.who==='jamie') ? o.who : st.who;
       if(newWho!==st.who){
         // A DIFFERENT PERSON'S PHONE. Nothing carries over — not the thread,
@@ -1838,6 +1862,17 @@ function homeHTML(st){
     <div class="dockrow">${HOME_DOCK.map(n=>`<div class="happ" data-app="${n}">${iconEl(n)}${n==='Messages'?badge:''}</div>`).join('')}</div>
   </div>`;
 }
+/* THE PREDICTIVE BAR IS STATE (David, Sept 20 — D-043). iOS puts the word you are typing in quotes on
+   the left and two completions beside it. The live keystroke loop and the settled render both read the
+   bar from HERE, off st.draft, so a scrub or a resize repaints exactly what the audience was looking at
+   instead of snapping the suggestions back to a word from ten seconds ago. */
+function predictCells(draft){
+  const t=String(draft||''); if(!t) return ['I','The','Thanks'];
+  const w=t.split(' ').pop().toLowerCase();
+  const bank=['I','the','and','you','tonight','tomorrow','really','again','home','safe','maybe','best'];
+  const m=w?bank.filter(x=>x.toLowerCase().startsWith(w)).slice(0,2):[];
+  return [w||'I', m[0]||'the', m[1]||'and'];
+}
 function msglistHTML(st){
   const rows = st.msgrows || [];   // NO fallback content, ever. A cue supplies the list or the list is empty.
   return `<div class="layer fs"><div class="msglist2">
@@ -1863,7 +1898,7 @@ function threadHTML(st){
       <div class="ml">${m.media}</div></div>${m.video?`<span class="vlen">${m.video}</span>`:''}</div>`;
     return `<div class="bub ${m.k}">${m.t}</div>`;}).join('')+
     (st.typing?`<div class="typing"><i></i><i></i><i></i></div>`:'');
-  const preds = st.draft ? ['I','I don’t','I’m'] : ['I','The','Thanks'];
+  const preds = predictCells(st.draft);
   return `<div class="layer fs"><div class="imsg" style="flex:1">
     <div class="hdr"><span class="back">‹</span>
       <div class="av" style="${avStyle(st.contact.n, st.who==='cathy'?'#8f95a3':'#c2447a')}">${avText(st.contact.n, st.contact.n[0])}</div>
@@ -2138,8 +2173,51 @@ function contactHTML(st){
 }
 
 /* ---------- FIND MY ---------- */
+/* FIND MY — the real app's four tabs. People · Devices · Items · Me (Apple's iPhone User Guide,
+   "Share your location in Find My on iPhone"). Every tab is tappable so nobody teleports between them. */
+function fmTabsHTML(active){
+  const T=[['People','👥'],['Devices','💻'],['Items','🏷'],['Me','🙂']];
+  return `<div class="fmtabs" style="flex:0 0 auto;display:flex;background:#f7f7f9;border-top:.5px solid #d3d3d8;padding:.25em 0 .95em">
+    ${T.map(([n,g])=>`<div data-btn="${n}" style="flex:1;text-align:center;line-height:1.1;color:${n===active?'#2f7cf6':'#8e8e93'}">
+      <div style="font-size:1.05em">${g}</div><div style="font-size:.62em;font-weight:${n===active?'600':'400'}">${n}</div></div>`).join('')}</div>`;
+}
 function findmyHTML(st){
   const f=st.fm||{rows:[]};
+  if(f.me){
+    /* THE ME TAB (David, Sept 20 — D-019). Apple: "The device sharing your location appears next to
+       Sharing From"; when this iPhone is not the one reporting, the blue row "Use This iPhone as My
+       Location" is offered, and tapping it makes this iPhone the source. Only rows Apple documents
+       are drawn here — nothing invented. */
+    const m=f.me;
+    return `<div class="layer fs" style="background:#f2f2f7;display:flex;flex-direction:column;overflow:hidden">
+      <div style="flex:1;min-height:0;background:repeating-linear-gradient(45deg,#dfe9dc 0 14px,#d3e2d0 14px 28px);position:relative">
+        <div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 44%, rgba(47,124,246,.22), transparent 26%)"></div>
+        <div style="position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:1.5em;height:1.5em;border-radius:50%;background:#2f7cf6;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.35)"></div>
+        <div style="position:absolute;left:.7em;bottom:.5em;font-family:'Courier Prime',monospace;font-size:.6em;color:#7a8577" class="ml">MAP</div>
+      </div>
+      <div class="fmcard" style="background:#fff;border-radius:1em 1em 0 0;margin-top:-.8em;position:relative;padding:.5em .8em .7em;box-shadow:0 -2px 10px rgba(0,0,0,.08)">
+        <div style="width:2.4em;height:.3em;border-radius:.2em;background:#d8d8dc;margin:0 auto .5em"></div>
+        <div style="display:flex;align-items:center;gap:.6em;margin-bottom:.55em">
+          <div style="width:2.4em;height:2.4em;border-radius:50%;${avStyle(m.n,'#6e7480')};color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700">${avText(m.n,(m.n||'?')[0])}</div>
+          <div style="min-width:0;flex:1"><div style="font-size:1.15em;font-weight:700;color:#000">${m.n||''}</div></div></div>
+        <div style="background:#f2f2f7;border-radius:.7em;overflow:hidden">
+          <div style="padding:.55em .8em;display:flex;justify-content:space-between;align-items:center">
+            <span style="color:#000">Share My Location</span>${iosToggle(m.share!==false)}</div>
+          ${m.from?`<div style="padding:.55em .8em;border-top:1px solid #e5e5ea;display:flex;justify-content:space-between;align-items:center">
+            <span style="color:#000">Sharing From</span><span style="color:#8e8e93">${m.from}</span></div>`:''}
+          ${m.action?`<div data-btn="${m.action}" style="padding:.55em .8em;border-top:1px solid #e5e5ea;color:#2f7cf6">${m.action}</div>`:''}
+        </div>
+        <div style="background:#f2f2f7;border-radius:.7em;overflow:hidden;margin-top:.5em">
+          <div style="padding:.55em .8em;display:flex;justify-content:space-between;align-items:center">
+            <span style="color:#000">Allow Friend Requests</span>${iosToggle(m.friendReq!==false)}</div>
+          ${m.updates?`<div style="padding:.55em .8em;border-top:1px solid #e5e5ea">
+            <div style="color:#000">Receive Location Updates</div>
+            <div style="color:#8e8e93;font-size:.85em">${m.updates} ›</div></div>`:''}
+        </div>
+      </div>
+      ${fmTabsHTML('Me')}
+    </div>`;
+  }
   if(f.person){
     // one person's card (People → tap a name): where they are, and whether
     // YOU are sharing back — the real iOS layout, Share / Stop Sharing at the foot
@@ -2169,6 +2247,7 @@ function findmyHTML(st){
             :`<div data-btn="Share My Location" style="padding:.55em .8em;border-top:1px solid #e5e5ea;color:#2f7cf6">Share My Location</div>`}
         </div>
       </div>
+      ${fmTabsHTML('People')}
     </div>`;
   }
   return `<div class="layer fs" style="background:#f2f2f7;display:flex;flex-direction:column;overflow:hidden">
@@ -2188,6 +2267,7 @@ function findmyHTML(st){
           <div style="font-size:.78em;color:${r.off?'#8e8e93':'#8e8e93'}">${r.s}</div></div></div>`).join('')}
       ${f.action?`<div style="padding:.65em 0 .1em;text-align:center;color:#fb3b30;font-size:1em" data-btn="${f.action}">${f.action}</div>`:''}
     </div>
+    ${fmTabsHTML('People')}
   </div>`;
 }
 
@@ -3307,13 +3387,22 @@ async function playCue(cue, st, tok){
     if(o.op==='intermission'){ applyOp(st,o); paintAll(st); setStamp(st);
       document.body.classList.toggle('blk', blk||stageBlack(st)); continue; }
     if(o.op==='notifDismiss'){
-      // the top notification slides off under his thumb, then the stack closes up
-      camPush('.nstack .notif', 3.2, 0); await wait(500); if(tok!==animTok) return; sfx('swipe');
+      // The top notification slides off under his thumb, then the stack closes up. The camera is
+      // already filling itself with the card (the notif op forced it there) — the follow rule says hold.
+      // `ms` is the length of the swipe itself: a flick by default, a deliberate erasure when a cue
+      // asks for one (David, Sept 20 — 13.2: "not a flick"). It eases in AND out, so it never snaps away.
+      const SW=Math.max(120, o.ms||380);
+      await wait(500); if(tok!==animTok) return; sfx('swipe');
       stacks().forEach(k=>{ const n=k.querySelector('.nstack .notif'); if(!n) return;
-        n.style.transition='transform .38s ease-in, opacity .3s ease-in';
+        n.style.transition=`transform ${(SW/1000).toFixed(2)}s cubic-bezier(.45,.05,.55,.95), opacity ${(SW*0.85/1000).toFixed(2)}s ease-in`;
         n.style.transform='translateX(115%)'; n.style.opacity='0'; });
-      await wait(420); if(tok!==animTok) return;
+      await wait(SW+40); if(tok!==animTok) return;
       applyOp(st,o); swapLayer(st,null); camWide(); await wait(200); continue; }
+    if(o.op==='screenoff'){
+      // the display sleeps in her hand: the black is inside the phone, not painted over the stage
+      applyOp(st,o);
+      stages().forEach(s=>{ const sc=s.querySelector('.iphone .screen'); if(sc) sc.classList.add('off'); });
+      await wait(o.ms||1400); continue; }
     if(o.op==='device'){ applyOp(st,o);
       const nx=cue.do[cue.do.indexOf(o)+1];
       // a phone that is ALREADY in an app when it appears (mounted on the dash,
@@ -3321,7 +3410,8 @@ async function playCue(cue, st, tok){
       if(nx && (nx.op==='setapp'||nx.op==='inbox'||nx.op==='mapsdrive'||((nx.op==='call'||nx.op==='facetime')&&nx.dir!=='in'))) applyOp(st,cue.do[cue.do.indexOf(o)+1]);   // an outgoing call rises already dialing
       setStamp(st); document.body.classList.toggle('blk', blk||stageBlack(st));
       await wait(560); if(tok!==animTok) return;          // the strip docks; then the screen rises beside it
-      paintAll(st); camWide(true);
+      // `whole:true` — the phone rises with the WHOLE screen in frame (David, Sept 20: 13.3 must show the unlock)
+      paintAll(st); if(o.whole) camWhole(true); else camWide(true);
       await wait(240); continue; }
     if(o.op==='clock'){
       const prevDate=st.date, prevTm=st.tm; applyOp(st,o);
@@ -3438,13 +3528,12 @@ async function playCue(cue, st, tok){
           const f=k.querySelector('.field'); if(f){ f.textContent=text.slice(0,i+1); f.style.color='#000'; }
           const sb=k.querySelector('.sendbtn'); if(sb) sb.classList.add('on');
           const pr=k.querySelector('.predict'); if(pr){
-            const w=text.slice(0,i+1).split(' ').pop().toLowerCase();
-            const bank=['I','the','and','you','tonight','tomorrow','really','again','home','safe','maybe','best'];
-            const m=bank.filter(x=>x.toLowerCase().startsWith(w)&&w).slice(0,2);
-            const cells=pr.querySelectorAll('div');
-            if(cells[0]) cells[0].textContent='“'+(w||'I')+'”';
-            if(cells[1]) cells[1].textContent=m[0]||'the';
-            if(cells[2]) cells[2].textContent=m[1]||'and';
+            // ONE SOURCE FOR THE BAR (David, Sept 20 — D-043): the same function the settled render uses,
+            // so a scrub or a resize never snaps the suggestions back to a word she typed ten seconds ago
+            const P=predictCells(text.slice(0,i+1)), cells=pr.querySelectorAll('div');
+            if(cells[0]) cells[0].textContent='“'+P[0]+'”';
+            if(cells[1]) cells[1].textContent=P[1];
+            if(cells[2]) cells[2].textContent=P[2];
           }
           const key=k.querySelector(`.key[data-k="${ch.toLowerCase()}"]`)||k.querySelector('.key[data-k=" "]');
           if(key){ key.classList.add('hit'); setTimeout(()=>key.classList.remove('hit'),85); }
@@ -3621,9 +3710,14 @@ async function playCue(cue, st, tok){
         return humanScroll(f,i*f.clientHeight,'memgo'+cue.id,tok,{gesture:'drag',flicks:2});}));
       camPush(`.memfeed .memscreen:nth-child(${(o.i||0)+1}) .body`, 2.6, 0, null, null, true); camPush(`.memfeed .memscreen:nth-child(${(o.i||0)+1}) .media`, 2.2, 2600, 'center', 3.2, true, true);
       await wait(400); continue; }
-    if(o.op==='curtain'){ bedStop(2); SHOW_OVER=true;
-      setTimeout(()=>{ if(!SHOW_OVER) return; GATE.step=1; GATE.cast=null; GATE.perf=null; gatePaint();
-        document.body.classList.add('needgate'); }, 2600); }   // the night is over: ask the questions again
+    if(o.op==='bows'){
+      // THE BOWS (David, Sept 20): the house sequence comes back after the curtain — the title page,
+      // the photographs flooding behind it — and holds for as long as the company bows. The gate waits.
+      gateArmStop(); applyOp(st,o); paintAll(st); setStamp(st);
+      document.body.classList.toggle('blk', blk||stageBlack(st));
+      gateArmWatch(1200);   // it will ask its questions the moment the operator comes off the show
+      await wait(600); continue; }
+    if(o.op==='curtain'){ bedStop(2); SHOW_OVER=true; gateArmWatch(2600); }   // the night is over: ask the questions again
     if(o.op==='black'||o.op==='curtain'){
       // the phone drops away, then the era returns to center (or the curtain falls)
       const ph=stages().map(x=>x.querySelector('.iphone,.macbook,.carplay,.fullstage')).filter(Boolean);
@@ -3764,7 +3858,9 @@ function estDuration(cue){
       case 'sheet': t+=420; break;
       case 'btnHover': t+=520; break;
       case 'btnTap': t+=540; break;
-      case 'notifDismiss': t+=620; break;
+      case 'notifDismiss': t+=540+Math.max(120,o.ms||380); break;
+      case 'screenoff': t+=(o.ms||1400); break;
+      case 'bows': t+=600; break;
       case 'mem': t+=2600; break;
       case 'post': t+=2300; break;
       case 'them': t+=1000; break;
@@ -3914,6 +4010,25 @@ function gatePaint(){
   ['gcCast','gcCast2','gcCast3'].forEach(id=>{ const e=document.getElementById(id); if(e) e.textContent=cn; });
   ['gcPre','gcPre2','gcPre3'].forEach(id=>{ const e=document.getElementById(id); if(e) e.textContent=pn; });
   g.querySelectorAll('.gsel').forEach(b=>b.classList.remove('on'));
+}
+/* THE GATE COMES BACK — but never over the bows, and never in the house's window (David, Sept 20).
+   After the curtain the questionnaire re-arms for the next performance. Two things it must never do:
+   appear on the projector (that window is never gated — it was not at boot either), and appear
+   underneath the bows screen. So it watches instead of firing blind: while the bows hold the stage it
+   waits, and the moment the operator comes off the show it is there.
+   BOOT-ORDER LAW: no top-level `let` — the pending timer lives on the function. */
+function GATEARM(){ return GATEARM.o||(GATEARM.o={t:null}); }
+function gateArmStop(){ const G=GATEARM(); if(G.t){ clearTimeout(G.t); G.t=null; } }
+function gateArmWatch(ms){ gateArmStop(); GATEARM().t=setTimeout(gateArmTick, ms||2600); }
+function bowsUp(){ return !!(CUR && CUR.bows) && document.body.classList.contains('started'); }
+function gateArmTick(){
+  const G=GATEARM(); G.t=null;
+  if(!SHOW_OVER) return;                                       // a new night has already been started
+  if(bootProj) return;                                         // the audience's window is never gated
+  if(document.body.classList.contains('needgate')) return;     // already up
+  if(bowsUp()){ G.t=setTimeout(gateArmTick,1000); return; }    // the company is still bowing
+  GATE.step=1; GATE.cast=null; GATE.perf=null; gatePaint();
+  document.body.classList.add('needgate');
 }
 function setCast(c, fromSync){
   if(!CAST_NAMES[c] || c===CAST){ paintCastUI(); return; }
@@ -4113,7 +4228,9 @@ function paintAll(st){
   if(pj){ pj.innerHTML = phoneUp(st) ? '<div class="stagecam"><div class="drift">'+deviceHTML(st, st.dev==='macbook'?macW:st.dev==='carplay'?cpH:h)+'</div></div>' : ''; }
   loopMode('off');   // the falling pages are cut (David, Sept 19 night)
   frameDevice(st);
-  if(phoneUp(st)){ CAM_ST=st; camRest(true); }   // a fresh .stagecam has no transform: re-aim at once or the shot plays at scale 1
+  // a fresh .stagecam has no transform: re-aim at once or the shot plays at scale 1.
+  // A phone asked to rise whole (13.3) stays whole while it is still locked — one frame, live or scrubbed.
+  if(phoneUp(st)){ CAM_ST=st; if(st.camWhole && st.app==='lock') camWhole(true); else camRest(true); }
   if(view==='presenter' && document.getElementById('previewInner')){
     // (no preview in the presenter any more — the operator watches the projection on a second monitor)
     const pv=document.getElementById('previewInner'), box=pv.parentElement; const bw=box.clientWidth, bh=Math.max(120,box.clientHeight-8);
@@ -4244,6 +4361,13 @@ function tornPath(side,seed){
    seeded shuffle of the cast's set, so every night is identical.
    BOOT-ORDER LAW: no top-level `let` — boot code reaches these through hoisted accessors. */
 function PILE_CFG(){ return PILE_CFG.o||(PILE_CFG.o={h:25, every:[3000,5000], fall:[20000,26000]}); }
+/* THE BOWS FLOOD (David, Sept 20): same bed, same seeded order, a print every second or so. The slowest
+   spawn (1.5 s) stays an order of magnitude under the shortest fall (15 s), so prints always overlap —
+   the bed cannot go blank however long the company bows, and it never stops spawning, so it cannot end. */
+function pileRate(mode){ const C=PILE_CFG();
+  if(mode==='bows'){ C.every=[900,1500]; C.fall=[15000,20000]; }
+  else { C.every=[3000,5000]; C.fall=[20000,26000]; }
+  return C; }
 function PILE_S(){ return PILE_S.o||(PILE_S.o={t:null, i:0, order:null}); }
 function pileList(){ const L=window.L5Y_LOOP||{}; return (L[CAST]||[]); }
 function pileReset(){ const L=document.getElementById('loop'); if(L) L.innerHTML=''; const S=PILE_S(); S.i=0; S.order=null; }
@@ -4251,6 +4375,7 @@ function pileStop(){ const S=PILE_S(); if(S.t){ clearTimeout(S.t); S.t=null; }
   const L=document.getElementById('loop'); if(L) L.classList.remove('on'); }
 function pileStart(){
   const L=document.getElementById('loop'), S=PILE_S(); if(!L) return;
+  pileRate((CUR&&CUR.bows)?'bows':'house');   // the bows run faster than the house — on the live path and on a scrub alike
   if(L.dataset.cast!==CAST){ L.dataset.cast=CAST; pileReset(); }
   L.classList.add('on');              // idempotent: a later render may have pulled the class
   if(S.t) return;
@@ -4349,6 +4474,15 @@ function camRest(instant){
     camApply(c,g,z,(g.d1.x+g.d2.x)/2,(g.d1.y+g.d2.y)/2, bottom?'bottom':'top', instant); });
 }
 function camWide(instant){ camRest(instant); }
+/* THE WHOLE PHONE (David, Sept 20 — 13.3 opens on the whole screen so the house watches him unlock it).
+   camRest fills the reading window edge to edge and crops top and bottom; this backs off until the
+   entire device — status bar to home bar — is inside the frame. A cue asks for it with {op:'device',whole:true}. */
+function camWhole(instant){
+  camEls().forEach(c=>{ const g=camGeom(c); if(!g) return;
+    if(!g.dev.classList.contains('iphone')){ c.style.transition=instant?'none':'transform 1.4s cubic-bezier(.33,.02,.16,1)'; c.style.transform=''; c.dataset.z=''; return; }
+    const z=Math.min(g.uw/g.dw, g.H*0.96/g.dh);
+    camApply(c,g,z,(g.d1.x+g.d2.x)/2,(g.d1.y+g.d2.y)/2,'mid',instant); });
+}
 /* THE FOLLOW RULE (David, Sept 19 night — "some really jerky movements"): a push happens only when the target is NOT
    already in frame. When it is, the eye finds it; the camera holds. When it is not, the camera keeps its zoom if the
    target fits at that zoom (a pan, not a re-zoom) and only re-zooms when it must. Every move is one slow glide. */
@@ -4397,7 +4531,7 @@ function deviceHTML(st,h){
   }
   const cls=st.dev==='ipad'?'ipad':'iphone';
   return `<div class="${cls}" style="height:${h}px;--ph:${h}px;--chrome:${ch};--chrometxt:${ct}">
-    <div class="screen${dark?' edge':''}"><div class="cam"><div class="statusbar">${statusHTML(st)}</div>
+    <div class="screen${dark?' edge':''}${st.scroff?' off':''}"><div class="cam"><div class="statusbar">${statusHTML(st)}</div>
     <div class="app" style="position:relative"><div class="screenstack">${screenHTML(st)}</div></div></div></div>
     <div class="homebar" style="background:${dark?'rgba(255,255,255,.85)':'rgba(0,0,0,.55)'}"></div></div>`;
 }
