@@ -800,7 +800,8 @@
   #era .frow.solo .pipe,#era .frow.solo .foot:empty{display:none}
   #era .sheet.tear .grp,#era .sheet.tear .ft,#era .sheet.settle .grp,#era .sheet.settle .ft{filter:none}   /* a page in flight carries no filter */
   #era .pad.house.inter .ttl{font-family:'Poppins',sans-serif;font-weight:500;font-size:13vh;line-height:1.02;letter-spacing:-.01em;margin-top:0;white-space:nowrap}
-  #era .pad.house.perf .ttl{font-size:17vh;margin-top:0}
+  #era .pad.house.perf .ttl{font-size:17vh;margin-top:0;width:100%}
+  #era .pad.house.perf .fl{display:block;white-space:nowrap;line-height:.98}
   /* the docked strip (David, Sept 19): no name — it is obvious whose phone it is. The YEAR outranks the month:
      the month small and horizontal at the top, YEAR huge running down the strip, the number at the foot. */
   #era .strip .stop{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:2.6vh 0 1.6vh;filter:url(#inkgrit);
@@ -4492,7 +4493,12 @@ function fitPad(era){   // the card is fixed; the words are not. Anything wider 
   const sh=era.querySelector('.pad .sheet.top'); if(!sh) return;
   const cs=getComputedStyle(sh), inner=sh.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);
   if(!(inner>200)) return;   // mid-transition or unlaid-out: never fit against a collapsed box
+  sh.querySelectorAll('.fl').forEach(e=>{            // FILL: every line of a name spans the same width
+    e.style.fontSize=''; const t=e.textContent.trim(); if(!t) return;
+    const base=parseFloat(getComputedStyle(e).fontSize), w=e.scrollWidth; if(!(w>0)) return;
+    e.style.fontSize=Math.min(base*inner/w*0.99, inner*0.42).toFixed(2)+'px'; });
   ['.yr','.ynum','.sub','.ttl','.frow'].forEach(sel=>{ const e=sh.querySelector(sel); if(!e) return;
+    if(e.querySelector('.fl')) return;                 // a filled name manages its own lines
     e.style.fontSize=''; if(!e.textContent.trim()) return;
     const w=e.scrollWidth; if(w<=inner) return;
     const base=parseFloat(getComputedStyle(e).fontSize);
@@ -4565,7 +4571,7 @@ function setStamp(st){
   else if(face==='inter'){ q('.yr').textContent=''; q('.ynum').textContent=''; q('.sub').textContent='';
     q('.ttl').innerHTML='INTERMISSION'; q('.mo').textContent=''; q('.foot').textContent=''; }
   else if(face==='perf'){ q('.yr').textContent=''; q('.ynum').textContent=''; q('.sub').textContent='';
-    q('.ttl').innerHTML=escTxt(PERF).replace(/ /g,'<br>'); q('.mo').textContent=''; q('.foot').textContent=''; }
+    q('.ttl').innerHTML=escTxt(PERF).trim().split(/\s+/).map(w=>'<span class="fl">'+w+'</span>').join(''); q('.mo').textContent=''; q('.foot').textContent=''; }
   else if(face==='next5'){ q('.yr').textContent='THE NEXT 5 YEARS'; q('.ynum').textContent=''; q('.sub').textContent='';
     q('.ttl').innerHTML=''; q('.mo').textContent=''; q('.foot').textContent='';
     const im=q('.qr'), src=(window.L5Y_IMG||{})['qr-next5']; if(im && src && im.src!==src) im.src=src; }
