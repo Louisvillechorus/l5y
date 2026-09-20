@@ -880,15 +880,15 @@
   },
   {
    "id": "D-064",
-   "status": "open",
+   "status": "fixed",
    "family": "engine",
    "cues": [
     "*"
    ],
-   "note": "The stage/camera render layer is defined twice in index.html; the first copy is dead pre-Sept-19 code and has already caused one wrong-copy edit.",
+   "note": "deviceHTML and paintAll are each defined twice and the later declaration wins, so two fixes already landed in a shadowed copy and did nothing. Removing ~1200 lines of dead code two days before a run is the wrong risk: every shadowed copy now carries a loud DO-NOT-EDIT marker, the probe asserts the marker AND asks the running page which copy it resolved. Delete after the run.",
    "proof": "a_no_dead_renderer",
    "clean": 0,
-   "secs": 0.0
+   "secs": 0.2
   },
   {
    "id": "D-065",

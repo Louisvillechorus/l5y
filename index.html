@@ -3274,6 +3274,12 @@ function interHTML(){
 }
 
 /* device chrome wraps a screen stack we can animate inside */
+/* ═══ DEAD CODE — PRE-SEPT-19 STAGE. DO NOT EDIT. ═══════════════════════════════════════════
+   This copy is SHADOWED: a later function declaration of the same name wins at parse time, so
+   the live one is further down the file. Two fixes have already landed here by mistake and had
+   no effect on the show. Find the live copy before you change anything, and prove it with
+   `deviceHTML.toString()` in the page. Scheduled for removal AFTER the run — not two days out.
+   ══════════════════════════════════════════════════════════════════════════════════════════ */
 function deviceHTML(st,h){
   if(st.dev==='full'){
     // non-diegetic: nobody is holding a phone — the content takes the whole stage
@@ -3464,6 +3470,12 @@ function frameDevice(st){
   }
   paintCropBands(st, maskOn);
 }
+/* ═══ DEAD CODE — PRE-SEPT-19 STAGE. DO NOT EDIT. ═══════════════════════════════════════════
+   This copy is SHADOWED: a later function declaration of the same name wins at parse time, so
+   the live one is further down the file. Two fixes have already landed here by mistake and had
+   no effect on the show. Find the live copy before you change anything, and prove it with
+   `deviceHTML.toString()` in the page. Scheduled for removal AFTER the run — not two days out.
+   ══════════════════════════════════════════════════════════════════════════════════════════ */
 function paintAll(st){
   const {S, portrait, h, mbFit}=stageMetrics(st);
   const preshow = (si===0 && ci===0);

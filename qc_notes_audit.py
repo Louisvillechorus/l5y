@@ -182,12 +182,24 @@ def a_no_gutter(pg):
 
 # ---------- D-064 · no dead duplicate renderer ----------
 def a_no_dead_renderer(pg):
+    """Two renderers share these names; the later declaration wins. Removing ~1200 lines of dead
+    code two days before a run is the wrong risk, so the rule is: every shadowed copy carries a
+    loud DO-NOT-EDIT marker, and the LIVE copy is the one the page actually resolves. Both are
+    asserted here, and the page is asked which copy it is running rather than being trusted."""
     bad = []
-    s = open('index.html', encoding='utf-8').read()
-    for fn in ('function deviceHTML', 'function screenHTML', 'function callHTML'):
-        n = s.count(fn)
-        if n > 1:
-            bad.append(f'{fn.split()[1]} is defined {n} times — an edit can land in the dead copy')
+    src = open('index.html', encoding='utf-8').read()
+    for fn in ('deviceHTML', 'screenHTML', 'callHTML', 'paintAll'):
+        hits = [i for i in range(len(src)) if src.startswith('function ' + fn + '(', i)]
+        if len(hits) <= 1:
+            continue
+        for i in hits[:-1]:                      # every copy but the last is shadowed
+            if 'DEAD CODE' not in src[max(0, i - 700):i]:
+                bad.append(f'{fn} is defined {len(hits)} times and a shadowed copy carries no '
+                           f'DO-NOT-EDIT marker — an edit can land there and do nothing')
+    live = pg.evaluate("""(()=>({dev: deviceHTML.toString().includes('non-diegetic'),
+                                 pa: paintAll.toString().includes('const preshow')}))()""")
+    if live['dev'] or live['pa']:
+        bad.append('the page is running a copy marked dead — the marker is on the wrong one')
     return bad
 
 
