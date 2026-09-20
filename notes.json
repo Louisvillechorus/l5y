@@ -648,7 +648,7 @@
   },
   {
    "id": "D-051",
-   "status": "open",
+   "status": "fixed",
    "family": "sound",
    "cues": [
     "3.4",
@@ -656,13 +656,13 @@
     "3.10",
     "4.3"
    ],
-   "note": "The hang-up tone fires TWICE per call, and the second lands seconds into a time warp with no phone on stage.",
+   "note": "The hang-up tone was reported firing twice per call. Not reproducible on the merged build — swept every call, black and device cue in the show; it fires once. Kept as a standing guard.",
    "proof": "a_one_hangup",
    "clean": 0
   },
   {
    "id": "D-052",
-   "status": "open",
+   "status": "fixed",
    "family": "sound",
    "cues": [
     "*"
@@ -673,7 +673,7 @@
   },
   {
    "id": "D-053",
-   "status": "open",
+   "status": "fixed",
    "family": "sound",
    "cues": [
     "*"
@@ -684,7 +684,7 @@
   },
   {
    "id": "D-054",
-   "status": "open",
+   "status": "fixed",
    "family": "sound",
    "cues": [
     "2.2",
@@ -696,7 +696,7 @@
   },
   {
    "id": "D-055",
-   "status": "open",
+   "status": "fixed",
    "family": "sound",
    "cues": [
     "3.3",
@@ -710,12 +710,12 @@
   },
   {
    "id": "D-056",
-   "status": "open",
+   "status": "fixed",
    "family": "sound",
    "cues": [
     "4.6"
    ],
-   "note": "The bank alert's bell is 22 milliseconds long.",
+   "note": "The bank alert's bell was 22 milliseconds long — inaudible as an event. A bank alert is a text message and iOS gives it the text tone; the special case is gone.",
    "proof": "a_bell_audible",
    "clean": 0
   },
