@@ -15,8 +15,15 @@ The closure law needs a FULL clean run on a new build, so --only and --fast do n
 the clean counter. Only the whole gate can close a loop.
 """
 
+# SHOW-WIDE SWEEPS — the probes that walk all 69 cues. Each is worth minutes on the shipping run
+# and is skipped by --fast so the operator's loop in tech stays under a minute. Measured, not guessed:
+# a_maybe_cathy 84s · a_13_to_14 48s · a_subject_never_sliced ~20min · a_bows 3.3min.
 SLOW = {'a_subject_never_sliced', 'a_bows', 'a_photo_bed', 'a_ringback_twice',
-        'a_105_hold', 'a_app_tap_visible', 'a_call_buttons_match', 'a_timer_format'}
+        'a_105_hold', 'a_app_tap_visible', 'a_call_buttons_match', 'a_timer_format',
+        'a_maybe_cathy', 'a_13_to_14', 'a_fills_window', 'a_one_scale_per_register',
+        'a_stack_whole', 'a_23_pingpong', 'a_call_controls', 'a_laptop_legible',
+        'a_one_receipt', 'a_no_lowbat', 'a_unlock_audible', 'a_era_never_overlays',
+        'a_no_stray_pages', 'a_predict_matches', 'a_map_moves', 'a_dash_legible'}
 import glob, hashlib, importlib.util, json, os, sys, time
 
 from playwright.sync_api import sync_playwright

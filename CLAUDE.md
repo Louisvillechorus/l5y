@@ -313,8 +313,11 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
 `notes.json` holds every note David has given: an ID, the cues it touches, a `family` (so the same
 logic is swept everywhere it applies, not only where he caught it), a status, and the NAME OF THE
 ASSERTION THAT PROVES IT. Each proof is an `a_*` function in a `qc_notes_*.py` probe file.
-`qc_notes.py` runs them all on the live path and prints a line per note; **a note marked `fixed`
-whose proof is missing or failing fails the gate.** Nothing is "done" because it was edited — it is
+`qc_notes.py` runs them all on the live path and prints a line per note, with each probe's own
+runtime and the five slowest named; **a note marked `fixed` whose proof is missing or failing fails
+the gate.** `--only D-001,D-005` checks one thing in seconds and `--fast` skips the show-wide sweeps
+(measured: `a_maybe_cathy` 84 s, `a_13_to_14` 48 s, the subject law ~20 min) — **neither can close a
+loop**, only the full gate can. Nothing is "done" because it was edited — it is
 done when its probe passes. Never mark one fixed without a probe.
 
 **THE CLOSURE LAW (David, Sept 20 — "always and forever amen")**: QA → fix → QA → fix → QA → no fix
