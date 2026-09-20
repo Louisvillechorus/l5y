@@ -96,27 +96,51 @@ def a_contact_name_era(pg):
     """CLAUDE.md: "Jamie ✨" → "Jamie 💙" → "Jamie". The first night cannot use the 2026 name."""
     bad = []
     s = _cues_src()
+    # Song 14's her-side cues are the FIRST NIGHT (Sept 3 2021), whatever date op the cue carries —
+    # the date is set by its neighbours. Any bare "Jamie" there is the 2026 name in 2021.
     early = []
     for blk in re.split(r"(?=\{id:')", s):
         m = re.match(r"\{id:'(14\.[1-9])'", blk)
         if not m:
             continue
-        if re.search(r"(contact|title|n):'Jamie'", blk) and 'September' in blk:
+        if re.search(r"(contact|title|n):'Jamie'(?!\s*\u2728|\s*\U0001F499)", blk):
             early.append(m.group(1))
     if early:
         bad.append('on the first night her contact for him reads the 2026 name "Jamie" at '
-                   + ', '.join(early) + ' — the law says ✨ then 💙 then bare')
+                   + ', '.join(sorted(set(early))) + ' — the law says ✨ then 💙 then bare')
+    # …and the 2026 songs must NOT still be on the early name
+    for song, want in (("1.", 'bare'),):
+        for blk in re.split(r"(?=\{id:')", s):
+            mm = re.match(r"\{id:'(1\.[0-9])'", blk)
+            if mm and ('Jamie \u2728' in blk or 'Jamie \U0001F499' in blk):
+                bad.append(f'{mm.group(1)}: June 2026 still uses an early contact name for him')
     return bad
 
 
 # ---------- D-061 · one Linda Whitfield ----------
 def a_one_whitfield(pg):
+    """Two names for her is CORRECT and is the chain of custody, not a break in it: he saves a
+    stranger's office number from Dr. Adler's tip as "Ms. Whitfield (office)" in 2021, and by the
+    time she is his agent of three years she is "Linda Whitfield" — the same progression the law
+    sets for "Jamie ✨ → Jamie 💙 → Jamie". What must never happen is the order reversing."""
+    bad = []
     s = _cues_src()
-    names = set(re.findall(r"'((?:Ms\. )?(?:Linda )?Whitfield[^']*)'", s))
-    if len(names) > 1:
-        return [f'Whitfield appears under {len(names)} names with no chain of custody between them: '
-                + ', '.join(sorted(names))]
-    return []
+    office, full = [], []
+    for blk in re.split(r"(?=\{id:')", s):
+        m = re.match(r"\{id:'(\d+)\.", blk)
+        if not m:
+            continue
+        song = int(m.group(1))
+        if 'Ms. Whitfield (office)' in blk:
+            office.append(song)
+        if re.search(r"Linda Whitfield", blk):
+            full.append(song)
+    if not office or not full:
+        return []          # only one form in the show: nothing to order
+    if max(office) > min(full):
+        bad.append(f'the office number reappears (song {max(office)}) after she is already saved '
+                   f'as Linda Whitfield (song {min(full)}) — the contact went backwards')
+    return bad
 
 
 # ---------- D-062 · the census's camera test can actually fail ----------

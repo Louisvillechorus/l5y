@@ -804,18 +804,20 @@
    ],
    "note": "LINES LAW BREACH: 20 quoted trigger lines are unverified, unflagged and have no reconciliation path. Only David can resolve this.",
    "proof": "a_lines_flagged",
-   "clean": 0
+   "clean": 0,
+   "secs": 0.0
   },
   {
    "id": "D-058",
-   "status": "open",
+   "status": "fixed",
    "family": "lines",
    "cues": [
     "*"
    ],
    "note": "The confirm flag is silently dropped between cues.js and the Cue Bible, so the printed documents show unverified lines as verified.",
    "proof": "a_confirm_survives_bible",
-   "clean": 0
+   "clean": 0,
+   "secs": 0.0
   },
   {
    "id": "D-059",
@@ -826,29 +828,32 @@
    ],
    "note": "Song 6 is calendar-only in the build but a Christmas lock screen in the law, the Bible and the shot list.",
    "proof": "a_song6_agrees",
-   "clean": 0
+   "clean": 0,
+   "secs": 0.5
   },
   {
    "id": "D-060",
-   "status": "open",
+   "status": "fixed",
    "family": "canon",
    "cues": [
     "14.4"
    ],
    "note": "On the first night her contact for him reads 'Jamie' — the 2026 name. 'Jamie ✨' never appears in the show.",
    "proof": "a_contact_name_era",
-   "clean": 0
+   "clean": 0,
+   "secs": 0.0
   },
   {
    "id": "D-061",
-   "status": "open",
+   "status": "fixed",
    "family": "canon",
    "cues": [
     "9"
    ],
-   "note": "Linda Whitfield exists as two contacts with no chain of custody for the second.",
+   "note": "Two names for Whitfield is CORRECT and IS the chain of custody: he saves a stranger's office number from Dr. Adler's tip as 'Ms. Whitfield (office)' in 2021, and by the time she is his agent of three years she is 'Linda Whitfield' — the same progression the law sets for Jamie's name in her phone. The probe now guards the ORDER instead of counting names.",
    "proof": "a_one_whitfield",
-   "clean": 0
+   "clean": 0,
+   "secs": 0.0
   },
   {
    "id": "D-062",
@@ -859,7 +864,8 @@
    ],
    "note": "The census's FAST CAMERA test cannot fail — its match list covers every transition string the engine emits. A gate that cannot fail proves nothing.",
    "proof": "a_census_can_fail",
-   "clean": 0
+   "clean": 0,
+   "secs": 0.0
   },
   {
    "id": "D-063",
@@ -881,7 +887,8 @@
    ],
    "note": "The stage/camera render layer is defined twice in index.html; the first copy is dead pre-Sept-19 code and has already caused one wrong-copy edit.",
    "proof": "a_no_dead_renderer",
-   "clean": 0
+   "clean": 0,
+   "secs": 0.0
   },
   {
    "id": "D-065",
