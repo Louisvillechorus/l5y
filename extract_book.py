@@ -19,7 +19,7 @@ EXTRACT_JS = """() => {
     for (let k = 0; k < s.cues.length; k++) {
       const c = s.cues[k];
       const pre = buildState(s, k), post = buildState(s, k + 1);
-      cues.push({id: c.id, kind: c.kind, trig: c.trig, what: c.what || '',
+      cues.push({id: c.id, kind: c.kind, trig: c.trig, confirm: !!c.confirm, what: c.what || '',
                  hold: c.hold || null, cut: c.cut || null,
                  dev: post.dev, preApp: pre.app, app: post.app,
                  who: post.who, clock: post.tm, stamp: post.stamp,

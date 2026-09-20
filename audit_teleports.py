@@ -8,6 +8,23 @@ Exemptions (real phone behavior, not violations):
   - device flips land in-app (the other person was already there)
 """
 import json
+import os
+import sys
+
+
+def _fresh_or_die():
+    """A gate that grades a stale artifact is worse than no gate: it reports CLEAN on a show that
+    no longer exists. book.json must be newer than the build it claims to describe."""
+    try:
+        b, k = os.path.getmtime('book.json'), os.path.getmtime('L5Y-Show-STANDALONE.html')
+    except OSError as e:
+        sys.exit('TELEPORT AUDIT: cannot run — %s' % e)
+    if b < k:
+        sys.exit('TELEPORT AUDIT: STALE — book.json predates the build. '
+                 'Run: CHROMIUM_PATH=... python3 extract_book.py')
+
+
+_fresh_or_die()
 FAM={'thread':'msg','msglist':'msg','contact':'msg','mail':'mail','mailread':'mail',
  'fbpost':'fb','memories':'fb','photos':'ph','shot':'ph','call':'phone','vm':'phone',
  'facetime':'ft','ftrecents':'ft','settings2':'set','music':'mus','maps':'map','note':'nt',
