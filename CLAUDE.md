@@ -168,9 +168,12 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
 - **CARPLAY (song 12)**: the drive plays on the dash — `dev:'carplay'`, a landscape head unit
   (sidebar: clock, signal, recent apps, home; Maps with the maneuver card and the trip card over the
   map, the same live route model as the phone). The dash clock rides with the trip.
-- **THE SOUND LAW (David, Sept 19 night)**: the screen makes ONLY the sounds a real iPhone makes
+- **THE SOUND LAW (David, Sept 19 night; amended Sept 20)**: the screen makes ONLY the sounds a real iPhone makes
   with its volume up, and QUIETLY (default 0.35, trims ≤ .7). Send, receive, the lock-screen tone,
-  mail, the FaceTime ring / accept / end. **NO RINGTONES (David)**: an incoming call BUZZES — the
+  mail, the FaceTime ring / accept / end, **and the UNLOCK — David, Sept 20: we hear it at 13.3 and
+  everywhere else a phone is unlocked** (`unlock` is in `SFX_KEEP_`; the licensed set has no
+  `unlock.caf`, so the synthesised tick plays until David drops one in). **The low-battery chime is
+  CUT entirely (David, Sept 20)** — op, synth, sample and census entry all removed. **NO RINGTONES (David)**: an incoming call BUZZES — the
   phone vibrating on the table (`assets/sfx/vibrate.mp3`, David's licensed file). NO paper sounds, NO
   ambience, NO taps, swipes, unlock or ringback; **KEYBOARD CLICKS ARE ON for every typing beat (David, Sept 19
   night — “the haptics back in”): the real key_press_click per key, key_press_modifier on the space bar,
@@ -194,6 +197,12 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   `assets/fonts/` and build.py inlines them as base64 `@font-face` in the STANDALONE and docs, so the
   projection machine never waits on — or goes without — theatre Wi-Fi. Before this, a machine with no
   internet ran the whole show in fallback Georgia/Courier. The Google Fonts `<link>` stays for `index.html`.
+- **THE OPERATOR CAN MOVE (David, Sept 20)**: the Menu is no longer a dead end. `☰ Menu` (or `J`, or
+  `Esc`) opens **#jump** — the running order on the left, that song's cues with their triggers on the
+  right, the live cue marked NOW; click or arrow-and-Enter to land on any cue (a scrub via
+  `hardRender`, not a GO). It swallows every key while open, so GO can never fire behind it, and
+  **Esc never un-starts the show again**. Presenter only — `body.jumping.v-presenter`, never
+  broadcast, so the house never sees the operator think.
 - **OPERATOR SAFETY (Sept 19 review)**: one `setBlackout()` for key, button and the other window;
   a RELOADED presenter resumes at the saved cue (`l5y_pos`, reload only, 3 h); resize never cancels
   a running cue; `hardRender` stops rings and clears camera timers; GO keys are ignored while the
@@ -254,8 +263,23 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   Never write, fix, or fill a script line from memory. `apply_lines.py` +
   `L5Y-Lines-Worksheet.docx` are the reconciliation path.
 
+## THE NOTES REGISTER (David, Sept 20 — "trackable, traceable, fixable, provable, repeatable")
+`notes.json` holds every note David has given: an ID, the cues it touches, a `family` (so the same
+logic is swept everywhere it applies, not only where he caught it), a status, and the NAME OF THE
+ASSERTION THAT PROVES IT. Each proof is an `a_*` function in a `qc_notes_*.py` probe file.
+`qc_notes.py` runs them all on the live path and prints a line per note; **a note marked `fixed`
+whose proof is missing or failing fails the gate.** Nothing is "done" because it was edited — it is
+done when its probe passes. Never mark one fixed without a probe.
+
+**THE CLOSURE LAW (David, Sept 20 — "always and forever amen")**: QA → fix → QA → fix → QA → no fix
+necessary → QA → no fix necessary → CLOSE. A note goes `open` → `fixed` → `closed`, and `closed`
+requires **two consecutive clean runs on two DIFFERENT builds** (`clean` counter + `last_build` hash
+in notes.json; a pass on the same artifact does not count twice, so a loop can never be closed by
+re-running the gate). Any failure resets the counter to zero. A `closed` note whose probe later
+fails is reported as a REGRESSION and fails the whole gate — closure is not permanent absolution.
+
 ## Workflow law
-1. **Verify before delivering.** Playwright harness must pass: state-integrity (all cues), POV/timeline, legibility QC, `audit_teleports.py` (no register appears without navigation), **`qc_census.py` (the live census: every sound and every camera move of the whole show, by cue — the sound law and the follow rule are checked HERE; any cue with more than three moves must justify itself)**, **`qc_livepath.py` (the operator's GO path: every cue fired via advance(), shell chrome + reading window asserted against settled truth — settled-render sweeps cannot see live-swap bugs)**, zero JS errors — plus a screenshot review of anything visually changed. Never hand David anything unverified.
+1. **Verify before delivering.** Playwright harness must pass: state-integrity (all cues), POV/timeline, legibility QC, `audit_teleports.py` (no register appears without navigation), **`qc_census.py` (the live census: every sound and every camera move of the whole show, by cue — the sound law and the follow rule are checked HERE; any cue with more than three moves must justify itself)**, **`qc_notes.py` (David's register: every note he has given, proved by its own assertion)**, **`qc_livepath.py` (the operator's GO path: every cue fired via advance(), shell chrome + reading window asserted against settled truth — settled-render sweeps cannot see live-swap bugs)**, zero JS errors — plus a screenshot review of anything visually changed. Never hand David anything unverified.
 2. Rebuild = splice `cues.js` into `FALLBACK_SHOW`, emit `L5Y-Show-STANDALONE.html`, `node --check` the script.
 3. Regenerate the Cue Bible whenever cue content changes: `extract_book.py` → `build_bible_data.py` → `build_bible_docx.js` (DOCX) + `build_bible_pdf.py` (PDF, headless Chromium). Both render the same `bible.json`, so they cannot drift. The Bible carries: ON SCREEN verbatim, PLAYS mechanics, SOUND, PHONES state, gold dramaturgy notes.
 4. Ship: STANDALONE + Bible PDF; push to this repo so the team URL stays current.

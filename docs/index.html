@@ -81,7 +81,7 @@
   body.blk #barTop{opacity:0 !important}
   body.portrait #barTop{display:none}
   body.laptop #railL,body.laptop #railR{display:none}
-  body.laptop #projDevice{width:81%;height:100%;margin-right:auto;padding:8.5vh 0 1.2vh;align-items:flex-end}   /* the docked strip owns the right 19%; the laptop never runs under it */
+  body.laptop #projDevice{width:84%;height:100%;margin-right:auto;padding:3vh 0 1.2vh;align-items:flex-end}   /* the docked strip owns the right 19%; the laptop never runs under it */
   #barTop .bwho,#barTop .bwhen{display:flex;align-items:baseline}
   #barTop .bwho{gap:1.4vw} #barTop .bwhen{gap:2vw}
   #barTop .bname{font-family:'Courier Prime',monospace;font-weight:700;
@@ -380,23 +380,23 @@
   .mb-lid{background:#191b20;border-radius:13px 13px 4px 4px;padding:12px 12px 15px;
     box-shadow:0 0 0 1px #34373f,0 30px 70px rgba(0,0,0,.8)}
   .mb-screen{aspect-ratio:16/10.2;border-radius:5px;overflow:hidden;background:#000;position:relative;display:flex;flex-direction:column}
-  .mb-notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:11%;height:12px;background:#000;border-radius:0 0 7px 7px;z-index:45}
+  .mb-notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:11%;height:calc(var(--ph,800px) * .020);background:#000;border-radius:0 0 7px 7px;z-index:45}
   .mb-base{height:12px;background:linear-gradient(#c3c6cd,#8f939c);border-radius:0 0 10px 10px;margin:0 -20px;
     box-shadow:0 7px 20px rgba(0,0,0,.55);position:relative}
   .mb-base::after{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:13%;height:5px;background:#7d818a;border-radius:0 0 6px 6px}
-  .menubar{height:25px;flex:0 0 auto;background:rgba(245,245,247,.85);display:flex;align-items:center;gap:14px;
-    padding:0 13px 0 28px;font-family:var(--sf);font-size:12px;color:#16181d;z-index:30}
+  .menubar{height:calc(var(--ph,800px) * .050);flex:0 0 auto;background:rgba(245,245,247,.85);display:flex;align-items:center;gap:calc(var(--ph,800px) * .020);
+    padding:0 calc(var(--ph,800px) * .018) 0 calc(var(--ph,800px) * .034);font-family:var(--sf);font-size:calc(var(--ph,800px) * .032);color:#16181d;z-index:30}
   .menubar b{font-weight:700}
-  .menubar .right{margin-left:auto;display:flex;gap:12px}
+  .menubar .right{margin-left:auto;display:flex;gap:calc(var(--ph,800px) * .018)}
   .macdesk{flex:1;min-height:0;position:relative;display:flex;align-items:center;justify-content:center;
     padding:2.2% 3% 8.5%;background:linear-gradient(150deg,#2b3a55,#3d3457 45%,#54324b)}
   .window{width:100%;height:100%;background:#fff;border-radius:10px;overflow:hidden;
     box-shadow:0 22px 55px rgba(0,0,0,.5);display:flex;flex-direction:column}
-  .titlebar{height:32px;flex:0 0 auto;background:#eceef2;border-bottom:1px solid #dcdfe5;display:flex;
-    align-items:center;padding:0 11px;gap:7px;font-family:var(--sf);font-size:12px}
-  .tl{display:flex;gap:6px}.tl i{width:10px;height:10px;border-radius:50%;display:block}
+  .titlebar{height:calc(var(--ph,800px) * .066);flex:0 0 auto;background:#eceef2;border-bottom:1px solid #dcdfe5;display:flex;
+    align-items:center;padding:0 calc(var(--ph,800px) * .016);gap:calc(var(--ph,800px) * .011);font-family:var(--sf);font-size:calc(var(--ph,800px) * .032)}
+  .tl{display:flex;gap:calc(var(--ph,800px) * .009)}.tl i{width:calc(var(--ph,800px) * .016);height:calc(var(--ph,800px) * .016);border-radius:50%;display:block}
   .tl .r{background:#ff5f57}.tl .y{background:#febc2e}.tl .g{background:#28c840}
-  .titlebar .name{flex:1;text-align:center;font-weight:600;color:#41454e;margin-right:40px}
+  .titlebar .name{flex:1;text-align:center;font-weight:600;color:#41454e;margin-right:calc(var(--ph,800px) * .058)}
   .dock{position:absolute;bottom:9px;left:50%;transform:translateX(-50%);display:flex;gap:6px;align-items:flex-end;
     background:rgba(245,245,247,.34);backdrop-filter:blur(18px);padding:5px 7px;border-radius:15px;
     border:1px solid rgba(255,255,255,.28)}
@@ -641,7 +641,7 @@
   /* Larger Text: the phone runs iOS Dynamic Type two steps up, so the whole
      screen reads from the house without any cropping */
   .fs{font-size:calc(var(--ph,800px) * 0.024)}
-  .mb-screen .fs{font-size:13.5px}
+  .mb-screen .fs{font-size:calc(var(--ph,800px) * .048)}   /* the Mac runs large Display Scaling — the back row reads it too */
   .ipad .fs{font-size:clamp(10px,1.45vh,16px)}
   /* lock */
   .lock{flex:1;display:flex;flex-direction:column;padding-top:9%;
@@ -927,6 +927,13 @@
   #gatewrap{position:fixed;inset:0;z-index:300;background:#05070c;display:none;
     align-items:center;justify-content:center;padding:5vh 6vw;overflow:auto}
   body.needgate #gatewrap{display:flex}
+  /* THE AUDIENCE NEVER SEES THE QUESTIONNAIRE (David, Sept 20 — he photographed it on the TV).
+     Only ONE window asks. Every other window sits in gatewait: true black, nothing painted,
+     no keys, until the owner starts the show and the sync wakes it as a projector. */
+  body.gatewait #gatewrap{display:none !important}
+  body.gatewait{background:#000 !important}
+  body.gatewait > *{display:none !important}
+  body.gatewait{background:#000 !important}
   #gatewrap #gate{width:min(1100px,92vw)}
   #gate .gstep{display:none} #gate .gstep.on{display:block}
   #gate .gq{font-family:'Fraunces',serif;font-size:clamp(24px,3vw,44px);margin:0 0 6px}
@@ -3421,7 +3428,7 @@ function deviceHTML(st,h){
     const web=WEBAPP[st.app]; const menu=mbMenuFor(st);
     const chrome=web?`<div class="safbar"><div class="safrow"><span style="color:#8b9099">‹ ›</span>
       <div class="url">🔒 ${web[0]}</div><span style="color:#8b9099">＋</span></div></div>`:'';
-    return `<div class="macbook" style="width:${h*1.55}px"><div class="mb-lid"><div class="mb-screen"><div class="mb-notch"></div>
+    return `<div class="macbook" style="width:${h*1.55}px;--ph:${h}px"><div class="mb-lid"><div class="mb-screen"><div class="mb-notch"></div>
       <div class="menubar"><span></span><b>${menu}</b><span>File</span><span>Edit</span><span>View</span><span>Help</span>
       <span class="right"><span>▮▮▮</span><span>${st.tm}</span></span></div>
       <div class="macdesk"><div class="window"><div class="titlebar">
@@ -3674,7 +3681,7 @@ function liveTimerHTML(stTxt){
   const m=/^(connected)\s*·\s*(\d+):(\d{2})$/i.exec(stTxt||'');
   if(!m) return escTxt(stTxt||'');
   const base=(+m[2])*60+(+m[3]);
-  return `${m[1]} · <span class="calltimer" data-base="${base}">${m[2]}:${m[3]}</span>`;
+  return `${m[1]} · <span class="calltimer" data-base="${base}">${fmtDur(base)}</span>`;   // never "00:00" — iOS does not pad the minutes
 }
 function fmtDur(s){ return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
 setInterval(()=>{
@@ -3962,7 +3969,9 @@ async function playCue(cue, st, tok){
       stacks().forEach(k=>{
         const f=k.querySelector('.field'); if(f){ f.textContent='iMessage'; f.style.color=''; }
         const sb=k.querySelector('.sendbtn'); if(sb) sb.classList.remove('on');
-        const t=k.querySelector('.thread'); if(t){ const d=document.createElement('div');
+        const t=k.querySelector('.thread'); if(t){
+          t.querySelectorAll('.rcpt').forEach(r=>r.remove());   // the state drops every receipt on a send; the DOM must too
+          const d=document.createElement('div');
           d.className='bub me pop'; d.textContent=sent; t.appendChild(d); }
         const kb=k.querySelector('.kbd'); if(kb) setTimeout(()=>kb.classList.remove('up'),260);
         const pr=k.querySelector('.predict'); if(pr) setTimeout(()=>pr.classList.remove('up'),260);
@@ -3988,6 +3997,7 @@ async function playCue(cue, st, tok){
       if(cue.do.some(x=>x.op==='send')) await wait(560+prng('rc'+cue.id)()*320);
       if(tok!==animTok) return; applyOp(st,o);
       stacks().forEach(k=>{const t=k.querySelector('.thread'); if(!t) return;
+        t.querySelectorAll('.rcpt').forEach(r=>r.remove());     // one receipt in a thread, ever — iOS never stacks them
         const d=document.createElement('div'); d.className='rcpt fadeUp'; d.textContent=o.t; t.appendChild(d);});
       scrollThreads(); camPush('.thread .rcpt:last-of-type', 3.2, 120); continue; }
     if(o.op==='rcptswap'){ applyOp(st,o);
@@ -4314,7 +4324,8 @@ function goSong(d){ si=(si+d+SHOW.length)%SHOW.length; ci=0; hardRender(); sync(
 function setView(v){ view=v; document.body.classList.remove('v-presenter','v-projection');
   document.body.classList.add('v-'+v); hardRender(); }
 function startAs(v){ soundHostInit(v);
-  document.body.classList.remove('needgate');
+  document.body.classList.remove('needgate','gatewait');
+  try{ ch.postMessage({from:CID, gateowner:true, live:true}); }catch(e){}
   if(SHOW_OVER){ SHOW_OVER=false; si=0; ci=0; blk=false; try{ localStorage.removeItem('l5y_pos'); }catch(e){} }
   // crash recovery: a RELOADED presenter picks the show up where it was (never a fresh open — that is a new night)
   if(v==='presenter' && si===0 && ci===0){ try{ const nav=performance.getEntriesByType('navigation')[0]; const p=JSON.parse(localStorage.getItem('l5y_pos')||'null');
@@ -4445,13 +4456,18 @@ function openProjection(){
 
 const CID=Math.random().toString(36).slice(2);
 let ch; try{ ch=new BroadcastChannel('l5y-cues'); }catch(e){}
-if(ch) ch.onmessage=e=>{ const m=e.data; if(m.from===CID) return;
+if(ch) ch.onmessage=e=>{ const m=e.data; if(!m || m.from===CID) return;
+  if(m.gatehello){   // a new window is asking whether anyone owns the questions
+    if(GATE_OWNER() || started) { try{ ch.postMessage({from:CID, gateowner:true, live:!!started}); }catch(x){} }
+    return; }
+  if(m.gateowner){ if(m.live) gateWake(); else gateStandDown(); return; }
   if(m.soundclaim && m.from!==CID && SOUND_HOST) yieldSound();   // two windows would double every cue
   if(m.cast && m.cast!==CAST) setCast(m.cast, true);
   if(m.perf!==undefined && m.perf!==PERF){ PERF=m.perf; try{ localStorage.setItem('l5y_perf',PERF); }catch(e){} if(started) hardRender(); }
   if(m.si===undefined && m.blk!==undefined){ blk=!!m.blk; document.body.classList.toggle('blk', blk||(CUR&&stageBlack(CUR))); paintChrome(); return; }   // blackout only — never a hardRender mid-cue
   if(m.si===undefined) return;               // cast-only message
-  if(m.started && !started){ started=true; document.body.classList.add('started'); }
+  if(m.started && !started){ gateWake(); started=true; document.body.classList.add('started'); }
+  if(document.body.classList.contains('gatewait')) gateWake();   // any cue traffic means the show is live
   const stepFwd = (m.si===si && m.ci===ci+1);
   blk=m.blk;
   if(stepFwd){ advance(); }
@@ -4592,9 +4608,29 @@ if(params.has('rot')){ rot=(params.get('rot')==='90')?90:(params.get('rot')==='2
 if(params.has('cast') && CAST_NAMES[params.get('cast')]){ CAST=params.get('cast');
   try{ localStorage.setItem('l5y_cast',CAST); }catch(e){} }
 paintCastUI(); gatePaint();
-if(params.get('view')!=='projection') document.body.classList.add('needgate');
+/* ONE WINDOW ASKS THE QUESTIONS. A window opened without ?view=projection starts BLACK and asks the
+   room: is anyone already the owner, or is the show already running? Anyone who is answers, and this
+   window stays black as a projector. Silence for 700 ms means it is the first window, so it asks.
+   (BroadcastChannel works between file:// pages in the same browser — verified — and over https.) */
+function gateClaim(){
+  document.body.classList.add('needgate','gatewait');
+  try{ ch.postMessage({from:CID, gatehello:true}); }catch(e){}
+  setTimeout(()=>{ if(GATE_STOOD_DOWN()) return;
+    document.body.classList.remove('gatewait');        // nobody answered: this window is the operator's
+    GATE_OWNER(true); }, 700);
+}
+function GATE_OWNER(v){ if(v!==undefined) GATE_OWNER.v=!!v; return !!GATE_OWNER.v; }
+function GATE_STOOD_DOWN(){ return !!GATE_STOOD_DOWN.v; }
+function gateStandDown(){            // someone else owns the questions: be a projector and be black
+  GATE_STOOD_DOWN.v=true; GATE_OWNER(false);
+  document.body.classList.add('gatewait'); document.body.classList.remove('needgate'); }
+function gateWake(){                 // the owner started the show: come up as the projection window
+  GATE_STOOD_DOWN.v=false;
+  document.body.classList.remove('gatewait','needgate');
+  if(!started) startAs('projection');
+}
 if(params.get('view')==='projection'){ startAs('projection'); }
-else render();
+else { gateClaim(); render(); }
 
 /* ===================== TORN SCORE — the stage (Sept 19) =====================
    One era artifact, two homes; tear-off time; the loop; the camera. */
@@ -4930,7 +4966,7 @@ function deviceHTML(st,h){
     const web=WEBAPP[st.app]; const menu=mbMenuFor(st);
     const chrome=web?`<div class="safbar"><div class="safrow"><span style="color:#8b9099">‹ ›</span>
       <div class="url">🔒 ${web[0]}</div><span style="color:#8b9099">＋</span></div></div>`:'';
-    return `<div class="macbook" style="width:${h*1.55}px"><div class="mb-lid"><div class="mb-screen"><div class="mb-notch"></div>
+    return `<div class="macbook" style="width:${h*1.55}px;--ph:${h}px"><div class="mb-lid"><div class="mb-screen"><div class="mb-notch"></div>
       <div class="menubar"><span></span><b>${menu}</b><span>File</span><span>Edit</span><span>View</span><span>Help</span>
       <span class="right"><span>▮▮▮</span><span>${st.tm}</span></span></div>
       <div class="macdesk"><div class="window"><div class="titlebar">
@@ -5173,11 +5209,11 @@ function SFX_MAP_(){ return {send:'SentMessage.caf',receive:'ReceivedMessage.caf
   click:'key_press_click.caf',del:'key_press_delete.caf',keymod:'key_press_modifier.caf',tap:'Tock.caf',tink:'Tink.caf',lock:'lock.caf',unlock:'unlock.caf',swipe:'Swish.m4r',
   connect:'vc~invitation-accepted.caf',end:'vc~ended.caf',ftring:'vc~ringing.caf',ring:'vibrate.mp3',busy:'ct-busy.caf',error:'ct-error.caf',keytone:'ct-keytone2.caf',
   }; }   /* low battery: CUT (David, Sept 20) */
-function SFX_TRIM_(){ return {click:.35,del:.35,keymod:.35,tink:.6,send:.7,receive:.7,notif:.7,mail:.7,mailsent:.7,connect:.7,end:.7,lock:.5,ring:.55,ftring:.65}; }
+function SFX_TRIM_(){ return {click:.35,del:.35,keymod:.35,tink:.6,send:.7,receive:.7,notif:.7,mail:.7,mailsent:.7,connect:.7,end:.7,lock:.5,unlock:.45,ring:.55,ftring:.65}; }
 /* THE SOUND LAW (David, Sept 19 night): the screen makes ONLY the sounds a real iPhone makes with its volume up, and
    quietly. No paper, no ambience, no taps, no swipes, no unlock (iOS has none), no ringback (that lives in the earpiece).
    Keyboard clicks are ON for every typing beat (David, Sept 19 night — the real key_press_click / _delete / _modifier); a cue may mute them with keys:false. */
-function SFX_KEEP_(){ return {send:1,receive:1,notif:1,mail:1,mailsent:1,lock:1,ftring:1,ring:1,end:1,connect:1,tink:1}; }
+function SFX_KEEP_(){ return {send:1,receive:1,notif:1,mail:1,mailsent:1,lock:1,unlock:1,ftring:1,ring:1,end:1,connect:1,tink:1}; }
 function b64bytes(str){ const i=str.indexOf(','); const bin=atob(i>=0?str.slice(i+1):str); const u=new Uint8Array(bin.length); for(let k=0;k<bin.length;k++) u[k]=bin.charCodeAt(k); return u; }
 function cafDecode(u){
   if(!(u[0]===0x63&&u[1]===0x61&&u[2]===0x66&&u[3]===0x66)) throw new Error('not caf');
