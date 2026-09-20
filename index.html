@@ -405,21 +405,27 @@
   .notif .nb{font-size:.8em;color:#000}
   .notif .ntitle{font-size:.8em;font-weight:600}
 
-  /* ---------- realism: home screen ---------- */
-  .layer.home{padding:5.5% 5% 0}
-  .hgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6.5% 5%;align-content:start}
-  .happ .gi{width:100%;aspect-ratio:1;border-radius:22.5%;box-shadow:0 3px 8px rgba(0,0,0,.28);
+  /* ---------- realism: home screen ----------
+     A real iOS icon casts NO shadow on the home screen and its corners are a continuous
+     superellipse, not a circular border-radius (David, Sept 20: the icons look clunky). */
+  :root{--squircle:polygon(100.00% 50.00%,99.90% 69.75%,99.61% 76.01%,99.13% 80.49%,98.44% 84.05%,97.55% 87.01%,96.44% 89.52%,95.11% 91.68%,93.53% 93.53%,91.68% 95.11%,89.52% 96.44%,87.01% 97.55%,84.05% 98.44%,80.49% 99.13%,76.01% 99.61%,69.75% 99.90%,50.00% 100.00%,30.25% 99.90%,23.99% 99.61%,19.51% 99.13%,15.95% 98.44%,12.99% 97.55%,10.48% 96.44%,8.32% 95.11%,6.47% 93.53%,4.89% 91.68%,3.56% 89.52%,2.45% 87.01%,1.56% 84.05%,0.87% 80.49%,0.39% 76.01%,0.10% 69.75%,0.00% 50.00%,0.10% 30.25%,0.39% 23.99%,0.87% 19.51%,1.56% 15.95%,2.45% 12.99%,3.56% 10.48%,4.89% 8.32%,6.47% 6.47%,8.32% 4.89%,10.48% 3.56%,12.99% 2.45%,15.95% 1.56%,19.51% 0.87%,23.99% 0.39%,30.25% 0.10%,50.00% 0.00%,69.75% 0.10%,76.01% 0.39%,80.49% 0.87%,84.05% 1.56%,87.01% 2.45%,89.52% 3.56%,91.68% 4.89%,93.53% 6.47%,95.11% 8.32%,96.44% 10.48%,97.55% 12.99%,98.44% 15.95%,99.13% 19.51%,99.61% 23.99%,99.90% 30.25%)}
+  .layer.home{padding:calc(var(--ph,800px) * 0.085) 6.1% 0}   /* clears the status bar: % padding resolves against WIDTH, not height */
+  .hgrid{display:grid;grid-template-columns:repeat(4,1fr);column-gap:8.25%;row-gap:1.1em;align-content:start}
+  .happ .gi{width:100%;aspect-ratio:1;clip-path:var(--squircle);
     display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
   .happ .gi svg{width:100%;height:100%;display:block}
   .happ small{font-size:.55em;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.55);margin-top:.35em;letter-spacing:.005em}
   .pagedots{display:flex;gap:.45em;justify-content:center;margin-top:auto;padding-bottom:.5em}
   .pagedots i{width:.4em;height:.4em;border-radius:50%;background:rgba(255,255,255,.42)}
   .pagedots i.on{background:#fff}
-  .searchpill{margin:0 auto .7em;background:rgba(255,255,255,.22);backdrop-filter:blur(10px);color:#fff;
-    font-size:.62em;padding:.32em 1em;border-radius:99px;display:flex;align-items:center;gap:.35em;width:fit-content}
+  .searchpill{margin:0 auto .7em;background:rgba(0,0,0,.28);-webkit-backdrop-filter:blur(14px) saturate(1.4);
+    backdrop-filter:blur(14px) saturate(1.4);color:#fff;font-weight:500;
+    font-size:.66em;padding:.3em .95em;border-radius:99px;display:flex;align-items:center;gap:.4em;width:fit-content}
+  .mgl{width:1em;height:1em;flex:0 0 auto;display:inline-block;vertical-align:-.12em}
+  .ph-tabs div i .mgl{display:block;margin:0 auto}
   .dockrow{background:rgba(255,255,255,.2);backdrop-filter:blur(18px);border-radius:1.6em;padding:.55em .5em;
     display:grid;grid-template-columns:repeat(4,1fr);gap:5%;margin-bottom:1.5em}
-  .dockrow .gi{width:100%;aspect-ratio:1;border-radius:22.5%;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+  .dockrow .gi{width:100%;aspect-ratio:1;clip-path:var(--squircle);overflow:hidden}
   .dockrow .gi svg{width:100%;height:100%;display:block}
 
   /* ---------- realism: messages list ---------- */
@@ -502,7 +508,7 @@
   /* ---------- motion layer ---------- */
   .screenstack{position:absolute;inset:0;overflow:hidden}
   .layer{position:absolute;inset:0;display:flex;flex-direction:column;background:#fff}
-  .layer.home{background:linear-gradient(165deg,var(--w1,#25304f),var(--w2,#57365a));padding:6% 5% 0}
+  .layer.home{background:linear-gradient(165deg,var(--w1,#25304f),var(--w2,#57365a));padding:calc(var(--ph,800px) * 0.085) 6.1% 0}
   .layer.lockL{background:linear-gradient(165deg,var(--w1,#25304f),var(--w2,#57365a))}
   @keyframes lockUp{to{transform:translateY(-102%);opacity:.4}}
   .lockUp{animation:lockUp .52s cubic-bezier(.4,0,.2,1) forwards}
@@ -516,13 +522,15 @@
   @keyframes pushOutL{to{transform:translateX(-28%);filter:brightness(.82)}}
   .pushOutL{animation:pushOutL .38s cubic-bezier(.25,.8,.3,1) forwards}
   /* home screen icons */
-  .hgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:7% 4%;align-content:start}
-  .happ{display:flex;flex-direction:column;align-items:center;gap:.35em}
-  .happ .gi{width:100%;aspect-ratio:1;border-radius:23%;box-shadow:0 2px 7px rgba(0,0,0,.3);
-    display:flex;align-items:center;justify-content:center;font-size:1.5em;position:relative}
-  .happ small{font-size:.58em;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.6)}
-  .happ .bdg{position:absolute;top:-6%;right:-6%;min-width:34%;height:34%;border-radius:99px;background:#ff3b30;
-    color:#fff;font-size:.52em;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 .3em}
+  .hgrid{display:grid;grid-template-columns:repeat(4,1fr);column-gap:8.25%;row-gap:1.1em;align-content:start}
+  .happ{display:flex;flex-direction:column;align-items:center;gap:.25em;position:relative}
+  .happ .gi{width:100%;aspect-ratio:1;clip-path:var(--squircle);
+    display:flex;align-items:center;justify-content:center;position:relative}
+  .happ small{font-size:.58em;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.6);max-width:100%;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .happ .bdg{position:absolute;top:-3.5%;right:-3.5%;min-width:31%;height:31%;border-radius:99px;background:#ff3b30;
+    color:#fff;font-size:.72em;font-weight:500;line-height:1;display:flex;align-items:center;justify-content:center;
+    padding:0 .34em;z-index:2;font-variant-numeric:tabular-nums}
   .happ.tapped .gi{animation:tapPress .34s ease}
   @keyframes tapPress{40%{transform:scale(.84);filter:brightness(1.25)}100%{transform:scale(1)}}
   @keyframes ftpulse{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.25)}50%{box-shadow:0 0 0 .8em rgba(255,255,255,0)}}
@@ -1593,11 +1601,16 @@ function buildState(song,upto){
 /* ---------- drawn iOS app icons: CSS gradient background + SVG glyph ---------- */
 const ICON={
  Messages:{bg:'linear-gradient(#5bf675,#0ac02f)',g:`<path d="M32 15c-10.5 0-19 6.8-19 15.2 0 4.8 2.8 9 7.2 11.8-.5 2.3-1.8 4.6-3.6 6.3 3.6-.4 6.9-1.8 9.4-3.6 1.9.5 3.9.7 6 .7 10.5 0 19-6.8 19-15.2S42.5 15 32 15z" fill="#fff"/>`},
- Photos:{bg:'#fff',g:`<g transform="translate(32,32)" opacity=".95">
-   <ellipse rx="6.5" ry="14" fill="#ff5a5a"/><ellipse rx="6.5" ry="14" fill="#ffb03a" transform="rotate(45)"/>
-   <ellipse rx="6.5" ry="14" fill="#ffe23a" transform="rotate(90)"/><ellipse rx="6.5" ry="14" fill="#63d66d" transform="rotate(135)"/>
-   <ellipse rx="6.5" ry="14" fill="#4bb8f0" transform="rotate(180)"/><ellipse rx="6.5" ry="14" fill="#8f6fe8" transform="rotate(225)"/>
-   <ellipse rx="6.5" ry="14" fill="#f06fc0" transform="rotate(270)"/><ellipse rx="6.5" ry="14" fill="#ff8a5a" transform="rotate(315)"/></g>`},
+ Photos:{bg:'#fff',g:`<g transform="translate(32,32)" style="isolation:isolate"><g style="mix-blend-mode:multiply">
+   <path d="M0 -3C4.4 -7.4 6.2 -13 0 -20.5C-6.2 -13 -4.4 -7.4 0 -3Z" fill="#f5453c"/>
+   <path d="M0 -3C4.4 -7.4 6.2 -13 0 -20.5C-6.2 -13 -4.4 -7.4 0 -3Z" fill="#ff9500" transform="rotate(45)"/>
+   <path d="M0 -3C4.4 -7.4 6.2 -13 0 -20.5C-6.2 -13 -4.4 -7.4 0 -3Z" fill="#ffd60a" transform="rotate(90)"/>
+   <path d="M0 -3C4.4 -7.4 6.2 -13 0 -20.5C-6.2 -13 -4.4 -7.4 0 -3Z" fill="#34c759" transform="rotate(135)"/>
+   <path d="M0 -3C4.4 -7.4 6.2 -13 0 -20.5C-6.2 -13 -4.4 -7.4 0 -3Z" fill="#30d0d8" transform="rotate(180)"/>
+   <path d="M0 -3C4.4 -7.4 6.2 -13 0 -20.5C-6.2 -13 -4.4 -7.4 0 -3Z" fill="#0a84ff" transform="rotate(225)"/>
+   <path d="M0 -3C4.4 -7.4 6.2 -13 0 -20.5C-6.2 -13 -4.4 -7.4 0 -3Z" fill="#8f4bf0" transform="rotate(270)"/>
+   <path d="M0 -3C4.4 -7.4 6.2 -13 0 -20.5C-6.2 -13 -4.4 -7.4 0 -3Z" fill="#ff2d92" transform="rotate(315)"/>
+   </g></g>`},
  Safari:{bg:'linear-gradient(#3ec8fb,#0a72e8)',g:`<circle cx="32" cy="32" r="22" fill="#f7f9fb"/>
    <circle cx="32" cy="32" r="21.5" fill="none" stroke="#c9d4de" stroke-width="1"/>
    <polygon points="32,32 45,19 35,35" fill="#f4433c"/><polygon points="32,32 19,45 29,29" fill="#cfd5dd"/>
@@ -1613,15 +1626,18 @@ const ICON={
    <line x1="13" y1="35" x2="51" y2="35"/><line x1="13" y1="43" x2="51" y2="43"/><line x1="13" y1="51" x2="38" y2="51"/></g>`},
  Music:{bg:'linear-gradient(#fc5c6d,#f0264a)',g:`<path d="M44 15l-18 4.5v21.5a6.5 5.5 0 1 0 3.5 4.6V26l11-2.7v11.5a6.5 5.5 0 1 0 3.5 4.6V15z" fill="#fff"/>`},
  Books:{bg:'linear-gradient(#ffb547,#f28c12)',g:`<path d="M13 18h15.5a4 4 0 0 1 3.5 2v28a4 4 0 0 0-3.5-2H13V18z" fill="#fff"/><path d="M51 18H35.5a4 4 0 0 0-3.5 2v28a4 4 0 0 1 3.5-2H51V18z" fill="#fff" opacity=".88"/>`},
- Maps:{bg:'#e9f4e2',g:`<path d="M0 42l22-11 20 8 22-13v38H0z" fill="#bfe0a8"/>
-   <path d="M0 27l24 8 18-10 22 6" fill="none" stroke="#8fc7ff" stroke-width="5.5"/>
-   <path d="M17 0l7 64" stroke="#fff" stroke-width="4" fill="none"/>
-   <circle cx="45" cy="24" r="7.5" fill="#fb3b30"/><circle cx="45" cy="24" r="2.6" fill="#fff"/>`},
- Settings:{bg:'linear-gradient(#d5d8dd,#8b9099)',g:`<circle cx="32" cy="32" r="13" fill="none" stroke="#f7f8fa" stroke-width="5"/>
-   <g stroke="#f7f8fa" stroke-width="5" stroke-linecap="round"><line x1="32" y1="10" x2="32" y2="17"/>
-   <line x1="32" y1="47" x2="32" y2="54"/><line x1="10" y1="32" x2="17" y2="32"/><line x1="47" y1="32" x2="54" y2="32"/>
-   <line x1="17" y1="17" x2="22" y2="22"/><line x1="42" y1="42" x2="47" y2="47"/>
-   <line x1="47" y1="17" x2="42" y2="22"/><line x1="22" y1="42" x2="17" y2="47"/></g>`},
+ Maps:{bg:'#f6f3ec',g:`<path d="M0 38c8-4 15-3 22 1s14 2 20-3 14-6 22-3v31H0z" fill="#cfe8bd"/>
+   <path d="M0 20c9 1 15 5 22 8s13 1 19-4 15-8 23-6" fill="none" stroke="#a8d4f5" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+   <path d="M14 -2l9 68" fill="none" stroke="#d9cfa8" stroke-width="8.5" stroke-linecap="round"/>
+   <path d="M14 -2l9 68" fill="none" stroke="#fdf3d0" stroke-width="5.5" stroke-linecap="round"/>
+   <path d="M-2 47c14-3 26-8 34-16s18-13 34-14" fill="none" stroke="#e4ded2" stroke-width="5" stroke-linecap="round"/>
+   <path d="M-2 47c14-3 26-8 34-16s18-13 34-14" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+   <ellipse cx="44" cy="34.6" rx="4.4" ry="1.5" fill="rgba(0,0,0,.18)"/>
+   <path d="M44 13.5c-5.2 0-9.4 4.2-9.4 9.4 0 6.9 9.4 11.7 9.4 11.7s9.4-4.8 9.4-11.7c0-5.2-4.2-9.4-9.4-9.4z" fill="#f5453c"/>
+   <circle cx="44" cy="22.6" r="3.3" fill="#fff"/>`},
+ Settings:{bg:'linear-gradient(#e6e7e9,#a2a7ae)',g:`<g fill="#f7f8fa">
+  <path d="M28.2 6.5h7.6l1.1 7.6 5.6 2.3 6.1-4.7 5.4 5.4-4.7 6.1 2.3 5.6 7.6 1.1v7.6l-7.6 1.1-2.3 5.6 4.7 6.1-5.4 5.4-6.1-4.7-5.6 2.3-1.1 7.6h-7.6l-1.1-7.6-5.6-2.3-6.1 4.7-5.4-5.4 4.7-6.1-2.3-5.6-7.6-1.1v-7.6l7.6-1.1 2.3-5.6-4.7-6.1 5.4-5.4 6.1 4.7 5.6-2.3z"/></g>
+  <circle cx="32" cy="32" r="9.6" fill="#9aa0a8"/><circle cx="32" cy="32" r="6.2" fill="#f7f8fa"/>`},
  Clock:{bg:'#1c1c1e',g:`<circle cx="32" cy="32" r="20" fill="none" stroke="#fff" stroke-width="2"/>
    <line x1="32" y1="32" x2="32" y2="19" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>
    <line x1="32" y1="32" x2="41" y2="36" stroke="#ff9f0a" stroke-width="2.6" stroke-linecap="round"/>
@@ -1631,7 +1647,7 @@ const ICON={
    <circle cx="32" cy="34.5" r="4" fill="#1a1c1f"/><rect x="24" y="17" width="16" height="6" rx="2" fill="#4d5157"/>`},
  Weather:{bg:'linear-gradient(#3aa8f0,#1258c8)',g:`<circle cx="24" cy="25" r="8.5" fill="#ffd83d"/>
    <ellipse cx="37" cy="39" rx="16" ry="10" fill="#fff"/><ellipse cx="24" cy="41" rx="10.5" ry="7.5" fill="#fff"/>`},
- Facebook:{bg:'#0866ff',g:`<text x="34" y="52" font-family="Georgia,serif" font-size="52" font-weight="700" fill="#fff" text-anchor="middle">f</text>`},
+ Facebook:{bg:'#0866ff',g:`<g transform="translate(16,14) scale(0.0977)" fill="#fff"><path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/></g>`},
  Instagram:{bg:'radial-gradient(circle at 30% 107%,#fdf497 0%,#fd5949 45%,#d6249f 60%,#285AEB 90%)',
    g:`<rect x="15" y="15" width="34" height="34" rx="10" fill="none" stroke="#fff" stroke-width="3.4"/>
       <circle cx="32" cy="32" r="8.5" fill="none" stroke="#fff" stroke-width="3.4"/>
@@ -1659,6 +1675,7 @@ function kbdHTML(){
     `<div class="krow"><div class="key w">123</div><div class="key" data-k="🙂" style="flex:.8 1 0">☺</div>`+
     `<div class="key sp" data-k=" ">space</div><div class="key w" data-k="↵">return</div></div>`;
 }
+const MGL = () => `<svg class="mgl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10.6" cy="10.6" r="6.6"/><line x1="15.4" y1="15.4" x2="20.4" y2="20.4"/></svg>`;
 function iconEl(n, glyph){
   const ic=ICON[n]||{bg:'#c7c7cc',g:''};
   return `<div class="gi" style="background:${ic.bg}"><svg viewBox="0 0 64 64">${glyph||ic.g}</svg></div>`;
@@ -1672,17 +1689,17 @@ function calGlyph(date){
 
 /* ---------- screen renderers ---------- */
 const WALL={cathy:['#3a1230','#6b2a52','#2b0d24'],jamie:['#12303a','#1d5566','#0e2733']};
-const HOME_GRID=[['Messages'],['Facebook'],['Photos'],['Camera'],
-                 ['Mail'],['Instagram'],['Calendar'],['Clock'],
-                 ['Chase'],['Maps'],['FaceTime'],['Tinder'],
-                 ['Settings'],['Notes'],['FindMy'],['Reminders']];
+const HOME_GRID=[['Facebook'],['Photos'],['Camera'],['Mail'],
+                 ['Instagram'],['Calendar'],['Clock'],['Chase'],
+                 ['Maps'],['FaceTime'],['Tinder'],['Settings'],
+                 ['Notes'],['FindMy'],['Reminders'],['Weather']];
 /* two people, two home screens — the dating app lives on HIS phone only,
    and she reads his novel in Books on hers */
 const HOME_GRIDS={
-  cathy:[['Messages'],['Facebook'],['Photos'],['Camera'],
-         ['Mail'],['Instagram'],['Calendar'],['Books'],
-         ['Chase'],['Maps'],['FaceTime'],['Clock'],
-         ['Settings'],['Notes'],['FindMy'],['Reminders']],
+  cathy:[['Facebook'],['Photos'],['Camera'],['Mail'],
+         ['Instagram'],['Calendar'],['Books'],['Chase'],
+         ['Maps'],['FaceTime'],['Clock'],['Settings'],
+         ['Notes'],['FindMy'],['Reminders'],['Weather']],
   jamie:HOME_GRID};
 const HOME_DOCK=['Phone','Safari','Messages','Music'];
 const CHROME={lock:['transparent','#fff'],home:['transparent','#fff'],msglist:['#f9f9f9','#000'],
@@ -1777,11 +1794,11 @@ function homeHTML(st){
   const unread = (st.msgrows&&st.msgrows.length) ? st.msgrows.filter(r=>r.un).length : st.notifs.length;
   const badge = unread?`<span class="bdg">${unread}</span>`:'';
   return `<div class="layer home fs" style="background:linear-gradient(160deg,${w1},${w2} 55%,${w3})">
-    <div class="hgrid">${(HOME_GRIDS[st.who]||HOME_GRID).map(([n])=>`<div class="happ" data-app="${n}">
-      ${iconEl(n, n==='Calendar'?calGlyph(st.date):null).replace('</svg>','</svg>'+(n==='Messages'?badge:''))}<small class="hlbl">${n}</small></div>`).join('')}</div>
+    <div class="hgrid">${(HOME_GRIDS[st.who]||HOME_GRID).map(([n,l])=>`<div class="happ" data-app="${n}">
+      ${iconEl(n, n==='Calendar'?calGlyph(st.date):null)}<small class="hlbl">${l||n}</small></div>`).join('')}</div>
     <div class="pagedots"><i class="on"></i><i></i></div>
-    <div class="searchpill">🔍 Search</div>
-    <div class="dockrow">${HOME_DOCK.map(n=>`<div class="happ" data-app="${n}">${iconEl(n)}</div>`).join('')}</div>
+    <div class="searchpill">${MGL()}Search</div>
+    <div class="dockrow">${HOME_DOCK.map(n=>`<div class="happ" data-app="${n}">${iconEl(n)}${n==='Messages'?badge:''}</div>`).join('')}</div>
   </div>`;
 }
 function msglistHTML(st){
@@ -1789,7 +1806,7 @@ function msglistHTML(st){
   return `<div class="layer fs"><div class="msglist2">
     <div class="ml-nav"><span>Edit</span><span>✎</span></div>
     <div class="ml-title">Messages</div>
-    <div class="ml-search">🔍 Search</div>
+    <div class="ml-search">${MGL()}Search</div>
     ${rows.map(r=>`<div class="mrow2" data-row="${r.n}">
       ${r.un?'<span class="un"></span>':''}
       <div class="av2" style="${avStyle(r.n,r.av)}">${avText(r.n,r.i)}</div>
@@ -1826,7 +1843,7 @@ function photosHTML(st){
     <div class="${active==='library'?'on':''}" data-tab="library"><i>🖼</i>Library</div>
     <div class="${active==='foryou'||active==='memory'?'on':''}" data-tab="foryou"><i>✨</i>For You</div>
     <div data-tab="albums"><i>📚</i>Albums</div>
-    <div data-tab="search"><i>🔍</i>Search</div></div>`;
+    <div data-tab="search"><i>${MGL()}</i>Search</div></div>`;
   // LIBRARY — what Photos actually opens to: your camera roll, newest first
   if(st.photoTab==='library'){
     const roll=['screenshot','rehearsal call','coffee','poster','the pier','sheet music',
@@ -1990,7 +2007,7 @@ function searchHTML2(st){
     <div style="font-size:2.4em;font-weight:600;letter-spacing:-.02em;margin:.9em 0 .5em;font-family:Arial,Helvetica,sans-serif">
       ${G.map(([c,col])=>`<span style="color:${col}">${c}</span>`).join('')}</div>
     <div style="width:86%;border:1px solid #dfe1e5;border-radius:1.4em;padding:.5em .9em;display:flex;gap:.5em;align-items:center;box-shadow:0 1px 6px rgba(32,33,36,.12)">
-      <span style="color:#9aa0a6">🔍</span><span style="color:#202124;text-align:left">${st.search||''}</span><span class="caret2"></span></div>
+      <span style="color:#9aa0a6;display:inline-flex">${MGL()}</span><span style="color:#202124;text-align:left">${st.search||''}</span><span class="caret2"></span></div>
     ${st.searchDone?`<div style="color:#9aa0a6;font-size:.8em;margin-top:.8em">${st.searchDone}</div>`:''}
     <div style="display:flex;gap:.6em;margin-top:.9em">
       <div style="background:#f8f9fa;border:1px solid #f1f3f4;border-radius:.3em;padding:.4em .8em;font-size:.76em;color:#3c4043">Google Search</div>
