@@ -109,24 +109,56 @@
   .fullstage .screenstack{position:absolute;inset:0}
   .fullstage .memscreen{max-width:min(92%,96vh);margin:0 auto}
 
-  /* ---- MAPS DRIVE (Song 12): navigation chrome sized for 25 ft ---- */
-  .mapsdrive .dv-banner{margin:.5em .55em 0;background:#2e7d4f;border-radius:.8em;padding:.6em .8em;display:flex;gap:.7em;
-    align-items:center;position:relative;z-index:2;box-shadow:0 4px 14px rgba(0,0,0,.35)}
-  .mapsdrive .dv-ico{font-size:3em;line-height:1;flex:none;width:1.15em;text-align:center}
-  .mapsdrive .dv-dist{font-size:2.2em;font-weight:800;line-height:1.05}
-  .mapsdrive .dv-instr{font-size:1.32em;font-weight:600;line-height:1.18;margin-top:.14em}
-  .mapsdrive .dv-via{font-size:1em;opacity:.85;margin-top:.1em}
-  .mapsdrive .dv-map{flex:1;min-height:0;position:relative}
+  /* ---- MAPS DRIVE (Song 12): Apple Maps turn-by-turn, sized for 25 ft ----
+     The guidance card and the trip card are floating material, the maneuver glyph is
+     drawn (never a font arrow), and every counting numeral is tabular so the miles
+     fall without the numbers twitching sideways. */
+  .mapsdrive .dv-banner{margin:0;background:rgba(15,124,60,.93);border-radius:0 0 1.1em 1.1em;
+    padding:.5em .78em .66em;display:flex;gap:.7em;align-items:center;position:relative;z-index:2;
+    box-shadow:0 .2em .6em rgba(0,0,0,.45),inset 0 .04em 0 rgba(255,255,255,.14)}
+  .mapsdrive .dv-ico{flex:none;width:2.55em;height:2.55em;display:flex;align-items:center;justify-content:center}
+  .mapsdrive .dv-ico svg{width:100%;height:100%;display:block;fill:#fff}
+  .mapsdrive .dv-txt{min-width:0;flex:1}
+  .mapsdrive .dv-dist{font-size:2.4em;font-weight:700;line-height:1.02;letter-spacing:-.022em;font-variant-numeric:tabular-nums}
+  .mapsdrive .dv-dist u{font-size:.46em;font-weight:600;text-decoration:none;margin-left:.24em;opacity:.92;letter-spacing:0}
+  .mapsdrive .dv-instr{font-size:1.3em;font-weight:600;line-height:1.16;margin-top:.1em}
+  .mapsdrive .dv-via{font-size:1em;opacity:.84;margin-top:.08em;line-height:1.2}
+  .mapsdrive .dv-then{display:none;margin-left:auto;align-items:center;gap:.3em;flex:none;
+    background:rgba(0,0,0,.22);border-radius:.55em;padding:.28em .48em;font-size:.95em}
+  .mapsdrive .dv-then.on{display:flex}
+  .mapsdrive .dv-then svg{width:1.6em;height:1.6em;display:block;fill:#fff}
+  .mapsdrive .dv-map{flex:1;min-height:0;position:relative;overflow:hidden}
   .mapsdrive .dv-svg{position:absolute;inset:0;width:100%;height:100%}
-  .mapsdrive .dv-sheet{background:#161b22;padding:.75em .9em .95em;display:flex;justify-content:space-between;align-items:center;
-    position:relative;z-index:2;border-top:1px solid #262c36}
-  .mapsdrive .dv-eta{font-size:2.3em;font-weight:800;line-height:1;color:#fff}
-  .mapsdrive .dv-eta span{font-size:.4em;font-weight:500;color:#9aa4b1;margin-left:.5em}
-  .mapsdrive .dv-stats{font-size:1.35em;color:#cfd6e0;margin-top:.3em}
-  .mapsdrive .dv-stats b{color:#fff;font-weight:700}
-  .mapsdrive .dv-dest-name{font-size:.95em;color:#9aa4b1;margin-top:.15em}
-  .mapsdrive .dv-end{background:#fb3b30;border-radius:1.4em;padding:.55em 1.2em;font-weight:700;font-size:1.25em}
-  .mapsdrive.arrived .dv-banner{background:#2f6fd6}
+  /* the map is HEADING-UP: the world turns under the puck and one property write
+     (--ang, set by driveTick) keeps every label, shield, pin and the compass upright */
+  .mapsdrive .dv-up{transform:rotate(var(--ang,0deg));transform-box:fill-box;transform-origin:50% 50%}
+  .mapsdrive .dv-lbl text{font-family:var(--sf);font-weight:600;fill:#d6dae0;
+    paint-order:stroke;stroke:#15171b;stroke-width:5;stroke-linejoin:round}
+  .mapsdrive .dv-lbl text.wt{fill:#7fa4cc;font-weight:500;font-style:italic}
+  .mapsdrive .dv-speed{position:absolute;z-index:2;left:1em;bottom:1em;background:#fff;color:#000;
+    border:.16em solid #16171a;border-radius:.34em;padding:.14em .4em .2em;text-align:center;line-height:1;
+    box-shadow:0 .12em .4em rgba(0,0,0,.45)}
+  .mapsdrive .dv-speed i{font-style:normal;display:block;font-size:.56em;font-weight:700;letter-spacing:.02em}
+  .mapsdrive .dv-speed b{display:block;font-size:1.6em;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+  .mapsdrive .dv-comp{position:absolute;z-index:2;right:1em;top:1em;width:2.3em;height:2.3em;border-radius:50%;
+    background:rgba(28,28,30,.85);display:flex;align-items:center;justify-content:center;box-shadow:0 .12em .4em rgba(0,0,0,.4)}
+  .mapsdrive .dv-comp svg{width:1.5em;height:1.5em;display:block;transform:rotate(calc(-1 * var(--ang,0deg)))}
+  .mapsdrive .dv-sheet{background:rgba(24,25,28,.84);backdrop-filter:blur(30px) saturate(150%);
+    -webkit-backdrop-filter:blur(30px) saturate(150%);border:0;border-radius:1.1em 1.1em 0 0;
+    padding:.48em 1em .8em;display:flex;align-items:center;gap:1em;flex-wrap:wrap;position:relative;z-index:2;
+    box-shadow:0 -.1em .5em rgba(0,0,0,.35),inset 0 .04em 0 rgba(255,255,255,.10)}
+  .mapsdrive .dv-grab{flex:0 0 100%;width:2.6em;height:.26em;border-radius:.2em;background:#48484a;margin:0 auto .42em}
+  .mapsdrive .dv-trip{display:flex;gap:1.4em;flex:1;min-width:0}
+  .mapsdrive .dv-col b{display:block;font-size:2em;font-weight:600;color:#fff;line-height:1.04;
+    letter-spacing:-.018em;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .mapsdrive .dv-col i{font-style:normal;display:block;font-size:1em;color:#9296a0;white-space:nowrap}
+  .mapsdrive .dv-col i:empty{display:none}
+  .mapsdrive .dv-end{background:#ff3b30;border-radius:999px;padding:.55em 1.3em;font-weight:600;font-size:1.25em;flex:none}
+  /* arrival: Maps drops the guidance card, not tints it blue, and the route line goes */
+  .mapsdrive.arrived .dv-banner{background:rgba(44,44,46,.92)}
+  .mapsdrive.arrived .dv-dist,.mapsdrive.arrived .dv-then{display:none}
+  .mapsdrive.arrived .dv-route,.mapsdrive.arrived .dv-case{opacity:0}
+  .mapsdrive.arrived .dv-col:not(:first-child){display:none}
 
   /* ---- VERTICAL TV (portrait) — the phone IS the screen ---- */
   body.portrait #projection{padding:0 1vw 1vh}
@@ -778,24 +810,37 @@
   .iphone .screen{border-radius:0 !important;animation:phoneIn .9s cubic-bezier(.2,.8,.2,1) both}
   .iphone .island{display:none !important}
   .iphone.drop .screen,.macbook.drop,.carplay.drop{animation:phoneOut .5s cubic-bezier(.6,-.1,.8,.4) forwards}
-  /* ---- CARPLAY (David, Sept 19): the drive plays on the dash — a landscape head unit that fills the left of the frame ---- */
-  .carplay{position:relative;background:#000;border-radius:0;overflow:hidden;display:flex;font-size:calc(var(--ph,800px) * 0.024);
+  /* ---- CARPLAY (David, Sept 19): the drive plays on the dash — a landscape head unit that fills the left of the frame ----
+     The whole dash is on the iOS face, and the status rail is a vibrancy panel floating ON the
+     map (a head unit never amputates the map at 89% and bolts a slab beside it). */
+  .carplay{position:relative;background:#000;border-radius:0;overflow:hidden;display:block;
+    font-family:var(--sf);font-size:calc(var(--ph,800px) * 0.024);
     box-shadow:0 40px 90px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.06)}
-  .carplay .cp-side{flex:0 0 10.5%;background:#1c1c1e;display:flex;flex-direction:column;align-items:center;padding:3.2% 0 2.6%;gap:.9em;border-right:1px solid #2c2c2e;position:relative;z-index:4}
-  .carplay .cp-time{color:#fff;font-weight:600;font-size:1.05em;letter-spacing:.02em;font-variant-numeric:tabular-nums}
-  .carplay .cp-sig{color:#9a9aa0;font-size:.58em;letter-spacing:.1em}
-  .carplay .cp-apps{display:flex;flex-direction:column;gap:1em;margin-top:.9em}
-  .carplay .cp-ic{width:2.5em;height:2.5em;border-radius:.62em;display:block;background:#3a3a3c;position:relative}
-  .carplay .cp-ic.maps{background:linear-gradient(160deg,#5ac8fa,#34c759 58%,#ffd60a)} .carplay .cp-ic.phone{background:#34c759} .carplay .cp-ic.music{background:#fc3c44} .carplay .cp-ic.msg{background:#30d158}
-  .carplay .cp-ic.on::after{content:'';position:absolute;inset:-.3em;border:.14em solid #fff;border-radius:.9em;opacity:.5}
-  .carplay .cp-home{margin-top:auto;width:2.1em;height:2.1em;background:radial-gradient(circle,#c7c7cc 26%,transparent 31%) 0 0/33.34% 33.34%;opacity:.85}
-  .carplay .cp-main{flex:1;position:relative;overflow:hidden;background:#171a21}
+  .carplay .cp-side{position:absolute;left:0;top:0;bottom:0;width:11%;z-index:4;
+    background:rgba(18,18,20,.72);backdrop-filter:blur(34px) saturate(150%);-webkit-backdrop-filter:blur(34px) saturate(150%);
+    display:flex;flex-direction:column;align-items:center;padding:1.45em 0 1.15em;gap:.5em}
+  .carplay .cp-time{color:#fff;font-weight:600;font-size:1.3em;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+  .carplay .cp-sig{width:1.85em;height:1.2em;display:block;margin-top:.15em}
+  .carplay .cp-sig svg{width:100%;height:100%;display:block}
+  .carplay .cp-apps{display:flex;flex-direction:column;gap:.7em;margin-top:1em}
+  .carplay .cp-ic{width:3.3em;height:3.3em;border-radius:.74em;display:block;overflow:hidden;flex:none;
+    box-shadow:0 .06em .2em rgba(0,0,0,.5)}                                   /* 22.4% radius — Apple's ratio */
+  .carplay .cp-ic svg{width:100%;height:100%;display:block}
+  .carplay .cp-home{margin-top:auto;width:2.5em;height:2.5em;opacity:1}
+  .carplay .cp-home svg{width:100%;height:100%;display:block}
+  .carplay .cp-main{position:absolute;inset:0;z-index:1;overflow:hidden;background:#1B1D21}
   .carplay .cp-main .app{position:absolute;inset:0} .carplay .cp-main .screenstack{position:absolute;inset:0}
   .carplay .mapsdrive .dv-map{position:absolute;inset:0}
-  .carplay .mapsdrive .dv-banner{position:absolute;left:2%;top:3.5%;width:40%;margin:0;z-index:3;padding:.5em .7em}
-  .carplay .mapsdrive .dv-banner .dv-dist{font-size:1.9em} .carplay .mapsdrive .dv-banner .dv-instr{font-size:1.1em} .carplay .mapsdrive .dv-banner .dv-via{font-size:.85em}
-  .carplay .mapsdrive .dv-sheet{position:absolute;left:2%;bottom:3.5%;width:40%;border-radius:.8em;border:0;z-index:3;box-shadow:0 4px 14px rgba(0,0,0,.35);padding:.6em .8em .7em}
-  .carplay .mapsdrive .dv-sheet .dv-eta{font-size:1.9em} .carplay .mapsdrive .dv-sheet .dv-stats{font-size:1.1em} .carplay .mapsdrive .dv-dest-name{font-size:.85em}
+  .carplay .mapsdrive .dv-banner{position:absolute;left:13.2%;top:4%;width:40%;margin:0;z-index:3;
+    padding:.58em .78em .64em;border-radius:1.1em}
+  .carplay .mapsdrive .dv-ico{width:2.3em;height:2.3em}
+  .carplay .mapsdrive .dv-dist{font-size:2.1em} .carplay .mapsdrive .dv-instr{font-size:1.12em} .carplay .mapsdrive .dv-via{font-size:.92em}
+  .carplay .mapsdrive .dv-sheet{position:absolute;left:13.2%;bottom:4%;width:40%;border-radius:1.1em;z-index:3;padding:.6em .85em .68em}
+  .carplay .mapsdrive .dv-grab,.carplay .mapsdrive .dv-end{display:none}     /* CarPlay's trip card has no grabber and no inline End */
+  .carplay .mapsdrive .dv-trip{gap:1em;justify-content:space-between}
+  .carplay .mapsdrive .dv-col b{font-size:1.38em} .carplay .mapsdrive .dv-col i{font-size:.86em}
+  .carplay .mapsdrive .dv-speed{left:auto;right:1.3em;bottom:1.3em}
+  .carplay .mapsdrive .dv-comp{right:1.3em;top:1.3em}
   body.carplay #projDevice{width:85%;height:100%;margin-right:auto;padding:0;align-items:center;justify-content:center}
   @keyframes phoneIn{from{opacity:0;transform:translateY(5%)}to{opacity:1;transform:none}}
   @keyframes phoneOut{to{opacity:0;transform:translateY(6%) scale(.97)}}
@@ -2670,94 +2715,395 @@ function mapsHTML(st){
 }
 
 /* ---------- MAPS — THE DRIVE (Song 12) ----------
-   Turn-by-turn that really moves: the puck rides the route, the map follows it,
-   the banner counts down to each maneuver, the ETA and the miles fall, and the
-   phone's own clock advances with the trip. Time-based from the moment the
-   screen first appears (per drive key), so it is identical every night and
-   survives re-paints. A three-hour-forty drive, compressed to the song. */
+   Apple Maps turn-by-turn on the CarPlay dash. The world is drawn at NAV ZOOM
+   (DRIVE_UPM user units to the mile, DRIVE_WIN miles of road in frame) and it is
+   HEADING-UP: the route always runs up the screen and the world turns under the
+   puck, so the audience sees a car driving instead of a diagram of a journey.
+   One user unit ≈ one projected pixel on the dash, so every stroke and label in
+   the SVG is authored at the size it will be read at.
+   The road furniture is generated from a seeded integer PRNG (dRnd) — identical
+   on every machine, every night. Time-based from the moment the screen first
+   appears (per drive key), so a re-paint never snaps the car back to the start. */
+const DRIVE_UPM=450;          // user units per mile
+const DRIVE_WIN=2.0;          // miles of road from the top of the frame to the bottom
 const DRIVE_ROUTE=[[820,140],[700,300],[600,560],[520,820],[480,1060],[440,1300],[420,1540],
-                   [470,1700],[560,1760],[660,1800],[720,1900],[700,2040],[600,2120],[540,2180]];
-const DRIVE_STEPS=[   // at = fraction of the trip where the maneuver happens
-  {at:.51,icon:'↱',instr:'Take exit 1 toward Delaware Memorial Bridge',via:'I-295 S'},
-  {at:.55,icon:'↱',instr:'Take exit 1A for US-301 S',via:'toward DE-896'},
-  {at:.78,icon:'↰',instr:'Take US-50 E toward Annapolis',via:'Bay Bridge'},
-  {at:.85,icon:'⬆',instr:'Continue over the Chesapeake Bay Bridge',via:'US-50 E'},
-  {at:.97,icon:'↱',instr:'Take the exit for MD-33 W',via:'toward St. Michaels'},
-  {at:1,  icon:'⚑',instr:'Arrive at your destination',via:'on the right'}];
+                   [470,1700],[560,1760],[660,1800],[720,1900],[700,2040],[600,2120],[540,2180]]
+                  .map(function(q){ return [q[0]*41.3,q[1]*41.3]; });   // the old 10.9-unit-per-mile world, re-scaled to nav zoom
+/* at = fraction of the trip where the maneuver happens.  GEOGRAPHY (corrected Sept 20):
+   the Delaware Memorial Bridge carries you EAST into New Jersey — a car bound for the
+   Eastern Shore does not take it.  At the Farnhurst split I-295 leaves I-95 on the LEFT,
+   so the real guidance there is “Keep right to stay on I-95 S” with the bridge signed off
+   to the left — which is exactly David's beat (the bridge exit, four miles ahead, mid-song)
+   and is the only version a real phone would show.  The rest of the list now commits to one
+   route (Baltimore → I-695 → I-97 → US-50 over the Chesapeake Bay Bridge → MD-33). */
+const DRIVE_STEPS=[
+  {at:.51,icon:'keepRight',instr:'Keep right to stay on I‑95 S',via:'exit left for the Delaware Memorial Bridge',limit:65},
+  {at:.70,icon:'rampRight',instr:'Take the exit for I‑695 E',via:'toward Glen Burnie',limit:65},
+  {at:.75,icon:'rampRight',instr:'Take the exit for I‑97 S',via:'toward Annapolis',limit:65},
+  {at:.82,icon:'keepLeft', instr:'Keep left for US‑50 E',via:'toward the Bay Bridge',limit:55},
+  {at:.85,icon:'straight', instr:'Continue over the Chesapeake Bay Bridge',via:'US-50 E',limit:55},
+  {at:.97,icon:'rampRight',instr:'Take the exit for MD‑33 W',via:'toward St. Michaels',limit:55},
+  {at:1,   icon:'dest',    instr:'Arrive at your destination',via:'on the right',limit:35}];
 const DRIVE_T0={};    // drive key → performance.now() when it first appeared
+
+/* seeded, integer-only — the same road furniture on every machine */
+function dRnd(i){ let t=(Math.imul(i|0,1103515245)+12345)>>>0; t^=t>>>15; t=Math.imul(t,2246822519)>>>0; t^=t>>>13; return (t>>>8)/16777216; }
+function driveSmoothD(P){   // Catmull-Rom → cubic: a road that curves instead of kinking
+  let d='M'+P[0][0].toFixed(1)+' '+P[0][1].toFixed(1);
+  for(let i=0;i<P.length-1;i++){
+    const a=P[i-1]||P[i], b=P[i], c=P[i+1], e=P[i+2]||c;
+    d+='C'+(b[0]+(c[0]-a[0])/6).toFixed(1)+' '+(b[1]+(c[1]-a[1])/6).toFixed(1)+','
+       +(c[0]-(e[0]-b[0])/6).toFixed(1)+' '+(c[1]-(e[1]-b[1])/6).toFixed(1)+','
+       +c[0].toFixed(1)+' '+c[1].toFixed(1);
+  }
+  return d;
+}
+/* the whole drawn world, built once and cached on the function */
+function driveWorld(){
+  if(driveWorld._w) return driveWorld._w;
+  const U=DRIVE_UPM, B=DRIVE_ROUTE, P=[]; let acc=0;
+  for(let i=0;i<B.length-1;i++){                       // half-mile samples, with a gentle highway curve
+    const A=B[i], C=B[i+1], dx=C[0]-A[0], dy=C[1]-A[1], seg=Math.hypot(dx,dy);
+    const n=Math.max(2,Math.round(seg/(U*0.5))), nx=-dy/seg, ny=dx/seg;
+    for(let k=0;k<n;k++){
+      const f=k/n, s=acc+seg*f, w=118*Math.sin(s/3100)+44*Math.sin(s/1060+1.7);
+      P.push([A[0]+dx*f+nx*w, A[1]+dy*f+ny*w]);
+    }
+    acc+=seg;
+  }
+  P.push([B[B.length-1][0],B[B.length-1][1]]);
+  const cum=[0];
+  for(let i=1;i<P.length;i++) cum.push(cum[i-1]+Math.hypot(P[i][0]-P[i-1][0],P[i][1]-P[i-1][1]));
+  const total=cum[cum.length-1];
+  const tanAt=function(i){ const a=P[Math.max(0,i-1)], b=P[Math.min(P.length-1,i+1)];
+    const dx=b[0]-a[0], dy=b[1]-a[1], L=Math.hypot(dx,dy)||1; return [dx/L,dy/L]; };
+  const f0=function(v){ return v.toFixed(0); };
+
+  /* THE CORRIDOR: through roads across the interstate, and the towns between them.
+     A map with only the route on it reads as a diagram — but random sticks read as
+     scribble, so the local streets are laid out as real blocks: each town gets its own
+     grid angle, its own block size, its streets and the buildings between them. */
+  let grid='', art='', bld='', park='';
+  const seg=function(ax,ay,bx,by){ return 'M'+f0(ax)+' '+f0(ay)+'L'+f0(bx)+' '+f0(by); };
+  for(let i=2;i<P.length-2;i++){
+    const t=tanAt(i), ex=t[1], ey=-t[0], x=P[i][0], y=P[i][1];   // the normal (east-ish)
+    if(dRnd(i*7+8)<0.10){                                        // a park / woodland
+      const sd=dRnd(i*7+9)<0.5?1:-1, off=U*(0.45+dRnd(i*7+10)*1.3)*sd;
+      const cx=x+ex*off, cy=y+ey*off, rr=U*(0.22+dRnd(i*7+12)*0.5);
+      park+='M'+f0(cx-rr)+' '+f0(cy)+'a'+f0(rr)+' '+f0(rr*0.72)+' 0 1 0 '+f0(2*rr)+' 0'
+           +'a'+f0(rr)+' '+f0(rr*0.72)+' 0 1 0 '+f0(-2*rr)+' 0z';
+    }
+    if(dRnd(i*7+1)<0.46){                                        // a through road every ~1.1 mi
+      const j=(dRnd(i*7+2)-0.5)*0.72, cs=Math.cos(j), sn=Math.sin(j);   // within 20° of square
+      const ux=ex*cs-ey*sn, uy=ex*sn+ey*cs, big=dRnd(i*7+3)>0.74;
+      const l1=U*(2.4+dRnd(i*7+4)*(big?3.0:1.7)), l2=U*(2.4+dRnd(i*7+6)*(big?2.8:1.5));
+      const d=seg(x-ux*l2,y-uy*l2,x+ux*l1,y+uy*l1);
+      if(big) art+=d; else grid+=d;
+    }
+    if(dRnd(i*7+21)<0.40){                                       // a frontage road beside the interstate
+      const sd=dRnd(i*7+22)<0.5?1:-1, off=U*(0.10+dRnd(i*7+23)*0.16)*sd, ln=U*(0.5+dRnd(i*7+24)*1.4);
+      grid+=seg(x+ex*off-t[0]*ln*0.5, y+ey*off-t[1]*ln*0.5, x+ex*off+t[0]*ln*0.5, y+ey*off+t[1]*ln*0.5);
+    }
+    for(let q=0;q<2;q++){                                        // the towns between them
+      if(dRnd(i*7+14+q*101)>=(q?0.30:0.46)) continue;
+      const sd=((i+q)%2)?1:-1, off=U*(0.34+dRnd(i*7+16+q*101)*1.45)*sd;
+      const cx=x+ex*off, cy=y+ey*off;
+      const j=(dRnd(i*7+17+q*101)-0.5)*0.9, cs=Math.cos(j), sn=Math.sin(j);   // its own grid angle
+      const ax=t[0]*cs-t[1]*sn, ay=t[0]*sn+t[1]*cs, bx=-ay, by=ax;
+      const nr=3+((dRnd(i*7+18+q*101)*3.9)|0), nc=3+((dRnd(i*7+19+q*101)*3.9)|0);
+      const sp=U*(0.085+dRnd(i*7+20+q*101)*0.075), lw=sp*nc, lh=sp*nr;
+      const run=function(k){ return sp*(0.15+dRnd(i*131+k)*1.15); };  // streets run on out of town
+      for(let r=0;r<=nr;r++){ const o=(r-nr/2)*sp, e1=run(r), e2=run(r+40);
+        grid+=seg(cx-ax*(lw/2+e1)+bx*o, cy-ay*(lw/2+e1)+by*o, cx+ax*(lw/2+e2)+bx*o, cy+ay*(lw/2+e2)+by*o); }
+      for(let c=0;c<=nc;c++){ const o=(c-nc/2)*sp, e1=run(c+80), e2=run(c+120);
+        grid+=seg(cx+ax*o-bx*(lh/2+e1), cy+ay*o-by*(lh/2+e1), cx+ax*o+bx*(lh/2+e2), cy+ay*o+by*(lh/2+e2)); }
+      if(q) continue;
+      for(let r=0;r<nr;r++) for(let c=0;c<nc;c++){
+        if(dRnd(i*97+r*5+c)<0.62) continue;
+        const hw=sp*(0.16+dRnd(i*97+r*5+c+13)*0.17), hh=sp*(0.15+dRnd(i*97+r*5+c+29)*0.16);
+        const px=cx+ax*((c-(nc-1)/2)*sp)+bx*((r-(nr-1)/2)*sp);
+        const py=cy+ay*((c-(nc-1)/2)*sp)+by*((r-(nr-1)/2)*sp);
+        bld+='M'+f0(px-ax*hw-bx*hh)+' '+f0(py-ay*hw-by*hh)+'L'+f0(px+ax*hw-bx*hh)+' '+f0(py+ay*hw-by*hh)
+            +'L'+f0(px+ax*hw+bx*hh)+' '+f0(py+ay*hw+by*hh)+'L'+f0(px-ax*hw+bx*hh)+' '+f0(py-ay*hw+by*hh)+'z';
+      }
+    }
+  }
+
+  /* the Delaware, running down the east side and closing on the road at the bridge.
+     One pair of functions describes the banks, so the ramp can land ON the near bank
+     and the bridge can span the real water rather than guessing where it is. */
+  const nrm=function(k){ const q=tanAt(k); return [q[1],-q[0]]; };      // east-ish
+  const wOffAt=function(k){ const q=cum[k]/total;
+    return U*Math.min(4.2, 0.92+11.0*Math.abs(q-0.515))+170*Math.sin(cum[k]/2600+0.4); };
+  const wWidAt=function(k){ return U*(0.52+0.2*Math.sin(cum[k]/1900+1.2)); };
+  const bankA=function(k){ const n=nrm(k), o=wOffAt(k); return [P[k][0]+n[0]*o, P[k][1]+n[1]*o]; };
+  const bankB=function(k){ const n=nrm(k), o=wOffAt(k)+wWidAt(k); return [P[k][0]+n[0]*o, P[k][1]+n[1]*o]; };
+  const wa=[], wb=[];
+  for(let i=0;i<P.length;i++){
+    const q=cum[i]/total; if(q<0.435||q>0.615) continue;
+    wa.push(bankA(i)); wb.push(bankB(i));
+  }
+  const waterD = wa.length>2
+    ? 'M'+wa.map(function(q){return f0(q[0])+' '+f0(q[1]);}).join('L')
+        +'L'+wb.reverse().map(function(q){return f0(q[0])+' '+f0(q[1]);}).join('L')+'Z' : '';
+
+  /* the Farnhurst split: I-295 peels off to the LEFT and crosses the river */
+  let ie=0; while(ie<P.length-1 && cum[ie]/total<0.508) ie++;
+  const O=P[ie], tt=tanAt(ie), ex=tt[1], ey=-tt[0];
+  const pt=function(a,b){ return [O[0]+tt[0]*U*a+ex*U*b, O[1]+tt[1]*U*a+ey*U*b]; };
+  const k1=Math.min(P.length-1,ie+2), k2=Math.min(P.length-1,ie+3);
+  const nA=bankA(k1), nB=bankB(k1), nE=nrm(k2);
+  const far=[bankB(k2)[0]+nE[0]*U*0.8, bankB(k2)[1]+nE[1]*U*0.8];
+  const g0=pt(-0.06,0), g1=pt(0.30,0.05), g2=pt(0.60,0.36);
+  const rampD='M'+f0(g0[0])+' '+f0(g0[1])+'C'+f0(g1[0])+' '+f0(g1[1])+','+f0(g2[0])+' '+f0(g2[1])
+             +','+f0(nA[0])+' '+f0(nA[1]);
+  const bridgeD='M'+f0(nA[0])+' '+f0(nA[1])+'L'+f0(nB[0])+' '+f0(nB[1]);
+  const beyondD='M'+f0(nB[0])+' '+f0(nB[1])+'L'+f0(far[0])+' '+f0(far[1]);
+
+  /* the route's own shield, repeated down the line the way Maps does */
+  let shields='';
+  for(let i=5;i<P.length-3;i+=5){
+    const tq=tanAt(i), sx=P[i][0]+tq[1]*U*0.15, sy=P[i][1]-tq[0]*U*0.15;
+    shields+='<g transform="translate('+f0(sx)+' '+f0(sy)+')"><g class="dv-up"><use href="#i95"/></g></g>'; }
+  shields+='<g transform="translate('+f0(g2[0])+' '+f0(g2[1])+')"><g class="dv-up"><use href="#i295"/></g></g>';
+
+  /* upright labels — ranked the way Apple ranks them, with a halo */
+  const kr=Math.max(0,ie-5), riv=[(bankA(kr)[0]+bankB(kr)[0])/2,(bankA(kr)[1]+bankB(kr)[1])/2];
+  const brg=[(nA[0]+nB[0])/2,(nA[1]+nB[1])/2], nct=pt(0.8,-0.85);
+  const lbl=function(x,y,s,txt,cls){ return '<g transform="translate('+f0(x)+' '+f0(y)+')"><g class="dv-up">'
+      +'<text font-size="'+s+'"'+(cls?' class="'+cls+'"':'')+'>'+txt+'</text></g></g>'; };
+  let labels=lbl(riv[0],riv[1],34,'Delaware River','wt')
+            +lbl(brg[0],brg[1],28,'Delaware Memorial Bridge')
+            +lbl(nct[0],nct[1],32,'New Castle')
+            +lbl(850*41.3,120*41.3,48,'New York')+lbl(560*41.3,330*41.3,34,'Newark')
+            +lbl(400*41.3,800*41.3,44,'Philadelphia')+lbl(350*41.3,1050*41.3,38,'Wilmington')
+            +lbl(250*41.3,1580*41.3,44,'Baltimore')+lbl(310*41.3,1720*41.3,34,'Annapolis')
+            +lbl(735*41.3,2000*41.3,30,'Easton')+lbl(440*41.3,2262*41.3,30,'St. Michaels')
+            +lbl(480*41.3,1960*41.3,34,'Chesapeake Bay','wt');
+
+  driveWorld._w={P:P,cum:cum,total:total,routeD:driveSmoothD(P),gridD:grid,artD:art,bldD:bld,
+                 parkD:park,waterD:waterD,rampD:rampD,bridgeD:bridgeD,beyondD:beyondD,
+                 shields:shields,labels:labels,dest:P[P.length-1]};
+  return driveWorld._w;
+}
+function drivePosAt(t){                 // absolute distance along the centreline → point
+  const W=driveWorld(), cum=W.cum, P=W.P;
+  t=Math.max(0,Math.min(W.total,t));
+  let lo=0, hi=cum.length-1;
+  while(lo<hi-1){ const m=(lo+hi)>>1; if(cum[m]<=t) lo=m; else hi=m; }
+  const seg=cum[hi]-cum[lo]||1, f=(t-cum[lo])/seg;
+  return {x:P[lo][0]+(P[hi][0]-P[lo][0])*f, y:P[lo][1]+(P[hi][1]-P[lo][1])*f};
+}
+function drivePointAt(p){               // fraction of the trip → point + heading (smoothed, never steps)
+  const W=driveWorld(), T=W.total, t=Math.max(0,Math.min(1,p))*T, d=DRIVE_UPM*0.35;
+  const a=drivePosAt(t), b=drivePosAt(t+d), c=drivePosAt(t-d);
+  const dx=b.x-c.x, dy=b.y-c.y;
+  return {x:a.x, y:a.y, ang:(dx||dy)?Math.atan2(dy,dx)*180/Math.PI+90:180};
+}
+function drivePct(o){                   // where the car is, right now
+  const t0=DRIVE_T0[o.key]; if(!t0) return o.at0;
+  return o.rate ? Math.min(1, o.at0+((performance.now()-t0)/60000)*o.rate/o.mins)
+                : Math.min(1, (performance.now()-t0)/(o.dur*1000));
+}
+function driveVals(o,p){                // everything the chrome reads
+  const done=p>=1, mi=o.miles;
+  const step=DRIVE_STEPS.find(function(s){return s.at>p;})||DRIVE_STEPS[DRIVE_STEPS.length-1];
+  const nxt=DRIVE_STEPS[DRIVE_STEPS.indexOf(step)+1]||null;
+  const toGo=Math.max(0,(step.at-p)*mi), left=mi*(1-p);
+  const dist = toGo>=10 ? Math.round(toGo)+' mi'
+             : toGo>=0.1 ? toGo.toFixed(1)+' mi'
+             : toGo>0.0095 ? (Math.round(toGo*5280/50)*50)+' ft' : 'Now';
+  return {done:done, step:step,
+          // Maps only shows “then” when the second maneuver is right behind the first
+          then:(!done && nxt && (nxt.at-step.at)*mi<1.2) ? nxt : null,
+          dist:done?'Arrived':dist.replace(/ (mi|ft)$/,'<u>$1</u>'),
+          instr:done?'You have arrived':step.instr, via:done?'':(step.via||''),
+          left:done?'Arrived':fmtMins(o.mins*(1-p)),
+          miles:(done?0:(left>=10?Math.round(left):+left.toFixed(1)))+' mi',
+          eta:fmtClock(o.start+o.mins*(1-o.at0)), clock:fmtClock(o.start+o.mins*(p-o.at0)),
+          limit:String(step.limit||65)};
+}
+/* Apple's maneuver glyphs: solid white, heavy, drawn — never a font character */
+function manSVG(kind){
+  const head=function(x,y,deg){   // a broad filled arrowhead pointing `deg` clockwise from up
+    const r=deg*Math.PI/180, ux=Math.sin(r), uy=-Math.cos(r), px=-uy, py=ux;
+    const tx=x+ux*15, ty=y+uy*15, bx=x+ux*1.5, by=y+uy*1.5;
+    return '<path d="M'+tx.toFixed(1)+' '+ty.toFixed(1)+'L'+(bx+px*10.5).toFixed(1)+' '+(by+py*10.5).toFixed(1)
+          +'L'+(bx-px*10.5).toFixed(1)+' '+(by-py*10.5).toFixed(1)+'Z"/>'; };
+  const S='stroke="#fff" fill="none" stroke-linecap="round" stroke-linejoin="round"';
+  let g;
+  if(kind==='dest')
+    g='<path d="M32 5C22.1 5 14 13.1 14 23c0 13.1 18 35 18 35s18-21.9 18-35C50 13.1 41.9 5 32 5Zm0 24.6a6.9 6.9 0 1 1 0-13.8 6.9 6.9 0 0 1 0 13.8Z"/>';
+  else if(kind==='straight')
+    g='<path d="M32 60V24" '+S+' stroke-width="11"/>'+head(32,20,0);
+  else if(kind==='keepRight'||kind==='keepLeft')
+    g='<path d="M24 60V46C24 37 19 31 11 26" '+S+' stroke-width="7" opacity=".4"/>'
+     +'<path d="M24 60V46C24 40 36 32.4 42 22" '+S+' stroke-width="11"/>'+head(43.5,19.5,30);
+  else   // rampRight / rampLeft
+    g='<path d="M21 60V16" '+S+' stroke-width="7" opacity=".4"/>'
+     +'<path d="M21 46C21 38 31 34 38 25" '+S+' stroke-width="11"/>'+head(39.5,22.5,42);
+  const flip=(kind==='keepLeft'||kind==='rampLeft');
+  return '<svg viewBox="0 0 64 64" aria-hidden="true">'
+    +(flip?'<g transform="translate(64,0) scale(-1,1)">':'<g>')+g+'</g></svg>';
+}
 function mapsDriveHTML(st){
-  const d=st.drive||{};
-  const key=d.key||'drive';
+  const dd=st.drive||{}, key=dd.key||'drive';
   if(!DRIVE_T0[key]) DRIVE_T0[key]=performance.now();
-  const pts=DRIVE_ROUTE.map(p=>p.join(',')).join(' ');
-  return `<div class="layer fs mapsdrive" data-key="${key}" data-dur="${d.dur||300}" data-mins="${d.mins||220}"
-      data-miles="${d.miles||214}" data-start="${d.startMin||965}" data-rate="${d.rate||0}" data-at0="${d.startAt||0}"
-      style="background:#171a21;display:flex;flex-direction:column;overflow:hidden;color:#fff">
-    <div class="dv-banner"><div class="dv-ico">⬆</div>
-      <div style="min-width:0;flex:1"><div class="dv-dist">Starting route</div>
-        <div class="dv-instr">Head south on the West Side Hwy</div><div class="dv-via">toward I-95 S</div></div></div>
+  const o={key:key, dur:+dd.dur||300, mins:+dd.mins||220, miles:+dd.miles||214,
+           start:+dd.startMin||965, rate:+dd.rate||0, at0:+dd.startAt||0};
+  const W=driveWorld(), p=drivePct(o), v=driveVals(o,p), a=drivePointAt(p);
+  const asp=(st.dev==='carplay')?16/9:0.62;
+  const Wy=DRIVE_WIN*DRIVE_UPM, Wx=Wy*asp, L=W.total;
+  const vb=(a.x-Wx/2).toFixed(1)+' '+(a.y-Wy*0.74).toFixed(1)+' '+Wx.toFixed(1)+' '+Wy.toFixed(1);
+  const dash='0 '+(L*p).toFixed(0)+' '+(L*(1-p)+60).toFixed(0);
+  return `<div class="layer fs mapsdrive${v.done?' arrived':''}" data-key="${key}" data-dur="${o.dur}" data-mins="${o.mins}"
+      data-miles="${o.miles}" data-start="${o.start}" data-rate="${o.rate}" data-at0="${o.at0}"
+      style="--ang:${a.ang.toFixed(1)}deg;background:#1B1D21;display:flex;flex-direction:column;overflow:hidden;color:#fff">
+    <div class="dv-banner"><div class="dv-ico">${manSVG(v.done?'dest':v.step.icon)}</div>
+      <div class="dv-txt"><div class="dv-dist">${v.dist}</div>
+        <div class="dv-instr">${v.instr}</div><div class="dv-via">${v.via}</div></div>
+      <div class="dv-then${v.then?' on':''}">then ${v.then?manSVG(v.then.icon):''}</div></div>
     <div class="dv-map">
-      <svg class="dv-svg" viewBox="580 -140 480 480" preserveAspectRatio="xMidYMid slice">
-        <rect x="-3000" y="-3000" width="8000" height="8000" fill="#1e222b"/>
-        <path d="M1040 -400 L1040 1500 L880 1520 L840 1300 L900 900 L860 500 L900 100 L960 -400 Z" fill="#0f1a2b"/>
-        <path d="M600 1180 L760 1120 L840 1300 L780 1420 L640 1400 Z" fill="#0f1a2b"/>
-        <path d="M470 1560 L560 1500 L640 1560 L680 1700 L640 1740 L600 1760 L560 1740 L520 1780 L560 1900 L640 2000 L600 2160 L560 2300 L520 2400 L440 2400 L430 2000 L470 1800 Z" fill="#0f1a2b"/>
-        <g stroke="#2e3440" stroke-width="7" fill="none" stroke-linecap="round">
-          <path d="M640 120 L380 700 L300 1200 L280 1900"/><path d="M200 900 L900 820"/><path d="M120 1500 L700 1520"/>
-          <path d="M300 2000 L700 2040 L980 2100"/><path d="M700 300 L980 420"/><path d="M400 1300 L720 1240"/></g>
-        <g stroke="#3b4250" stroke-width="10" fill="none" stroke-linecap="round">
-          <path d="M760 60 L560 620 L440 1100 L420 1560 L380 2000"/><path d="M420 1560 L120 1600"/></g>
-        <polyline points="${pts}" fill="none" stroke="#1d4f9e" stroke-width="22" stroke-linejoin="round" stroke-linecap="round"/>
-        <polyline class="dv-route" points="${pts}" fill="none" stroke="#3d8bff" stroke-width="14" stroke-linejoin="round" stroke-linecap="round"/>
-        <g font-family="Inter,Helvetica,sans-serif" font-size="24" fill="#c9d0dc" font-weight="600">
-          <text x="850" y="120">New York</text><text x="560" y="330">Newark</text><text x="400" y="800">Philadelphia</text>
-          <text x="350" y="1050">Wilmington</text><text x="250" y="1580">Baltimore</text><text x="310" y="1720">Annapolis</text>
-          <text x="735" y="2000">Easton</text><text x="440" y="2262">St. Michaels</text>
-          <text x="480" y="1960" fill="#7f9bc4" font-style="italic" font-weight="400">Chesapeake Bay</text>
-          <text x="880" y="700" fill="#7f9bc4" font-style="italic" font-weight="400">Atlantic Ocean</text></g>
-        <g class="dv-dest" transform="translate(540,2180)"><circle r="11" fill="#fb3b30" stroke="#fff" stroke-width="4"/></g>
-        <g class="dv-puck" transform="translate(820,140)"><circle r="19" fill="#fff" opacity=".95"/><path d="M0 -11 L10 9 L0 4 L-10 9 Z" fill="#2f7cf6"/></g>
+      <svg class="dv-svg" viewBox="${vb}" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <radialGradient id="dvbeam" cx="50%" cy="100%" r="118%">
+            <stop offset="0" stop-color="#3aa0ff" stop-opacity=".5"/>
+            <stop offset="1" stop-color="#3aa0ff" stop-opacity="0"/></radialGradient>
+          <filter id="dvsh" x="-90%" y="-90%" width="280%" height="280%">
+            <feDropShadow dx="0" dy="7" stdDeviation="8" flood-color="#000" flood-opacity=".55"/></filter>
+          <g id="i95">
+            <path d="M-22 -28h44v18c0 17-16 21-22 31-6-10-22-14-22-31z" fill="#123a7a" stroke="#eef1f6" stroke-width="3"/>
+            <path d="M-22 -28h44v9h-44z" fill="#b3222c"/>
+            <text y="15" text-anchor="middle" font-size="26" font-weight="800" fill="#fff" stroke="none">95</text></g>
+          <g id="i295">
+            <path d="M-24 -24h48v15c0 15-17 18-24 27-7-9-24-12-24-27z" fill="#2b2f36" stroke="#c9ced6" stroke-width="2.6"/>
+            <text y="12" text-anchor="middle" font-size="20" font-weight="800" fill="#e8ebf0" stroke="none">295</text></g>
+        </defs>
+        <g class="dv-world" transform="rotate(${(-a.ang).toFixed(1)} ${a.x.toFixed(1)} ${a.y.toFixed(1)})">
+          <rect x="-60000" y="-60000" width="240000" height="240000" fill="#1B1D21"/>
+          <path d="${W.parkD}" fill="#1b2b1c"/>
+          <path d="${W.waterD}" fill="#113a5d"/>
+          <path d="${W.bldD}" fill="#2b2d33"/>
+          <path d="${W.gridD}" fill="none" stroke="#1e1f23" stroke-width="21" stroke-linecap="round"/>
+          <path d="${W.gridD}" fill="none" stroke="#494a50" stroke-width="13" stroke-linecap="round"/>
+          <path d="${W.artD}" fill="none" stroke="#1b1c20" stroke-width="32" stroke-linecap="round"/>
+          <path d="${W.artD}" fill="none" stroke="#64656d" stroke-width="22" stroke-linecap="round"/>
+          <path d="${W.beyondD}" fill="none" stroke="#1d1e22" stroke-width="32" stroke-linecap="round"/>
+          <path d="${W.beyondD}" fill="none" stroke="#5e636b" stroke-width="23" stroke-linecap="round"/>
+          <path d="${W.bridgeD}" fill="none" stroke="#3c3f45" stroke-width="34"/>
+          <path d="${W.bridgeD}" fill="none" stroke="#6e737b" stroke-width="24"/>
+          <path d="${W.rampD}" fill="none" stroke="#1d1e22" stroke-width="34" stroke-linecap="round"/>
+          <path d="${W.rampD}" fill="none" stroke="#5e636b" stroke-width="24" stroke-linecap="round"/>
+          <path d="${W.routeD}" fill="none" stroke="#111214" stroke-width="62" stroke-linejoin="round" stroke-linecap="round"/>
+          <path d="${W.routeD}" fill="none" stroke="#6a6f78" stroke-width="48" stroke-linejoin="round" stroke-linecap="round"/>
+          <path class="dv-case" d="${W.routeD}" fill="none" stroke="#0a53b8" stroke-width="34" stroke-dasharray="${dash}" stroke-linejoin="round" stroke-linecap="butt"/>
+          <path class="dv-route" d="${W.routeD}" fill="none" stroke="#0a84ff" stroke-width="24" stroke-dasharray="${dash}" stroke-linejoin="round" stroke-linecap="butt"/>
+          <g class="dv-lbl">${W.shields}${W.labels}</g>
+          <g transform="translate(${W.dest[0].toFixed(0)} ${W.dest[1].toFixed(0)})" filter="url(#dvsh)"><g class="dv-up">
+            <path d="M0 6C-13 -6-18 -14-18 -22A18 18 0 0 1 18 -22C18 -14 13 -6 0 6Z" fill="#ff3b30"/>
+            <circle cy="-22" r="6.4" fill="#fff"/></g></g>
+        </g>
+        <g class="dv-puck" transform="translate(${a.x.toFixed(1)} ${a.y.toFixed(1)})">
+          <path d="M0 0L-74 -170A185 185 0 0 1 74 -170Z" fill="url(#dvbeam)"/>
+          <g filter="url(#dvsh)"><circle r="28" fill="#fff"/><circle r="21.5" fill="#0a84ff"/>
+            <path d="M0 -10L8.4 7.6L0 3.7L-8.4 7.6Z" fill="#fff"/></g>
+        </g>
       </svg>
+      <div class="dv-speed"><i>SPEED LIMIT</i><b>${v.limit}</b></div>
+      <div class="dv-comp"><svg viewBox="0 0 24 24"><path d="M12 3L15.6 12L12 10.3L8.4 12Z" fill="#ff453a"/><path d="M12 21L8.4 12L12 13.7L15.6 12Z" fill="#d8dbe0"/></svg></div>
     </div>
-    <div class="dv-sheet">
-      <div><div class="dv-eta">${d.arrive||'7:45 PM'}<span>arrival</span></div>
-        <div class="dv-stats"><b class="dv-left">${fmtMins(d.mins||220)}</b> · <b class="dv-miles">${d.miles||214} mi</b></div>
-        <div class="dv-dest-name">${d.dest||''}</div></div>
-      <div class="dv-end">End</div></div>
+    <div class="dv-sheet"><div class="dv-grab"></div>
+      <div class="dv-trip">
+        <div class="dv-col"><b class="dv-eta">${v.eta}</b><i>arrival</i></div>
+        <div class="dv-col"><b class="dv-left">${v.left}</b><i></i></div>
+        <div class="dv-col"><b class="dv-miles">${v.miles}</b><i></i></div>
+      </div><div class="dv-end">End</div></div>
   </div>`;
 }
 function fmtMins(m){ m=Math.max(0,Math.round(m)); const h=Math.floor(m/60), r=m%60; return h?`${h} hr ${r} min`:`${r} min`; }
 function fmtClock(min){ min=Math.round(min); let h=Math.floor(min/60)%24, m=min%60; h=h%12||12; return h+':'+String(m).padStart(2,'0'); }
+function dvTxt(el,s){ if(el && el.textContent!==s) el.textContent=s; }
+function dvHTM(el,s){ if(el && el.innerHTML!==s) el.innerHTML=s; }
 function driveTick(){
-  document.querySelectorAll('.mapsdrive').forEach(el=>{
-    if(!el.getClientRects().length) return;   // hidden stage (presenter view): nothing to measure
-    const key=el.dataset.key, t0=DRIVE_T0[key]; if(!t0) return;
-    const dur=(+el.dataset.dur||300)*1000, mins=+el.dataset.mins||220, miles=+el.dataset.miles||214, start=+el.dataset.start||965;
-    const rate=+el.dataset.rate||0, at0=+el.dataset.at0||0;
-    const p=rate ? Math.min(1, at0+((performance.now()-t0)/60000)*rate/mins) : Math.min(1,(performance.now()-t0)/dur);   // rate: trip minutes per real minute (1 = real time)
-    const path=el.querySelector('.dv-route'); if(!path||!path.getTotalLength) return;
-    const L=path.getTotalLength(), a=path.getPointAtLength(L*p), b=path.getPointAtLength(Math.min(L,L*p+6));
-    const ang=(b.x===a.x&&b.y===a.y)?0:Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI+90;
-    el.querySelector('.dv-puck').setAttribute('transform',`translate(${a.x.toFixed(1)},${a.y.toFixed(1)}) rotate(${ang.toFixed(1)})`);
-    const W=480;
-    el.querySelector('.dv-svg').setAttribute('viewBox',`${(a.x-W/2).toFixed(1)} ${(a.y-W*0.58).toFixed(1)} ${W} ${W}`);
-    const step=DRIVE_STEPS.find(s=>s.at>p)||DRIVE_STEPS[DRIVE_STEPS.length-1];
-    const toGo=Math.max(0,(step.at-p)*miles), left=miles*(1-p);
-    const distTxt = toGo>=10?Math.round(toGo)+' mi':toGo>=0.19?toGo.toFixed(1)+' mi':Math.max(100,Math.round(toGo*5280/100)*100)+' ft';
-    const done=p>=1;
-    el.querySelector('.dv-ico').textContent=done?'⚑':step.icon;
-    el.querySelector('.dv-dist').textContent=done?'Arrived':distTxt;
-    el.querySelector('.dv-instr').textContent=done?'You have arrived':step.instr;
-    el.querySelector('.dv-via').textContent=done?el.querySelector('.dv-dest-name').textContent:(step.via||'');
-    el.querySelector('.dv-left').textContent=done?'Arrived':fmtMins(mins*(1-p));
-    el.querySelector('.dv-miles').textContent=(done?0:(left>=10?Math.round(left):+left.toFixed(1)))+' mi';
-    el.classList.toggle('arrived',done);
-    // the phone's own clock advances with the trip — 3 h 40 of road in one song
-    const scr=el.closest('.screen'); if(scr){ const sb=scr.querySelector('.statusbar span'); if(sb) sb.textContent=fmtClock(start+mins*(p-at0)); }
-    const cp=el.closest('.carplay'); if(cp){ const t=cp.querySelector('.cp-time'); if(t) t.textContent=fmtClock(start+mins*(p-at0)); }
+  document.querySelectorAll('.mapsdrive').forEach(function(el){
+    const map=el.querySelector('.dv-map'); if(!map) return;
+    const mr=map.getBoundingClientRect(); if(!mr.height||!mr.width) return;   // hidden stage: nothing to measure
+    const o={key:el.dataset.key, dur:+el.dataset.dur||300, mins:+el.dataset.mins||220,
+             miles:+el.dataset.miles||214, start:+el.dataset.start||965,
+             rate:+el.dataset.rate||0, at0:+el.dataset.at0||0};
+    if(!DRIVE_T0[o.key]) return;
+    const p=drivePct(o), v=driveVals(o,p), a=drivePointAt(p);
+    /* the camera: heading-up, the puck low in the frame, the window an exact
+       DRIVE_WIN miles deep whatever the shape of the screen it is drawn in */
+    const Wy=DRIVE_WIN*DRIVE_UPM, Wx=Wy*(mr.width/mr.height);
+    const svg=el.querySelector('.dv-svg');
+    svg.setAttribute('viewBox',(a.x-Wx/2).toFixed(1)+' '+(a.y-Wy*0.74).toFixed(1)+' '+Wx.toFixed(1)+' '+Wy.toFixed(1));
+    el.querySelector('.dv-world').setAttribute('transform','rotate('+(-a.ang).toFixed(1)+' '+a.x.toFixed(1)+' '+a.y.toFixed(1)+')');
+    el.querySelector('.dv-puck').setAttribute('transform','translate('+a.x.toFixed(1)+' '+a.y.toFixed(1)+')');
+    el.style.setProperty('--ang',a.ang.toFixed(1)+'deg');       // one write keeps every label and the compass upright
+    /* the blue line exists only ahead of her — the road she has driven is grey again */
+    const rt=el.querySelector('.dv-route'), cs=el.querySelector('.dv-case');
+    if(rt && rt.getTotalLength){
+      const L=rt._L||(rt._L=rt.getTotalLength());
+      const dash='0 '+(L*p).toFixed(0)+' '+(L*(1-p)+60).toFixed(0);
+      if(rt.getAttribute('stroke-dasharray')!==dash){ rt.setAttribute('stroke-dasharray',dash); if(cs) cs.setAttribute('stroke-dasharray',dash); }
+    }
+    const ik=v.done?'dest':v.step.icon, ico=el.querySelector('.dv-ico');
+    if(ico && ico.dataset.k!==ik){ ico.dataset.k=ik; ico.innerHTML=manSVG(ik); }
+    dvHTM(el.querySelector('.dv-dist'),v.dist);
+    dvTxt(el.querySelector('.dv-instr'),v.instr);
+    dvTxt(el.querySelector('.dv-via'),v.via);
+    const then=el.querySelector('.dv-then');
+    const tk=v.then?v.then.icon:'';
+    if(then && then.dataset.k!==tk){ then.dataset.k=tk; then.classList.toggle('on',!!tk);
+      then.innerHTML='then '+(tk?manSVG(tk):''); }
+    dvTxt(el.querySelector('.dv-eta'),v.eta);
+    dvTxt(el.querySelector('.dv-left'),v.left);
+    dvTxt(el.querySelector('.dv-miles'),v.miles);
+    const sl=el.querySelector('.dv-speed b'); dvTxt(sl,v.limit);
+    el.classList.toggle('arrived',v.done);
+    // the phone's own clock advances with the trip — 3 h 40 of road, in real time
+    const scr=el.closest('.screen'); if(scr){ const sb=scr.querySelector('.statusbar span'); dvTxt(sb,v.clock); }
+    const cp=el.closest('.carplay'); if(cp) dvTxt(cp.querySelector('.cp-time'),v.clock);
   });
 }
-setInterval(driveTick,200);
+setInterval(driveTick,70);
+
+/* ---------- THE CARPLAY STATUS RAIL ----------
+   Clock, the iOS bars glyph, the recents column (real artwork — CarPlay never shows
+   blank colour chips, and it carries no selection ring: the running app is simply the
+   top entry), and the grid Home button. Three recents is what fits a 16:9 head unit. */
+function cpRailHTML(tm){
+  const bars='<svg viewBox="0 0 34 22"><g fill="#fff"><rect y="14" width="6" height="8" rx="2"/>'
+    +'<rect x="9" y="9.5" width="6" height="12.5" rx="2"/><rect x="18" y="5" width="6" height="17" rx="2"/>'
+    +'<rect x="27" width="6" height="22" rx="2" opacity=".3"/></g></svg>';
+  const maps='<svg viewBox="0 0 60 60"><rect width="60" height="60" rx="13.4" fill="#f4f1e8"/>'
+    +'<path d="M0 0h60v16c-13 6-27 1-43 8L0 29Z" fill="#a7d9f2"/>'
+    +'<path d="M0 43c13-6 25-2 37-8 8-4 16-3 23-1v26H0Z" fill="#bfe5a6"/>'
+    +'<path d="M-2 11C16 18 25 34 23 62" stroke="#fff" stroke-width="6" fill="none"/>'
+    +'<path d="M62 26C44 26 33 40 29 62" stroke="#ffd60a" stroke-width="5" fill="none"/>'
+    +'<circle cx="34" cy="23" r="7" fill="#0a84ff" stroke="#fff" stroke-width="2.6"/></svg>';
+  const music='<svg viewBox="0 0 60 60"><defs><linearGradient id="cpmu" x1="0" y1="0" x2="0" y2="1">'
+    +'<stop offset="0" stop-color="#fb5c74"/><stop offset="1" stop-color="#fa233b"/></linearGradient></defs>'
+    +'<rect width="60" height="60" rx="13.4" fill="url(#cpmu)"/>'
+    +'<path d="M49.8 16.5 30.8 20.4V41.8" stroke="#fff" stroke-width="5" fill="none" stroke-linejoin="round"/>'
+    +'<path d="M49.8 16.5V38.3" stroke="#fff" stroke-width="5" fill="none"/>'
+    +'<path d="M30.8 20.4 49.8 16.5v6.6L30.8 27Z" fill="#fff"/>'
+    +'<ellipse cx="24" cy="41.8" rx="7.6" ry="6.6" fill="#fff"/>'
+    +'<ellipse cx="43" cy="38.3" rx="7.6" ry="6.6" fill="#fff"/></svg>';
+  const phone='<svg viewBox="0 0 60 60"><defs><linearGradient id="cpph" x1="0" y1="0" x2="0" y2="1">'
+    +'<stop offset="0" stop-color="#5df675"/><stop offset="1" stop-color="#0ab92b"/></linearGradient></defs>'
+    +'<rect width="60" height="60" rx="13.4" fill="url(#cpph)"/>'
+    +'<path d="M20.6 15.5c1.7-1.7 4.2-1.5 5.5.4l3.3 4.7c1.1 1.6.8 3.7-.7 5l-2.3 2c-.6.6-.8 1.5-.4 2.3 '
+    +'1.9 3.9 5.2 7.2 9.1 9.1.8.4 1.7.2 2.3-.4l2-2.3c1.3-1.5 3.4-1.8 5-.7l4.7 3.3c1.9 1.3 2.1 3.8.4 5.5'
+    +'l-2.6 2.6c-2.4 2.4-6.1 3-9.3 1.4C29 44.1 20 35.1 15.5 25.2c-1.6-3.2-1-6.9 1.4-9.3Z" fill="#fff"/></svg>';
+  let cells=''; for(let r=0;r<3;r++) for(let c=0;c<3;c++)
+    cells+='<rect x="'+(1+c*14.5)+'" y="'+(1+r*14.5)+'" width="11" height="11" rx="3.2"/>';
+  const home='<svg viewBox="0 0 42 42"><g fill="#fff">'+cells+'</g></svg>';
+  return `<div class="cp-side"><div class="cp-time">${tm}</div><div class="cp-sig">${bars}</div>
+      <div class="cp-apps"><i class="cp-ic">${maps}</i><i class="cp-ic">${music}</i><i class="cp-ic">${phone}</i></div>
+      <div class="cp-home">${home}</div></div>`;
+}
 
 /* ---------- BOOKS — a page of his novel, on her phone ---------- */
 function booksHTML(st){
@@ -4441,11 +4787,10 @@ function deviceHTML(st,h){
     return `<div class="fullstage"><div class="app" style="position:absolute;inset:0"><div class="screenstack">${screenHTML(st)}</div></div></div>`;
   }
   const {bg:ch, txt:ct, dark}=shellChrome(st);
-  if(st.dev==='carplay'){   // the dash: sidebar (clock, signal, recent apps, home) + the app, landscape 16:9
-    return `<div class="carplay" style="height:${h}px;width:${(h*16/9).toFixed(1)}px;--ph:${(h*1.55).toFixed(1)}px;--chrome:${ch};--chrometxt:${ct}">
-      <div class="cp-side"><div class="cp-time">${st.tm}</div><div class="cp-sig">▮▮▮ 5G</div>
-        <div class="cp-apps"><i class="cp-ic maps on"></i><i class="cp-ic phone"></i><i class="cp-ic music"></i><i class="cp-ic msg"></i></div><div class="cp-home"></div></div>
-      <div class="cp-main"><div class="app"><div class="screenstack">${screenHTML(st)}</div></div></div></div>`;
+  if(st.dev==='carplay'){   // the dash: a full-bleed map with the status rail floating on it, landscape 16:9
+    return `<div class="carplay" style="height:${h}px;width:${(h*16/9).toFixed(1)}px;--ph:${(h*1.55).toFixed(1)}px">
+      <div class="cp-main"><div class="app"><div class="screenstack">${screenHTML(st)}</div></div></div>
+      ${cpRailHTML(st.tm)}</div>`;
   }
   if(st.dev==='macbook'){
     const web=WEBAPP[st.app]; const menu=mbMenuFor(st);
