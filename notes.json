@@ -135,9 +135,8 @@
    ],
    "note": "The text in the device view does not transition to the text on the card view — YEAR / month / numeral moving to and from the side strip is jarring.",
    "proof": "a_era_morph",
-   "clean": 1,
-   "secs": 108.4,
-   "last_build": "3ae4ec1d6d65"
+   "clean": 0,
+   "secs": 118.6
   },
   {
    "id": "D-011",
@@ -170,9 +169,8 @@
    ],
    "note": "The house cards waste the black space left and right. The title card sits in a 96vh square with ~440px of dead black each side at 1920x1080, and the INTERMISSION band is barely 40% of the stage width with a small word in it. Set them in the house brand language — full-width fill-lines — and use the stage.",
    "proof": "a_title_fills",
-   "clean": 1,
-   "secs": 6.6,
-   "last_build": "3ae4ec1d6d65"
+   "clean": 0,
+   "secs": 6.7
   },
   {
    "id": "D-013",
@@ -184,7 +182,7 @@
    "note": "Scene names on the date cards should appear TYPED, with a typo and a backspace one time in five, with keyboard haptics behind it.",
    "proof": "a_typed_foot",
    "clean": 1,
-   "secs": 383.7,
+   "secs": 383.6,
    "last_build": "3ae4ec1d6d65"
   },
   {
@@ -197,7 +195,7 @@
    "note": "At the top of 9.2 'Intermission' is briefly visible in the square frame, cut off.",
    "proof": "a_92_no_inter_flash",
    "clean": 3,
-   "secs": 14.0,
+   "secs": 14.2,
    "last_build": "3ae4ec1d6d65"
   },
   {
@@ -338,9 +336,8 @@
    ],
    "note": "Preshow performer names span the full width, each line the same.",
    "proof": "a_perf_fill",
-   "clean": 1,
-   "secs": 0.8,
-   "last_build": "3ae4ec1d6d65"
+   "clean": 0,
+   "secs": 0.9
   },
   {
    "id": "D-026",
@@ -417,7 +414,7 @@
    "note": "No divider between the month and the event when there is no event.",
    "proof": "a_foot_solo",
    "clean": 3,
-   "secs": 0.5,
+   "secs": 0.7,
    "last_build": "3ae4ec1d6d65"
   },
   {
@@ -471,7 +468,7 @@
    "note": "The photo bed falls left to right, a new print every 3-5 s, 25% of stage height, no accumulation, never blank.",
    "proof": "a_photo_bed",
    "clean": 3,
-   "secs": 1.8,
+   "secs": 1.9,
    "last_build": "3ae4ec1d6d65"
   },
   {
@@ -677,7 +674,7 @@
    "note": "A STRAY GREY RECTANGLE sits at the top-left of the stage on 8.6, both mid-flight and settled — a torn page fragment left behind by the previous card. Nothing should be on the stage but the calendar and the photo bed.",
    "proof": "a_no_stray_pages",
    "clean": 3,
-   "secs": 530.4,
+   "secs": 530.8,
    "last_build": "3ae4ec1d6d65"
   },
   {
@@ -911,6 +908,22 @@
    "proof": "a_bed_quality",
    "clean": 0,
    "secs": 1.0
+  },
+  {
+   "id": "D-066",
+   "status": "fixed",
+   "family": "house pages / the photo bed",
+   "cues": [
+    "1.0",
+    "1.0a",
+    "8.4",
+    "8.5",
+    "14.7"
+   ],
+   "note": "The preshow and home screens are too large right now, we won't be able to see the falling photos behind them.",
+   "proof": "a_house_leaves_bed",
+   "clean": 0,
+   "secs": 9.7
   }
  ]
 }
