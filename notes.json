@@ -821,12 +821,12 @@
   },
   {
    "id": "D-059",
-   "status": "open",
+   "status": "fixed",
    "family": "canon",
    "cues": [
     "6"
    ],
-   "note": "Song 6 is calendar-only in the build but a Christmas lock screen in the law, the Bible and the shot list.",
+   "note": "Song 6 was calendar-only in the build but a Christmas lock screen in the law and the Bible. The BUILD was right — David cut 6.2 and the Christmas background on Sept 20 — and the law was stale. CLAUDE.md now records the cut and lists 6 among the calendar-only songs.",
    "proof": "a_song6_agrees",
    "clean": 0,
    "secs": 0.5
