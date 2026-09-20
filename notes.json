@@ -168,8 +168,8 @@
    ],
    "note": "Cut the low-battery chime entirely.",
    "proof": "a_no_lowbat",
-   "clean": 2,
-   "last_build": "337ea4d42c9d"
+   "clean": 3,
+   "last_build": "fd2a35488908"
   },
   {
    "id": "D-016",
@@ -180,7 +180,8 @@
    ],
    "note": "Two more seconds with her message on screen, and the swipe 1.5 s longer and dramatic.",
    "proof": "a_132_timing",
-   "clean": 0
+   "clean": 1,
+   "last_build": "fd2a35488908"
   },
   {
    "id": "D-017",
@@ -191,7 +192,8 @@
    ],
    "note": "13.3 starts on the whole phone screen so we see him unlock it.",
    "proof": "a_133_full_phone",
-   "clean": 0
+   "clean": 1,
+   "last_build": "fd2a35488908"
   },
   {
    "id": "D-018",
@@ -202,8 +204,8 @@
    ],
    "note": "We hear the unlock, here and everywhere a phone is unlocked.",
    "proof": "a_unlock_audible",
-   "clean": 2,
-   "last_build": "337ea4d42c9d"
+   "clean": 3,
+   "last_build": "fd2a35488908"
   },
   {
    "id": "D-019",
@@ -214,7 +216,8 @@
    ],
    "note": "Find My is him changing WHICH DEVICE reports his location — iPad to iPhone — not re-sharing with her. Faster.",
    "proof": "a_133_device_swap",
-   "clean": 0
+   "clean": 1,
+   "last_build": "fd2a35488908"
   },
   {
    "id": "D-020",
@@ -225,7 +228,8 @@
    ],
    "note": "She finishes 'tonight was amazing', hits send, we hear the send, then full black baked into the screen.",
    "proof": "a_144_send",
-   "clean": 0
+   "clean": 1,
+   "last_build": "fd2a35488908"
   },
   {
    "id": "D-021",
@@ -236,7 +240,8 @@
    ],
    "note": "After the final black: the opening sequence again as a BOWS screen, photos flooding faster, still loopable.",
    "proof": "a_bows",
-   "clean": 0
+   "clean": 1,
+   "last_build": "fd2a35488908"
   },
   {
    "id": "D-022",
@@ -247,7 +252,8 @@
    ],
    "note": "The map itself is not moving — only the text changes.",
    "proof": "a_map_moves",
-   "clean": 0
+   "clean": 1,
+   "last_build": "fd2a35488908"
   },
   {
    "id": "D-023",
@@ -258,8 +264,8 @@
    ],
    "note": "A song selector, and the Menu must not dead-end.",
    "proof": "a_jump_panel",
-   "clean": 2,
-   "last_build": "337ea4d42c9d"
+   "clean": 3,
+   "last_build": "fd2a35488908"
   },
   {
    "id": "D-024",
@@ -270,8 +276,8 @@
    ],
    "note": "The projection window must be black during the cast questionnaire.",
    "proof": "a_gate_black",
-   "clean": 2,
-   "last_build": "337ea4d42c9d"
+   "clean": 3,
+   "last_build": "fd2a35488908"
   },
   {
    "id": "D-025",
@@ -282,32 +288,30 @@
    ],
    "note": "Preshow performer names span the full width, each line the same.",
    "proof": "a_perf_fill",
-   "clean": 2,
-   "last_build": "337ea4d42c9d"
+   "clean": 3,
+   "last_build": "fd2a35488908"
   },
   {
    "id": "D-026",
-   "status": "blocked",
+   "status": "fixed",
    "family": "assets",
    "cues": [
     "3.9",
     "4.2"
    ],
-   "note": "A licensed dial-tone mp3, played twice, wherever someone dials.",
+   "note": "A licensed dial-tone, played twice, wherever someone dials. David sent the recording Sept 20; trimmed to the single 2.01 s burst of real North American ringback (440+480 Hz), dead air off both ends, played exactly twice with 0.92 s between.",
    "proof": "a_ringback_twice",
-   "blocked_on": "the mp3 never arrived; the synthesised two-ring ringback is in place",
    "clean": 0
   },
   {
    "id": "D-027",
-   "status": "confirm",
+   "status": "fixed",
    "family": "sound",
    "cues": [
-    "4.9"
+    "4.8"
    ],
-   "note": "4.9 should use the iOS bell instead of the mail tone.",
+   "note": "The agent's \"SONNY READ IT\" text should arrive on a different notification from the bank alert and the emails (David clarified Sept 20 that this, not 4.9, is the cue he meant). It now carries its own tone — a custom text tone on that contact, which is what you set for the one person you cannot miss.",
    "proof": "a_bell",
-   "blocked_on": "4.9 is a silent blackout — the bell went on the bank alert at 4.6; David to confirm which cue he meant",
    "clean": 0
   },
   {
@@ -343,20 +347,20 @@
    ],
    "note": "Reverb and a taper on the time warp; the reverse clip when time runs backwards.",
    "proof": "a_warp",
-   "clean": 2,
-   "last_build": "337ea4d42c9d"
+   "clean": 3,
+   "last_build": "fd2a35488908"
   },
   {
    "id": "D-031",
-   "status": "fixed",
+   "status": "closed",
    "family": "era",
    "cues": [
     "*"
    ],
    "note": "No divider between the month and the event when there is no event.",
    "proof": "a_foot_solo",
-   "clean": 1,
-   "last_build": "337ea4d42c9d"
+   "clean": 2,
+   "last_build": "fd2a35488908"
   },
   {
    "id": "D-032",
@@ -368,7 +372,8 @@
    ],
    "note": "The camera move and zoom on the song 9 notifications had disappeared. It is back, but it OVER-corrected: the push now crops the neighbouring card (see D-044). Not closed until the stack is both large and whole.",
    "proof": "a_song9_push",
-   "clean": 0
+   "clean": 1,
+   "last_build": "fd2a35488908"
   },
   {
    "id": "D-033",
@@ -380,8 +385,8 @@
    ],
    "note": "The Casting Networks mail arrives with its tone three seconds before his text.",
    "proof": "a_10_mail_first",
-   "clean": 2,
-   "last_build": "337ea4d42c9d"
+   "clean": 3,
+   "last_build": "fd2a35488908"
   },
   {
    "id": "D-034",
@@ -392,8 +397,8 @@
    ],
    "note": "More time to read the flashback; cut the unlock, stay on the lock screen.",
    "proof": "a_105_hold",
-   "clean": 2,
-   "last_build": "337ea4d42c9d"
+   "clean": 3,
+   "last_build": "fd2a35488908"
   },
   {
    "id": "D-035",
@@ -404,8 +409,8 @@
    ],
    "note": "The photo bed falls left to right, a new print every 3-5 s, 25% of stage height, no accumulation, never blank.",
    "proof": "a_photo_bed",
-   "clean": 2,
-   "last_build": "337ea4d42c9d"
+   "clean": 3,
+   "last_build": "fd2a35488908"
   },
   {
    "id": "D-036",
@@ -443,8 +448,8 @@
    ],
    "note": "THE 1.2 CROP BUG, ROOT CAUSE. The send handler appends a bubble to the live thread but never re-renders, so the Thursday 'Delivered' the state deleted stays in the DOM. From 1.3 on the thread shows 'Delivered' AND 'Read 9:44 AM' at once — no iPhone ever does that. This is the text from previous scenes permeating the crop.",
    "proof": "a_one_receipt",
-   "clean": 2,
-   "last_build": "337ea4d42c9d"
+   "clean": 3,
+   "last_build": "fd2a35488908"
   },
   {
    "id": "D-038",
@@ -457,8 +462,8 @@
    ],
    "note": "Song 7's MacBook type is the smallest in the show — 14.6 px projected against 76-81 px on the phone. The laptop is the only device whose type is hardcoded in pixels instead of derived from --ph, and it is never framed.",
    "proof": "a_laptop_legible",
-   "clean": 2,
-   "last_build": "337ea4d42c9d"
+   "clean": 3,
+   "last_build": "fd2a35488908"
   },
   {
    "id": "D-039",
@@ -503,8 +508,8 @@
    ],
    "note": "A connected call's first frame reads 'connected · 00:00'. A real iPhone never leading-zeroes the minutes.",
    "proof": "a_timer_format",
-   "clean": 2,
-   "last_build": "337ea4d42c9d"
+   "clean": 3,
+   "last_build": "fd2a35488908"
   },
   {
    "id": "D-042",
@@ -516,7 +521,8 @@
    ],
    "note": "CarPlay's SPEED LIMIT sign is 18.2 px — the only sub-22 px type on a dash that otherwise reads 32.5 px.",
    "proof": "a_dash_legible",
-   "clean": 0
+   "clean": 1,
+   "last_build": "fd2a35488908"
   },
   {
    "id": "D-043",
@@ -527,7 +533,8 @@
    ],
    "note": "The predictive bar and the settled state disagree — a scrub or a resize snaps the suggestion back to a stale word mid-scene.",
    "proof": "a_predict_matches",
-   "clean": 0
+   "clean": 1,
+   "last_build": "fd2a35488908"
   },
   {
    "id": "D-044",
@@ -565,7 +572,7 @@
   },
   {
    "id": "D-046",
-   "status": "fixed",
+   "status": "closed",
    "family": "realism",
    "cues": [
     "3.6",
@@ -574,8 +581,8 @@
    ],
    "note": "BUTTONS DID NOT MATCH STATE. Answering a call changed only the status line, so a CONNECTED call still showed Answer/Decline. CLAUDE.md: a connected call shows mute/end/speaker, never Answer. Same class as the receipt bug — a live handler mutating in place and diverging from the settled render.",
    "proof": "a_call_buttons_match",
-   "clean": 1,
-   "last_build": "337ea4d42c9d"
+   "clean": 2,
+   "last_build": "fd2a35488908"
   },
   {
    "id": "D-047",

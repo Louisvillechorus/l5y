@@ -1330,7 +1330,7 @@ const FALLBACK_SHOW = [
   do:[{op:'notif',app:'Mail',w:'now',title:'Columbia University',t:'Withdrawal processed — Fall term ✓'}]},
  {id:'4.8',kind:'lyric',trig:'“I wrote a book and Sonny Mehta read it!”',
   what:'THE BIGGEST HIT.',
-  do:[{op:'notif',app:'Messages',w:'now',title:'Linda Whitfield',t:'SONNY READ IT. CALL ME NOW.'}]},
+  do:[{op:'notif',app:'Messages',w:'now',title:'Linda Whitfield',t:'SONNY READ IT. CALL ME NOW.',tone:'receive'}]},
  {id:'4.9',kind:'music',trig:'FINAL CHORD — the last hit of Moving Too Fast',
   what:'The phone drops; OCTOBER · YEAR 1 holds center until her song rolls it forward.',
   do:[{op:'black'}]},
@@ -1486,7 +1486,7 @@ const FALLBACK_SHOW = [
   do:[{op:'device',dev:'iphone',who:'jamie'},
       {op:'notif',app:'Messages',w:'now',title:'Cathy 💛',t:'good morning. can’t wait to see you — what time does your flight land?'},
       {op:'pause',ms:3500},{op:'notifDismiss',ms:1880},{op:'pause',ms:900},{op:'black'}]},
- {id:'13.3',kind:'lyric',trig:'“…in love with someone like you” — his last line; Find My, location back ON',
+ {id:'13.3',kind:'lyric',trig:'“…in love with someone like you” — his last line; Find My, the location device swapped',
   what:'THE WHOLE PHONE, so the house watches him unlock it. Find My opens on People: Cathy, Mount Orab, OH — she is exactly where she says she is. He taps ME. His own card reads Share My Location ON, Sharing From: Jamie’s iPad — the iPad on the desk at home, where she thinks HE is. One blue row: “Use This iPhone as My Location.” He taps it, and Sharing From becomes Jamie’s iPhone. The map now follows his body. Nothing turns on, nothing turns off — he just moves the dot into his pocket.',
   hold:'He has been “sharing” with her all along; only the DEVICE changes. This iPhone was never the source and we never see him make the iPad one. Inside Find My there is not one waiting beat — he does not hesitate (David, Sept 20); the only held beat is the locked phone before the unlock (`pause` 900). Hold on the settled card through the final chord; 14.1 takes it away.',
   do:[{op:'clock',t:'5:24'},{op:'device',dev:'iphone',who:'jamie',whole:true},
@@ -3620,7 +3620,7 @@ async function playCue(cue, st, tok){
       setStamp(st);
       continue; }
     if(o.op==='stamp'){ applyOp(st,o); setStamp(st); continue; }
-    if(o.op==='notif'){ applyOp(st,o); if(o.snd!==false && (!o.w||o.w==='now')) sfx(o.app==='Mail'?'mail':(o.app==='Chase'?'tink':'notif'),{seed:'n'+cue.id});
+    if(o.op==='notif'){ applyOp(st,o); if(o.snd!==false && (!o.w||o.w==='now')) sfx(o.tone||(o.app==='Mail'?'mail':(o.app==='Chase'?'tink':'notif')),{seed:'n'+cue.id});   // `tone:` = a custom text tone on that contact, which is what you set for the one person you cannot miss
       stacks().forEach(k=>{ const ns=k.querySelector('.nstack'); if(!ns) return;
         const d=document.createElement('div'); d.className='notif inbound';
         const art=ICON[o.app];
@@ -4909,12 +4909,15 @@ function sfx(name,o={}){
 }
 var RING=null;
 function sfxRing(kind){ sfxRingStop(); if(!sfxOn()) return;
-  if(kind==='ringback'){            // the caller's end: exactly TWO rings, then it stops
+  if(kind==='ringback'){            // the caller's end: exactly TWO tight rings, then it stops.
+    // David's licensed recording (Sept 20), trimmed to the single 2.01 s burst — real North American
+    // ringback, 440 + 480 Hz. The synthesised pair below is the fallback if the file is missing.
     RING={kind,timer:null};
     let left=2; const beat=()=>{ if(!RING||RING.kind!=='ringback') return;
-      const t=AC.currentTime+.02;
-      tone(440,t,1.9,{gain:.085,attack:.02,release:.16}); tone(480,t,1.9,{gain:.085,attack:.02,release:.16});
-      if(--left>0) RING.timer=setTimeout(beat,3400); };
+      const src=sample('ringback',{gain:.55});
+      if(!src){ const t=AC.currentTime+.02;
+        tone(440,t,1.9,{gain:.085,attack:.02,release:.16}); tone(480,t,1.9,{gain:.085,attack:.02,release:.16}); }
+      if(--left>0) RING.timer=setTimeout(beat,2950); };   // 2.03 s of ring + 0.92 s of air: two rings, tight
     beat(); return; }
   RING={kind,timer:null};
   const src=sample(kind,{loop:true,gain:kind==='ftring'?.65:.55}); if(src){ RING.src=src; } return;   // the real ring, looped and quiet — or nothing
@@ -5064,13 +5067,14 @@ paperInit();
 function SFX_BUF_(){ return SFX_BUF_.o||(SFX_BUF_.o={}); }   // hoisted accessors — no top-level state that boot code could reach first
 function SFX_MAP_(){ return {send:'SentMessage.caf',receive:'ReceivedMessage.caf',notif:'sms-received1.caf',mail:'new-mail.caf',mailsent:'mail-sent.caf',
   click:'key_press_click.caf',del:'key_press_delete.caf',keymod:'key_press_modifier.caf',tap:'Tock.caf',tink:'Tink.caf',lock:'lock.caf',unlock:'unlock.caf',swipe:'Swish.m4r',
-  connect:'vc~invitation-accepted.caf',end:'vc~ended.caf',ftring:'vc~ringing.caf',ring:'vibrate.mp3',busy:'ct-busy.caf',error:'ct-error.caf',keytone:'ct-keytone2.caf',
+  connect:'vc~invitation-accepted.caf',end:'vc~ended.caf',ftring:'vc~ringing.caf',ring:'vibrate.mp3',ringback:'ringback.mp3',busy:'ct-busy.caf',error:'ct-error.caf',keytone:'ct-keytone2.caf',
   }; }   /* low battery: CUT (David, Sept 20) */
-function SFX_TRIM_(){ return {click:.35,del:.35,keymod:.35,tink:.6,send:.7,receive:.7,notif:.7,mail:.7,mailsent:.7,connect:.7,end:.7,lock:.5,unlock:.45,ring:.55,ftring:.65}; }
+function SFX_TRIM_(){ return {ringback:.55,click:.35,del:.35,keymod:.35,tink:.6,send:.7,receive:.7,notif:.7,mail:.7,mailsent:.7,connect:.7,end:.7,lock:.5,unlock:.45,ring:.55,ftring:.65}; }
 /* THE SOUND LAW (David, Sept 19 night): the screen makes ONLY the sounds a real iPhone makes with its volume up, and
-   quietly. No paper, no ambience, no taps, no swipes, no unlock (iOS has none), no ringback (that lives in the earpiece).
+   quietly. No paper, no ambience, no taps, no swipes, the unlock IS audible (David, Sept 20) and the ringback is David's own licensed
+   recording, trimmed to one 2.01 s burst and played exactly twice.
    Keyboard clicks are ON for every typing beat (David, Sept 19 night — the real key_press_click / _delete / _modifier); a cue may mute them with keys:false. */
-function SFX_KEEP_(){ return {send:1,receive:1,notif:1,mail:1,mailsent:1,lock:1,unlock:1,ftring:1,ring:1,end:1,connect:1,tink:1}; }
+function SFX_KEEP_(){ return {send:1,receive:1,notif:1,ringback:1,mail:1,mailsent:1,lock:1,unlock:1,ftring:1,ring:1,end:1,connect:1,tink:1}; }
 function b64bytes(str){ const i=str.indexOf(','); const bin=atob(i>=0?str.slice(i+1):str); const u=new Uint8Array(bin.length); for(let k=0;k<bin.length;k++) u[k]=bin.charCodeAt(k); return u; }
 function cafDecode(u){
   if(!(u[0]===0x63&&u[1]===0x61&&u[2]===0x66&&u[3]===0x66)) throw new Error('not caf');

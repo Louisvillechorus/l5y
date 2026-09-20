@@ -391,16 +391,67 @@ def a_photo_bed(pg):
 
 # ---------- the three still blocked on David ----------
 def a_ringback_twice(pg):
-    if (pg.evaluate("!!(window.L5Y_SFX||{})['dialtone.mp3']")
-            or pg.evaluate("!!(window.L5Y_SFX||{})['ringback.mp3']")):
-        return []
-    return ['WAITING ON DAVID: the licensed dial-tone mp3 never arrived; '
-            'the synthesised two-ring ringback is standing in (3.9, 4.2)']
+    """David's licensed recording, trimmed to one burst, played exactly twice and tight."""
+    bad = []
+    if not pg.evaluate("!!(window.L5Y_SFX||{})['ringback.mp3']"):
+        return ['the licensed ringback is not embedded in the build']
+    if not pg.evaluate('!!SFX_KEEP_().ringback'):
+        bad.append('ringback is not in SFX_KEEP_ — the sound law would silence it')
+    boot(pg)
+    pg.evaluate("""(()=>{ window.__rb=[]; const t0=performance.now(); const r=window.sample;
+        window.sample=function(n,o){ const out=r.apply(this,arguments);
+          if(n==='ringback') window.__rb.push([Math.round(performance.now()-t0), !!out]);
+          return out; }; })()""")
+    # every cue that dials out must ring twice
+    dials = pg.evaluate("""(()=>{ const out=[]; SHOW.forEach((s,i)=>s.cues.forEach((q,k)=>{
+        if((q.do||[]).some(o=>o.op==='call' && o.dir==='out')) out.push([i,k,q.id]); })); return out; })()""")
+    if not dials:
+        return bad + ['nobody dials out anywhere in the show']
+    for i, k, cid in dials:
+        pg.evaluate(f'si={i}; ci={k}; animTok++; animRunning=false; hardRender();')
+        pg.wait_for_timeout(150)
+        pg.evaluate('window.__rb=[]; audioInit(); advance()')
+        pg.wait_for_timeout(9000)
+        rb = pg.evaluate('window.__rb')
+        if len(rb) != 2:
+            bad.append(f'{cid}: the ringback played {len(rb)} time(s), not two')
+            continue
+        if not all(x[1] for x in rb):
+            bad.append(f'{cid}: the synthesised fallback played, not the licensed recording')
+        gap = rb[1][0] - rb[0][0]
+        if not (2600 <= gap <= 3300):
+            bad.append(f'{cid}: {gap} ms between the rings — not two tight rings')
+    dur = pg.evaluate("""(()=>{ const b=SFX_BUF_()['ringback.mp3']; return b?+b.duration.toFixed(2):0; })()""")
+    if dur and not (1.9 <= dur <= 2.2):
+        bad.append(f'the trimmed ring is {dur}s — it still carries dead air')
+    return bad
 
 
 def a_bell(pg):
-    return ['WAITING ON DAVID: 4.9 is a silent blackout. The iOS bell went on the bank alert at 4.6 — '
-            'confirm which cue you meant.']
+    """The agent's text arrives on its own tone, distinct from the bank alert and the mail."""
+    bad = []
+    boot(pg)
+    tones = pg.evaluate("""(()=>{ const pick=o=>o.tone||(o.app==='Mail'?'mail':(o.app==='Chase'?'tink':'notif'));
+        const out={}; SHOW.forEach(s=>s.cues.forEach(q=>(q.do||[]).forEach(o=>{
+          if(o.op!=='notif') return; out[q.id]=out[q.id]||[]; out[q.id].push([o.app, pick(o), String(o.t||'').slice(0,18)]); })));
+        return out; })()""")
+    sonny = [(cid, v) for cid, rows in tones.items() for v in rows if 'SONNY' in (v[2] or '').upper()]
+    if not sonny:
+        return ["the agent's text is not in the show any more"]
+    cid, (app, tone, _) = sonny[0]
+    mail = {v[1] for rows in tones.values() for v in rows if v[0] == 'Mail'}
+    bank = {v[1] for rows in tones.values() for v in rows if v[0] == 'Chase'}
+    plain = {v[1] for rows in tones.values() for v in rows
+             if v[0] == 'Messages' and 'SONNY' not in (v[2] or '').upper()}
+    if tone in mail:
+        bad.append(f'{cid}: the agent\'s text uses the same tone as the emails ({tone})')
+    if tone in bank:
+        bad.append(f'{cid}: the agent\'s text uses the same tone as the bank alert ({tone})')
+    if tone in plain:
+        bad.append(f'{cid}: the agent\'s text sounds like every other text ({tone})')
+    if not pg.evaluate(f"!!SFX_KEEP_()['{tone}']"):
+        bad.append(f'{cid}: its tone "{tone}" is not a kept phone sound — it would be silenced')
+    return bad
 
 
 def a_paper(pg):

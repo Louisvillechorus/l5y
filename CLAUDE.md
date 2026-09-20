@@ -262,11 +262,24 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
 - Instrumental passages auto-play from one GO using `{op:'pause', ms}` beats — tunable in tech.
 - Assets: M24, M25, M26, M3a, M2 (THE BEAR), M4 (Songs 1 and 9), M23 (Song 6), V2 (Song 7), plus loop-only
   photos (S00-LOOP-…). CUT: M1, M7/M7b, M12, M15.
-- **Never quote the script in chat.** Trigger fragments live only in `cues.js`, short.
-- **LINES LAW (supreme)**: trigger lines come ONLY from the licensed script. Every line
-  not yet checked against it carries a ⚠CONFIRM flag in the cue data and documents.
-  Never write, fix, or fill a script line from memory. `apply_lines.py` +
-  `L5Y-Lines-Worksheet.docx` are the reconciliation path.
+- **Never quote the script in chat.** Script fragments live only in `cues.js`, short.
+- **Sound**: the ringback is David's own licensed recording (`assets/sfx/ringback.mp3`), trimmed to
+  the single 2.01 s burst of real North American ringback (440 + 480 Hz), played EXACTLY TWICE with
+  0.92 s between — two tight rings. A `{op:'notif', tone:'…'}` names a custom text tone for that
+  contact, the way you set one for the person you cannot miss: Linda Whitfield's "SONNY READ IT"
+  at 4.8 arrives on its own tone, distinct from the bank alert and from the mail.
+- **LINES LAW (supreme; scoped by David, Sept 20)**: a `trig:` has two halves and they are
+  governed differently.
+  **The SCRIPT FRAGMENT** — the quoted words the singer actually sings, normally in curly
+  quotes before the em dash — comes ONLY from the licensed script. Never write, fix, or fill
+  one from memory; anything unchecked carries a ⚠CONFIRM flag; `apply_lines.py` +
+  `L5Y-Lines-Worksheet.docx` are the reconciliation path. That half is untouchable.
+  **THE OPERATOR'S STAGE NOTE** — everything after the em dash ("— he hangs up", "— Find My,
+  the location device swapped"), and all of `what:` and `hold:` — is OUR writing, not the
+  script's. It must be kept TRUE to what the cue actually does, and it is rewritten as soon as
+  the cue changes. David, Sept 20: "I would've never approved something that required me to
+  edit a worksheet to make a change here." A stage note that describes the old behaviour is a
+  bug, not a protected line.
 
 ## THE NOTES REGISTER (David, Sept 20 — "trackable, traceable, fixable, provable, repeatable")
 `notes.json` holds every note David has given: an ID, the cues it touches, a `family` (so the same
