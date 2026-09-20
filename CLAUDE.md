@@ -28,7 +28,7 @@ Every screen must survive the question **"is this exactly what a real iPhone/Mac
 - Never let months pass "invisibly" inside one continuous scene. Time jumps are song-top events, with the clock roll.
 
 ## Storyline canon (do not contradict)
-Meet Sept 3 2021 · movers-in Oct 2021 (Sat Oct 16) · proposal June 12 2023 (the rowboat) · **wedding May 18 2024** (the only shared date) · Ohio summers 2024, 2025 & 2026 (she is in Ohio when he leaves — "what time does your flight land") · pier birthday July 19 2025 (he visits and leaves early) · Cathy's Stelmyer call May 9 2025 · Elise/R.H. affair seeded May 2024 → Feb 2025 ("for you I'm always up") → April 2026 · **his last day is Thursday June 11 2026**: before dawn with Elise (song 13), the afternoon he packs, writes the pad and leaves the ring on the table (song 14), breakup email "Some practical things" (lawyer at 2:50, her at 4:12 — he told the lawyer first) · **she reads the pad Friday June 12 2026, 9:41 AM** (song 1); her final text READ 9:44, never answered; the ring only reaches her with the note, so nothing before Thursday can mention it · show ends on her, 2021, still typing. Whitfield is his literary AGENT (Linda; agency never named — he saved her office number as "Ms. Whitfield (office)"); The Atlantic Monthly prints his chapter; Random House is Elise's house; Stelmyer's agency is never named. Jamie escalates by silence and administration (accounts, movers, lawyers); Cathy escalates by asking. His ghosts are cowardice; hers are courage. He cannot delete anything about her (Cancel, every time) except the two sharing buttons he does press: Stop Sharing and Leave Playlist.
+Meet Sept 3 2021 · movers-in Oct 2021 (Sat Oct 16) · proposal June 12 2023 (the rowboat) · **wedding May 18 2024** (the only shared date) · Ohio summers 2024, 2025 & 2026 (she is in Ohio when he leaves — "what time does your flight land") · pier birthday July 19 2025 (he visits and leaves early) · Cathy's Stelmyer call May 9 2025 · Elise/R.H. affair seeded May 2024 → Feb 2025 ("for you I'm always up") → April 2026 · **his last day is Thursday June 11 2026**: before dawn with Elise (song 13), the afternoon he packs, writes the pad and leaves the ring on the table (song 14), breakup email "Some practical things" (lawyer at 2:50, her at 4:12 — he told the lawyer first) · **she reads the pad Friday June 12 2026, 9:41 AM** (song 1); her final text READ 9:44, never answered; the ring only reaches her with the note, so nothing before Thursday can mention it · **she finishes it — “safe 😊 tonight was amazing” — sends it at 11:51, we hear the send, and her screen goes black, baked in (David, Sept 20; this reverses “still typing”)**; the show's last image of her is a dark phone, then the bows. Whitfield is his literary AGENT (Linda; agency never named — he saved her office number as "Ms. Whitfield (office)"); The Atlantic Monthly prints his chapter; Random House is Elise's house; Stelmyer's agency is never named. Jamie escalates by silence and administration (accounts, movers, lawyers); Cathy escalates by asking. His ghosts are cowardice; hers are courage. He cannot delete anything about her (Cancel, every time) except the two sharing buttons he does press: Stop Sharing and Leave Playlist.
 
 ## TWO CASTS, ONE SHOW (David, Sept 14)
 Two couples alternate performances: **Maegan & Landon** and **Andrew & Charlie**. There is ONE
@@ -89,6 +89,10 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   press animation, iOS pressed-gray on rows and buttons via `hover`/`btnHover`), then the
   transition. The `hover`/`tap`/`btnHover`/`btnTap` ops remain as timing + pressed-state beats.
 - **Preshow**: the house card (title + the two-handed clock) renders at song 1 · cue 0.
+- **BOWS (David, Sept 20)**: 14.6 is the curtain, then **14.7 `{op:'bows'}`** brings the title card and the
+  photo bed back at a faster rate (a print every 0.9–1.5 s against a 15–20 s fall, so it can never go
+  blank and never ends). The operator's questionnaire no longer arms itself 2.6 s after the curtain —
+  it waits for the bows and for the operator to leave the show, and never arms in the projection window.
 - **Non-diegetic is allowed.** The phone plays even when the actor isn't holding it; in
   those moments the frame may drop away entirely (`dev:'full'` full-bleed stage).
 - **Simplicity**: target one or two screen moments per song; black (era-center) is the
@@ -215,7 +219,7 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   character, NOW with progress, the GO card, THEN, the whole queue, BLACKOUT and MENU. Nothing else.
 - Restore point before this sprint: git tag `restore-sept18-line-by-line`.
 
-## THE LINE-BY-LINE BUILD (David, Sept 18 — the spec; 65 cues after Sept 19)
+## THE LINE-BY-LINE BUILD (David, Sept 18 — the spec; 69 cues after Sept 20)
 - **1** prologue = the title page tears off (one GO, no phone); on her verse-2 line the phone rises
   and she sends her text (auto, ~50 s — SLOW by direction, Sept 19 night: she reads the list, she
   reads his name and the history, she types slowly, she waits before Send; every pause is tunable);
@@ -243,8 +247,9 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   mid-song, the miles fall at highway speed, the dash clock runs 5:53 onward; she never arrives in
   the song. (`dur` mode still exists for a compressed trip.)
 - **13** two beats: her text lands (5:05 AM — before dawn means before the 5:24 sunrise) and he
-  swipes it away; on his last line, Find My → Share My Location → Share Indefinitely (it was OFF
-  before the song; never shown turning off). Her Ohio is **Mount Orab, OH** (forty miles east of
+  swipes it away; on his last line the **whole phone** is on stage so we see him unlock it, then Find My → **Me** →
+  **“Use This iPhone as My Location”** — sharing was always ON and stays ON; only the reporting device
+  changes, iPad → iPhone, the classic cover-up (David, Sept 20). We never see the iPad made the source. Her Ohio is **Mount Orab, OH** (forty miles east of
   Cincinnati, per the script — confirmed by David, Sept 19). 4.8 keeps “SONNY READ IT.” (David’s call).
 - **Continuity law (Sept 19)**: her Friday thread (1.2) carries Thursday — the flight text from
   13.2 verbatim, “landed?”, “I read it. please call me”, “I’m not angry. just talk to me” — because
@@ -252,8 +257,8 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   Her contact for him is “Jamie 💙” through June 2024 (7.1). The drive is dated Nov 6 2021 (after
   the Oct 16 move-in) — if the licensed script's drive contains the move-in invitation, David must
   re-date it; never fill that from memory.
-- **14** era flips with the singer; her one animation (his “home safe?” lands, she opens it,
-  types, never sends); his last verse rolls to JUNE 2026 and holds; FINAL BLACKOUT = true black.
+- **14** era flips with the singer; her one animation (his “home safe?” lands, she opens it, types,
+  **finishes it and SENDS — Delivered, a 2.4 s hold, then the screen goes black in the phone (`screenoff`)**); his last verse rolls to JUNE 2026 and holds; FINAL BLACKOUT = true black.
 - Instrumental passages auto-play from one GO using `{op:'pause', ms}` beats — tunable in tech.
 - Assets: M24, M25, M26, M3a, M2 (THE BEAR), M4 (Songs 1 and 9), M23 (Song 6), V2 (Song 7), plus loop-only
   photos (S00-LOOP-…). CUT: M1, M7/M7b, M12, M15.

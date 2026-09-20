@@ -173,23 +173,25 @@
   },
   {
    "id": "D-016",
-   "status": "open",
+   "status": "fixed",
    "family": "pacing",
    "cues": [
     "13.2"
    ],
    "note": "Two more seconds with her message on screen, and the swipe 1.5 s longer and dramatic.",
-   "proof": "a_132_timing"
+   "proof": "a_132_timing",
+   "clean": 0
   },
   {
    "id": "D-017",
-   "status": "open",
+   "status": "fixed",
    "family": "framing",
    "cues": [
     "13.3"
    ],
    "note": "13.3 starts on the whole phone screen so we see him unlock it.",
-   "proof": "a_133_full_phone"
+   "proof": "a_133_full_phone",
+   "clean": 0
   },
   {
    "id": "D-018",
@@ -205,43 +207,47 @@
   },
   {
    "id": "D-019",
-   "status": "open",
+   "status": "fixed",
    "family": "realism",
    "cues": [
     "13.3"
    ],
    "note": "Find My is him changing WHICH DEVICE reports his location — iPad to iPhone — not re-sharing with her. Faster.",
-   "proof": "a_133_device_swap"
+   "proof": "a_133_device_swap",
+   "clean": 0
   },
   {
    "id": "D-020",
-   "status": "open",
+   "status": "fixed",
    "family": "dramaturgy",
    "cues": [
     "14.4"
    ],
    "note": "She finishes 'tonight was amazing', hits send, we hear the send, then full black baked into the screen.",
-   "proof": "a_144_send"
+   "proof": "a_144_send",
+   "clean": 0
   },
   {
    "id": "D-021",
-   "status": "open",
+   "status": "fixed",
    "family": "house",
    "cues": [
     "14.6+"
    ],
    "note": "After the final black: the opening sequence again as a BOWS screen, photos flooding faster, still loopable.",
-   "proof": "a_bows"
+   "proof": "a_bows",
+   "clean": 0
   },
   {
    "id": "D-022",
-   "status": "open",
+   "status": "fixed",
    "family": "maps",
    "cues": [
     "12.2"
    ],
    "note": "The map itself is not moving — only the text changes.",
-   "proof": "a_map_moves"
+   "proof": "a_map_moves",
+   "clean": 0
   },
   {
    "id": "D-023",
@@ -502,24 +508,26 @@
   },
   {
    "id": "D-042",
-   "status": "open",
+   "status": "fixed",
    "family": "framing",
    "cues": [
     "12.1",
     "12.2"
    ],
    "note": "CarPlay's SPEED LIMIT sign is 18.2 px — the only sub-22 px type on a dash that otherwise reads 32.5 px.",
-   "proof": "a_dash_legible"
+   "proof": "a_dash_legible",
+   "clean": 0
   },
   {
    "id": "D-043",
-   "status": "open",
+   "status": "fixed",
    "family": "state",
    "cues": [
     "14.4"
    ],
    "note": "The predictive bar and the settled state disagree — a scrub or a resize snaps the suggestion back to a stale word mid-scene.",
-   "proof": "a_predict_matches"
+   "proof": "a_predict_matches",
+   "clean": 0
   },
   {
    "id": "D-044",
