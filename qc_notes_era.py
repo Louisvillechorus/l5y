@@ -147,6 +147,34 @@ window.__eraStop = function(){ window.__ERA.on = false; return window.__ERA.rows
 
 # --------------------------------------------------------------------------- helpers
 def _boot(page):
+    """Put the show on the stage, then install the recorder.
+
+    THE GATE OWNS THE STAGE. qc_notes.py hands every probe a page that is still sitting at the
+    operator's gate: `body.needgate` is set and `#projection` is `display:none`. Every
+    getBoundingClientRect() inside #era then reads [0,0,0,0], and CSS animations do not run in a
+    display:none subtree — so this file's measurements silently became measurements of NOTHING and
+    reported four false failures (a 0 px title sheet, "fills only -0%", the type "not on the
+    calendar during the move", a foot line that "appears whole"). The show itself was perfect:
+    fired properly, 1.0a's incoming page travels top=-1522→+32 under cardIn and the ghost
+    32→1557 under cardOut.
+
+    This file's own main() called startAs() and the gate runner does not, which is why the probes
+    passed on their own branch and failed in the gate. Every other qc_notes_*.py boots the show;
+    so does this one now. The assert afterwards makes the same mistake impossible to make
+    quietly ever again: a stage that is not laid out is a loud error, never a silent zero."""
+    if not page.evaluate('typeof started !== "undefined" && started'):
+        page.evaluate("startAs('projection')")
+        page.wait_for_timeout(400)
+    box = page.evaluate("""(()=>{const p=document.getElementById('projection');
+        if(!p) return null; const b=p.getBoundingClientRect();
+        return [+b.width.toFixed(1), +b.height.toFixed(1),
+                getComputedStyle(p).display,
+                document.body.classList.contains('needgate')];})()""")
+    if not box or box[0] < 2 or box[1] < 2:
+        raise RuntimeError(
+            'the stage is not laid out (#projection is %r) — every rect in #era would measure '
+            'zero and every probe in this file would report a false failure. Boot the show '
+            'before measuring it.' % (box,))
     page.evaluate(RECORDER)
 
 
