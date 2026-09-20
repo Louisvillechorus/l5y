@@ -1,7 +1,7 @@
 """LIVE CENSUS QC: play every cue exactly like the operator (advance) and log every sound that plays and every camera move — name, zoom, anchor, duration. Flags non-phone sounds, fast moves, and busy cues. Usage: CHROMIUM_PATH=... python3 qc_census.py"""
 import os,json,time
 from playwright.sync_api import sync_playwright
-KEEP={'send','receive','notif','mail','mailsent','lock','ftring','ring','end','connect','click','del','keymod','tink','unlock'}
+KEEP={'send','receive','notif','mail','mailsent','lock','ftring','ring','end','connect','click','del','keymod','tink','unlock','ringback'}
 with sync_playwright() as p:
     b=p.chromium.launch(executable_path=os.environ['CHROMIUM_PATH']); pg=b.new_page(viewport={'width':1920,'height':1080}); errs=[]
     pg.on('pageerror',lambda e:errs.append(str(e)))
