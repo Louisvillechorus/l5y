@@ -813,7 +813,10 @@
      re-lay them out, and setEraHome() FLIPs every piece of type from where it was to where it is
      going. Nothing cross-dissolves, because there is nothing to dissolve into. */
   #era.center{inset:0;margin:auto;width:96vh;height:94vh}
-  #era.docked{inset:0;margin:auto 1.6vw auto auto;width:14.4vw;height:93vh}
+  #era.docked{inset:0;margin:auto 3.4vw auto auto;width:14.4vw;height:93vh}   /* TITLE-SAFE: a TV in its default HDMI mode overscans 2-5%, and the strip lives at the extreme
+     right edge where that bites first — David photographed 'June' with its last letter eaten by
+     the bezel. 3.4vw keeps the type roughly 65px inboard at 1920 and still fits inside ERA_ZONE
+     (14.4 + 3.4 = 17.8vw against the 19vw the camera reserves), so no framing number moves. */
   #era .pad{position:absolute;inset:0}
   #era .sheet{position:absolute;inset:0;padding:4.6vh 6.5vh 4vh;display:flex;flex-direction:column;justify-content:space-between;align-items:center;text-align:center;transform-origin:8% 0%}
   /* the paper is its own layer inside the sheet: the sheet hosts the ink (which travels as type),
@@ -1554,17 +1557,21 @@ const FALLBACK_SHOW = [
       {op:'pause',ms:3500},{op:'notifDismiss',ms:1880},{op:'pause',ms:900},{op:'black'}]},
  {id:'13.3',kind:'lyric',trig:'“…in love with someone like you” — his last line; Find My, the location device swapped',
   what:'THE WHOLE PHONE, so the house watches him unlock it. Find My opens on People: Cathy, Mount Orab, OH — she is exactly where she says she is. He taps ME. His own card reads Share My Location ON, Sharing From: Jamie’s iPad — the iPad on the desk at home, where she thinks HE is. One blue row: “Use This iPhone as My Location.” He taps it, and Sharing From becomes Jamie’s iPhone. The map now follows his body. Nothing turns on, nothing turns off — he just moves the dot into his pocket.',
-  hold:'He has been “sharing” with her all along; only the DEVICE changes. This iPhone was never the source and we never see him make the iPad one. Inside Find My there is not one waiting beat — he does not hesitate (David, Sept 20); the only held beat is the locked phone before the unlock (`pause` 900). Hold on the settled card through the final chord; 14.1 takes it away.',
+  hold:'He has been “sharing” with her all along; only the DEVICE changes. This iPhone was never the source and we never see him make the iPad one. Every step inside Find My is held long enough to READ (David, Sept 20 — “it’s way too fast”): 1.8 s on Cathy in Mount Orab, 2.8 s on “Sharing From: Jamie’s iPad”, and 2.8 s on “Jamie’s iPhone” after the swap, so the house sees the one word that changes. The hesitation is the house’s, not his: he still presses without pausing (the 0.8 s between the press and the tap is the finger on the row, not doubt). Hold on the settled card through the final chord; 14.1 takes it away.',
   do:[{op:'clock',t:'5:24'},{op:'device',dev:'iphone',who:'jamie',whole:true},
       {op:'pause',ms:900},
       {op:'unlock'},
       {op:'openapp',icon:'FindMy',to:'findmy'},
       {op:'findmy',rows:[{n:'Cathy 💛',s:'Mount Orab, OH · now',col:'#c2447a'}],pin2:true},
-      {op:'btnTap',b:'Me'},
+      {op:'pause',ms:1800},
+      {op:'btnHover',b:'Me'},{op:'btnTap',b:'Me'},
       {op:'findmy',me:{n:'Jamie Wellerstein',share:true,from:'Jamie’s iPad',
         action:'Use This iPhone as My Location',friendReq:true,updates:'People You Share With'}},
-      {op:'btnHover',b:'Use This iPhone as My Location'},{op:'btnTap',b:'Use This iPhone as My Location'},
-      {op:'findmy',me:{n:'Jamie Wellerstein',share:true,from:'Jamie’s iPhone',friendReq:true,updates:'People You Share With'}}]},
+      {op:'pause',ms:2800},
+      {op:'btnHover',b:'Use This iPhone as My Location'},{op:'pause',ms:800},
+      {op:'btnTap',b:'Use This iPhone as My Location'},
+      {op:'findmy',me:{n:'Jamie Wellerstein',share:true,from:'Jamie’s iPhone',friendReq:true,updates:'People You Share With'}},
+      {op:'pause',ms:2800}]},
 ]},
 
 /* ============ 14 · GOODBYE UNTIL TOMORROW / I COULD NEVER RESCUE YOU ====
@@ -2148,37 +2155,49 @@ function callHTML(st){
       </div></div>`;
 }
 function ftHTML(st){
+  /* THE FURNITURE IS SIZED TO THE SCREEN, NOT TO THE TYPE (David, Sept 20 — the FaceTime window
+     came apart when the MacBook's type was scaled up for legibility). Everything here used to be
+     in `em`, and the avatar set its own font-size as well, so its 6.5em box resolved against a
+     2.6em font against a scaled .fs — an 800 px circle that swallowed the window and pushed the
+     name and the status out of it. All boxes are now a fraction of --ph, which the device sets;
+     only the text is em. */
   const f=st.ft||{};
   const ringing=/facetime…|calling|ringing/i.test(f.st||'');
   const ended=/ended/i.test(f.st||'');
+  const AV='calc(var(--ph,800px) * 0.20)', AVF='calc(var(--ph,800px) * 0.072)';
+  const NAME='calc(var(--ph,800px) * 0.050)', SUB='calc(var(--ph,800px) * 0.024)';
+  const BTN='calc(var(--ph,800px) * 0.075)', BTNF='calc(var(--ph,800px) * 0.034)';
+  const FOOT='calc(var(--ph,800px) * 0.045)';
+  const endBtn=`<div style="position:absolute;bottom:${FOOT};left:50%;transform:translateX(-50%);width:${BTN};height:${BTN};
+      border-radius:50%;background:#e0483e;color:#fff;display:flex;align-items:center;justify-content:center;font-size:${BTNF};z-index:4">✕</div>`;
+  const face=(op)=>`<div style="width:${AV};height:${AV};border-radius:50%;${avStyle(f.n,'#3a4568')};display:flex;
+      align-items:center;justify-content:center;font-size:${AVF};color:#fff;flex:none;${op}">${avText(f.n,(f.n||'?')[0])}</div>`;
   if(ringing) return `<div class="layer fs" style="background:linear-gradient(180deg,#1c2430,#0b0e14)">
-    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1em;color:#fff;padding-bottom:6em">
-      <div style="width:6.5em;height:6.5em;border-radius:50%;${avStyle(f.n,'#3a4568')};display:flex;align-items:center;
-        justify-content:center;font-size:2.6em;animation:ftpulse 1.6s ease-in-out infinite">${avText(f.n,(f.n||'?')[0])}</div>
-      <div style="font-size:2em;font-weight:500">${f.n||''}</div>
-      <div style="font-family:'Courier Prime',monospace;font-size:1em;letter-spacing:.18em;color:#aeb6cc;text-transform:uppercase">FaceTime…</div></div>
-    <div style="position:absolute;bottom:1.2em;left:50%;transform:translateX(-50%);width:3.4em;height:3.4em;
-      border-radius:50%;background:#e0483e;color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.3em;z-index:3">✕</div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+      gap:calc(var(--ph,800px) * 0.022);color:#fff;padding-bottom:calc(var(--ph,800px) * 0.13)">
+      ${face('animation:ftpulse 1.6s ease-in-out infinite')}
+      <div style="font-size:${NAME};font-weight:500;white-space:nowrap">${f.n||''}</div>
+      <div style="font-family:'Courier Prime',monospace;font-size:${SUB};letter-spacing:.18em;color:#aeb6cc;text-transform:uppercase;white-space:nowrap">FaceTime…</div></div>
+    ${endBtn}
   </div>`;
   if(ended) return `<div class="layer fs" style="background:linear-gradient(180deg,#1c2430,#0b0e14)">
-    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1em;color:#fff">
-      <div style="width:6.5em;height:6.5em;border-radius:50%;${avStyle(f.n,'#3a4568')};display:flex;align-items:center;
-        justify-content:center;font-size:2.6em;opacity:.7">${avText(f.n,(f.n||'?')[0])}</div>
-      <div style="font-size:2em;font-weight:500;opacity:.85">${f.n||''}</div>
-      <div style="font-family:'Courier Prime',monospace;font-size:1.1em;letter-spacing:.18em;color:#aeb6cc;text-transform:uppercase">Call Ended</div></div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+      gap:calc(var(--ph,800px) * 0.022);color:#fff">
+      ${face('opacity:.7')}
+      <div style="font-size:${NAME};font-weight:500;opacity:.85;white-space:nowrap">${f.n||''}</div>
+      <div style="font-family:'Courier Prime',monospace;font-size:${SUB};letter-spacing:.18em;color:#aeb6cc;text-transform:uppercase;white-space:nowrap">Call Ended</div></div>
   </div>`;
   return `<div class="layer fs" style="background:#000">
     <div class="media fillmedia"><div class="mi">🎥</div><div class="ml">${f.main||''}</div></div>
-    <div style="position:absolute;top:0;left:0;right:0;padding:.9em 1em;z-index:3;color:#fff;font-size:1.9em;
-      background:linear-gradient(rgba(0,0,0,.55),transparent);display:flex;justify-content:space-between;align-items:baseline">
-      <span style="font-weight:600">${f.n||''}</span>
-      <span style="font-family:'Courier Prime',monospace;font-size:.72em;letter-spacing:.14em;color:#cfe0ff;text-transform:uppercase">FaceTime Video · <span class="calltimer" data-base="0">0:00</span></span></div>
-    ${f.pip?`<div style="position:absolute;right:.8em;bottom:5em;width:27%;aspect-ratio:3/4;border-radius:.7em;overflow:hidden;
+    <div style="position:absolute;top:0;left:0;right:0;padding:calc(var(--ph,800px) * 0.022) calc(var(--ph,800px) * 0.026);z-index:3;color:#fff;
+      background:linear-gradient(rgba(0,0,0,.6),transparent);display:flex;justify-content:space-between;align-items:baseline;gap:1em">
+      <span style="font-weight:600;font-size:${NAME};white-space:nowrap">${f.n||''}</span>
+      <span style="font-family:'Courier Prime',monospace;font-size:${SUB};letter-spacing:.14em;color:#cfe0ff;text-transform:uppercase;white-space:nowrap">FaceTime Video · <span class="calltimer" data-base="0">0:00</span></span></div>
+    ${f.pip?`<div style="position:absolute;right:calc(var(--ph,800px) * 0.02);bottom:calc(var(--ph,800px) * 0.14);width:22%;aspect-ratio:3/4;border-radius:.7em;overflow:hidden;
       border:2px solid rgba(255,255,255,.7);z-index:3">
       <div class="media fillmedia"><div class="ml" style="font-size:.5em">${f.pip}</div></div></div>`:''}
-    <div style="position:absolute;bottom:1.2em;left:50%;transform:translateX(-50%);width:3.4em;height:3.4em;
-      border-radius:50%;background:#e0483e;color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.3em;z-index:3">✕</div>
-  </div>`;
+    ${endBtn}
+</div>`;
 }
 function cardsHTML(st){
   return `<div class="layer fs" style="background:#f2f2f7;padding:1.2em .9em;display:flex;flex-direction:column;gap:.6em">
