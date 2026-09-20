@@ -4,8 +4,19 @@ from qc_notes_core import boot, fire, song_ix
 
 
 def _audio(pg):
-    pg.evaluate('startAs("projection"); audioInit()')
-    pg.wait_for_timeout(400)
+    """Wake the sound for a probe, deterministically.
+
+    Two things silence a fresh page and neither is a defect: a projection window is SILENT unless
+    it is the one the operator started in (`SOUND_HOST`), and Chromium's AudioContext starts
+    suspended. Relying on either to come good by luck makes the sound probes pass alone and fail
+    under load — which is exactly how the ringback was reported missing when it plays fine.
+    """
+    pg.evaluate('startAs("projection"); SOUND_HOST = true; audioInit();'
+                ' if (typeof AC !== "undefined" && AC.state === "suspended") AC.resume();')
+    for _ in range(40):                                # wait for the graph to actually be running
+        pg.wait_for_timeout(100)
+        if pg.evaluate('typeof AC !== "undefined" && AC.state === "running"'):
+            break
     pg.evaluate("sample('notif',{gain:0.0001})")      # force the decoder to run
     pg.wait_for_timeout(900)
 

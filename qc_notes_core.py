@@ -428,7 +428,9 @@ def a_ringback_twice(pg):
         return ['the licensed ringback is not embedded in the build']
     if not pg.evaluate('!!SFX_KEEP_().ringback'):
         bad.append('ringback is not in SFX_KEEP_ — the sound law would silence it')
-    boot(pg)
+    from qc_notes_sound import _audio
+    _audio(pg)                                        # SOUND_HOST + a running AudioContext, or this
+                                                      # probe grades silence and blames the engine
     pg.evaluate("""(()=>{ window.__rb=[]; const t0=performance.now(); const r=window.sample;
         window.sample=function(n,o){ const out=r.apply(this,arguments);
           if(n==='ringback') window.__rb.push([Math.round(performance.now()-t0), !!out]);
@@ -441,7 +443,7 @@ def a_ringback_twice(pg):
     for i, k, cid in dials:
         pg.evaluate(f'si={i}; ci={k}; animTok++; animRunning=false; hardRender();')
         pg.wait_for_timeout(150)
-        pg.evaluate('window.__rb=[]; audioInit(); advance()')
+        pg.evaluate('window.__rb=[]; advance()')
         pg.wait_for_timeout(9000)
         rb = pg.evaluate('window.__rb')
         if len(rb) != 2:
