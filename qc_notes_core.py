@@ -212,16 +212,24 @@ def a_perf_fill(pg):
         const fl=[...sh.querySelectorAll('.fl')].map(e=>{
           const r=document.createRange(); r.selectNodeContents(e);
           return r.getBoundingClientRect().width; });
-        return {inner, fl}; })()""")
+        const grp=sh.querySelector('.grp');
+        const vbound = !!(grp && grp.scrollHeight > grp.clientHeight - 2);
+        return {inner, fl, vbound}; })()""")
     if not m or not m['fl']:
         return ['the performer card renders no fill-lines']
     if len(m['fl']) < 2:
         bad.append('the name is not set one word per line')
+    # THE REAL RULE: fill the width unless HEIGHT binds first. Once the house sheets were widened
+    # for D-012, two full-width lines overflow the sheet vertically, so the stack is scaled down to
+    # fit — that guard is correct and the names must not be asked to overflow the card. What must
+    # always hold is that the lines match each other and use whatever width is available to them.
+    floor = 0.93 if not m['vbound'] else 0.84
     for w in m['fl']:
-        if w < m['inner'] * 0.93:
-            bad.append(f'a name line is {w:.0f}px in a {m["inner"]:.0f}px sheet — it does not span')
-    if max(m['fl']) - min(m['fl']) > m['inner'] * 0.04:
-        bad.append('the name lines are not the same width')
+        if w < m['inner'] * floor:
+            bad.append(f'a name line is {w:.0f}px in a {m["inner"]:.0f}px sheet — it does not span'
+                       + (' (height-bound)' if m['vbound'] else ''))
+    if max(m['fl']) - min(m['fl']) > m['inner'] * 0.02:
+        bad.append('the name lines are not the same width — the brand sets them to one measure')
     return bad
 
 

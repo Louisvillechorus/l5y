@@ -335,7 +335,7 @@
    "note": "Preshow performer names span the full width, each line the same.",
    "proof": "a_perf_fill",
    "clean": 0,
-   "secs": 0.7
+   "secs": 0.9
   },
   {
    "id": "D-026",
@@ -697,7 +697,7 @@
    "note": "BLACKOUT WAS PICTURE ONLY. The operator hit it and the lake, the Time Warp music and the phone buzzing on the table all played on to a black stage. It now takes the bed, the warp and the ring with it.",
    "proof": "a_blackout_is_silent",
    "clean": 0,
-   "secs": 3.6
+   "secs": 3.7
   },
   {
    "id": "D-050",

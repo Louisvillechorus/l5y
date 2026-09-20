@@ -74,7 +74,11 @@ def run():
     broken = {k: v for k, v in pr.items() if k.startswith('!')}
     rows, failed = [], []
     with sync_playwright() as p:
-        b = p.chromium.launch(executable_path=os.environ.get('CHROMIUM_PATH') or None)
+        # THE AUDIO PROBES MUST BE ABLE TO HEAR. Without this flag Chromium keeps the AudioContext
+        # suspended until a user gesture, so every sound probe grades a graph that was never allowed
+        # to run and reports the fix missing. It cost four false regressions in one gate run.
+        b = p.chromium.launch(executable_path=os.environ.get('CHROMIUM_PATH') or None,
+                              args=['--autoplay-policy=no-user-gesture-required'])
         ctx = b.new_context(viewport={'width': 1920, 'height': 1080})   # probes may open a second window
         for n in reg:
             if fast and n['proof'] in SLOW:
