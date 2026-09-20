@@ -3697,7 +3697,8 @@ async function playCue(cue, st, tok){
     if(o.op==='prologue'){   // the title page holds for `ms`, then tears off — the era beneath it
       st.prologueLive=true; setStamp(st);
       if(o.ms){ await wait(o.ms); if(tok!==animTok){ st.prologueLive=false; return; } }
-      st.prologueLive=false; st.perfcard=false; st.housecard=false; paintAll(st); await tearTop(st,tok); if(tok!==animTok) return;
+      st.prologueLive=false; st.perfcard=false; st.housecard=false; st.footHold=true;
+      paintAll(st); await tearTop(st,tok); st.footHold=false; if(tok!==animTok) return;
       await typeFoot(st,tok,cue.id,!(cue&&cue.keys===false)); if(tok!==animTok) return; continue; }
     if(o.op==='docline'){ applyOp(st,o); paintAll(st); scrollThreads(); await wait(240); continue; }
     applyOp(st,o); paintAll(st);
@@ -4281,7 +4282,7 @@ function setStamp(st){
   else if(face==='next5'){ q('.yr').innerHTML='<span class="flt">THE NEXT 5 YEARS</span>'; q('.ynum').textContent=''; q('.sub').textContent='';
     q('.ttl').innerHTML=''; q('.mo').textContent=''; q('.foot').textContent='';
     const im=q('.qr'), src=(window.L5Y_IMG||{})['qr-next5']; if(im && src && im.src!==src) im.src=src; }
-  else { q('.ttl').innerHTML=''; q('.sub').textContent=''; q('.yr').textContent=p.mo?'YEAR':''; q('.ynum').textContent=p.mo?p.yr:''; q('.mo').textContent=p.mo; q('.foot').textContent=st.foot||''; }
+  else { q('.ttl').innerHTML=''; q('.sub').textContent=''; q('.yr').textContent=p.mo?'YEAR':''; q('.ynum').textContent=p.mo?p.yr:''; q('.mo').textContent=p.mo; q('.foot').textContent=st.footHold?'':(st.foot||''); }
   footSolo(pad);
   if(face && !st.curtain && !blk) pileStart(); else pileStop();   // the prints belong to the house, never to the show
   fitEra(era);
@@ -4399,7 +4400,8 @@ async function typeFoot(st,tok,cueId,keys){
   const el=pad.querySelector('.sheet.top .foot'); if(!el) return;
   const txt=String(st.foot||''); if(!txt.trim()) return;
   const P=footTypo(txt,cueId||'x'), R=prng('footpace:'+(cueId||'x'));
-  let shown=''; el.textContent='';
+  el.textContent=txt; footSolo(pad); fitEra(era);      // lay the row out for the finished line…
+  let shown=''; el.textContent='';                     // …then start from nothing
   const put=s=>{ shown=s; el.textContent=s; };
   for(let i=0;i<txt.length;i++){
     if(tok!==animTok){ el.textContent=txt; return; }

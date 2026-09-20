@@ -306,7 +306,7 @@ def a_era_morph(page):
             # carry the piece in the time between them (3.2x the average rate bounds any sane
             # ease; a cut covers the whole journey at once).
             dur = ERA_DUR[after]
-            worst_f, worst_dt = 0.0, 0
+            worst = None                       # (excess over what the move allows, frac, dt)
             prev = None
             for r in live:
                 if not r.get(key):
@@ -314,17 +314,19 @@ def a_era_morph(page):
                     continue
                 c = _centre(r[key])
                 if prev is not None:
-                    dt = max(1, r['t'] - prev[0])
-                    if dt <= 150:
+                    dt = r['t'] - prev[0]
+                    # 5 ms apart is the same painted frame sampled twice; 150 ms apart is the
+                    # harness having stalled, and says nothing about the engine.
+                    if 5 <= dt <= 150:
                         step = ((c[0] - prev[1][0]) ** 2 + (c[1] - prev[1][1]) ** 2) ** .5
                         frac = step / max(journey, 1.0)
                         allow = min(1.0, (dt / dur) * 3.2 + 0.06)
-                        if frac - allow > worst_f - min(1.0, (worst_dt / dur) * 3.2 + 0.06):
-                            worst_f, worst_dt = frac, dt
+                        if worst is None or frac - allow > worst[0]:
+                            worst = (frac - allow, frac, dt)
                 prev = (r['t'], c)
-            if worst_f > min(1.0, (worst_dt / dur) * 3.2 + 0.06):
-                bad.append(f'{what}: {name} covers {worst_f*100:.0f}% of its journey in one '
-                           f'{worst_dt} ms step — more than the {dur} ms move could carry it; '
+            if worst and worst[0] > 0:
+                bad.append(f'{what}: {name} covers {worst[1]*100:.0f}% of its journey in one '
+                           f'{worst[2]} ms step — more than a {dur} ms move could carry it; '
                            f'that is a cut, not a travel')
         dbl = page.evaluate("""(()=>[...document.querySelectorAll('#era .yr')]
             .filter(e=>getComputedStyle(e).display!=='none'&&parseFloat(getComputedStyle(e).opacity)>.02).length)()""")
