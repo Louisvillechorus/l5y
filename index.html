@@ -133,13 +133,18 @@
      (--ang, set by driveTick) keeps every label, shield, pin and the compass upright */
   .mapsdrive .dv-up{transform:rotate(var(--ang,0deg));transform-box:fill-box;transform-origin:50% 50%}
   .mapsdrive .dv-lbl text{font-family:var(--sf);font-weight:600;fill:#d6dae0;
-    paint-order:stroke;stroke:#15171b;stroke-width:5;stroke-linejoin:round}
+    paint-order:stroke;stroke:#15171b;stroke-width:4;stroke-linejoin:round}
   .mapsdrive .dv-lbl text.wt{fill:#7fa4cc;font-weight:500;font-style:italic}
   .mapsdrive .dv-speed{position:absolute;z-index:2;left:1em;bottom:1em;background:#fff;color:#000;
-    border:.16em solid #16171a;border-radius:.34em;padding:.14em .4em .2em;text-align:center;line-height:1;
+    border:.16em solid #16171a;border-radius:.34em;padding:.2em .46em .24em;text-align:center;line-height:1;
     box-shadow:0 .12em .4em rgba(0,0,0,.45)}
-  .mapsdrive .dv-speed i{font-style:normal;display:block;font-size:.56em;font-weight:700;letter-spacing:.02em}
-  .mapsdrive .dv-speed b{display:block;font-size:1.6em;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+  /* THE SPEED LIMIT SIGN (D-042, frame sweep: “SPEED LIMIT” projected at 18.2 px against a
+     22 px floor, on a dash that otherwise reads 32.5 px). One line of small caps could never
+     be made legible without swelling the sign into the trip card — so it is now built the way
+     the real R2-1 is built: SPEED over LIMIT over the numeral, the words about half the height
+     of the number. Stacking buys the type its size from the sign's own proportions. */
+  .mapsdrive .dv-speed i{font-style:normal;display:block;font-size:.78em;font-weight:700;letter-spacing:.01em;line-height:1.02}
+  .mapsdrive .dv-speed b{display:block;font-size:1.72em;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;margin-top:.06em}
   .mapsdrive .dv-comp{position:absolute;z-index:2;right:1em;top:1em;width:2.3em;height:2.3em;border-radius:50%;
     background:rgba(28,28,30,.85);display:flex;align-items:center;justify-content:center;box-shadow:0 .12em .4em rgba(0,0,0,.4)}
   .mapsdrive .dv-comp svg{width:1.5em;height:1.5em;display:block;transform:rotate(calc(-1 * var(--ang,0deg)))}
@@ -2297,12 +2302,25 @@ function mapsHTML(st){
    the SVG is authored at the size it will be read at.
    The road furniture is generated from a seeded integer PRNG (dRnd) — identical
    on every machine, every night. Time-based from the moment the screen first
-   appears (per drive key), so a re-paint never snaps the car back to the start. */
-const DRIVE_UPM=450;          // user units per mile
-const DRIVE_WIN=2.0;          // miles of road from the top of the frame to the bottom
+   appears (per drive key), so a re-paint never snaps the car back to the start.
+
+   THE ZOOM IS THE WHOLE NOTE (D-022, David: “the actual map is not moving at all”).
+   The drive was mathematically right and visually dead: at 58 mph with TWO MILES of
+   road in the frame the world crept down the screen at 7 px/s — two minutes to cross
+   the dash — which from 25 ft is a still photograph with a ticking caption. A real
+   Apple Maps nav view keeps a few hundred yards of road in the frame, so the road
+   sweeps under the puck. DRIVE_WIN × DRIVE_UPM is deliberately kept at 900 units, the
+   height of the drawn window, so every stroke width and label size in the SVG below is
+   still authored in projected pixels and did not have to move; only how much GROUND
+   those 900 units cover changed, from 2 miles to a third of a mile. That also makes
+   the authored widths geographically honest for the first time — the interstate is now
+   ~100 ft across instead of ~560 ft — and it is why the corridor below hugs the road:
+   at this zoom anything more than about a third of a mile out is off the dash. */
+const DRIVE_UPM=2500;         // user units per mile
+const DRIVE_WIN=0.36;         // miles of road from the top of the frame to the bottom (× UPM = 900 units)
 const DRIVE_ROUTE=[[820,140],[700,300],[600,560],[520,820],[480,1060],[440,1300],[420,1540],
                    [470,1700],[560,1760],[660,1800],[720,1900],[700,2040],[600,2120],[540,2180]]
-                  .map(function(q){ return [q[0]*41.3,q[1]*41.3]; });   // the old 10.9-unit-per-mile world, re-scaled to nav zoom
+                  .map(function(q){ return [q[0]*DRIVE_UPM/10.9,q[1]*DRIVE_UPM/10.9]; });   // the old 10.9-unit-per-mile world, re-scaled to nav zoom
 /* at = fraction of the trip where the maneuver happens.  GEOGRAPHY (corrected Sept 20):
    the Delaware Memorial Bridge carries you EAST into New Jersey — a car bound for the
    Eastern Shore does not take it.  At the Farnhurst split I-295 leaves I-95 on the LEFT,
@@ -2320,6 +2338,21 @@ const DRIVE_STEPS=[
   {at:1,   icon:'dest',    instr:'Arrive at your destination',via:'on the right',limit:35}];
 const DRIVE_T0={};    // drive key → performance.now() when it first appeared
 
+/* Samples of the centreline per mile. The corridor is laid out per sample, so this is
+   also the grain of the road furniture: at nav zoom the frame is barely a third of a
+   mile deep, and half-mile sampling put whole minutes of empty road between one thing
+   and the next. An accessor, not a const — nothing new goes into the top-level scope. */
+function driveSPM(){ return 8; }
+/* A name for a crossing road, seeded off its sample index so it is the same road with
+   the same name on every machine, every night. Maps labels the streets it crosses, and
+   at this zoom a name sliding down past the puck is the clearest motion the map has. */
+function dRoadName(i){
+  const A=['Church','Mill','Boulden','Hares Corner','Landers','Wrangle Hill','Old Post','Pyles Ford',
+           'Cedar Lane','Governor Printz','Airport','Bear','Red Lion','Sandy Brae','Buck Tavern',
+           'Chapel','Quigley','Stoney Batter','Marsh','Pigeon Point','Hamburg','Crossan','Delancy'];
+  const B=['Rd','Rd','Rd','Rd','Ln','Ave','Pike','St'];
+  return A[(dRnd(i*17+3)*A.length)|0]+' '+B[(dRnd(i*17+11)*B.length)|0];
+}
 /* seeded, integer-only — the same road furniture on every machine */
 function dRnd(i){ let t=(Math.imul(i|0,1103515245)+12345)>>>0; t^=t>>>15; t=Math.imul(t,2246822519)>>>0; t^=t>>>13; return (t>>>8)/16777216; }
 function driveSmoothD(P){   // Catmull-Rom → cubic: a road that curves instead of kinking
@@ -2335,12 +2368,13 @@ function driveSmoothD(P){   // Catmull-Rom → cubic: a road that curves instead
 /* the whole drawn world, built once and cached on the function */
 function driveWorld(){
   if(driveWorld._w) return driveWorld._w;
-  const U=DRIVE_UPM, B=DRIVE_ROUTE, P=[]; let acc=0;
-  for(let i=0;i<B.length-1;i++){                       // half-mile samples, with a gentle highway curve
+  const U=DRIVE_UPM, SPM=driveSPM(), B=DRIVE_ROUTE, P=[]; let acc=0;
+  for(let i=0;i<B.length-1;i++){                       // eighth-mile samples, with a gentle highway curve
     const A=B[i], C=B[i+1], dx=C[0]-A[0], dy=C[1]-A[1], seg=Math.hypot(dx,dy);
-    const n=Math.max(2,Math.round(seg/(U*0.5))), nx=-dy/seg, ny=dx/seg;
+    const n=Math.max(2,Math.round(seg/(U/SPM))), nx=-dy/seg, ny=dx/seg;
     for(let k=0;k<n;k++){
-      const f=k/n, s=acc+seg*f, w=118*Math.sin(s/3100)+44*Math.sin(s/1060+1.7);
+      const f=k/n, s=acc+seg*f;
+      const w=U*0.262*Math.sin(s/(U*6.889))+U*0.098*Math.sin(s/(U*2.356)+1.7);
       P.push([A[0]+dx*f+nx*w, A[1]+dy*f+ny*w]);
     }
     acc+=seg;
@@ -2356,48 +2390,85 @@ function driveWorld(){
   /* THE CORRIDOR: through roads across the interstate, and the towns between them.
      A map with only the route on it reads as a diagram — but random sticks read as
      scribble, so the local streets are laid out as real blocks: each town gets its own
-     grid angle, its own block size, its streets and the buildings between them. */
-  let grid='', art='', bld='', park='';
+     grid angle, its own block size, its streets and the buildings between them.
+     EVERY DISTANCE HERE IS WHAT MAKES THE DRIVE READ AS A DRIVE (D-022). The frame is
+     0.36 mi deep and 0.64 mi wide, so the corridor is pulled in tight against the road:
+     anything sitting a mile out is simply not on the dash, and the audience would watch
+     an empty grey ribbon for four minutes. Crossings come every 0.375 mi — one is always
+     sweeping down the frame — and most are named, because a name sliding past the puck
+     is the plainest possible statement that the car is moving.
+     IT IS BANKED PER SAMPLE, NOT AS ONE STRING. The drive only ever shows a third of a
+     mile of a 214-mile world, and handing Chromium all 214 miles to re-clip on every
+     tick cost 230 ms a frame — the map moved, at four frames a second, which is its own
+     kind of not moving. Kept per sample, the visible few miles splice out in a
+     millisecond (driveSlice) and the SVG stays small. */
+  const gA=[], aA=[], bA=[], pA=[], lA=[], sA=[];
+  for(let i=0;i<P.length;i++){ gA[i]=''; aA[i]=''; bA[i]=''; pA[i]=''; lA[i]=''; sA[i]=''; }
   const seg=function(ax,ay,bx,by){ return 'M'+f0(ax)+' '+f0(ay)+'L'+f0(bx)+' '+f0(by); };
+  /* one upright label — the type is authored in projected pixels, like every stroke here */
+  const lbl=function(x,y,s,txt,cls){ return '<g transform="translate('+f0(x)+' '+f0(y)+')"><g class="dv-up">'
+      +'<text font-size="'+s+'"'+(cls?' class="'+cls+'"':'')+'>'+txt+'</text></g></g>'; };
   for(let i=2;i<P.length-2;i++){
     const t=tanAt(i), ex=t[1], ey=-t[0], x=P[i][0], y=P[i][1];   // the normal (east-ish)
-    if(dRnd(i*7+8)<0.10){                                        // a park / woodland
-      const sd=dRnd(i*7+9)<0.5?1:-1, off=U*(0.45+dRnd(i*7+10)*1.3)*sd;
-      const cx=x+ex*off, cy=y+ey*off, rr=U*(0.22+dRnd(i*7+12)*0.5);
-      park+='M'+f0(cx-rr)+' '+f0(cy)+'a'+f0(rr)+' '+f0(rr*0.72)+' 0 1 0 '+f0(2*rr)+' 0'
+    if(dRnd(i*7+8)<0.085){                                       // a park / woodland
+      const sd=dRnd(i*7+9)<0.5?1:-1, off=U*(0.07+dRnd(i*7+10)*0.30)*sd;
+      const cx=x+ex*off, cy=y+ey*off, rr=U*(0.05+dRnd(i*7+12)*0.11);
+      pA[i]+='M'+f0(cx-rr)+' '+f0(cy)+'a'+f0(rr)+' '+f0(rr*0.72)+' 0 1 0 '+f0(2*rr)+' 0'
            +'a'+f0(rr)+' '+f0(rr*0.72)+' 0 1 0 '+f0(-2*rr)+' 0z';
     }
-    if(dRnd(i*7+1)<0.46){                                        // a through road every ~1.1 mi
+    /* A CROSSING EVERY 0.375 mi — on a stride, not on a coin toss. Bernoulli crossings
+       clump, and a clump means a frame with nothing in it: the audience watches an empty
+       grey ribbon and reads it, correctly, as a still picture. A stride with a seeded
+       along-road jitter keeps the spacing honest (this corridor really is crossed about
+       that often) and guarantees one is always sweeping down the dash. */
+    if(i%3===0){
+      const jt=(dRnd(i*7+1)-0.5)*0.22, kx=x+t[0]*U*jt, ky=y+t[1]*U*jt;
       const j=(dRnd(i*7+2)-0.5)*0.72, cs=Math.cos(j), sn=Math.sin(j);   // within 20° of square
       const ux=ex*cs-ey*sn, uy=ex*sn+ey*cs, big=dRnd(i*7+3)>0.74;
-      const l1=U*(2.4+dRnd(i*7+4)*(big?3.0:1.7)), l2=U*(2.4+dRnd(i*7+6)*(big?2.8:1.5));
-      const d=seg(x-ux*l2,y-uy*l2,x+ux*l1,y+uy*l1);
-      if(big) art+=d; else grid+=d;
+      const l1=U*(0.34+dRnd(i*7+4)*(big?1.2:0.55)), l2=U*(0.34+dRnd(i*7+6)*(big?1.1:0.5));
+      const d=seg(kx-ux*l2,ky-uy*l2,kx+ux*l1,ky+uy*l1);
+      if(big) aA[i]+=d; else gA[i]+=d;
+      if(big){                                                   // a diamond interchange, all four slips
+        for(let s=0;s<4;s++){
+          const sd=(s&1)?1:-1, dr=(s&2)?1:-1;
+          const a1=[kx+ex*U*0.022*sd-t[0]*U*0.090*dr, ky+ey*U*0.022*sd-t[1]*U*0.090*dr];
+          const a2=[kx+ex*U*0.050*sd-t[0]*U*0.045*dr, ky+ey*U*0.050*sd-t[1]*U*0.045*dr];
+          const a3=[kx+ux*U*0.062*sd, ky+uy*U*0.062*sd];
+          gA[i]+='M'+f0(a1[0])+' '+f0(a1[1])+'Q'+f0(a2[0])+' '+f0(a2[1])+','+f0(a3[0])+' '+f0(a3[1]);
+        }
+      }
+      if(dRnd(i*7+5)<0.82){                                      // Maps names the cross streets
+        const sd=dRnd(i*7+13)<0.5?1:-1, lo=U*(0.115+dRnd(i*7+15)*0.10)*sd;
+        lA[i]+=lbl(kx+ux*lo, ky+uy*lo, big?28:26, dRoadName(i));
+      }
     }
-    if(dRnd(i*7+21)<0.40){                                       // a frontage road beside the interstate
-      const sd=dRnd(i*7+22)<0.5?1:-1, off=U*(0.10+dRnd(i*7+23)*0.16)*sd, ln=U*(0.5+dRnd(i*7+24)*1.4);
-      grid+=seg(x+ex*off-t[0]*ln*0.5, y+ey*off-t[1]*ln*0.5, x+ex*off+t[0]*ln*0.5, y+ey*off+t[1]*ln*0.5);
+    if(dRnd(i*7+21)<0.44){                                       // a frontage road beside the interstate
+      const sd=dRnd(i*7+22)<0.5?1:-1, off=U*(0.045+dRnd(i*7+23)*0.13)*sd, ln=U*(0.10+dRnd(i*7+24)*0.42);
+      gA[i]+=seg(x+ex*off-t[0]*ln*0.5, y+ey*off-t[1]*ln*0.5, x+ex*off+t[0]*ln*0.5, y+ey*off+t[1]*ln*0.5);
     }
+    /* THE BUILT-UP CORRIDOR. This stretch of I-95 is developed the whole way, and at nav
+       zoom the roofs and the little street grids are the texture the eye locks on to —
+       take them away and the dash is a grey ribbon on black with nothing to measure
+       motion against. A cluster every ~0.4 mi on each side keeps something passing. */
     for(let q=0;q<2;q++){                                        // the towns between them
-      if(dRnd(i*7+14+q*101)>=(q?0.30:0.46)) continue;
-      const sd=((i+q)%2)?1:-1, off=U*(0.34+dRnd(i*7+16+q*101)*1.45)*sd;
+      if(dRnd(i*7+14+q*101)>=(q?0.24:0.30)) continue;
+      const sd=((i+q)%2)?1:-1, off=U*(0.07+dRnd(i*7+16+q*101)*0.30)*sd;
       const cx=x+ex*off, cy=y+ey*off;
       const j=(dRnd(i*7+17+q*101)-0.5)*0.9, cs=Math.cos(j), sn=Math.sin(j);   // its own grid angle
       const ax=t[0]*cs-t[1]*sn, ay=t[0]*sn+t[1]*cs, bx=-ay, by=ax;
-      const nr=3+((dRnd(i*7+18+q*101)*3.9)|0), nc=3+((dRnd(i*7+19+q*101)*3.9)|0);
-      const sp=U*(0.085+dRnd(i*7+20+q*101)*0.075), lw=sp*nc, lh=sp*nr;
+      const nr=2+((dRnd(i*7+18+q*101)*3.9)|0), nc=2+((dRnd(i*7+19+q*101)*3.9)|0);
+      const sp=U*(0.032+dRnd(i*7+20+q*101)*0.042), lw=sp*nc, lh=sp*nr;
       const run=function(k){ return sp*(0.15+dRnd(i*131+k)*1.15); };  // streets run on out of town
       for(let r=0;r<=nr;r++){ const o=(r-nr/2)*sp, e1=run(r), e2=run(r+40);
-        grid+=seg(cx-ax*(lw/2+e1)+bx*o, cy-ay*(lw/2+e1)+by*o, cx+ax*(lw/2+e2)+bx*o, cy+ay*(lw/2+e2)+by*o); }
+        gA[i]+=seg(cx-ax*(lw/2+e1)+bx*o, cy-ay*(lw/2+e1)+by*o, cx+ax*(lw/2+e2)+bx*o, cy+ay*(lw/2+e2)+by*o); }
       for(let c=0;c<=nc;c++){ const o=(c-nc/2)*sp, e1=run(c+80), e2=run(c+120);
-        grid+=seg(cx+ax*o-bx*(lh/2+e1), cy+ay*o-by*(lh/2+e1), cx+ax*o+bx*(lh/2+e2), cy+ay*o+by*(lh/2+e2)); }
-      if(q) continue;
-      for(let r=0;r<nr;r++) for(let c=0;c<nc;c++){
-        if(dRnd(i*97+r*5+c)<0.62) continue;
+        gA[i]+=seg(cx+ax*o-bx*(lh/2+e1), cy+ay*o-by*(lh/2+e1), cx+ax*o+bx*(lh/2+e2), cy+ay*o+by*(lh/2+e2)); }
+      for(let r=0;r<nr;r++) for(let c=0;c<nc;c++){               // both towns build out: at nav
+        if(dRnd(i*97+q*911+r*5+c)<0.48) continue;                // zoom the roofs are the texture
         const hw=sp*(0.16+dRnd(i*97+r*5+c+13)*0.17), hh=sp*(0.15+dRnd(i*97+r*5+c+29)*0.16);
         const px=cx+ax*((c-(nc-1)/2)*sp)+bx*((r-(nr-1)/2)*sp);
         const py=cy+ay*((c-(nc-1)/2)*sp)+by*((r-(nr-1)/2)*sp);
-        bld+='M'+f0(px-ax*hw-bx*hh)+' '+f0(py-ay*hw-by*hh)+'L'+f0(px+ax*hw-bx*hh)+' '+f0(py+ay*hw-by*hh)
+        bA[i]+='M'+f0(px-ax*hw-bx*hh)+' '+f0(py-ay*hw-by*hh)+'L'+f0(px+ax*hw-bx*hh)+' '+f0(py+ay*hw-by*hh)
             +'L'+f0(px+ax*hw+bx*hh)+' '+f0(py+ay*hw+by*hh)+'L'+f0(px-ax*hw+bx*hh)+' '+f0(py-ay*hw+by*hh)+'z';
       }
     }
@@ -2407,9 +2478,15 @@ function driveWorld(){
      One pair of functions describes the banks, so the ramp can land ON the near bank
      and the bridge can span the real water rather than guessing where it is. */
   const nrm=function(k){ const q=tanAt(k); return [q[1],-q[0]]; };      // east-ish
+  /* At nav zoom the frame is 0.64 mi wide, so a river a mile out is simply not on the
+     dash. The near bank comes to a fifth of a mile at the split — so the water opens up
+     along the left edge exactly as the bridge is signed — and pulls away within about
+     three miles either side, so it is a passing beat and not a canal running beside the
+     interstate for forty miles. The labels on it stay where the water is: if the river
+     is off the left of the frame, so is its name, which is what Maps does. */
   const wOffAt=function(k){ const q=cum[k]/total;
-    return U*Math.min(4.2, 0.92+11.0*Math.abs(q-0.515))+170*Math.sin(cum[k]/2600+0.4); };
-  const wWidAt=function(k){ return U*(0.52+0.2*Math.sin(cum[k]/1900+1.2)); };
+    return U*Math.min(4.2, 0.20+22.0*Math.abs(q-0.515))+U*0.055*Math.sin(cum[k]/(U*5.778)+0.4); };
+  const wWidAt=function(k){ return U*(0.52+0.2*Math.sin(cum[k]/(U*4.222)+1.2)); };
   const bankA=function(k){ const n=nrm(k), o=wOffAt(k); return [P[k][0]+n[0]*o, P[k][1]+n[1]*o]; };
   const bankB=function(k){ const n=nrm(k), o=wOffAt(k)+wWidAt(k); return [P[k][0]+n[0]*o, P[k][1]+n[1]*o]; };
   const wa=[], wb=[];
@@ -2425,40 +2502,74 @@ function driveWorld(){
   let ie=0; while(ie<P.length-1 && cum[ie]/total<0.508) ie++;
   const O=P[ie], tt=tanAt(ie), ex=tt[1], ey=-tt[0];
   const pt=function(a,b){ return [O[0]+tt[0]*U*a+ex*U*b, O[1]+tt[1]*U*a+ey*U*b]; };
-  const k1=Math.min(P.length-1,ie+2), k2=Math.min(P.length-1,ie+3);
+  const k1=Math.min(P.length-1,ie+SPM), k2=Math.min(P.length-1,ie+Math.round(SPM*1.5));
   const nA=bankA(k1), nB=bankB(k1), nE=nrm(k2);
   const far=[bankB(k2)[0]+nE[0]*U*0.8, bankB(k2)[1]+nE[1]*U*0.8];
-  const g0=pt(-0.06,0), g1=pt(0.30,0.05), g2=pt(0.60,0.36);
+  const g0=pt(-0.06,0), g1=pt(0.26,0.045), g2=pt(0.52,0.26);
   const rampD='M'+f0(g0[0])+' '+f0(g0[1])+'C'+f0(g1[0])+' '+f0(g1[1])+','+f0(g2[0])+' '+f0(g2[1])
              +','+f0(nA[0])+' '+f0(nA[1]);
   const bridgeD='M'+f0(nA[0])+' '+f0(nA[1])+'L'+f0(nB[0])+' '+f0(nB[1]);
   const beyondD='M'+f0(nB[0])+' '+f0(nB[1])+'L'+f0(far[0])+' '+f0(far[1]);
 
-  /* the route's own shield, repeated down the line the way Maps does */
-  let shields='';
-  for(let i=5;i<P.length-3;i+=5){
-    const tq=tanAt(i), sx=P[i][0]+tq[1]*U*0.15, sy=P[i][1]-tq[0]*U*0.15;
-    shields+='<g transform="translate('+f0(sx)+' '+f0(sy)+')"><g class="dv-up"><use href="#i95"/></g></g>'; }
-  shields+='<g transform="translate('+f0(g2[0])+' '+f0(g2[1])+')"><g class="dv-up"><use href="#i295"/></g></g>';
+  /* the route's own shield, repeated down the line the way Maps does — every 1.25 mi,
+     so one is nearly always in the frame and its arrival reads as ground covered */
+  for(let i=SPM;i<P.length-3;i+=Math.round(SPM*1.25)){
+    const tq=tanAt(i), sx=P[i][0]+tq[1]*U*0.055, sy=P[i][1]-tq[0]*U*0.055;
+    sA[i]+='<g transform="translate('+f0(sx)+' '+f0(sy)+')"><g class="dv-up"><use href="#i95"/></g></g>'; }
+  sA[ie]+='<g transform="translate('+f0(g2[0])+' '+f0(g2[1])+')"><g class="dv-up"><use href="#i295"/></g></g>';
 
   /* upright labels — ranked the way Apple ranks them, with a halo */
-  const kr=Math.max(0,ie-5), riv=[(bankA(kr)[0]+bankB(kr)[0])/2,(bankA(kr)[1]+bankB(kr)[1])/2];
-  const brg=[(nA[0]+nB[0])/2,(nA[1]+nB[1])/2], nct=pt(0.8,-0.85);
-  const lbl=function(x,y,s,txt,cls){ return '<g transform="translate('+f0(x)+' '+f0(y)+')"><g class="dv-up">'
-      +'<text font-size="'+s+'"'+(cls?' class="'+cls+'"':'')+'>'+txt+'</text></g></g>'; };
+  const S=U/10.9;   // the old 10.9-unit-per-mile sketch the city pins were placed in
+  const kr=Math.max(0,ie-Math.round(SPM*0.6)), riv=[(bankA(kr)[0]+bankB(kr)[0])/2,(bankA(kr)[1]+bankB(kr)[1])/2];
+  const brg=[(nA[0]+nB[0])/2,(nA[1]+nB[1])/2], nct=pt(0.8,-0.30);
   let labels=lbl(riv[0],riv[1],34,'Delaware River','wt')
             +lbl(brg[0],brg[1],28,'Delaware Memorial Bridge')
             +lbl(nct[0],nct[1],32,'New Castle')
-            +lbl(850*41.3,120*41.3,48,'New York')+lbl(560*41.3,330*41.3,34,'Newark')
-            +lbl(400*41.3,800*41.3,44,'Philadelphia')+lbl(350*41.3,1050*41.3,38,'Wilmington')
-            +lbl(250*41.3,1580*41.3,44,'Baltimore')+lbl(310*41.3,1720*41.3,34,'Annapolis')
-            +lbl(735*41.3,2000*41.3,30,'Easton')+lbl(440*41.3,2262*41.3,30,'St. Michaels')
-            +lbl(480*41.3,1960*41.3,34,'Chesapeake Bay','wt');
+            +lbl(850*S,120*S,48,'New York')+lbl(560*S,330*S,34,'Newark')
+            +lbl(400*S,800*S,44,'Philadelphia')+lbl(350*S,1050*S,38,'Wilmington')
+            +lbl(250*S,1580*S,44,'Baltimore')+lbl(310*S,1720*S,34,'Annapolis')
+            +lbl(735*S,2000*S,30,'Easton')+lbl(440*S,2262*S,30,'St. Michaels')
+            +lbl(480*S,1960*S,34,'Chesapeake Bay','wt');
 
-  driveWorld._w={P:P,cum:cum,total:total,routeD:driveSmoothD(P),gridD:grid,artD:art,bldD:bld,
-                 parkD:park,waterD:waterD,rampD:rampD,bridgeD:bridgeD,beyondD:beyondD,
-                 shields:shields,labels:labels,dest:P[P.length-1]};
+  driveWorld._w={P:P,cum:cum,total:total,spm:SPM,
+                 seg:{g:gA,a:aA,b:bA,p:pA,l:lA,s:sA},
+                 waterD:waterD,rampD:rampD,bridgeD:bridgeD,beyondD:beyondD,
+                 cities:labels,dest:P[P.length-1],
+                 destPin:'<g transform="translate('+f0(P[P.length-1][0])+' '+f0(P[P.length-1][1])
+                   +')" filter="url(#dvsh)"><g class="dv-up">'
+                   +'<path d="M0 6C-13 -6-18 -14-18 -22A18 18 0 0 1 18 -22C18 -14 13 -6 0 6Z" fill="#ff3b30"/>'
+                   +'<circle cy="-22" r="6.4" fill="#fff"/></g></g>'};
   return driveWorld._w;
+}
+/* THE VISIBLE FEW MILES. The window is three miles either side of the car — the frame is
+   a third of a mile deep, so nothing can ever be caught arriving at its edge — and it is
+   re-cut on whole-mile boundaries, so it is rebuilt about once a minute at highway speed
+   and is a cache hit the rest of the time. Handing Chromium all 214 miles to re-clip on
+   every tick cost 230 ms a frame: the map moved, at four frames a second, which is its
+   own kind of not moving. Deterministic — the slice depends only on how far along the
+   route the car is, never on the wall clock. */
+function driveSlice(p){
+  const W=driveWorld(), SPM=W.spm, N=W.P.length;
+  const t=Math.max(0,Math.min(1,p))*W.total;
+  let lo=0, hi=W.cum.length-1;
+  while(lo<hi-1){ const m=(lo+hi)>>1; if(W.cum[m]<=t) lo=m; else hi=m; }
+  const c=Math.round(lo/SPM)*SPM, span=SPM*3;
+  const i0=Math.max(0,c-span), i1=Math.min(N-1,c+span);
+  if(driveSlice._k===i0+':'+i1) return driveSlice._v;
+  const S=W.seg, J=function(a){ let o=''; for(let i=i0;i<=i1;i++) o+=a[i]; return o; };
+  const q0=Math.max(0,i0-1), q1=Math.min(N-1,i1+1);
+  driveSlice._v={i0:i0, i1:i1, base:W.cum[i0], len:W.cum[i1]-W.cum[i0],
+                 routeD:driveSmoothD(W.P.slice(q0,q1+1)),
+                 gridD:J(S.g), artD:J(S.a), bldD:J(S.b), parkD:J(S.p),
+                 marks:J(S.s)+J(S.l)+W.cities+(i1>=N-2?W.destPin:'')};
+  driveSlice._k=i0+':'+i1;
+  return driveSlice._v;
+}
+/* How much of the DRAWN stretch is already behind her — the blue line exists only ahead,
+   and the drawn stretch is a window now, not the whole trip. */
+function driveDone(N,p){
+  if(!N.len) return 0;
+  return Math.max(0, Math.min(1, (driveWorld().total*p - N.base)/N.len));
 }
 function drivePosAt(t){                 // absolute distance along the centreline → point
   const W=driveWorld(), cum=W.cum, P=W.P;
@@ -2527,9 +2638,10 @@ function mapsDriveHTML(st){
            start:+dd.startMin||965, rate:+dd.rate||0, at0:+dd.startAt||0};
   const W=driveWorld(), p=drivePct(o), v=driveVals(o,p), a=drivePointAt(p);
   const asp=(st.dev==='carplay')?16/9:0.62;
-  const Wy=DRIVE_WIN*DRIVE_UPM, Wx=Wy*asp, L=W.total;
+  const Wy=DRIVE_WIN*DRIVE_UPM, Wx=Wy*asp, N=driveSlice(p), L=N.len;
   const vb=(a.x-Wx/2).toFixed(1)+' '+(a.y-Wy*0.74).toFixed(1)+' '+Wx.toFixed(1)+' '+Wy.toFixed(1);
-  const dash='0 '+(L*p).toFixed(0)+' '+(L*(1-p)+60).toFixed(0);
+  const fd=driveDone(N,p);
+  const dash='0 '+(L*fd).toFixed(0)+' '+(L*(1-fd)+60).toFixed(0);
   return `<div class="layer fs mapsdrive${v.done?' arrived':''}" data-key="${key}" data-dur="${o.dur}" data-mins="${o.mins}"
       data-miles="${o.miles}" data-start="${o.start}" data-rate="${o.rate}" data-at0="${o.at0}"
       style="--ang:${a.ang.toFixed(1)}deg;background:#1B1D21;display:flex;flex-direction:column;overflow:hidden;color:#fff">
@@ -2555,27 +2667,24 @@ function mapsDriveHTML(st){
         </defs>
         <g class="dv-world" transform="rotate(${(-a.ang).toFixed(1)} ${a.x.toFixed(1)} ${a.y.toFixed(1)})">
           <rect x="-60000" y="-60000" width="240000" height="240000" fill="#1B1D21"/>
-          <path d="${W.parkD}" fill="#1b2b1c"/>
+          <path class="dv-park" d="${N.parkD}" fill="#1b2b1c"/>
           <path d="${W.waterD}" fill="#113a5d"/>
-          <path d="${W.bldD}" fill="#2b2d33"/>
-          <path d="${W.gridD}" fill="none" stroke="#1e1f23" stroke-width="21" stroke-linecap="round"/>
-          <path d="${W.gridD}" fill="none" stroke="#494a50" stroke-width="13" stroke-linecap="round"/>
-          <path d="${W.artD}" fill="none" stroke="#1b1c20" stroke-width="32" stroke-linecap="round"/>
-          <path d="${W.artD}" fill="none" stroke="#64656d" stroke-width="22" stroke-linecap="round"/>
+          <path class="dv-bld" d="${N.bldD}" fill="#34363d"/>
+          <path class="dv-grid1" d="${N.gridD}" fill="none" stroke="#1e1f23" stroke-width="21" stroke-linecap="round"/>
+          <path class="dv-grid2" d="${N.gridD}" fill="none" stroke="#494a50" stroke-width="13" stroke-linecap="round"/>
+          <path class="dv-art1" d="${N.artD}" fill="none" stroke="#1b1c20" stroke-width="32" stroke-linecap="round"/>
+          <path class="dv-art2" d="${N.artD}" fill="none" stroke="#64656d" stroke-width="22" stroke-linecap="round"/>
           <path d="${W.beyondD}" fill="none" stroke="#1d1e22" stroke-width="32" stroke-linecap="round"/>
           <path d="${W.beyondD}" fill="none" stroke="#5e636b" stroke-width="23" stroke-linecap="round"/>
           <path d="${W.bridgeD}" fill="none" stroke="#3c3f45" stroke-width="34"/>
           <path d="${W.bridgeD}" fill="none" stroke="#6e737b" stroke-width="24"/>
           <path d="${W.rampD}" fill="none" stroke="#1d1e22" stroke-width="34" stroke-linecap="round"/>
           <path d="${W.rampD}" fill="none" stroke="#5e636b" stroke-width="24" stroke-linecap="round"/>
-          <path d="${W.routeD}" fill="none" stroke="#111214" stroke-width="62" stroke-linejoin="round" stroke-linecap="round"/>
-          <path d="${W.routeD}" fill="none" stroke="#6a6f78" stroke-width="48" stroke-linejoin="round" stroke-linecap="round"/>
-          <path class="dv-case" d="${W.routeD}" fill="none" stroke="#0a53b8" stroke-width="34" stroke-dasharray="${dash}" stroke-linejoin="round" stroke-linecap="butt"/>
-          <path class="dv-route" d="${W.routeD}" fill="none" stroke="#0a84ff" stroke-width="24" stroke-dasharray="${dash}" stroke-linejoin="round" stroke-linecap="butt"/>
-          <g class="dv-lbl">${W.shields}${W.labels}</g>
-          <g transform="translate(${W.dest[0].toFixed(0)} ${W.dest[1].toFixed(0)})" filter="url(#dvsh)"><g class="dv-up">
-            <path d="M0 6C-13 -6-18 -14-18 -22A18 18 0 0 1 18 -22C18 -14 13 -6 0 6Z" fill="#ff3b30"/>
-            <circle cy="-22" r="6.4" fill="#fff"/></g></g>
+          <path class="dv-rd1" d="${N.routeD}" fill="none" stroke="#111214" stroke-width="62" stroke-linejoin="round" stroke-linecap="round"/>
+          <path class="dv-rd2" d="${N.routeD}" fill="none" stroke="#6a6f78" stroke-width="48" stroke-linejoin="round" stroke-linecap="round"/>
+          <path class="dv-case" d="${N.routeD}" fill="none" stroke="#0a53b8" stroke-width="34" stroke-dasharray="${dash}" stroke-linejoin="round" stroke-linecap="butt"/>
+          <path class="dv-route" d="${N.routeD}" fill="none" stroke="#0a84ff" stroke-width="24" stroke-dasharray="${dash}" stroke-linejoin="round" stroke-linecap="butt"/>
+          <g class="dv-lbl">${N.marks}</g>
         </g>
         <g class="dv-puck" transform="translate(${a.x.toFixed(1)} ${a.y.toFixed(1)})">
           <path d="M0 0L-74 -170A185 185 0 0 1 74 -170Z" fill="url(#dvbeam)"/>
@@ -2583,7 +2692,7 @@ function mapsDriveHTML(st){
             <path d="M0 -10L8.4 7.6L0 3.7L-8.4 7.6Z" fill="#fff"/></g>
         </g>
       </svg>
-      <div class="dv-speed"><i>SPEED LIMIT</i><b>${v.limit}</b></div>
+      <div class="dv-speed"><i>SPEED</i><i>LIMIT</i><b>${v.limit}</b></div>
       <div class="dv-comp"><svg viewBox="0 0 24 24"><path d="M12 3L15.6 12L12 10.3L8.4 12Z" fill="#ff453a"/><path d="M12 21L8.4 12L12 13.7L15.6 12Z" fill="#d8dbe0"/></svg></div>
     </div>
     <div class="dv-sheet"><div class="dv-grab"></div>
@@ -2615,11 +2724,29 @@ function driveTick(){
     el.querySelector('.dv-world').setAttribute('transform','rotate('+(-a.ang).toFixed(1)+' '+a.x.toFixed(1)+' '+a.y.toFixed(1)+')');
     el.querySelector('.dv-puck').setAttribute('transform','translate('+a.x.toFixed(1)+' '+a.y.toFixed(1)+')');
     el.style.setProperty('--ang',a.ang.toFixed(1)+'deg');       // one write keeps every label and the compass upright
+    /* THE DRAWN STRETCH follows her: about once a mile the window is re-cut and the
+       paths are re-pointed at the next few miles of road. Everything is three miles off
+       the edge of a frame a third of a mile deep, so the splice can never be seen. */
+    const N=driveSlice(p);
+    if(el.dataset.slice!==N.i0+':'+N.i1){
+      el.dataset.slice=N.i0+':'+N.i1;
+      const put=function(sel,d){ const q=el.querySelector(sel); if(q && q.getAttribute('d')!==d) q.setAttribute('d',d); };
+      put('.dv-park',N.parkD); put('.dv-bld',N.bldD);
+      put('.dv-grid1',N.gridD); put('.dv-grid2',N.gridD);
+      put('.dv-art1',N.artD);   put('.dv-art2',N.artD);
+      ['.dv-rd1','.dv-rd2','.dv-case','.dv-route'].forEach(function(sel){
+        const q=el.querySelector(sel); if(!q) return;
+        if(q.getAttribute('d')!==N.routeD) q.setAttribute('d',N.routeD);
+        q._L=0;
+      });
+      dvHTM(el.querySelector('.dv-lbl'),N.marks);
+    }
     /* the blue line exists only ahead of her — the road she has driven is grey again */
     const rt=el.querySelector('.dv-route'), cs=el.querySelector('.dv-case');
     if(rt && rt.getTotalLength){
       const L=rt._L||(rt._L=rt.getTotalLength());
-      const dash='0 '+(L*p).toFixed(0)+' '+(L*(1-p)+60).toFixed(0);
+      const fd=driveDone(N,p);
+      const dash='0 '+(L*fd).toFixed(0)+' '+(L*(1-fd)+60).toFixed(0);
       if(rt.getAttribute('stroke-dasharray')!==dash){ rt.setAttribute('stroke-dasharray',dash); if(cs) cs.setAttribute('stroke-dasharray',dash); }
     }
     const ik=v.done?'dest':v.step.icon, ico=el.querySelector('.dv-ico');
