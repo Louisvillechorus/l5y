@@ -17,7 +17,7 @@ the clean counter. Only the whole gate can close a loop.
 
 SLOW = {'a_subject_never_sliced', 'a_bows', 'a_photo_bed', 'a_ringback_twice',
         'a_105_hold', 'a_app_tap_visible', 'a_call_buttons_match', 'a_timer_format'}
-import glob, hashlib, importlib.util, json, os, sys
+import glob, hashlib, importlib.util, json, os, sys, time
 
 from playwright.sync_api import sync_playwright
 
@@ -84,10 +84,12 @@ def run():
             pg.on('pageerror', lambda e: errs.append(str(e)))
             pg.goto(FILE)
             pg.wait_for_timeout(700)
+            t0 = time.time()
             try:
                 bad = list(fn(pg)) + [f'JS ERROR: {e}' for e in errs[:2]]
             except Exception as e:
                 bad = [f'probe crashed: {e}']
+            n['secs'] = round(time.time() - t0, 1)   # so a slow probe can be found and moved to SLOW
             pg.close()
             ok = not bad
             # THE CLOSURE LAW: a clean run only counts if the build has changed since the last one,
@@ -112,7 +114,8 @@ def run():
         if not show_all and n['status'] in ('blocked', 'confirm') and verdict != 'FAIL':
             continue
         seal = {0: '', 1: ' [1 of 2 clean]'}.get(n.get('clean', 0), ' [CLOSED]')
-        print(f"{mark} {n['id']}  {n['status']:<8} {verdict:<9} {n['note'][:62]}{seal}")
+        secs = f" {n['secs']:>5.1f}s" if n.get('secs') else '       '
+        print(f"{mark} {n['id']}{secs}  {n['status']:<8} {verdict:<9} {n['note'][:56]}{seal}")
         for x in bad[:3]:
             print(f"      → {x}")
     if broken:
@@ -124,6 +127,8 @@ def run():
           f"{len(pend)} awaiting a second clean build · {len(failed)} regressions")
     if pend:
         print('one more clean build closes:', ', '.join(pend))
+    slowest = sorted((n.get('secs', 0), n['id'], n['proof']) for n, _, _ in rows)[-5:]
+    print('slowest probes:', ', '.join(f'{i} {p} {t:.0f}s' for t, i, p in reversed(slowest) if t))
     if failed:
         print('REGRESSIONS (marked fixed, proof failing):', ', '.join(failed))
     if partial:
