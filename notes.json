@@ -136,7 +136,7 @@
    "note": "The text in the device view does not transition to the text on the card view — YEAR / month / numeral moving to and from the side strip is jarring.",
    "proof": "a_era_morph",
    "clean": 0,
-   "secs": 118.6
+   "secs": 117.3
   },
   {
    "id": "D-011",
@@ -286,7 +286,7 @@
    "note": "After the final black: the opening sequence again as a BOWS screen, photos flooding faster, still loopable.",
    "proof": "a_bows",
    "clean": 0,
-   "secs": 209.6
+   "secs": 209.5
   },
   {
    "id": "D-022",
