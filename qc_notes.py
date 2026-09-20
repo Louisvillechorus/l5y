@@ -6,8 +6,17 @@ of complaints. This runs every probe once, against the built STANDALONE, on the
 LIVE path (advance(), like the operator), and prints a line per note.
 
 A note whose status is 'fixed' but whose proof is missing or failing FAILS the gate.
-Usage: CHROMIUM_PATH=/opt/pw-browsers/chromium python3 qc_notes.py [--all]
+Usage: CHROMIUM_PATH=/opt/pw-browsers/chromium python3 qc_notes.py [--all] [--only D-001,D-005] [--fast]
+  --only   run just these notes (seconds, not the full sweep) — use while fixing one thing
+  --fast   skip the probes that take minutes (the show-wide sweeps); NEVER the shipping run
+  --all    also print blocked/confirm rows that are behaving as expected
+
+The closure law needs a FULL clean run on a new build, so --only and --fast do not advance
+the clean counter. Only the whole gate can close a loop.
 """
+
+SLOW = {'a_subject_never_sliced', 'a_bows', 'a_photo_bed', 'a_ringback_twice',
+        'a_105_hold', 'a_app_tap_visible', 'a_call_buttons_match', 'a_timer_format'}
 import glob, hashlib, importlib.util, json, os, sys
 
 from playwright.sync_api import sync_playwright
@@ -40,6 +49,20 @@ def run():
     doc = json.load(open('notes.json'))
     reg = doc['notes']
     bid = build_id()
+    only = set()
+    for a in sys.argv:
+        if a.startswith('--only'):
+            only = {x.strip().upper() for x in a.split('=', 1)[-1].replace('--only', '').split(',') if x.strip()}
+    if '--only' in sys.argv:
+        i = sys.argv.index('--only')
+        if i + 1 < len(sys.argv):
+            only = {x.strip().upper() for x in sys.argv[i + 1].split(',') if x.strip()}
+    fast = '--fast' in sys.argv
+    partial = bool(only) or fast
+    if only:
+        reg = [n for n in reg if n['id'].upper() in only]
+        if not reg:
+            print('no notes matched --only'); return 1
     pr = probes()
     broken = {k: v for k, v in pr.items() if k.startswith('!')}
     rows, failed = [], []
@@ -47,6 +70,9 @@ def run():
         b = p.chromium.launch(executable_path=os.environ.get('CHROMIUM_PATH') or None)
         ctx = b.new_context(viewport={'width': 1920, 'height': 1080})   # probes may open a second window
         for n in reg:
+            if fast and n['proof'] in SLOW:
+                rows.append((n, 'SKIPPED', []))
+                continue
             fn = pr.get(n['proof'])
             if not callable(fn):
                 rows.append((n, 'NO PROBE', ['no probe named ' + n['proof']]))
@@ -64,8 +90,9 @@ def run():
                 bad = [f'probe crashed: {e}']
             pg.close()
             ok = not bad
-            # THE CLOSURE LAW: a clean run only counts if the build has changed since the last one.
-            if ok:
+            # THE CLOSURE LAW: a clean run only counts if the build has changed since the last one,
+            # and only a FULL run counts at all — a targeted check cannot close a loop.
+            if ok and not partial:
                 if n.get('last_build') != bid:
                     n['clean'] = n.get('clean', 0) + 1
                     n['last_build'] = bid
@@ -81,7 +108,7 @@ def run():
     json.dump(doc, open('notes.json', 'w'), indent=1, ensure_ascii=False)
     show_all = '--all' in sys.argv
     for n, verdict, bad in rows:
-        mark = {'PASS': '✓', 'FAIL': '✗', 'NO PROBE': '·'}[verdict]
+        mark = {'PASS': '✓', 'FAIL': '✗', 'NO PROBE': '·', 'SKIPPED': '~'}[verdict]
         if not show_all and n['status'] in ('blocked', 'confirm') and verdict != 'FAIL':
             continue
         seal = {0: '', 1: ' [1 of 2 clean]'}.get(n.get('clean', 0), ' [CLOSED]')
@@ -99,6 +126,8 @@ def run():
         print('one more clean build closes:', ', '.join(pend))
     if failed:
         print('REGRESSIONS (marked fixed, proof failing):', ', '.join(failed))
+    if partial:
+        print('PARTIAL RUN — this cannot close a loop; the closure law needs the full gate.')
     return 1 if (failed or broken) else 0
 
 

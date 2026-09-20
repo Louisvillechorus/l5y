@@ -297,8 +297,7 @@
    ],
    "note": "Preshow performer names span the full width, each line the same.",
    "proof": "a_perf_fill",
-   "clean": 3,
-   "last_build": "fd2a35488908"
+   "clean": 0
   },
   {
    "id": "D-026",
@@ -593,8 +592,7 @@
    ],
    "note": "BUTTONS DID NOT MATCH STATE. Answering a call changed only the status line, so a CONNECTED call still showed Answer/Decline. CLAUDE.md: a connected call shows mute/end/speaker, never Answer. Same class as the receipt bug — a live handler mutating in place and diverging from the settled render.",
    "proof": "a_call_buttons_match",
-   "clean": 2,
-   "last_build": "fd2a35488908"
+   "clean": 0
   },
   {
    "id": "D-047",
