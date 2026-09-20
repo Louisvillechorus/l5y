@@ -161,15 +161,15 @@
   },
   {
    "id": "D-015",
-   "status": "fixed",
+   "status": "closed",
    "family": "sound",
    "cues": [
     "*"
    ],
    "note": "Cut the low-battery chime entirely.",
    "proof": "a_no_lowbat",
-   "clean": 1,
-   "last_build": "ba7e03192d63"
+   "clean": 2,
+   "last_build": "337ea4d42c9d"
   },
   {
    "id": "D-016",
@@ -193,15 +193,15 @@
   },
   {
    "id": "D-018",
-   "status": "fixed",
+   "status": "closed",
    "family": "sound",
    "cues": [
     "*"
    ],
    "note": "We hear the unlock, here and everywhere a phone is unlocked.",
    "proof": "a_unlock_audible",
-   "clean": 1,
-   "last_build": "ba7e03192d63"
+   "clean": 2,
+   "last_build": "337ea4d42c9d"
   },
   {
    "id": "D-019",
@@ -245,39 +245,39 @@
   },
   {
    "id": "D-023",
-   "status": "fixed",
+   "status": "closed",
    "family": "operator",
    "cues": [
     "*"
    ],
    "note": "A song selector, and the Menu must not dead-end.",
    "proof": "a_jump_panel",
-   "clean": 1,
-   "last_build": "ba7e03192d63"
+   "clean": 2,
+   "last_build": "337ea4d42c9d"
   },
   {
    "id": "D-024",
-   "status": "fixed",
+   "status": "closed",
    "family": "operator",
    "cues": [
     "*"
    ],
    "note": "The projection window must be black during the cast questionnaire.",
    "proof": "a_gate_black",
-   "clean": 1,
-   "last_build": "ba7e03192d63"
+   "clean": 2,
+   "last_build": "337ea4d42c9d"
   },
   {
    "id": "D-025",
-   "status": "fixed",
+   "status": "closed",
    "family": "house",
    "cues": [
     "1.0a"
    ],
    "note": "Preshow performer names span the full width, each line the same.",
    "proof": "a_perf_fill",
-   "clean": 1,
-   "last_build": "ba7e03192d63"
+   "clean": 2,
+   "last_build": "337ea4d42c9d"
   },
   {
    "id": "D-026",
@@ -330,15 +330,15 @@
   },
   {
    "id": "D-030",
-   "status": "fixed",
+   "status": "closed",
    "family": "sound",
    "cues": [
     "*"
    ],
    "note": "Reverb and a taper on the time warp; the reverse clip when time runs backwards.",
    "proof": "a_warp",
-   "clean": 1,
-   "last_build": "ba7e03192d63"
+   "clean": 2,
+   "last_build": "337ea4d42c9d"
   },
   {
    "id": "D-031",
@@ -349,7 +349,8 @@
    ],
    "note": "No divider between the month and the event when there is no event.",
    "proof": "a_foot_solo",
-   "clean": 0
+   "clean": 1,
+   "last_build": "337ea4d42c9d"
   },
   {
    "id": "D-032",
@@ -361,12 +362,11 @@
    ],
    "note": "The camera move and zoom on the song 9 notifications had disappeared. It is back, but it OVER-corrected: the push now crops the neighbouring card (see D-044). Not closed until the stack is both large and whole.",
    "proof": "a_song9_push",
-   "clean": 1,
-   "last_build": "ba7e03192d63"
+   "clean": 0
   },
   {
    "id": "D-033",
-   "status": "fixed",
+   "status": "closed",
    "family": "pacing",
    "cues": [
     "10.1",
@@ -374,32 +374,32 @@
    ],
    "note": "The Casting Networks mail arrives with its tone three seconds before his text.",
    "proof": "a_10_mail_first",
-   "clean": 1,
-   "last_build": "ba7e03192d63"
+   "clean": 2,
+   "last_build": "337ea4d42c9d"
   },
   {
    "id": "D-034",
-   "status": "fixed",
+   "status": "closed",
    "family": "pacing",
    "cues": [
     "10.5"
    ],
    "note": "More time to read the flashback; cut the unlock, stay on the lock screen.",
    "proof": "a_105_hold",
-   "clean": 1,
-   "last_build": "ba7e03192d63"
+   "clean": 2,
+   "last_build": "337ea4d42c9d"
   },
   {
    "id": "D-035",
-   "status": "fixed",
+   "status": "closed",
    "family": "house",
    "cues": [
     "*"
    ],
    "note": "The photo bed falls left to right, a new print every 3-5 s, 25% of stage height, no accumulation, never blank.",
    "proof": "a_photo_bed",
-   "clean": 1,
-   "last_build": "ba7e03192d63"
+   "clean": 2,
+   "last_build": "337ea4d42c9d"
   },
   {
    "id": "D-036",
@@ -427,7 +427,7 @@
   },
   {
    "id": "D-037",
-   "status": "fixed",
+   "status": "closed",
    "family": "state",
    "cues": [
     "1.2",
@@ -437,12 +437,12 @@
    ],
    "note": "THE 1.2 CROP BUG, ROOT CAUSE. The send handler appends a bubble to the live thread but never re-renders, so the Thursday 'Delivered' the state deleted stays in the DOM. From 1.3 on the thread shows 'Delivered' AND 'Read 9:44 AM' at once — no iPhone ever does that. This is the text from previous scenes permeating the crop.",
    "proof": "a_one_receipt",
-   "clean": 1,
-   "last_build": "ba7e03192d63"
+   "clean": 2,
+   "last_build": "337ea4d42c9d"
   },
   {
    "id": "D-038",
-   "status": "fixed",
+   "status": "closed",
    "family": "framing",
    "cues": [
     "7.1",
@@ -451,8 +451,8 @@
    ],
    "note": "Song 7's MacBook type is the smallest in the show — 14.6 px projected against 76-81 px on the phone. The laptop is the only device whose type is hardcoded in pixels instead of derived from --ph, and it is never framed.",
    "proof": "a_laptop_legible",
-   "clean": 1,
-   "last_build": "ba7e03192d63"
+   "clean": 2,
+   "last_build": "337ea4d42c9d"
   },
   {
    "id": "D-039",
@@ -486,7 +486,7 @@
   },
   {
    "id": "D-041",
-   "status": "fixed",
+   "status": "closed",
    "family": "realism",
    "cues": [
     "3.3",
@@ -497,8 +497,8 @@
    ],
    "note": "A connected call's first frame reads 'connected · 00:00'. A real iPhone never leading-zeroes the minutes.",
    "proof": "a_timer_format",
-   "clean": 1,
-   "last_build": "ba7e03192d63"
+   "clean": 2,
+   "last_build": "337ea4d42c9d"
   },
   {
    "id": "D-042",
@@ -565,7 +565,9 @@
     "2.4"
    ],
    "note": "BUTTONS DID NOT MATCH STATE. Answering a call changed only the status line, so a CONNECTED call still showed Answer/Decline. CLAUDE.md: a connected call shows mute/end/speaker, never Answer. Same class as the receipt bug — a live handler mutating in place and diverging from the settled render.",
-   "proof": "a_call_buttons_match"
+   "proof": "a_call_buttons_match",
+   "clean": 1,
+   "last_build": "337ea4d42c9d"
   },
   {
    "id": "D-047",

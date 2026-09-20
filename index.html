@@ -3412,7 +3412,18 @@ async function playCue(cue, st, tok){
           `${o.app}<span class="nw">${o.w||''}</span></div>`+
           `${(o.title && o.title!==o.app)?`<div class="ntitle">${o.title}</div>`:''}<div class="nb">${o.t}</div>`;
         ns.prepend(d); });
-      camPush('.nstack .notif', 6, 260, null, null, true);   // force: the card must fill the reading window, not merely be on screen
+      // THE SUBJECT IS THE NEW CARD, ANCHORED TOP (David, Sept 20 — he photographed 2.2 with the clock
+      // chopped and Rob's card sliced). Aiming at one .notif at z 6 with a fit clamp sized the shot to
+      // THAT card and pushed its neighbour out of frame; aiming at the whole stack kept everything whole
+      // but shrank five cards to nothing. Anchoring the newest card to the top at the device's own width
+      // zoom gives ONE scale for every notification cue in the show: the new card always whole and
+      // readable, the older ones cascading off the bottom exactly as they do on a real lock screen.
+      // One or two cards: frame the STACK, so both read whole (David on 2.2: "rob's text is more
+      // important than the time"). Three or more: the newest card is the subject and the older ones
+      // cascade off the bottom the way they do on a real lock screen — framing five at once is legible
+      // to nobody at 25 feet.
+      camPush(notifCount()<=2 ? '.nstack' : '.nstack .notif:first-child', 6, 260, null, null, true);
+      let banner=false;
       stacks().forEach(k=>{ if(k.querySelector('.nstack')) return;  // not on the lock screen → banner
         const old=k.querySelector('.inbanner'); if(old) old.remove();
         const art=ICON[o.app];
@@ -3420,8 +3431,8 @@ async function playCue(cue, st, tok){
         d.innerHTML=`<span class="ni" style="background:${art?art.bg:(o.ic||'#ccc')}">${art?`<svg viewBox="0 0 64 64" style="width:100%;height:100%">${art.g}</svg>`:''}</span>
           <div style="min-width:0"><div class="ibh">${(o.title&&o.title!==o.app)?o.title:o.app}<span>now</span></div>
           <div class="ibb">${o.t}</div></div>`;
-        k.appendChild(d); });
-      camPush('.inbanner', 3.2, 200);
+        k.appendChild(d); banner=true; });
+      if(banner) camPush('.inbanner', 3.2, 200);   // …and never aim at a banner that was not built
       continue; }
     if(o.op==='notiftap'){ st.camBottom=true;
       // no touch dot (cut by direction) — the beat, then the notification opens
@@ -4519,6 +4530,7 @@ function camWide(instant){ camRest(instant); }
 /* THE FOLLOW RULE (David, Sept 19 night — "some really jerky movements"): a push happens only when the target is NOT
    already in frame. When it is, the eye finds it; the camera holds. When it is not, the camera keeps its zoom if the
    target fits at that zoom (a pan, not a re-zoom) and only re-zooms when it must. Every move is one slow glide. */
+function notifCount(){ const ns=document.querySelector('#projDevice .nstack'); return ns?ns.children.length:0; }
 function camPush(sel,z,delay,anchor,dur,force,nofit){
   const t0=animTok; const id=setTimeout(()=>{ if(t0!==animTok) return; camEls().forEach(c=>{
     const el=c.querySelector(sel); if(!el) return; const g=camGeom(c); if(!g) return;
