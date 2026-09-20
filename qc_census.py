@@ -16,6 +16,17 @@ def _transform_secs(tr):
             return v / 1000.0 if m.group(2) == 'ms' else v
     return None
 
+# MORE THAN THREE MOVES MUST JUSTIFY ITSELF (the law). These four do, in David's own words, and the
+# justification lives here so the gate ANSWERS the question instead of printing it every run. A cue
+# not on this list with >3 moves is still a violation.
+BUSY_OK = {
+  '1.2': "her 50 s piece: the list, his name, the history, the keyboard, Send — one move per 7 s",
+  '1.6': "the four memory cards, each pushed to its text and then its photograph (David: 15% slower, "
+         "and show her click Facebook)",
+  '2.2': "the keyboard-to-message ping-pong David asked for — \"back and forth as if we're in jamies "
+         "mind\" — one move per 5.8 s across a 58 s cue",
+  '14.4': "her one animation: the notification, opening it, the keyboard, the sent bubble",
+}
 KEEP={'send','receive','notif','mail','mailsent','lock','ftring','ring','end','connect','click','del','keymod','tink','unlock','ringback'}
 with sync_playwright() as p:
     b=p.chromium.launch(executable_path=os.environ['CHROMIUM_PATH']); pg=b.new_page(viewport={'width':1920,'height':1080}); errs=[]
@@ -62,6 +73,7 @@ for c in out:
             bad.append(f"{c['cue']}: CAMERA MOVE WITH NO READABLE DURATION {l['tr']!r}")
         elif dur < 1.39:
             bad.append(f"{c['cue']}: FAST CAMERA {dur:.2f}s (floor 1.4s) — {l['tr']}")
-    if len(cam)>3: bad.append(f"{c['cue']}: {len(cam)} camera moves")
+    if len(cam)>3 and c['cue'] not in BUSY_OK: bad.append(f"{c['cue']}: {len(cam)} camera moves, unjustified")
+    elif len(cam)>3: print(f"      {c['cue']}: {len(cam)} moves — {BUSY_OK[c['cue']]}")
     print(f"{c['cue']:>5} {c['dur']:5.1f}s  sounds={names}  camMoves={len(cam)}  " + ' '.join(f"[z{l['z']} {l['anchor'] or 'c'} {'inst' if l['instant'] else l['tr'].split(' ')[1]}]" for l in cam))
 print('ERRS', errs if errs else 'none'); print('VIOLATIONS', bad if bad else 'none')
