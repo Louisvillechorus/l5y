@@ -246,6 +246,7 @@ def a_warp(pg):
 def a_foot_solo(pg):
     bad = []
     boot(pg)
+    goto(pg, 13, 1)          # off cue 0, or isPreshow() forces the title face and blanks the foot
     r = pg.evaluate("""(()=>{ const s13=SHOW.find(x=>x.n===13); const st=buildState(s13,1);
         st.black=true; st.dev=null; st.housecard=false; st.perfcard=false; st.inter=false; st.next5=false;
         const read=()=>{ const fr=document.querySelector('#era .pad .sheet.top .frow');
@@ -267,7 +268,7 @@ def a_foot_solo(pg):
     if r['withE']['solo']:
         bad.append('a card with an event is wrongly marked solo')
     # and it must hold on the real cards too, not only in the unit case
-    live = pg.evaluate("""(()=>{ const bad=[]; SHOW.forEach((s,i)=>s.cues.forEach((q,k)=>{
+    live = pg.evaluate("""(()=>{ const bad=[]; si=1; ci=1; SHOW.forEach((s,i)=>s.cues.forEach((q,k)=>{
         const st=buildState(s,k+1); if(st.dev) return; setStamp(st);
         const fr=document.querySelector('#era .pad .sheet.top .frow'); if(!fr) return;
         const f=(fr.querySelector('.foot')||{}).textContent||''; const p=fr.querySelector('.pipe');
@@ -486,4 +487,41 @@ def a_timer_format(pg):
                 return e?e.textContent.trim():''; })()""")
             if txt and txt.startswith('0') and not txt.startswith('0:'):
                 bad.append(f'{cid}: the call timer reads "{txt}" — iOS never pads the minutes')
+    return bad
+
+
+# ---------- D-046 · the buttons always match the call's state ----------
+def a_call_buttons_match(pg):
+    bad = []
+    boot(pg)
+    seen = {'in': 0, 'live': 0}
+    for i in range(pg.evaluate('SHOW.length')):
+        for k in range(pg.evaluate(f'SHOW[{i}].cues.length')):
+            if not pg.evaluate(f"(SHOW[{i}].cues[{k}].do||[]).some(o=>o.op==='call'||o.op==='callState')"):
+                continue
+            pg.evaluate(f'si={i}; ci={k}; animTok++; animRunning=false; hardRender();')
+            pg.wait_for_timeout(150)
+            cid = pg.evaluate(f'SHOW[{i}].cues[{k}].id')
+            fire(pg)
+            r = pg.evaluate("""(()=>{ const row=document.querySelector('#projDevice .callbtns');
+                const st=((CUR.call||{}).st)||''; if(!row) return {st, n:0};
+                return {st, n:row.children.length,
+                        glyphs:[...row.children].map(e=>(e.textContent||'').trim()).join('')}; })()""")
+            st = (r['st'] or '').lower()
+            if 'ended' in st or not st:
+                continue
+            incoming = 'incoming' in st
+            if not r['n']:
+                bad.append(f'{cid}: a live call ("{r["st"]}") with no buttons at all')
+                continue
+            answer = '✆' in (r.get('glyphs') or '')
+            if incoming and not answer:
+                bad.append(f'{cid}: an INCOMING call with no Answer button')
+            if not incoming and answer:
+                bad.append(f'{cid}: "{r["st"]}" still shows Answer — a phone never does that')
+            if not incoming and r['n'] != 3:
+                bad.append(f'{cid}: "{r["st"]}" shows {r["n"]} buttons, not mute/end/speaker')
+            seen['in' if incoming else 'live'] += 1
+    if not seen['in'] or not seen['live']:
+        bad.append(f'the probe never saw both states: {seen}')
     return bad

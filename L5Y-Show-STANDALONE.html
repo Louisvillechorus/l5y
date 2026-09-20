@@ -4043,7 +4043,16 @@ async function playCue(cue, st, tok){
       // the call screen stays put: only its status line changes (no re-render, no flash)
       applyOp(st,o);
       const inPlace=stacks().map(k=>{ const e=k.querySelector('.cst'); if(!e) return false;
-        e.innerHTML=liveTimerHTML(st.call?st.call.st:''); return true; });
+        e.innerHTML=liveTimerHTML(st.call?st.call.st:'');
+        // BUTTONS MATCH STATE: answering swaps Answer/Decline for mute · end · speaker. Changing only
+        // the status line left a CONNECTED call showing Answer — a phone never does that.
+        const row=k.querySelector('.callbtns'), want=/incoming/i.test((st.call&&st.call.st)||'')?'in':'live';
+        if(row && row.dataset.mode!==want){
+          const tmp=document.createElement('div'); tmp.innerHTML=callHTML(st);
+          const fresh=tmp.querySelector('.callbtns');
+          if(fresh){ fresh.dataset.mode=want; row.replaceWith(fresh); }
+        } else if(row) row.dataset.mode=want;
+        return true; });
       if(!inPlace.length || !inPlace.every(Boolean)) swapLayer(st,null);
       await wait(200); continue; }
     if(o.op==='mailopen'){
