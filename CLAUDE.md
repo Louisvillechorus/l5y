@@ -172,6 +172,24 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
 - **CARPLAY (song 12)**: the drive plays on the dash — `dev:'carplay'`, a landscape head unit
   (sidebar: clock, signal, recent apps, home; Maps with the maneuver card and the trip card over the
   map, the same live route model as the phone). The dash clock rides with the trip.
+- **THE SUBJECT LAW (David, Sept 20 — the family rule behind every framing note)**: content may
+  leave the frame with feathers, but the SUBJECT of a cue — whatever the camera was last aimed at —
+  sits WHOLE inside the reading window when the glide settles. `qc_notes_subject.py` wraps `camPush`,
+  records each cue's last target and asserts it. Two exceptions, both honest: a subject TALLER than
+  the window (a memory photograph is 2221 px in a 1080 px window; fitting it would mean 58% black
+  bars and break the fill law) is judged on its TOP edge — flush, and the eye drifts down into it;
+  and a transient pressed-state class the control itself removes before the glide lands is not a
+  camera fault. **ONE SCALE PER REGISTER**: every iPhone register rests at 3.39× (`camFill`), never
+  seven different sizes for the same screen. **NO CUE LEAVES BLACK DOWN THE SIDES** — `camPush` may
+  not zoom out below the resting fill. **NOTIFICATIONS**: one or two cards on the lock screen are
+  framed together and both read whole (David: Rob's text matters more than the time); three or more
+  and the newest card is the subject, the older ones cascading off the bottom as they do on a real
+  lock screen — at 3.39× five cards are 1829 px in a 1080 px frame, so "every card whole" is
+  arithmetically impossible and the clock is what gives way first.
+- **MEASURE THE TYPE, NOT THE BOX (Sept 20, the hard-won one)**: `scrollWidth` on a `display:block`
+  line can never report less than its own box, so a fit-to-width silently no-ops for anything
+  narrower — and a QA that measures the same way will happily confirm it. `fitPad` and its probe both
+  measure the ink with a `Range`. Any future "does it fill?" check does the same.
 - **THE SOUND LAW (David, Sept 19 night; amended Sept 20)**: the screen makes ONLY the sounds a real iPhone makes
   with its volume up, and QUIETLY (default 0.35, trims ≤ .7). Send, receive, the lock-screen tone,
   mail, the FaceTime ring / accept / end, **and the UNLOCK — David, Sept 20: we hear it at 13.3 and
