@@ -3700,7 +3700,7 @@ async function playCue(cue, st, tok){
       setStamp(st);
       continue; }
     if(o.op==='stamp'){ applyOp(st,o); setStamp(st); await typeFoot(st,tok,cue.id,!(cue&&cue.keys===false)); if(tok!==animTok) return; continue; }   // the scene name types itself onto the card
-    if(o.op==='notif'){ applyOp(st,o); if(o.snd!==false && (!o.w||o.w==='now')) sfx(o.tone||(o.app==='Mail'?'mail':(o.app==='Chase'?'tink':'notif')),{seed:'n'+cue.id});   // `tone:` = a custom text tone on that contact, which is what you set for the one person you cannot miss
+    if(o.op==='notif'){ applyOp(st,o); if(o.snd!==false && (!o.w||o.w==='now')) sfx(o.tone||(o.app==='Mail'?'mail':'notif'),{seed:'n'+cue.id});   // a bank alert is a text; iOS gives it the text tone, not a 22 ms tick   // `tone:` = a custom text tone on that contact, which is what you set for the one person you cannot miss
       stacks().forEach(k=>{ const ns=k.querySelector('.nstack'); if(!ns) return;
         const d=document.createElement('div'); d.className='notif inbound';
         const art=ICON[o.app];
@@ -3878,11 +3878,14 @@ async function playCue(cue, st, tok){
       applyOp(st,o);
       for(let i=text.length;i>=0;i--){
         if(tok!==animTok) return;
-        if(i%4===0) sfx('del',{keys:!(cue&&cue.keys===false),seed:'w'+cue.id+':'+i});
+        // EVERY BACKSPACE (David: key_press_delete on every one). It used to fire on one in four
+        // because the loop ran 62 characters a second — no held delete on any phone is that fast.
+        // At 42 ms it reads as a real rapid erase and every keypress can carry its tick.
+        sfx('del',{keys:!(cue&&cue.keys===false),seed:'w'+cue.id+':'+i});
         stacks().forEach(k=>{ const f=k.querySelector('.field');
           if(f){ f.textContent=i?text.slice(0,i):'iMessage'; if(!i) f.style.color=''; }
           const key=k.querySelector('.key[data-k="⌫"]'); if(key){ key.classList.add('hit'); setTimeout(()=>key.classList.remove('hit'),50); }});
-        await wait(16);
+        await wait(42);
       }
       applyOp(st,o);
       stacks().forEach(k=>{const kb=k.querySelector('.kbd'); if(kb) kb.classList.remove('up');
@@ -5311,8 +5314,11 @@ function sfxRing(kind){ sfxRingStop(); if(!sfxOn()) return;
     // ringback, 440 + 480 Hz. The synthesised pair below is the fallback if the file is missing.
     RING={kind,timer:null};
     let left=2; const beat=()=>{ if(!RING||RING.kind!=='ringback') return;
+      // KEEP THE SOURCE. Discarding it meant sfxRingStop() could cancel the NEXT ring but not the one
+      // already sounding, so answering left up to 1.9 s of ringback tolling over the connected call.
       const src=sample('ringback',{gain:.55});
-      if(!src){ const t=AC.currentTime+.02;
+      if(src) RING.src=src;
+      else { const t=AC.currentTime+.02;
         tone(440,t,1.9,{gain:.085,attack:.02,release:.16}); tone(480,t,1.9,{gain:.085,attack:.02,release:.16}); }
       if(--left>0) RING.timer=setTimeout(beat,2950); };   // 2.03 s of ring + 0.92 s of air: two rings, tight
     beat(); return; }
@@ -5517,12 +5523,22 @@ function warpStart(durMs, back){ if(!sfxOn()) return; warpStop(0.15);
   const file = back ? 'reverse_timewarp.mp3' : 'timewarp.mp3';
   const b=SFX_BUF_()[file] || SFX_BUF_()['timewarp.mp3']; if(!b) return;
   const src=AC.createBufferSource(); src.buffer=b; const g=AC.createGain(); const t=AC.currentTime, d=Math.max(0.8,durMs/1000);
+  // A CLIP LONGER THAN THE ROLL IS PLAYED FROM ITS TAIL, not truncated: the reverse clip is 7.44 s
+  // inside a 6 s roll, so starting at the top threw away its last 1.44 s — the part that lands on
+  // the settle. Offsetting makes the music END with the last page instead of being cut off.
+  const off = b.duration > d + 0.05 ? b.duration - d : 0;
   g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(.8,t+.12);
-  const tail=Math.min(1.7,d*.5);   // a long taper: the end must not be abrupt
-  g.gain.setValueAtTime(.8,t+d-tail); g.gain.exponentialRampToValueAtTime(0.0001,t+d);
+  // A REAL TAPER (David asked for reverb and a taper; an exponential ramp to near-zero perceptually
+  // collapses in about 0.3 s and then crawls, which is why the end still felt abrupt). An equal-power
+  // curve falls evenly across the whole tail, so the music recedes instead of dropping out.
+  const tail=Math.min(2.2,d*.45), N=48, curve=new Float32Array(N);
+  for(let i=0;i<N;i++) curve[i]=.8*Math.cos(i/(N-1)*Math.PI/2)**1.6 + 0.0001;
+  try{ g.gain.setValueAtTime(.8,t+d-tail); g.gain.setValueCurveAtTime(curve,t+d-tail,tail); }
+  catch(e){ g.gain.exponentialRampToValueAtTime(0.0001,t+d); }
   const wet=AC.createGain(); wet.gain.value=.34;
   try{ g.connect(warpVerb()).connect(wet).connect(MASTER); }catch(e){}
-  src.connect(g).connect(MASTER); src.start(t); src.stop(t+d+.05);
+  src.connect(g).connect(MASTER); src.start(t, off);
+  src.stop(t+d+1.2);   // let the plate ring out past the last page instead of chopping it
   WARP={src,g,wet}; src.onended=()=>{ if(WARP&&WARP.src===src) WARP=null; }; }
 function warpStop(fade){ if(!WARP) return; const {src,g,wet}=WARP; WARP=null; const t=AC.currentTime, f=fade==null?.3:fade;
   if(wet){ try{ wet.gain.cancelScheduledValues(t); wet.gain.setValueAtTime(Math.max(wet.gain.value,.0001),t); wet.gain.exponentialRampToValueAtTime(.0001,t+Math.max(.05,f)); }catch(e){} }
