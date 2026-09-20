@@ -132,9 +132,10 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   confirms**, and only then do the Start buttons exist. Stored as `l5y_perf`, synced to the projection window;
   a `?view=projection` window is never gated. **Cue 1.0** turns the pad to the performer's name; “none” leaves
   the title page up so that GO is a harmless no-op, and 1.1 tears whatever page is on top either way.
-- **THE FINAL CURTAIN LOCKS (David, Sept 19 night)**: the `curtain` op sets `SHOW_OVER` — `prev()` does
-  nothing (there is no rewind past the end) and ~2.6 s later the questionnaire comes back up for the next
-  performance. Starting again from the gate resets to the top of the show and clears the saved position.
+- **THE FINAL CURTAIN LOCKS (David, Sept 19 night; amended Sept 20)**: the `curtain` op sets `SHOW_OVER` —
+  `prev()` does nothing (there is no rewind past the end). The questionnaire NO LONGER arms itself 2.6 s
+  later in both windows (the audience would have seen it during the final blackout): `gateArmWatch` waits
+  for the bows and for the operator to come off the show, and never arms in a projection window. Starting again from the gate resets to the top of the show and clears the saved position.
 - **THE INTERMISSION IS THREE CUES (David, Sept 19 night)**: 8.4 the torn INTERMISSION band · **8.5 THE MONEY
   MINUTE** — “THE NEXT 5 YEARS” over Redline's QR code, fired when the speaker picks up the handheld mic ·
   8.6 the same band again when the ask is over. The QR (`assets/img/qr-next5.png`, embedded by build.py as
@@ -197,7 +198,8 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   `unlock.caf`, so the synthesised tick plays until David drops one in). **The low-battery chime is
   CUT entirely (David, Sept 20)** — op, synth, sample and census entry all removed. **NO RINGTONES (David)**: an incoming call BUZZES — the
   phone vibrating on the table (`assets/sfx/vibrate.mp3`, David's licensed file). NO paper sounds, NO
-  ambience, NO taps, swipes, unlock or ringback; **KEYBOARD CLICKS ARE ON for every typing beat (David, Sept 19
+  ambience, NO taps and NO swipes; **the unlock IS audible and the ringback is David's own recording
+  (both Sept 20, superseding this line)**; **KEYBOARD CLICKS ARE ON for every typing beat (David, Sept 19
   night — “the haptics back in”): the real key_press_click per key, key_press_modifier on the space bar,
   key_press_delete on every backspace (typos, the wipes), all at the .35 trim; a cue mutes them with `keys:false`**;
   any notification/bubble may be silenced with `snd:false`. A noise every five
@@ -209,12 +211,18 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   docs (never into index.html); the engine decodes Core Audio Format itself (`cafDecode`: lpcm
   and ima4) and plays the mapped sample (`SFX_MAP_`, `sample`); the synthesized sounds in `sfx()`
   remain the fallback, so a missing file never silences a beat. Paper (tear, settle, flutter,
-  rustle) stays synthesized. Ringback (outgoing phone) is synthesized — it is a network tone.
+  rustle) stays synthesized. The ringback is David's licensed recording (Sept 20), not a synth tone.
   Sound plays only from the window the operator clicked Start in; a window we opened ourselves
   (`?view=projection`) is silent unless its checkbox says otherwise; speaker button → volume popover.
-  **THE LOW-BATTERY CHIME (David, Sept 19 night)**: a `batt` op that crosses below 20% plays the licensed
-  `low_power.caf` once, on the play path only (never in `applyOp`, which replays on every state rebuild);
-  `snd:false` mutes it. It lands once in the show: his 9% before dawn, 13.1.
+  **THE LOW-BATTERY CHIME IS CUT (David, Sept 20: "let's lose the low battery thing, entirely just cut
+  that sound")** — the op branch, the synthesised tone, the `low_power.caf` sample and the census entry
+  are all gone. His 9% before dawn at 13.1 is still state; it just makes no sound.
+  **THE RINGBACK IS REAL (David, Sept 20)**: his licensed recording, `assets/sfx/ringback.mp3`, trimmed
+  to the single 2.01 s burst of North American ringback (440 + 480 Hz) with the dead air off both ends,
+  played EXACTLY TWICE with 0.92 s between — two tight rings, wherever anyone dials out. The synthesised
+  pair remains the fallback. **A `{op:'notif', tone:'…'}`** names a custom text tone for that contact,
+  the way you set one for the person you cannot miss: Linda Whitfield's text at 4.8 arrives on its own
+  tone, distinct from the bank alert and from the mail.
 - **THE TYPE IS EMBEDDED (David, Sept 19 night)**: `fetch_fonts.py` pulls the latin woff2 subsets into
   `assets/fonts/` and build.py inlines them as base64 `@font-face` in the STANDALONE and docs, so the
   projection machine never waits on — or goes without — theatre Wi-Fi. Before this, a machine with no
@@ -261,11 +269,13 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   attribution “— Elise” was removed from the 9.5 trigger (the score does not name her). Her
   interpolation has no cue — David's call whether the phone drops on her lines.
 - **11** timeline only (one cue). **12** THE DRIVE on CARPLAY, IN REAL TIME (David, Sept 19 — “driving 500 mph” was cut): `rate:1`,
-  `startAt:.49` — on I-95 past Wilmington, the Delaware Memorial Bridge exit four miles ahead comes
-  mid-song, the miles fall at highway speed, the dash clock runs 5:53 onward; she never arrives in
+  `startAt:.5` (David, Sept 20 — at rate:1 the two things this line used to ask for are arithmetically
+  incompatible: four miles ahead IS four minutes twenty-four at 58 mph). The banner opens 2.1 miles out
+  and the Delaware Memorial Bridge maneuver lands at 2:12, mid-song; `seconds = (.51 − startAt) × 214 ÷
+  58.4 × 3600`. On I-95 past Wilmington, the miles fall at highway speed, the dash clock runs 5:53 onward; she never arrives in
   the song. (`dur` mode still exists for a compressed trip.)
-- **13** two beats: her text lands (5:05 AM — before dawn means before the 5:24 sunrise) and he
-  swipes it away; on his last line the **whole phone** is on stage so we see him unlock it, then Find My → **Me** →
+- **13** two beats: her text lands (5:05 AM — before dawn means before the 5:24 sunrise), holds 4 s so the
+  house can read it, and he swipes it away over 1.9 s — deliberate, not a flick (David, Sept 20); on his last line the **whole phone** is on stage so we see him unlock it, then Find My → **Me** →
   **“Use This iPhone as My Location”** — sharing was always ON and stays ON; only the reporting device
   changes, iPad → iPhone, the classic cover-up (David, Sept 20). We never see the iPad made the source. Her Ohio is **Mount Orab, OH** (forty miles east of
   Cincinnati, per the script — confirmed by David, Sept 19). 4.8 keeps “SONNY READ IT.” (David’s call).
