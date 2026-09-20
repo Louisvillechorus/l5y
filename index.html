@@ -683,8 +683,22 @@
   .paper::before,#era .sheet::before,#era .strip .stop::before{content:'';position:absolute;inset:0;pointer-events:none;mix-blend-mode:multiply;opacity:.09;
     background:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="220" height="220"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .1 0"/></filter><rect width="100%" height="100%" filter="url(%23n)"/></svg>')}
   /* ---- falling loop ---- */
-  #loop{position:absolute;inset:0;overflow:hidden;opacity:0;transition:opacity .8s ease;pointer-events:none;z-index:4}
-  #loop.on{opacity:1}
+  /* THE PHOTO BED (David, Sept 20): prints accumulate behind the house cards. One lands every few
+     seconds, flat, with a real contact shadow, and stays. Nothing tumbles, nothing spins, nothing
+     crosses the card. A Live Photo plays once as it lands and holds on its last frame. */
+  #loop{position:absolute;inset:0;overflow:hidden;opacity:0;transition:opacity 1.2s ease;pointer-events:none;z-index:4}
+  #loop.on{opacity:.46}
+  #loop .print{position:absolute;padding:.5vh;background:#faf8f3;will-change:transform,opacity;
+    transform-origin:50% 50%;opacity:0;
+    box-shadow:0 3.4vh 5.4vh rgba(0,0,0,.34);
+    transition:transform .58s cubic-bezier(.17,.85,.3,1), opacity .42s ease, box-shadow .58s cubic-bezier(.17,.85,.3,1)}
+  #loop .print.down{opacity:1;box-shadow:0 .32vh .55vh rgba(0,0,0,.34),0 1.1vh 2.1vh rgba(0,0,0,.20)}
+  #loop .print.gone{opacity:0;transition:opacity 1.3s ease}
+  #loop .print img,#loop .print video{display:block;height:100%;width:100%;object-fit:cover;background:#ddd9d0}
+  #loop .print .greek{display:flex;align-items:center;justify-content:center;height:100%;width:100%;
+    background:repeating-linear-gradient(135deg,#d9d4c9 0 8px,#cfc9bd 8px 16px);
+    font-family:'Courier Prime',monospace;font-size:1.5vh;letter-spacing:.2em;color:#6b665c}
+  /* (the cut falling-pages rule: the photo bed sets its own level above) */
   #loop:not(.on) .fall,#loop:not(.on) .sway{animation-play-state:paused}
   .fall{position:absolute;top:-34vh;left:0;animation:fall var(--dur) linear var(--delay) infinite;transition:opacity 1.4s ease}
   .fall.gone{opacity:0} .fall.blow{animation:blow 1.5s ease-in forwards}
@@ -854,7 +868,6 @@
   <div id="gate">
     <div class="gstep" data-step="1">
       <div class="gq"><b>1 · Who is your cast tonight?</b></div>
-      <div class="gsub">Same show, same cues — only the photos and videos change.</div>
       <div class="row">
         <button class="mbtn gsel castbtn" data-cast="ml" onclick="gateSel('cast','ml')">MAEGAN &amp; LANDON</button>
         <button class="mbtn gsel castbtn" data-cast="ac" onclick="gateSel('cast','ac')">ANDREW &amp; CHARLIE</button>
@@ -994,10 +1007,14 @@ const FALLBACK_SHOW = [
 
 /* ============ 1 · STILL HURTING — CATHY, her iPhone ============ */
 {n:1,t:'Still Hurting',who:'cathy',cues:[
- {id:'1.0',kind:'stage',trig:'HOUSE — the preshow performer is announced',
-  what:'The pad turns to tonight’s preshow performer — the name the operator chose on the start screen, nothing else on the page. If NONE was chosen the title page simply stays up and this GO does nothing.',
-  hold:'Hold here through the preshow. The next GO tears this page for the top of the show.',
+ {id:'1.0a',kind:'stage',trig:'HOUSE — the preshow performer is announced',
+  what:'The pad turns to tonight’s preshow performer — the name the operator chose on the start screen, nothing else on the page, the photographs still landing behind it. If NONE was chosen the title card simply stays up and this GO does nothing.',
+  hold:'Hold here for the whole preshow set.',
   do:[{op:'perf'}]},
+ {id:'1.0b',kind:'stage',trig:'THE PRESHOW SET IS OVER — the performer is off',
+  what:'Back to the title card and the photographs, for the rest of the house. The show does NOT start on this GO.',
+  hold:'Hold until places. The next GO is the top of the show.',
+  do:[{op:'house'}]},
  {id:'1.1',kind:'music',trig:'PROLOGUE — the first note of the wedding waltz',
   what:'ONE GO. The title page tears off the pad and falls; beneath it the calendar reads JUNE · YEAR 5, the morning after, and holds center-stage through the whole prologue. No phone, no sound.',
   hold:'`ms` on this cue delays the tear after GO (0 = on the GO). Nothing else moves until her verse-two line.',
@@ -1463,8 +1480,9 @@ function applyOp(st,o){
     case 'unlock': st.app='home'; break;
     case 'wall': st.wall=o.t; break;
     case 'next5': st.black=true; st.inter=false; st.next5=true; break;   // the money minute: the words and the code
-    case 'perf': st.perfcard=true; break;          // the preshow performer's page is up
-    case 'prologue': st.perfcard=false; break;     // …and the prologue tears whatever page is on top
+    case 'perf': st.perfcard=true; st.housecard=false; break;   // the preshow performer's page is up
+    case 'house': st.perfcard=false; st.housecard=true; break;  // …and afterwards the house card comes back
+    case 'prologue': st.perfcard=false; st.housecard=false; break;   // the prologue tears whatever page is on top
     case 'batt': st.batt=o.v; break;
     case 'sig': st.sig=o.v; break;
     case 'openapp': st.app=o.to; st.hover=null; st.sheet=null; st.match=null; if(o.to==='thread'&&o.contact){st.contact={n:o.contact,sub:o.sub||''};st.msgs=[];} break;
@@ -3258,12 +3276,12 @@ async function playCue(cue, st, tok){
       applyOp(st,o); paintAll(st); setStamp(st);
       document.body.classList.toggle('blk', blk||stageBlack(st)); continue; }
     if(o.op==='bed'){ if(o.stop) bedStop(o.fade); else bedStart(o.file,o.fade,o.gain); continue; }   // an ambience under the song, by cue only
-    if(o.op==='perf'){ applyOp(st,o); setStamp(st); await wait(300); continue; }   // the preshow performer's name takes the pad
+    if(o.op==='perf'||o.op==='house'){ applyOp(st,o); setStamp(st); await wait(300); continue; }   // the performer's name, then the house card again
     if(o.op==='next5'){ applyOp(st,o); paintAll(st); setStamp(st); await wait(400); continue; }   // the money minute card
     if(o.op==='prologue'){   // the title page holds for `ms`, then tears off — the era beneath it
       st.prologueLive=true; setStamp(st);
       if(o.ms){ await wait(o.ms); if(tok!==animTok){ st.prologueLive=false; return; } }
-      st.prologueLive=false; st.perfcard=false; paintAll(st); await tearTop(st,tok); if(tok!==animTok) return; continue; }
+      st.prologueLive=false; st.perfcard=false; st.housecard=false; paintAll(st); await tearTop(st,tok); if(tok!==animTok) return; continue; }
     if(o.op==='docline'){ applyOp(st,o); paintAll(st); scrollThreads(); await wait(240); continue; }
     applyOp(st,o); paintAll(st);
   }
@@ -3588,6 +3606,7 @@ function openProjection(){
 const CID=Math.random().toString(36).slice(2);
 let ch; try{ ch=new BroadcastChannel('l5y-cues'); }catch(e){}
 if(ch) ch.onmessage=e=>{ const m=e.data; if(m.from===CID) return;
+  if(m.soundclaim && m.from!==CID && SOUND_HOST) yieldSound();   // two windows would double every cue
   if(m.cast && m.cast!==CAST) setCast(m.cast, true);
   if(m.perf!==undefined && m.perf!==PERF){ PERF=m.perf; try{ localStorage.setItem('l5y_perf',PERF); }catch(e){} if(started) hardRender(); }
   if(m.si===undefined && m.blk!==undefined){ blk=!!m.blk; document.body.classList.toggle('blk', blk||(CUR&&stageBlack(CUR))); paintChrome(); return; }   // blackout only — never a hardRender mid-cue
@@ -3620,7 +3639,9 @@ document.getElementById('openProj').onclick=openProjection;
 document.getElementById('btnVol').onclick=()=>{ audioInit(); const p=document.getElementById('volPop'); p.classList.toggle('on');
   document.getElementById('volRange').value=Math.round(sfxVol()*100); document.getElementById('volHost').checked=SOUND_HOST; };
 document.getElementById('volRange').oninput=e=>{ setVol(e.target.value/100); };
-document.getElementById('volHost').onchange=e=>{ SOUND_HOST=e.target.checked; try{localStorage.setItem('l5y_soundhost_'+view, SOUND_HOST?'1':'0');}catch(x){} if(SOUND_HOST){ audioInit(); sfx('tap'); } };
+document.getElementById('volHost').onchange=e=>{ SOUND_HOST=e.target.checked; try{localStorage.setItem('l5y_soundhost_'+view, SOUND_HOST?'1':'0');}catch(x){}
+  const b=document.getElementById('btnVol'); if(b) b.style.opacity=SOUND_HOST?'':'.4';
+  if(SOUND_HOST){ audioInit(); claimSound(); } };
 document.getElementById('btnMenu').onclick=()=>{ started=false; document.body.classList.remove('started'); };
 document.getElementById('btnBlack').onclick=e=>{ setBlackout(!blk); e.currentTarget.blur(); };
 function paintOrder(){
@@ -3678,6 +3699,11 @@ function MO_(i){ return ['January','February','March','April','May','June','July
 function MA_(i){ return ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'][i]; }
 /* YEAR N = years since the night they met (their September anniversary) */
 function yearN(d){ const y=d.getFullYear(); return d>=new Date(y,8,3) ? y-2020 : y-2021; }
+function footSolo(root){   // month │ event — the divider exists only when there IS an event (David, Sept 20)
+  if(!root) return;
+  root.querySelectorAll('.frow').forEach(fr=>{ const f=fr.querySelector('.foot');
+    fr.classList.toggle('solo', !(f && f.textContent.trim())); });
+}
 function fitPad(era){   // the card is fixed; the words are not. Anything wider than the sheet shrinks to fit.
   const sh=era.querySelector('.pad .sheet.top'); if(!sh) return;
   const cs=getComputedStyle(sh), inner=sh.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);
@@ -3741,7 +3767,7 @@ function setStamp(st){
   if(!era.dataset.torn){ era.dataset.torn='1'; era.querySelectorAll('.sheet').forEach((el,i)=>el.style.clipPath=tornPath('top',i+3)); era.querySelector('.strip .stop').style.clipPath=tornPath('top',9); }
   const p=eraParts(st), q=s=>era.querySelector(s);
   // the still pad carries the house: the title page before the show, the intermission page at the break (David, Sept 19 night — no falling pages)
-  let face = st.next5 ? 'next5' : st.perfcard ? 'perf' : ((st.prologueLive||isPreshow()) ? 'title' : (st.inter ? 'inter' : ''));
+  let face = st.next5 ? 'next5' : st.perfcard ? 'perf' : ((st.housecard||st.prologueLive||isPreshow()) ? 'title' : (st.inter ? 'inter' : ''));
   era.querySelector('.pad').classList.toggle('house', !!face);
   const pad=era.querySelector('.pad');
   pad.classList.toggle('inter', face==='inter');
@@ -3759,7 +3785,8 @@ function setStamp(st){
     q('.ttl').innerHTML=''; q('.mo').textContent=''; q('.foot').textContent='';
     const im=q('.qr'), src=(window.L5Y_IMG||{})['qr-next5']; if(im && src && im.src!==src) im.src=src; }
   else { q('.ttl').innerHTML=''; q('.sub').textContent=''; q('.yr').textContent=p.mo?'YEAR':''; q('.ynum').textContent=p.mo?p.yr:''; q('.mo').textContent=p.mo; q('.foot').textContent=st.foot||''; }
-  { const fr=q('.frow'); if(fr) fr.classList.toggle('solo', !(st.foot||'')); }
+  footSolo(era);
+  if(face && !st.curtain && !blk) pileStart(); else pileStop();   // the prints belong to the house, never to the show
   fitPad(era);
   if(!st.tearing) era.querySelectorAll('.tear,.settle').forEach(e=>e.remove());   // no stray pages from a cancelled roll
   q('.smo').textContent=p.abbr; q('.snum').textContent=p.yr;
@@ -3801,7 +3828,7 @@ async function eraRoll(A,B,tok,st,long){
   const docked=era.dataset.home==='docked';
   const pad=era.querySelector(docked?'.strip':'.pad'), top=era.querySelector(docked?'.strip .stop':'.pad .top');
   const fill=(el,m,y)=>{ const q=s=>el.querySelector(s);
-    if(q('.ynum')) q('.ynum').textContent=y; if(q('.mo')) q('.mo').textContent=MO_(m); if(q('.foot')) q('.foot').textContent='';
+    if(q('.ynum')) q('.ynum').textContent=y; if(q('.mo')) q('.mo').textContent=MO_(m); if(q('.foot')) q('.foot').textContent=''; footSolo(el);
     if(q('.smo')) q('.smo').textContent=MA_(m); if(q('.snum')) q('.snum').textContent=y; };
   fill(top,A.getMonth(),yearN(A));   // the top page reads where we are leaving from, foot cleared
   for(let i=1;i<=n;i++){
@@ -3844,6 +3871,50 @@ function tornPath(side,seed){
     let j=0.9+Math.sin(x/100*6.28*1.3+l1)*0.7+Math.sin(x/100*6.28*2.7+l2)*0.4+(R()-0.5)*0.7; if(i===n1||i===n2) j+=2.2+R()*1.6; j=Math.max(0.15,j);
     pts.push(side==='top'?`${x.toFixed(2)}% ${j.toFixed(2)}%`:`${(100-j).toFixed(2)}% ${x.toFixed(2)}%`); }
   return side==='top'?`polygon(0 100%, ${pts.join(',')}, 100% 100%)`:`polygon(0 0, ${pts.join(',')}, 0 100%)`;
+}
+/* ---- THE PHOTO BED ----
+   Prints accumulate behind the house cards: one lands every few seconds, flat, with a real contact
+   shadow, and stays. Nothing tumbles, nothing spins, nothing crosses the card. A Live Photo plays once
+   as it lands and holds on its last frame.
+   BOOT-ORDER LAW: no top-level `let` here — boot code reaches these through hoisted accessors, and a
+   `let` in the temporal dead zone would kill every line of script after it. */
+function PILE_CFG(){ return PILE_CFG.o||(PILE_CFG.o={h:25, every:3400, cap:24}); }   // print height (% of stage) · ms between landings · prints on the pile — tunable in tech
+function PILE_S(){ return PILE_S.o||(PILE_S.o={t:null, i:0, order:null}); }
+function pileList(){ const L=window.L5Y_LOOP||{}; return (L[CAST]||[]); }
+function pileReset(){ const L=document.getElementById('loop'); if(L) L.innerHTML=''; const S=PILE_S(); S.i=0; S.order=null; }
+function pileStop(){ const S=PILE_S(); if(S.t){ clearInterval(S.t); S.t=null; }
+  const L=document.getElementById('loop'); if(L) L.classList.remove('on'); }
+function pileStart(){
+  const L=document.getElementById('loop'), S=PILE_S(); if(!L) return;
+  if(L.dataset.cast!==CAST){ L.dataset.cast=CAST; pileReset(); }
+  L.classList.add('on');              // idempotent: a later render may have pulled the class, so always re-assert it
+  if(S.t) return;
+  pileDrop(); S.t=setInterval(pileDrop, PILE_CFG().every);
+}
+function pileDrop(){
+  const L=document.getElementById('loop'); if(!L) return;
+  const S=PILE_S(), C=PILE_CFG(), list=pileList(), n=list.length || 12;   // no files yet → greeked prints, so the motion can be judged
+  if(!S.order || S.order.length!==n){ const R=prng('pile'+CAST+':'+n); S.order=[...Array(n).keys()];
+    for(let k=n-1;k>0;k--){ const j=Math.floor(R()*(k+1)); [S.order[k],S.order[j]]=[S.order[j],S.order[k]]; } }
+  const ent=list[S.order[S.i % n]], R=prng('print'+CAST+':'+S.i);        // seeded: every night is identical
+  const ratio=ent?ent.r:(R()<.45?0.75:1.4), h=C.h, w=h*ratio;
+  const x=(-6 + R()*112), y=(-8 + R()*116), rot=(R()*12-6);
+  const el=document.createElement('div'); el.className='print';
+  el.style.cssText='height:'+h+'vh;width:'+w.toFixed(2)+'vh;left:'+x.toFixed(2)+'%;top:'+y.toFixed(2)+'%;'+
+    'transform:translate3d(0,-2.6vh,0) rotate('+rot.toFixed(2)+'deg) scale(1.035)';
+  el.innerHTML = !ent ? '<div class="greek">S00-LOOP</div>'
+    : ent.k==='vid' ? '<video muted playsinline preload="auto" src="'+ent.s+'"></video>'
+    : '<img alt="" src="'+ent.s+'">';
+  L.appendChild(el);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    el.classList.add('down');
+    el.style.transform='translate3d(0,0,0) rotate('+rot.toFixed(2)+'deg) scale(1)';
+    const v=el.querySelector('video');
+    if(v){ try{ v.currentTime=0; const pr=v.play(); if(pr&&pr.catch) pr.catch(()=>{}); }catch(e){} }   // a Live Photo comes to life as it lands
+  }));
+  S.i++;
+  const all=L.querySelectorAll('.print:not(.gone)');
+  if(all.length>C.cap){ const old=all[0]; old.classList.add('gone'); setTimeout(()=>old.remove(),1400); }
 }
 function loopMode(mode){
   const L=document.getElementById('loop'); if(!L) return; L.classList.remove('on'); L.dataset.mode='off'; return;   // cut: the still pad carries preshow and intermission
@@ -3975,10 +4046,17 @@ function interHTML(){ return `<div class="house"><div class="ht">Intermission</d
    feeding the house); a programmatically opened projection window stays silent. */
 var SOUND_HOST, AC, MASTER, SFX_VOL;
 function sfxVol(){ if(SFX_VOL===undefined){ let v=0.35; try{ const st=localStorage.getItem('l5y_vol2'); if(st!==null) v=+st; }catch(e){} SFX_VOL=v; } return SFX_VOL; }   // quiet by default
+function claimSound(){ try{ ch.postMessage({from:CID, soundclaim:true}); }catch(e){} }
+function yieldSound(){ SOUND_HOST=false;
+  try{ localStorage.setItem('l5y_soundhost_'+view,'0'); }catch(e){}
+  const c=document.getElementById('volHost'); if(c) c.checked=false;
+  try{ rotNote('SOUND MOVED TO THE OTHER WINDOW'); }catch(e){}
+  const b=document.getElementById('btnVol'); if(b) b.style.opacity='.4';
+}
 function soundHostInit(v){
   let saved=null; try{ saved=localStorage.getItem('l5y_soundhost_'+v); }catch(e){}
   SOUND_HOST = saved!==null ? saved==='1' : (/[?&]view=projection/.test(location.search) ? false : !!(navigator.userActivation && navigator.userActivation.hasBeenActive));   // a window we opened ourselves stays silent
-  if(SOUND_HOST) audioInit();
+  if(SOUND_HOST){ audioInit(); setTimeout(claimSound,120); }
 }
 function audioInit(){ if(AC) return AC; try{ AC=new (window.AudioContext||window.webkitAudioContext)(); MASTER=AC.createGain(); MASTER.gain.value=sfxVol(); MASTER.connect(AC.destination); sfxLoad(); }catch(e){ AC=null; } return AC; }
 function setVol(v){ SFX_VOL=Math.max(0,Math.min(1,+v)); try{localStorage.setItem('l5y_vol2',SFX_VOL);}catch(e){} if(MASTER) MASTER.gain.setTargetAtTime(SFX_VOL,AC.currentTime,.02); }
