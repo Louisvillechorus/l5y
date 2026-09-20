@@ -10,6 +10,9 @@ It is the family-level version of D-005/D-039/D-044: one rule, swept across the 
 so the same defect cannot come back in a song nobody happened to look at.
 """
 
+# pressed-state classes the control itself removes before the camera settles
+TRANSIENT = ('.btnpress', '.inbanner', '.tapped', '.hit', '.pop')
+
 WRAP = """(()=>{ if(window.__subjWrapped) return; window.__subjWrapped=true;
   window.__subj=[];
   const real=window.camPush;
@@ -54,17 +57,30 @@ def a_subject_never_sliced(pg):
             if not m or m.get('none'):
                 continue
             if m.get('missing'):
+                # a pressed-state class is removed before the glide lands; that is the control's own
+                # animation finishing, not a camera fault
+                if any(t in m['sel'] for t in TRANSIENT):
+                    continue
                 bad.append(f'{cid}: the camera aimed at "{m["sel"]}" and nothing matched it')
                 continue
             cut = []
-            if m['T'] < -1:
-                cut.append(f'top by {-m["T"]}px')
-            if m['B'] > m['uh'] + 1:
-                cut.append(f'bottom by {m["B"] - m["uh"]}px')
             if m['L'] < -1:
                 cut.append(f'left by {-m["L"]}px')
             if m['R'] > m['uw'] + 1:
                 cut.append(f'right by {m["R"] - m["uw"]}px')
+            # A SUBJECT TALLER THAN THE WINDOW cannot be whole and must not be asked to be — a memory
+            # photograph is 2221px in a 1080px window, and fitting it would mean 58% black bars, which
+            # breaks the fill law instead. The rule for those: the TOP edge is flush and the eye drifts
+            # down into it. Sideways it must still never be cut.
+            tall = (m['B'] - m['T']) > m['uh']
+            if tall:
+                if m['T'] < -8 or m['T'] > 60:
+                    cut.append(f'taller than the frame and not sitting at its top (top edge at {m["T"]}px)')
+            else:
+                if m['T'] < -1:
+                    cut.append(f'top by {-m["T"]}px')
+                if m['B'] > m['uh'] + 1:
+                    cut.append(f'bottom by {m["B"] - m["uh"]}px')
             if cut:
                 bad.append(f'{cid}: the subject "{m["sel"]}" is cut {" and ".join(cut)}')
     return bad
