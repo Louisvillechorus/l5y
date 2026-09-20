@@ -16,7 +16,7 @@
    "note": "1.0b to 1.1 does a stupid framing thing — the house card to the prologue is wrong.",
    "proof": "a_house_to_prologue",
    "clean": 0,
-   "secs": 3.1
+   "secs": 3.2
   },
   {
    "id": "D-002",
@@ -41,7 +41,7 @@
    "note": "We never see her click Facebook.",
    "proof": "a_17_facebook_tap",
    "clean": 0,
-   "secs": 7.3
+   "secs": 6.7
   },
   {
    "id": "D-004",
@@ -52,7 +52,8 @@
    ],
    "note": "Slow the memory animations 15%.",
    "proof": "a_17_slower",
-   "clean": 0
+   "clean": 0,
+   "secs": 3.6
   },
   {
    "id": "D-005",
@@ -64,7 +65,7 @@
    "note": "2.2 is not centred on the two texts — the clock is chopped and so is Rob's card.",
    "proof": "a_22_two_notifs_framed",
    "clean": 0,
-   "secs": 12.3
+   "secs": 12.2
   },
   {
    "id": "D-006",
@@ -112,7 +113,8 @@
    ],
    "note": "2.4 should zoom out to the whole call UI first, then quickly in on Maybe: Cathy.",
    "proof": "a_24_wide_then_in",
-   "clean": 0
+   "clean": 0,
+   "secs": 13.7
   },
   {
    "id": "D-010",
@@ -194,8 +196,8 @@
    ],
    "note": "Two more seconds with her message on screen, and the swipe 1.5 s longer and dramatic.",
    "proof": "a_132_timing",
-   "clean": 1,
-   "last_build": "fd2a35488908"
+   "clean": 0,
+   "secs": 9.2
   },
   {
    "id": "D-017",
@@ -206,8 +208,8 @@
    ],
    "note": "13.3 starts on the whole phone screen so we see him unlock it.",
    "proof": "a_133_full_phone",
-   "clean": 1,
-   "last_build": "fd2a35488908"
+   "clean": 0,
+   "secs": 10.1
   },
   {
    "id": "D-018",
@@ -230,8 +232,8 @@
    ],
    "note": "Find My is him changing WHICH DEVICE reports his location — iPad to iPhone — not re-sharing with her. Faster.",
    "proof": "a_133_device_swap",
-   "clean": 1,
-   "last_build": "fd2a35488908"
+   "clean": 0,
+   "secs": 10.1
   },
   {
    "id": "D-020",
@@ -242,8 +244,8 @@
    ],
    "note": "She finishes 'tonight was amazing', hits send, we hear the send, then full black baked into the screen.",
    "proof": "a_144_send",
-   "clean": 1,
-   "last_build": "fd2a35488908"
+   "clean": 0,
+   "secs": 15.0
   },
   {
    "id": "D-021",
@@ -278,8 +280,8 @@
    ],
    "note": "A song selector, and the Menu must not dead-end.",
    "proof": "a_jump_panel",
-   "clean": 3,
-   "last_build": "fd2a35488908"
+   "clean": 0,
+   "secs": 6.2
   },
   {
    "id": "D-024",
@@ -290,8 +292,8 @@
    ],
    "note": "The projection window must be black during the cast questionnaire.",
    "proof": "a_gate_black",
-   "clean": 3,
-   "last_build": "fd2a35488908"
+   "clean": 0,
+   "secs": 13.4
   },
   {
    "id": "D-025",
@@ -302,7 +304,8 @@
    ],
    "note": "Preshow performer names span the full width, each line the same.",
    "proof": "a_perf_fill",
-   "clean": 0
+   "clean": 0,
+   "secs": 0.8
   },
   {
    "id": "D-026",
@@ -325,7 +328,8 @@
    ],
    "note": "The agent's \"SONNY READ IT\" text should arrive on a different notification from the bank alert and the emails (David clarified Sept 20 that this, not 4.9, is the cue he meant). It now carries its own tone — a custom text tone on that contact, which is what you set for the one person you cannot miss.",
    "proof": "a_bell",
-   "clean": 0
+   "clean": 0,
+   "secs": 0.4
   },
   {
    "id": "D-028",
@@ -337,7 +341,8 @@
    "note": "The licensed paper textures.",
    "proof": "a_paper",
    "blocked_on": "David, Sept 20: \"I don't think that i even want to use them... let's keep what we have.\" The sheets stay flat matte off-white.",
-   "clean": 0
+   "clean": 0,
+   "secs": 0.0
   },
   {
    "id": "D-029",
@@ -349,7 +354,8 @@
    "note": "The new money-minute QR.",
    "proof": "a_qr",
    "blocked_on": "it decodes to a Cloudinary .jpg, not a donation page — David to confirm the destination",
-   "clean": 0
+   "clean": 0,
+   "secs": 0.0
   },
   {
    "id": "D-030",
@@ -360,8 +366,8 @@
    ],
    "note": "Reverb and a taper on the time warp; the reverse clip when time runs backwards.",
    "proof": "a_warp",
-   "clean": 3,
-   "last_build": "fd2a35488908"
+   "clean": 0,
+   "secs": 6.1
   },
   {
    "id": "D-031",
@@ -372,8 +378,8 @@
    ],
    "note": "No divider between the month and the event when there is no event.",
    "proof": "a_foot_solo",
-   "clean": 2,
-   "last_build": "fd2a35488908"
+   "clean": 0,
+   "secs": 0.6
   },
   {
    "id": "D-032",
@@ -385,7 +391,8 @@
    ],
    "note": "The camera move and zoom on the song 9 notifications had disappeared. It is back, but it OVER-corrected: the push now crops the neighbouring card (see D-044). Not closed until the stack is both large and whole.",
    "proof": "a_song9_push",
-   "clean": 0
+   "clean": 0,
+   "secs": 12.4
   },
   {
    "id": "D-033",
@@ -397,8 +404,8 @@
    ],
    "note": "The Casting Networks mail arrives with its tone three seconds before his text.",
    "proof": "a_10_mail_first",
-   "clean": 3,
-   "last_build": "fd2a35488908"
+   "clean": 0,
+   "secs": 10.8
   },
   {
    "id": "D-034",
@@ -474,8 +481,8 @@
    ],
    "note": "Song 7's MacBook type is the smallest in the show — 14.6 px projected against 76-81 px on the phone. The laptop is the only device whose type is hardcoded in pixels instead of derived from --ph, and it is never framed.",
    "proof": "a_laptop_legible",
-   "clean": 3,
-   "last_build": "fd2a35488908"
+   "clean": 0,
+   "secs": 17.1
   },
   {
    "id": "D-039",
@@ -597,7 +604,8 @@
    ],
    "note": "BUTTONS DID NOT MATCH STATE. Answering a call changed only the status line, so a CONNECTED call still showed Answer/Decline. CLAUDE.md: a connected call shows mute/end/speaker, never Answer. Same class as the receipt bug — a live handler mutating in place and diverging from the settled render.",
    "proof": "a_call_buttons_match",
-   "clean": 0
+   "clean": 0,
+   "secs": 74.6
   },
   {
    "id": "D-047",

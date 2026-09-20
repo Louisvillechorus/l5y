@@ -21,14 +21,24 @@ def goto(pg, n, c=0):
     pg.wait_for_timeout(180)
 
 
-def fire(pg, budget_ms=30000):
+def fire(pg, budget_ms=30000, settle=True):
+    """Fire a cue the way the operator does, and — unless told otherwise — WAIT FOR THE CAMERA.
+
+    animRunning going false only means the cue's own animation finished. The camera's glide is a
+    further 1.4 s CSS transition, so a probe that measures a rect the instant the cue ends reads a
+    subject that is still travelling and reports a chop that the audience never sees. This cost a
+    false regression on D-032; every geometry probe now settles by default.
+    """
     pg.evaluate('advance()')
     waited = 0
     while waited < budget_ms:
         pg.wait_for_timeout(150)
         waited += 150
         if not pg.evaluate('animRunning'):
-            return waited
+            break
+    if settle:
+        pg.wait_for_timeout(1800)
+        waited += 1800
     return waited
 
 
@@ -289,7 +299,7 @@ def a_song9_push(pg):
     boot(pg)
     goto(pg, 9, 0)
     fire(pg)
-    fire(pg)          # 9.2 — the first notification
+    fire(pg)          # 9.2 — the first notification (fire() settles the camera for us)
     r = pg.evaluate("""(()=>{ const n=document.querySelector('#projDevice .nstack .notif'); if(!n) return null;
         const b=n.getBoundingClientRect(); return {w:b.width,h:b.height,x:b.x,y:b.y,
         fw:innerWidth*(1-ERA_ZONE_()), fh:innerHeight}; })()""")
@@ -309,7 +319,7 @@ def a_10_mail_first(pg):
     boot(pg)
     goto(pg, 10, 0)
     tap_sfx(pg)
-    fire(pg, 40000)
+    fire(pg, 40000, settle=False)
     log = sfx_log(pg)
     mail = [t for n, t in log if n == 'mail']
     txt = [t for n, t in log if n in ('receive', 'notif')]
