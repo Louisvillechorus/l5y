@@ -197,7 +197,11 @@ def a_perf_fill(pg):
     pg.wait_for_timeout(400)
     m = pg.evaluate("""(()=>{ const sh=document.querySelector('#era .pad .sheet.top'); if(!sh) return null;
         const cs=getComputedStyle(sh), inner=sh.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);
-        const fl=[...sh.querySelectorAll('.fl')].map(e=>e.getBoundingClientRect().width);
+        // measure the TYPE, not the box: .fl is display:block, so its rect always spans the sheet
+        // whatever size the letters are. A Range around the text gives the ink's real width.
+        const fl=[...sh.querySelectorAll('.fl')].map(e=>{
+          const r=document.createRange(); r.selectNodeContents(e);
+          return r.getBoundingClientRect().width; });
         return {inner, fl}; })()""")
     if not m or not m['fl']:
         return ['the performer card renders no fill-lines']

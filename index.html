@@ -4543,14 +4543,25 @@ function fitPad(era){   // the card is fixed; the words are not. Anything wider 
   const sh=era.querySelector('.pad .sheet.top'); if(!sh) return;
   const cs=getComputedStyle(sh), inner=sh.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);
   if(!(inner>200)) return;   // mid-transition or unlaid-out: never fit against a collapsed box
-  sh.querySelectorAll('.fl').forEach(e=>{            // FILL: every line of a name spans the same width
+  // FILL: every line of a name spans the same width. MEASURE THE TYPE, NOT THE BOX — `.fl` is a
+  // display:block line, so its scrollWidth can never report LESS than the sheet's width and the
+  // fill silently no-opped for every name narrower than its box (David, Sept 20: the names were
+  // never really filling; the QA that said they were measured the box too). A Range round the
+  // text reports the ink.
+  const inkW = e => { const r=document.createRange(); r.selectNodeContents(e);
+                      return r.getBoundingClientRect().width; };
+  sh.querySelectorAll('.fl').forEach(e=>{
     e.style.fontSize=''; const t=e.textContent.trim(); if(!t) return;
-    const base=parseFloat(getComputedStyle(e).fontSize), w=e.scrollWidth; if(!(w>0)) return;
-    e.style.fontSize=Math.min(base*inner/w*0.99, inner*0.42).toFixed(2)+'px'; });
+    const base=parseFloat(getComputedStyle(e).fontSize), w=inkW(e); if(!(w>0)) return;
+    e.style.fontSize=Math.min(base*inner/w*0.99, inner*0.42).toFixed(2)+'px';
+    const w2=inkW(e);                      // one correction pass: font metrics are not perfectly linear
+    if(w2>0 && Math.abs(w2-inner)/inner>0.01){
+      const f=parseFloat(e.style.fontSize);
+      e.style.fontSize=Math.min(f*inner/w2*0.995, inner*0.42).toFixed(2)+'px'; } });
   ['.yr','.ynum','.sub','.ttl','.frow'].forEach(sel=>{ const e=sh.querySelector(sel); if(!e) return;
     if(e.querySelector('.fl')) return;                 // a filled name manages its own lines
     e.style.fontSize=''; if(!e.textContent.trim()) return;
-    const w=e.scrollWidth; if(w<=inner) return;
+    const w=Math.max(e.scrollWidth, inkW(e)); if(w<=inner) return;
     const base=parseFloat(getComputedStyle(e).fontSize);
     e.style.fontSize=(base*inner/w*0.985).toFixed(2)+'px'; });
 }

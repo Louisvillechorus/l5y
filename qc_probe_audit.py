@@ -28,7 +28,11 @@ MUTATIONS = {
               "document.getElementById('btnMenu').onclick=()=>{}",
               'made the Menu button a dead end again'),
     'D-025': (C.a_perf_fill,
-              "window.fitPad=()=>{}",
+              # stubbing window.fitPad does NOT work — setStamp calls it by its lexical name, so the
+              # stub is never reached. An !important rule beats the inline size fitPad writes.
+              "(()=>{const s=document.createElement('style');"
+              "s.textContent='#era .pad.house.perf .fl{font-size:9vh !important}';"
+              "document.head.appendChild(s);})()",
               'stopped the performer name filling the sheet'),
     'D-031': (C.a_foot_solo,
               "window.footSolo=()=>{}",
