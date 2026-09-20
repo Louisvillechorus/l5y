@@ -4293,7 +4293,12 @@ const CAST_NAMES={ml:'MAEGAN & LANDON', ac:'ANDREW & CHARLIE'};
 let CAST='ml'; try{ const c=localStorage.getItem('l5y_cast'); if(CAST_NAMES[c]) CAST=c; }catch(e){}
 /* per-cast media: asset code -> image/video URL (or data URI baked at build).
    Filled in as real files arrive; a missing entry renders the greeked placeholder. */
-const CAST_ASSETS={ml:{},ac:{}};
+/* THE CAST PHOTOS. Filled by build.py from assets/cast/<CODE>-ML|-AC|-SHARED. A cue references the
+   CODE and never a file, so one build serves both couples; a code with no file renders the greeked
+   placeholder rather than breaking. (Before Sept 20 this object was declared empty and nothing ever
+   filled it, so every photograph in the show was a placeholder with no way to supply one.) */
+const CAST_ASSETS=(function(){ const L=(typeof window!=='undefined'&&window.L5Y_CAST)||{};
+  return {ml:L.ml||{}, ac:L.ac||{}}; })();
 /* CONTACT PHOTOS (David, Sept 19): they wind up in each other's phone books. Jamie's photo is M24, Cathy's is M25;
    when the file exists every avatar of that person (rows, thread header, calls, FaceTime, Find My, Facebook) shows it. */
 function avAsset(name){ const n=String(name||''); return /^jamie/i.test(n)?assetFor('M24'):/^cathy/i.test(n)?assetFor('M25'):null; }

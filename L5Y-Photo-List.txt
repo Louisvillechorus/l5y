@@ -1,0 +1,38 @@
+THE SECOND SCREEN — PHOTO / VIDEO LIST
+Needed for BOTH casts (Maegan & Landon, Andrew & Charlie).
+Same codes, different files — never fork the show.
+
+THE SIX STILLS
+M24  JAMIE — contact photo. His face in her phone: every avatar,
+     thread header, call screen, FaceTime, Find My. Also song 1.1.
+     Head and shoulders, phone-snapshot feel, not a headshot.
+M25  CATHY — contact photo. Same, in his phone.
+M2   THE BEAR. Jamie giving Cathy the bear, nine months in.
+     Song 1.6, the LAST memory card — the one she drifts back up to.
+M3a  THE RING / THE ROWBOAT. June 12, the proposal. Song 1.6.
+M4   THE WEDDING PORTRAIT. May. Song 1.6, and his wallpaper in song 9.
+M26  CATHY IN THE DRESSING-ROOM MIRROR. Ohio round two, day one. Song 1.6.
+
+THE ONE VIDEO
+V2   JAMIE AT HIS DESK — the prerecorded FaceTime, half-attending,
+     writing. Song 7, the whole song. Shot to his laptop camera.
+
+FILE NAMES for the six stills and the video — drop in assets/cast/
+     M24-ML.jpg   M24-AC.jpg      (or .png / .jpeg / .webp)
+     M25-ML.jpg   M25-AC.jpg
+     M2-ML.jpg    M2-AC.jpg
+     M3a-ML.jpg   M3a-AC.jpg
+     M4-ML.jpg    M4-AC.jpg
+     M26-ML.jpg   M26-AC.jpg
+     V2-ML.mp4    V2-AC.mp4
+     -SHARED works too if one file serves both casts.
+     A missing file renders the greeked placeholder — it never breaks.
+
+THE PHOTO BED (preshow / intermission / bows) — drop in assets/loop/
+     ~50 per cast. Anything from the production or the couple.
+     Stills and Live Photos both; Live Photos play once as they fall.
+     …-ML.jpg  /  …-AC.jpg  /  …-SHARED.jpg
+
+NO LONGER NEEDED
+M23  Christmas tree lights — song 6 is calendar-only now.
+M1, M7/M7b, M12, M15 — cut.

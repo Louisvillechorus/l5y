@@ -25,6 +25,37 @@ for f in sorted(glob.glob('assets/fonts/*.woff2')):
     faces.append("@font-face{font-family:'%s';font-style:%s;font-weight:%s;font-display:block;src:url(data:font/woff2;base64,%s) format('woff2')}"
                  %(fam,sty,wt.replace('_',' '),base64.b64encode(open(f,'rb').read()).decode()))
 fontcss='<style id="l5yfonts">'+''.join(faces)+'</style>'
+try:
+    from PIL import Image
+    _HAVE_PIL=True
+except Exception:
+    _HAVE_PIL=False
+import io
+# THE CAST PHOTOS (M/V codes). One build serves both couples: a cue references M2, never a file,
+# and CAST_ASSETS resolves it per cast at runtime. Files are named <CODE>-ML / -AC / -SHARED.
+cast={'ml':{},'ac':{}}
+for f in sorted(glob.glob('assets/cast/*')):
+    base=os.path.basename(f); stem,ext=os.path.splitext(base); ext=ext.lower().lstrip('.')
+    m=re.match(r'^([MV]\d+[a-z]?)-(ML|AC|SHARED)$', stem, re.I)
+    if not m: continue
+    code, who = m.group(1).upper().replace('A','a') if False else m.group(1), m.group(2).upper()
+    if ext in ('jpg','jpeg','png','webp'):
+        mt={'jpg':'jpeg'}.get(ext,ext)
+        if _HAVE_PIL:
+            im=Image.open(f).convert('RGB'); w,h=im.size
+            if max(w,h)>1600:
+                k=1600/max(w,h); im=im.resize((round(w*k),round(h*k)), Image.LANCZOS)
+            buf=io.BytesIO(); im.save(buf,'JPEG',quality=82,optimize=True)
+            data='data:image/jpeg;base64,'+base64.b64encode(buf.getvalue()).decode()
+        else:
+            data='data:image/%s;base64,%s'%(mt, base64.b64encode(open(f,'rb').read()).decode())
+    elif ext in ('mp4','m4v','mov','webm'):
+        mt={'mov':'quicktime','m4v':'mp4'}.get(ext,ext)
+        data='data:video/%s;base64,%s'%(mt, base64.b64encode(open(f,'rb').read()).decode())
+    else:
+        continue
+    for c in (['ml','ac'] if who=='SHARED' else [who.lower()]): cast[c][code]=data
+
 img={}
 for f in sorted(glob.glob('assets/img/*')):
     ext=f.lower().rsplit('.',1)[-1]
@@ -34,12 +65,6 @@ for f in sorted(glob.glob('assets/img/*')):
 # THE PHOTO BED: the preshow/intermission prints. Stills are downscaled hard (they render ~25% of
 # stage height, so 720 px tall is already generous) and Live Photos ride along as short muted clips.
 loop={'ml':[],'ac':[]}
-try:
-    from PIL import Image
-    _HAVE_PIL=True
-except Exception:
-    _HAVE_PIL=False
-import io
 for f in sorted(glob.glob('assets/loop/*')):
     base=os.path.basename(f); stem,ext=os.path.splitext(base); ext=ext.lower().lstrip('.')
     up=stem.upper()
@@ -61,10 +86,11 @@ for f in sorted(glob.glob('assets/loop/*')):
         continue
     for c in casts: loop[c].append(ent)
 loopbytes=sum(len(e['s']) for c in loop for e in loop[c])
-assets='<script id="l5yassets">window.L5Y_SFX=%s;window.L5Y_PAPER=%s;window.L5Y_IMG=%s;window.L5Y_LOOP=%s;</script>'%(json.dumps(sfx),json.dumps(paper),json.dumps(img),json.dumps(loop))
+assets='<script id="l5yassets">window.L5Y_SFX=%s;window.L5Y_PAPER=%s;window.L5Y_IMG=%s;window.L5Y_LOOP=%s;window.L5Y_CAST=%s;</script>'%(json.dumps(sfx),json.dumps(paper),json.dumps(img),json.dumps(loop),json.dumps(cast))
 out=eng.replace('<script src="cues.js"></script>',assets+'\n<script>\n'+cues+'\n</script>')
 out=out.replace('</head>', fontcss+'\n</head>', 1)
 open('L5Y-Show-STANDALONE.html','w').write(out)
+print('cast assets:', {k:sorted(v) for k,v in cast.items()})
 print('embedded fonts:',len(faces))
 print('embedded sounds:',len(sfx),'paper scans:',len(paper),'images:',len(img),'| photo bed: %d ML / %d AC (%.1f MB)'%(len(loop['ml']),len(loop['ac']),loopbytes/1.4e6))
 open('docs/index.html','w').write(open('L5Y-Show-STANDALONE.html').read())
