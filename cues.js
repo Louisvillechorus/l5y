@@ -235,13 +235,9 @@ window.L5Y_SHOW = [
 /* ============ 6 · THE SCHMUEL SONG — JAMIE, his iPhone · the season only ============ */
 {n:6,t:'The Schmuel Song',who:'jamie',cues:[
  {id:'6.1',kind:'music',trig:'TOP OF THE SCHMUEL SONG — the tree lights come up, before he speaks',
-  what:'The calendar rolls BACK — MARCH · YEAR 4 → DECEMBER · YEAR 2 — and docks; his phone rises, locked, the Christmas wallpaper (M23). No animations: the phone keeps the season for the whole song.',
-  do:[{op:'clock',t:'9:12',d:'Saturday, December 24, 2022'},{op:'stamp',t:'their second Christmas'},
-      {op:'device',dev:'iphone',who:'jamie'},
-      {op:'wall',t:'M23 — Christmas tree lights'}]},
- {id:'6.2',kind:'music',trig:'FINAL CHORD — after the watch, the last note',
-  what:'The phone drops; DECEMBER · YEAR 2 holds center.',
-  do:[{op:'black'}]},
+  what:'CALENDAR ONLY (David, Sept 20 — the phone is cut from Schmuel). The pages roll BACK, MARCH · YEAR 4 → DECEMBER · YEAR 2, and the date holds center-stage for the whole song. No phone, no wallpaper.',
+  hold:'Nothing else fires in this song. The next GO is the top of song 7.',
+  do:[{op:'black'},{op:'clock',t:'9:12',d:'Saturday, December 24, 2022'},{op:'stamp',t:'their second Christmas'}]},
 ]},
 
 /* ============ 7 · A SUMMER IN OHIO — CATHY’s laptop · ONE FACETIME ============ */
@@ -264,13 +260,13 @@ window.L5Y_SHOW = [
 {n:8,t:'The Next Ten Minutes',who:'both',cues:[
  {id:'8.1',kind:'stage',trig:'JAMIE: “No, that one’s Jerry Seinfeld” — his first line, in the rowboat',
   what:'No phones, by direction. The calendar rolls BACK — JUNE · YEAR 3 → JUNE · YEAR 2, the engagement — and holds.',
-  do:[{op:'black'},{op:'clock',t:'4:44',d:'Monday, June 12, 2023'},{op:'stamp',t:'the rowboat'}]},
+  do:[{op:'black'},{op:'clock',t:'4:44',d:'Monday, June 12, 2023'},{op:'stamp',t:'the engagement'}]},
  {id:'8.2',kind:'lyric',trig:'JAMIE: “For the next ten lifetimes?” — the altar',
   what:'The pages tear FORWARD to the only date both timelines will ever share — MAY · YEAR 3 · THE WEDDING.',
   do:[{op:'clock',t:'6:47',d:'Saturday, May 18, 2024'},{op:'stamp',t:'the wedding'}]},
  {id:'8.3',kind:'lyric',trig:'CATHY: “Is that one John Lennon?” — back in the boat',
   what:'The pages settle BACK to the engagement — JUNE · YEAR 2.',
-  do:[{op:'clock',t:'4:44',d:'Monday, June 12, 2023'},{op:'stamp',t:'the rowboat'}]},
+  do:[{op:'clock',t:'4:44',d:'Monday, June 12, 2023'},{op:'stamp',t:'the engagement'}]},
  {id:'8.4',kind:'music',trig:'FINAL CHORD — the lights fade on the boat. END OF ACT ONE',
   what:'INTERMISSION: the torn band reads Intermission and holds, still, through the break.',
   do:[{op:'intermission'}]},

@@ -81,7 +81,7 @@
   body.blk #barTop{opacity:0 !important}
   body.portrait #barTop{display:none}
   body.laptop #railL,body.laptop #railR{display:none}
-  body.laptop #projDevice{width:100%;height:100%;padding:8.5vh 0 1.2vh;align-items:flex-end}
+  body.laptop #projDevice{width:81%;height:100%;margin-right:auto;padding:8.5vh 0 1.2vh;align-items:flex-end}   /* the docked strip owns the right 19%; the laptop never runs under it */
   #barTop .bwho,#barTop .bwhen{display:flex;align-items:baseline}
   #barTop .bwho{gap:1.4vw} #barTop .bwhen{gap:2vw}
   #barTop .bname{font-family:'Courier Prime',monospace;font-weight:700;
@@ -696,16 +696,16 @@
      crosses the card. A Live Photo plays once as it lands and holds on its last frame. */
   #loop{position:absolute;inset:0;overflow:hidden;opacity:0;transition:opacity 1.2s ease;pointer-events:none;z-index:4}
   #loop.on{opacity:.46}
-  #loop .print{position:absolute;padding:.5vh;background:#faf8f3;will-change:transform,opacity;
-    transform-origin:50% 50%;opacity:0;
-    box-shadow:0 3.4vh 5.4vh rgba(0,0,0,.34);
-    transition:transform .58s cubic-bezier(.17,.85,.3,1), opacity .42s ease, box-shadow .58s cubic-bezier(.17,.85,.3,1)}
-  #loop .print.down{opacity:1;box-shadow:0 .32vh .55vh rgba(0,0,0,.34),0 1.1vh 2.1vh rgba(0,0,0,.20)}
-  #loop .print.gone{opacity:0;transition:opacity 1.3s ease}
+  #loop .print{position:absolute;will-change:transform}
+  #loop .print .pw{display:block;padding:.5vh;background:#faf8f3;
+    box-shadow:0 2.4vh 4vh rgba(0,0,0,.34),0 .5vh 1vh rgba(0,0,0,.20)}
   #loop .print img,#loop .print video{display:block;height:100%;width:100%;object-fit:cover;background:#ddd9d0}
   #loop .print .greek{display:flex;align-items:center;justify-content:center;height:100%;width:100%;
     background:repeating-linear-gradient(135deg,#d9d4c9 0 8px,#cfc9bd 8px 16px);
     font-family:'Courier Prime',monospace;font-size:1.5vh;letter-spacing:.2em;color:#6b665c}
+  /* it falls the whole way and leaves; nothing piles up. The sway is a leaf in wind, never a spin. */
+  @keyframes pfall{from{transform:translate3d(-3vw,-42vh,0)}to{transform:translate3d(9vw,120vh,0)}}
+  @keyframes psway{from{transform:translateX(-1.4vh) rotate(-3.5deg)}to{transform:translateX(1.4vh) rotate(3.5deg)}}
   /* (the cut falling-pages rule: the photo bed sets its own level above) */
   #loop:not(.on) .fall,#loop:not(.on) .sway{animation-play-state:paused}
   .fall{position:absolute;top:-34vh;left:0;animation:fall var(--dur) linear var(--delay) infinite;transition:opacity 1.4s ease}
@@ -1224,13 +1224,9 @@ const FALLBACK_SHOW = [
 /* ============ 6 · THE SCHMUEL SONG — JAMIE, his iPhone · the season only ============ */
 {n:6,t:'The Schmuel Song',who:'jamie',cues:[
  {id:'6.1',kind:'music',trig:'TOP OF THE SCHMUEL SONG — the tree lights come up, before he speaks',
-  what:'The calendar rolls BACK — MARCH · YEAR 4 → DECEMBER · YEAR 2 — and docks; his phone rises, locked, the Christmas wallpaper (M23). No animations: the phone keeps the season for the whole song.',
-  do:[{op:'clock',t:'9:12',d:'Saturday, December 24, 2022'},{op:'stamp',t:'their second Christmas'},
-      {op:'device',dev:'iphone',who:'jamie'},
-      {op:'wall',t:'M23 — Christmas tree lights'}]},
- {id:'6.2',kind:'music',trig:'FINAL CHORD — after the watch, the last note',
-  what:'The phone drops; DECEMBER · YEAR 2 holds center.',
-  do:[{op:'black'}]},
+  what:'CALENDAR ONLY (David, Sept 20 — the phone is cut from Schmuel). The pages roll BACK, MARCH · YEAR 4 → DECEMBER · YEAR 2, and the date holds center-stage for the whole song. No phone, no wallpaper.',
+  hold:'Nothing else fires in this song. The next GO is the top of song 7.',
+  do:[{op:'black'},{op:'clock',t:'9:12',d:'Saturday, December 24, 2022'},{op:'stamp',t:'their second Christmas'}]},
 ]},
 
 /* ============ 7 · A SUMMER IN OHIO — CATHY’s laptop · ONE FACETIME ============ */
@@ -1253,13 +1249,13 @@ const FALLBACK_SHOW = [
 {n:8,t:'The Next Ten Minutes',who:'both',cues:[
  {id:'8.1',kind:'stage',trig:'JAMIE: “No, that one’s Jerry Seinfeld” — his first line, in the rowboat',
   what:'No phones, by direction. The calendar rolls BACK — JUNE · YEAR 3 → JUNE · YEAR 2, the engagement — and holds.',
-  do:[{op:'black'},{op:'clock',t:'4:44',d:'Monday, June 12, 2023'},{op:'stamp',t:'the rowboat'}]},
+  do:[{op:'black'},{op:'clock',t:'4:44',d:'Monday, June 12, 2023'},{op:'stamp',t:'the engagement'}]},
  {id:'8.2',kind:'lyric',trig:'JAMIE: “For the next ten lifetimes?” — the altar',
   what:'The pages tear FORWARD to the only date both timelines will ever share — MAY · YEAR 3 · THE WEDDING.',
   do:[{op:'clock',t:'6:47',d:'Saturday, May 18, 2024'},{op:'stamp',t:'the wedding'}]},
  {id:'8.3',kind:'lyric',trig:'CATHY: “Is that one John Lennon?” — back in the boat',
   what:'The pages settle BACK to the engagement — JUNE · YEAR 2.',
-  do:[{op:'clock',t:'4:44',d:'Monday, June 12, 2023'},{op:'stamp',t:'the rowboat'}]},
+  do:[{op:'clock',t:'4:44',d:'Monday, June 12, 2023'},{op:'stamp',t:'the engagement'}]},
  {id:'8.4',kind:'music',trig:'FINAL CHORD — the lights fade on the boat. END OF ACT ONE',
   what:'INTERMISSION: the torn band reads Intermission and holds, still, through the break.',
   do:[{op:'intermission'}]},
@@ -1934,7 +1930,7 @@ function ftHTML(st){
   const ringing=/facetime…|calling|ringing/i.test(f.st||'');
   const ended=/ended/i.test(f.st||'');
   if(ringing) return `<div class="layer fs" style="background:linear-gradient(180deg,#1c2430,#0b0e14)">
-    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1em;color:#fff">
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1em;color:#fff;padding-bottom:6em">
       <div style="width:6.5em;height:6.5em;border-radius:50%;${avStyle(f.n,'#3a4568')};display:flex;align-items:center;
         justify-content:center;font-size:2.6em;animation:ftpulse 1.6s ease-in-out infinite">${avText(f.n,(f.n||'?')[0])}</div>
       <div style="font-size:2em;font-weight:500">${f.n||''}</div>
@@ -2781,9 +2777,10 @@ function frameDevice(st){
 function paintAll(st){
   const {S, portrait, h, mbFit}=stageMetrics(st);
   const preshow = (si===0 && ci===0);
+  const macAvail = S.w*(1-ERA_ZONE_());
   const macW = (!portrait)
-    ? Math.min(S.w*0.96/1.55, S.h*0.87)/mbFit
-    : Math.min(S.w*0.96/1.55, S.h*0.62)/mbFit;
+    ? Math.min(macAvail*0.97/1.55, S.h*0.87)/mbFit
+    : Math.min(macAvail*0.97/1.55, S.h*0.62)/mbFit;
   const pj=document.getElementById('projDevice');
   if(pj){
     pj.innerHTML = preshow ? houseHTML()
@@ -2998,7 +2995,7 @@ async function playCue(cue, st, tok){
       setStamp(st);
       continue; }
     if(o.op==='stamp'){ applyOp(st,o); setStamp(st); continue; }
-    if(o.op==='notif'){ applyOp(st,o); if(o.snd!==false && (!o.w||o.w==='now')) sfx(o.app==='Mail'?'mail':'notif',{seed:'n'+cue.id});
+    if(o.op==='notif'){ applyOp(st,o); if(o.snd!==false && (!o.w||o.w==='now')) sfx(o.app==='Mail'?'mail':(o.app==='Chase'?'tink':'notif'),{seed:'n'+cue.id});
       stacks().forEach(k=>{ const ns=k.querySelector('.nstack'); if(!ns) return;
         const d=document.createElement('div'); d.className='notif inbound';
         const art=ICON[o.app];
@@ -3007,7 +3004,7 @@ async function playCue(cue, st, tok){
           `${o.app}<span class="nw">${o.w||''}</span></div>`+
           `${(o.title && o.title!==o.app)?`<div class="ntitle">${o.title}</div>`:''}<div class="nb">${o.t}</div>`;
         ns.prepend(d); });
-      camPush('.nstack .notif', 3.2, 260);
+      camPush('.nstack .notif', 6, 260, null, null, true);   // force: the card must fill the reading window, not merely be on screen
       stacks().forEach(k=>{ if(k.querySelector('.nstack')) return;  // not on the lock screen → banner
         const old=k.querySelector('.inbanner'); if(old) old.remove();
         const art=ICON[o.app];
@@ -3722,9 +3719,12 @@ function footSolo(root){   // month │ event — the divider exists only when t
     fr.classList.toggle('solo', !(f && f.textContent.trim())); });
 }
 function fitPad(era){   // the card is fixed; the words are not. Anything wider than the sheet shrinks to fit.
+  // ONLY measure the pad in its CENTER home. Docked, the pad still has layout at strip width, and a
+  // measurement there would lock a tiny inline font-size that survives the trip back (David, Sept 20).
+  if(!era.classList.contains('center')) return;
   const sh=era.querySelector('.pad .sheet.top'); if(!sh) return;
   const cs=getComputedStyle(sh), inner=sh.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);
-  if(!(inner>0)) return;
+  if(!(inner>200)) return;   // mid-transition or unlaid-out: never fit against a collapsed box
   ['.yr','.ynum','.sub','.ttl','.frow'].forEach(sel=>{ const e=sh.querySelector(sel); if(!e) return;
     e.style.fontSize=''; if(!e.textContent.trim()) return;
     const w=e.scrollWidth; if(w<=inner) return;
@@ -3766,6 +3766,7 @@ function paintAll(st){
   if(pj){ pj.innerHTML = phoneUp(st) ? '<div class="stagecam"><div class="drift">'+deviceHTML(st, st.dev==='macbook'?macW:st.dev==='carplay'?cpH:h)+'</div></div>' : ''; }
   loopMode('off');   // the falling pages are cut (David, Sept 19 night)
   frameDevice(st);
+  if(phoneUp(st)){ CAM_ST=st; camRest(true); }   // a fresh .stagecam has no transform: re-aim at once or the shot plays at scale 1
   if(view==='presenter' && document.getElementById('previewInner')){
     // (no preview in the presenter any more — the operator watches the projection on a second monitor)
     const pv=document.getElementById('previewInner'), box=pv.parentElement; const bw=box.clientWidth, bh=Math.max(120,box.clientHeight-8);
@@ -3841,7 +3842,7 @@ async function eraRoll(A,B,tok,st,long){
   const dir=total>0?1:-1, n=Math.min(Math.abs(total), long?16:12);
   const ROLL_MS=6000; let base=0; for(let i=1;i<=n;i++) base+=(i<=2?200:(i===n?380:(i>n-3?260:135)));
   const scale=(ROLL_MS-700)/base;   // every roll lasts 6 s — the Time Warp music, five clock ticks (David); the pages share it
-  warpStart(ROLL_MS);
+  warpStart(ROLL_MS, dir<0);   // 5-4-3-2-1 gets the reverse clip
   const docked=era.dataset.home==='docked';
   const pad=era.querySelector(docked?'.strip':'.pad'), top=era.querySelector(docked?'.strip .stop':'.pad .top');
   const fill=(el,m,y)=>{ const q=s=>el.querySelector(s);
@@ -3890,48 +3891,50 @@ function tornPath(side,seed){
   return side==='top'?`polygon(0 100%, ${pts.join(',')}, 100% 100%)`:`polygon(0 0, ${pts.join(',')}, 0 100%)`;
 }
 /* ---- THE PHOTO BED ----
-   Prints accumulate behind the house cards: one lands every few seconds, flat, with a real contact
-   shadow, and stays. Nothing tumbles, nothing spins, nothing crosses the card. A Live Photo plays once
-   as it lands and holds on its last frame.
-   BOOT-ORDER LAW: no top-level `let` here — boot code reaches these through hoisted accessors, and a
-   `let` in the temporal dead zone would kill every line of script after it. */
-function PILE_CFG(){ return PILE_CFG.o||(PILE_CFG.o={h:25, every:3400, cap:24}); }   // print height (% of stage) · ms between landings · prints on the pile — tunable in tech
+   Photographs FALL past the house cards (David, Sept 20): a new one every 3-5 s, drifting left to
+   right as it goes, swaying gently so you can still read it, all the way off the bottom. Nothing
+   accumulates. The spawn never stops, so a 30-minute house open can never go blank; the order is a
+   seeded shuffle of the cast's set, so every night is identical.
+   BOOT-ORDER LAW: no top-level `let` — boot code reaches these through hoisted accessors. */
+function PILE_CFG(){ return PILE_CFG.o||(PILE_CFG.o={h:25, every:[3000,5000], fall:[20000,26000]}); }
 function PILE_S(){ return PILE_S.o||(PILE_S.o={t:null, i:0, order:null}); }
 function pileList(){ const L=window.L5Y_LOOP||{}; return (L[CAST]||[]); }
 function pileReset(){ const L=document.getElementById('loop'); if(L) L.innerHTML=''; const S=PILE_S(); S.i=0; S.order=null; }
-function pileStop(){ const S=PILE_S(); if(S.t){ clearInterval(S.t); S.t=null; }
+function pileStop(){ const S=PILE_S(); if(S.t){ clearTimeout(S.t); S.t=null; }
   const L=document.getElementById('loop'); if(L) L.classList.remove('on'); }
 function pileStart(){
   const L=document.getElementById('loop'), S=PILE_S(); if(!L) return;
   if(L.dataset.cast!==CAST){ L.dataset.cast=CAST; pileReset(); }
-  L.classList.add('on');              // idempotent: a later render may have pulled the class, so always re-assert it
+  L.classList.add('on');              // idempotent: a later render may have pulled the class
   if(S.t) return;
-  pileDrop(); S.t=setInterval(pileDrop, PILE_CFG().every);
+  pileDrop();
 }
 function pileDrop(){
   const L=document.getElementById('loop'); if(!L) return;
   const S=PILE_S(), C=PILE_CFG(), list=pileList(), n=list.length || 12;   // no files yet → greeked prints, so the motion can be judged
   if(!S.order || S.order.length!==n){ const R=prng('pile'+CAST+':'+n); S.order=[...Array(n).keys()];
     for(let k=n-1;k>0;k--){ const j=Math.floor(R()*(k+1)); [S.order[k],S.order[j]]=[S.order[j],S.order[k]]; } }
-  const ent=list[S.order[S.i % n]], R=prng('print'+CAST+':'+S.i);        // seeded: every night is identical
+  const ent=list[S.order[S.i % n]], R=prng('fall'+CAST+':'+S.i);
   const ratio=ent?ent.r:(R()<.45?0.75:1.4), h=C.h, w=h*ratio;
-  const x=(-6 + R()*112), y=(-8 + R()*116), rot=(R()*12-6);
+  const x=(-4 + R()*96);                                   // where it enters across the top
+  const fall=C.fall[0] + R()*(C.fall[1]-C.fall[0]);        // slow and consistent
+  const sway=3200 + R()*2200, tilt=(R()*10-5);
   const el=document.createElement('div'); el.className='print';
-  el.style.cssText='height:'+h+'vh;width:'+w.toFixed(2)+'vh;left:'+x.toFixed(2)+'%;top:'+y.toFixed(2)+'%;'+
-    'transform:translate3d(0,-2.6vh,0) rotate('+rot.toFixed(2)+'deg) scale(1.035)';
-  el.innerHTML = !ent ? '<div class="greek">S00-LOOP</div>'
+  el.style.cssText='height:'+h+'vh;width:'+w.toFixed(2)+'vh;left:'+x.toFixed(2)+'%;top:0;'+
+    'animation:pfall '+(fall/1000).toFixed(2)+'s linear forwards';
+  const inner=document.createElement('div'); inner.className='pw';
+  inner.style.cssText='height:100%;box-sizing:border-box;transform:rotate('+tilt.toFixed(1)+'deg);'+
+    'animation:psway '+(sway/1000).toFixed(2)+'s ease-in-out infinite alternate';
+  inner.innerHTML = !ent ? '<div class="greek">S00-LOOP</div>'
     : ent.k==='vid' ? '<video muted playsinline preload="auto" src="'+ent.s+'"></video>'
     : '<img alt="" src="'+ent.s+'">';
-  L.appendChild(el);
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{
-    el.classList.add('down');
-    el.style.transform='translate3d(0,0,0) rotate('+rot.toFixed(2)+'deg) scale(1)';
-    const v=el.querySelector('video');
-    if(v){ try{ v.currentTime=0; const pr=v.play(); if(pr&&pr.catch) pr.catch(()=>{}); }catch(e){} }   // a Live Photo comes to life as it lands
-  }));
+  el.appendChild(inner); L.appendChild(el);
+  el.addEventListener('animationend', ()=>el.remove());
+  setTimeout(()=>{ if(el.isConnected) el.remove(); }, fall+1500);   // belt and braces: nothing is left behind
+  const v=inner.querySelector('video');
+  if(v){ try{ v.currentTime=0; const pr=v.play(); if(pr&&pr.catch) pr.catch(()=>{}); }catch(e){} }
   S.i++;
-  const all=L.querySelectorAll('.print:not(.gone)');
-  if(all.length>C.cap){ const old=all[0]; old.classList.add('gone'); setTimeout(()=>old.remove(),1400); }
+  S.t=setTimeout(pileDrop, C.every[0] + R()*(C.every[1]-C.every[0]));
 }
 function loopMode(mode){
   const L=document.getElementById('loop'); if(!L) return; L.classList.remove('on'); L.dataset.mode='off'; return;   // cut: the still pad carries preshow and intermission
@@ -4119,7 +4122,14 @@ function sfx(name,o={}){
   }
 }
 var RING=null;
-function sfxRing(kind){ sfxRingStop(); if(!sfxOn()) return; if(kind==='ringback') return;   // ringback lives in the earpiece: silent on stage
+function sfxRing(kind){ sfxRingStop(); if(!sfxOn()) return;
+  if(kind==='ringback'){            // the caller's end: exactly TWO rings, then it stops
+    RING={kind,timer:null};
+    let left=2; const beat=()=>{ if(!RING||RING.kind!=='ringback') return;
+      const t=AC.currentTime+.02;
+      tone(440,t,1.9,{gain:.085,attack:.02,release:.16}); tone(480,t,1.9,{gain:.085,attack:.02,release:.16});
+      if(--left>0) RING.timer=setTimeout(beat,3400); };
+    beat(); return; }
   RING={kind,timer:null};
   const src=sample(kind,{loop:true,gain:kind==='ftring'?.65:.55}); if(src){ RING.src=src; } return;   // the real ring, looped and quiet — or nothing
   const beat=()=>{ if(!RING||RING.kind!==kind) return; const t=AC.currentTime+.02;
@@ -4270,11 +4280,11 @@ function SFX_MAP_(){ return {send:'SentMessage.caf',receive:'ReceivedMessage.caf
   click:'key_press_click.caf',del:'key_press_delete.caf',keymod:'key_press_modifier.caf',tap:'Tock.caf',tink:'Tink.caf',lock:'lock.caf',unlock:'unlock.caf',swipe:'Swish.m4r',
   connect:'vc~invitation-accepted.caf',end:'vc~ended.caf',ftring:'vc~ringing.caf',ring:'vibrate.mp3',busy:'ct-busy.caf',error:'ct-error.caf',keytone:'ct-keytone2.caf',
   lowbat:'low_power.caf'}; }
-function SFX_TRIM_(){ return {click:.35,del:.35,keymod:.35,lowbat:.55,send:.7,receive:.7,notif:.7,mail:.7,mailsent:.7,connect:.7,end:.7,lock:.5,ring:.55,ftring:.65}; }
+function SFX_TRIM_(){ return {click:.35,del:.35,keymod:.35,lowbat:.55,tink:.6,send:.7,receive:.7,notif:.7,mail:.7,mailsent:.7,connect:.7,end:.7,lock:.5,ring:.55,ftring:.65}; }
 /* THE SOUND LAW (David, Sept 19 night): the screen makes ONLY the sounds a real iPhone makes with its volume up, and
    quietly. No paper, no ambience, no taps, no swipes, no unlock (iOS has none), no ringback (that lives in the earpiece).
    Keyboard clicks are ON for every typing beat (David, Sept 19 night — the real key_press_click / _delete / _modifier); a cue may mute them with keys:false. */
-function SFX_KEEP_(){ return {send:1,receive:1,notif:1,mail:1,mailsent:1,lock:1,ftring:1,ring:1,end:1,connect:1,lowbat:1}; }
+function SFX_KEEP_(){ return {send:1,receive:1,notif:1,mail:1,mailsent:1,lock:1,ftring:1,ring:1,end:1,connect:1,lowbat:1,tink:1}; }
 function b64bytes(str){ const i=str.indexOf(','); const bin=atob(i>=0?str.slice(i+1):str); const u=new Uint8Array(bin.length); for(let k=0;k<bin.length;k++) u[k]=bin.charCodeAt(k); return u; }
 function cafDecode(u){
   if(!(u[0]===0x63&&u[1]===0x61&&u[2]===0x66&&u[3]===0x66)) throw new Error('not caf');
@@ -4308,12 +4318,27 @@ function sfxLoad(){ if(sfxLoad.done||!AC) return; sfxLoad.done=true; const S=win
     else AC.decodeAudioData(u.buffer.slice(u.byteOffset,u.byteOffset+u.byteLength)).then(b=>{ SFX_BUF_()[name]=b; }).catch(e=>console.warn('sfx decode',name,e));
   }catch(e){ console.warn('sfx',name,e); } }); }
 var WARP=null;
-function warpStart(durMs){ if(!sfxOn()) return; warpStop(0.15); const b=SFX_BUF_()['timewarp.mp3']; if(!b) return;
+function warpVerb(){   // a short plate so the clip rings out instead of stopping dead (David, Sept 20)
+  if(warpVerb.c) return warpVerb.c;
+  const n=Math.floor(AC.sampleRate*2.1), b=AC.createBuffer(2,n,AC.sampleRate);
+  for(let ch=0;ch<2;ch++){ const d=b.getChannelData(ch); const R=prng('verb'+ch);
+    for(let i=0;i<n;i++){ const t=i/n; d[i]=(R()*2-1)*Math.pow(1-t,2.8)*(i<AC.sampleRate*0.012?0:1); } }
+  const c=AC.createConvolver(); c.buffer=b; warpVerb.c=c; return c;
+}
+function warpStart(durMs, back){ if(!sfxOn()) return; warpStop(0.15);
+  // time running backwards gets David's reverse clip; forwards gets the Time Warp music
+  const file = back ? 'reverse_timewarp.mp3' : 'timewarp.mp3';
+  const b=SFX_BUF_()[file] || SFX_BUF_()['timewarp.mp3']; if(!b) return;
   const src=AC.createBufferSource(); src.buffer=b; const g=AC.createGain(); const t=AC.currentTime, d=Math.max(0.8,durMs/1000);
   g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(.8,t+.12);
-  const tail=Math.min(.9,d*.35); g.gain.setValueAtTime(.8,t+d-tail); g.gain.exponentialRampToValueAtTime(0.0001,t+d);
-  src.connect(g).connect(MASTER); src.start(t); src.stop(t+d+.05); WARP={src,g}; src.onended=()=>{ if(WARP&&WARP.src===src) WARP=null; }; }
-function warpStop(fade){ if(!WARP) return; const {src,g}=WARP; WARP=null; const t=AC.currentTime, f=fade==null?.3:fade;
+  const tail=Math.min(1.7,d*.5);   // a long taper: the end must not be abrupt
+  g.gain.setValueAtTime(.8,t+d-tail); g.gain.exponentialRampToValueAtTime(0.0001,t+d);
+  const wet=AC.createGain(); wet.gain.value=.34;
+  try{ g.connect(warpVerb()).connect(wet).connect(MASTER); }catch(e){}
+  src.connect(g).connect(MASTER); src.start(t); src.stop(t+d+.05);
+  WARP={src,g,wet}; src.onended=()=>{ if(WARP&&WARP.src===src) WARP=null; }; }
+function warpStop(fade){ if(!WARP) return; const {src,g,wet}=WARP; WARP=null; const t=AC.currentTime, f=fade==null?.3:fade;
+  if(wet){ try{ wet.gain.cancelScheduledValues(t); wet.gain.setValueAtTime(Math.max(wet.gain.value,.0001),t); wet.gain.exponentialRampToValueAtTime(.0001,t+Math.max(.05,f)); }catch(e){} }
   try{ g.gain.cancelScheduledValues(t); g.gain.setValueAtTime(Math.max(g.gain.value,0.0001),t); g.gain.exponentialRampToValueAtTime(0.0001,t+Math.max(.05,f)); }catch(e){}
   setTimeout(()=>{ try{ src.stop(); }catch(e){} }, f*1000+100); }
 var BED=null;
