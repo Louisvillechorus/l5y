@@ -3422,7 +3422,7 @@ async function playCue(cue, st, tok){
       // important than the time"). Three or more: the newest card is the subject and the older ones
       // cascade off the bottom the way they do on a real lock screen — framing five at once is legible
       // to nobody at 25 feet.
-      camPush(notifCount()<=2 ? '.nstack' : '.nstack .notif:first-child', 6, 260, null, null, true);
+      camPush(notifCount()<=2 ? '.nstack' : '.nstack .notif:first-child', 6, 430, null, null, true, false, 0.84);   // 430 ms: the card must finish its inbound animation before the camera measures it, or a tall card lands 44 px past the bottom
       let banner=false;
       stacks().forEach(k=>{ if(k.querySelector('.nstack')) return;  // not on the lock screen → banner
         const old=k.querySelector('.inbanner'); if(old) old.remove();
@@ -4531,7 +4531,7 @@ function camWide(instant){ camRest(instant); }
    already in frame. When it is, the eye finds it; the camera holds. When it is not, the camera keeps its zoom if the
    target fits at that zoom (a pan, not a re-zoom) and only re-zooms when it must. Every move is one slow glide. */
 function notifCount(){ const ns=document.querySelector('#projDevice .nstack'); return ns?ns.children.length:0; }
-function camPush(sel,z,delay,anchor,dur,force,nofit){
+function camPush(sel,z,delay,anchor,dur,force,nofit,padf){
   const t0=animTok; const id=setTimeout(()=>{ if(t0!==animTok) return; camEls().forEach(c=>{
     const el=c.querySelector(sel); if(!el) return; const g=camGeom(c); if(!g) return;
     const T=el.getBoundingClientRect(); if(!T.width) return; const p1=g.loc(T.left,T.top), p2=g.loc(T.right,T.bottom);
@@ -4543,7 +4543,8 @@ function camPush(sel,z,delay,anchor,dur,force,nofit){
     if(!force && L>=g.ux && Rr<=uR && Tt>=mTop && Bb<=mBot) return;      // already in frame where the camera lands: hold
     if(anchor==='top'||anchor==='bottom'){ z=Math.max(1,Math.min(z, g.uw/g.dw)); camApply(c,g,z,qx,qy,anchor,false,dur||1.4); return; }
     const cur=parseFloat(c.dataset.z)||1;
-    const fitZ=Math.min(g.uw*0.88/tw, g.H*0.84/th);
+    const pf=padf||0.88;   // how much of the reading window the subject may fill; a taller subject needs more air
+    const fitZ=Math.min(g.uw*pf/tw, g.H*(pf-0.04)/th);
     z = nofit ? Math.max(1,Math.min(z,g.uw/g.dw)) : force ? Math.max(1,Math.min(z,fitZ)) : (cur>=1.05 && cur<=fitZ) ? cur : Math.max(1,Math.min(z,fitZ));   // pan at the current zoom when the target fits; re-zoom only when it must
     camApply(c,g,z,qx,qy,'center',false,dur||1.4); }); }, delay||0); CAM_T_().push(id);
 }
