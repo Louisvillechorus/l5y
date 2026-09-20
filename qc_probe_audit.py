@@ -12,9 +12,16 @@ import sys
 from playwright.sync_api import sync_playwright
 
 import qc_notes_core as C
+import qc_notes_era as E
 import qc_notes_subject as S
 
 FILE = 'file://' + os.path.abspath('L5Y-Show-STANDALONE.html')
+
+# The two era probes that sweep all 69 cues are minutes each. The audit only has to prove the
+# probe NOTICES a broken stage, and one broken cue proves that as well as sixty-nine do, so it
+# runs them over song 1 alone — which docks the phone (1.2) and swaps a house page (1.0a), the
+# two things they watch. `SHOW` is a top-level `let`, so it is assigned, never set on window.
+SONG1 = "SHOW = SHOW.slice(0,1); "
 
 # note id -> (probe, sabotage JS, what we broke)
 MUTATIONS = {
@@ -61,15 +68,62 @@ MUTATIONS = {
               "(()=>{const r=camPush; window.camPush=function(sel,z,d,a,du,f,nf,pf){"
               "return r.call(this,sel,14,d,a,du,true,true,pf); };})()",
               'over-zoomed every camera push so subjects overflow'),
+
+    # ---- the calendar (qc_notes_era). Every one of these breaks the artifact itself, at
+    # runtime, and the probe has to say so. An !important rule beats the inline styles
+    # fitPad/setEraHome write; the function overrides work because index.html is a classic
+    # script, so its top-level `function` declarations ARE properties of window.
+    'D-010': (E.a_era_morph,
+              "window.ERA_PARTS_=()=>[]",
+              'stopped every piece of type being carried between the two homes'),
+    'D-011': (E.a_cards_fall,
+              "(()=>{const s=document.createElement('style');"
+              "s.textContent='#era .pad.cardin{animation:none !important}"
+              "#era .pad.ghost.cardout{animation:none !important}';"
+              "document.head.appendChild(s);})()",
+              'took gravity off the house cards so they swap in place'),
+    'D-012': (E.a_title_fills,
+              "(()=>{const s=document.createElement('style');"
+              "s.textContent='#era .pad.house .sheet{left:0 !important;right:0 !important}';"
+              "document.head.appendChild(s);})()",
+              'squeezed the house pages back into the square date card'),
+    'D-013': (E.a_typed_foot,
+              "window.typeFoot=async function(){}",
+              'made the scene name appear whole instead of typing itself'),
+    'D-014': (E.a_92_no_inter_flash,
+              "(()=>{const r=padGhost; window.padGhost=function(era){const g=r(era);"
+              "if(g) g.classList.remove('inter','house','title','perf','next5'); return g;};})()",
+              'let the tearing page drop its face, so INTERMISSION snaps into the square frame'),
+    'D-036': (E.a_era_never_overlays,
+              SONG1 + "(()=>{const s=document.createElement('style');"
+              "s.textContent='#era.docked{margin-right:40vw !important}';"
+              "document.head.appendChild(s);})()",
+              'slid the docked calendar strip across the phone'),
+    # …in an IIFE, so the statement's value is undefined. page.evaluate() CALLS a string whose
+    # value is a function, and `window.x = function(a,b,c){…}` evaluates to that function — it
+    # would be invoked here with no arguments and throw before the probe ever ran.
+    'D-047': (E.a_no_stray_pages,
+              SONG1 + "(()=>{window.padFall=function(era,pad,ghost){"
+              "ghost.classList.add('cardout'); pad.classList.add('cardin');};})()",
+              'stopped the outgoing house page ever being removed from the stage'),
 }
 
 
 def run():
+    # --only D-010,D-011 audits one family in minutes instead of the whole hour. Like the gate's
+    # own --only it is a working tool, not a shipping run: only the full audit clears the file.
+    only = set()
+    if '--only' in sys.argv:
+        i = sys.argv.index('--only')
+        if i + 1 < len(sys.argv):
+            only = {x.strip().upper() for x in sys.argv[i + 1].split(',') if x.strip()}
     fake, ok, broken = [], [], []
     with sync_playwright() as p:
         b = p.chromium.launch(executable_path=os.environ.get('CHROMIUM_PATH') or None)
         ctx = b.new_context(viewport={'width': 1920, 'height': 1080})
         for nid, (probe, sabotage, what) in MUTATIONS.items():
+            if only and nid.upper() not in only:
+                continue
             pg = ctx.new_page()
             pg.goto(FILE)
             pg.wait_for_timeout(700)
@@ -95,7 +149,8 @@ def run():
         print(f'✗ {nid}  FAKE PROBE — I {what} and the gate still passed')
     for x in broken:
         print('· ' + x)
-    print(f'\n{len(ok)} probes proved they can fail · {len(fake)} fake · {len(broken)} inconclusive')
+    print(f'\n{len(ok)} probes proved they can fail · {len(fake)} fake · {len(broken)} inconclusive'
+          + ('   [PARTIAL — only ' + ','.join(sorted(only)) + ']' if only else ''))
     return 1 if (fake or broken) else 0
 
 
