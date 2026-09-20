@@ -4444,7 +4444,13 @@ addEventListener('keydown',e=>{
   else if(e.key==='Escape'){ if(view==='projection') return; jumpOpen(); }   // Esc opens the picker — it never un-starts the show (David, Sept 20)
 });
 /* one blackout for key, button and the other window — never a stale class after a hardRender */
-function setBlackout(v){ blk=!!v; document.body.classList.toggle('blk', blk||(CUR&&stageBlack(CUR))); paintChrome(); persistPos(); try{ ch.postMessage({from:CID,blk}); }catch(e){} }
+function setBlackout(v){ blk=!!v;
+  /* BLACKOUT IS A BLACKOUT (David, Sept 20 audit): it used to take the picture and leave the sound —
+     the lake, the Time Warp music and the phone buzzing on the table all played on to a black stage.
+     The operator hits this when something has gone wrong in the house; it has to take everything. */
+  if(blk){ try{ bedStop(.5); }catch(e){} try{ warpStop(.25); }catch(e){} try{ sfxRingStop(); }catch(e){} }
+  document.body.classList.toggle('blk', blk||(CUR&&stageBlack(CUR))); paintChrome(); persistPos();
+  try{ ch.postMessage({from:CID,blk}); }catch(e){} }
 function persistPos(){ try{ localStorage.setItem('l5y_pos', JSON.stringify({si,ci,blk,t:Date.now()})); }catch(e){} }
 document.addEventListener('mousedown',e=>{ const p=document.getElementById('volPop'); if(p&&p.classList.contains('on')&&!p.contains(e.target)&&!(e.target.closest&&e.target.closest('#btnVol'))) p.classList.remove('on'); });
 document.getElementById('openProj').onclick=openProjection;
@@ -5457,7 +5463,7 @@ paperInit();
    sound in sfx() still plays, so the show never goes silent. */
 function SFX_BUF_(){ return SFX_BUF_.o||(SFX_BUF_.o={}); }   // hoisted accessors — no top-level state that boot code could reach first
 function SFX_MAP_(){ return {send:'SentMessage.caf',receive:'ReceivedMessage.caf',notif:'sms-received1.caf',mail:'new-mail.caf',mailsent:'mail-sent.caf',
-  click:'key_press_click.caf',del:'key_press_delete.caf',keymod:'key_press_modifier.caf',tap:'Tock.caf',tink:'Tink.caf',lock:'lock.caf',unlock:'unlock.caf',swipe:'Swish.m4r',
+  click:'key_press_click.caf',del:'key_press_delete.caf',keymod:'key_press_modifier.caf',tap:'Tock.caf',tink:'Tink.caf',lock:'lock.caf',unlock:'unlock.caf',
   connect:'vc~invitation-accepted.caf',end:'vc~ended.caf',ftring:'vc~ringing.caf',ring:'vibrate.mp3',ringback:'ringback.mp3',busy:'ct-busy.caf',error:'ct-error.caf',keytone:'ct-keytone2.caf',
   }; }   /* low battery: CUT (David, Sept 20) */
 function SFX_TRIM_(){ return {ringback:.55,click:.35,del:.35,keymod:.35,tink:.6,send:.7,receive:.7,notif:.7,mail:.7,mailsent:.7,connect:.7,end:.7,lock:.5,unlock:.45,ring:.55,ftring:.65}; }
