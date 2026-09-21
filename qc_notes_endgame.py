@@ -362,8 +362,9 @@ def a_144_send(page):
         bad.append('14.4 never sends it (D-020 reverses the old "do not send")')
     elif names.index('send') < max(i for i, n in enumerate(names) if n == 'type'):
         bad.append('14.4 sends before she has finished typing')
-    if 'screenoff' not in names:
-        bad.append('14.4 does not end in black baked into the screen')
+    if 'screenoff' in names:
+        bad.append('14.4 still ends with the screen going black inside the phone — reversed Sept 21, '
+                   'her text is the last image of the show (D-072)')
     elif names.index('screenoff') < names.index('send'):
         bad.append('14.4 goes black before the send')
 
@@ -398,14 +399,17 @@ def a_144_send(page):
     if st['scroff']:
         bad.append('14.4 still blacks out inside the phone — her text is meant to be the last image '
                    'of the show, held through his last verse (D-072)')
-    if st['camVis'] != 'hidden':
-        bad.append('14.4: the screen content is still visible behind the black (visibility %s)'
-                   % st['camVis'])
-    if st['bg'] not in ('rgb(0, 0, 0)',):
-        bad.append('14.4: the phone screen is %s, not black' % st['bg'])
+    # …and the three clauses that used to prove the black WAS there now prove the opposite: the cue
+    # settles on a LIT phone with her sent message on it, because that picture has to survive his
+    # whole last verse. The black is the curtain's now, and D-072 proves it fades rather than cuts.
+    if st['camVis'] == 'hidden':
+        bad.append('14.4: the screen content is hidden — her text has to be readable through his '
+                   'last verse')
+    if st['bg'] == 'rgb(0, 0, 0)':
+        bad.append('14.4: the phone screen is black — it should still be lit on her message')
     vis = page.evaluate(VIS_JS, '#projDevice .iphone .screen')
-    if vis.strip():
-        bad.append('14.4: the dark screen still reads %r' % vis[:80])
+    if 'tonight was amazing' not in vis:
+        bad.append('14.4: the settled screen does not read her sent message (%r)' % vis[:80])
     return bad
 
 

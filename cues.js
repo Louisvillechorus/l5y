@@ -374,7 +374,7 @@ window.L5Y_SHOW = [
   do:[{op:'black'},{op:'batt',v:9},{op:'clock',t:'5:05',d:'Thursday, June 11, 2026'},{op:'stamp',t:'before dawn'}]},
  {id:'13.2',kind:'lyric',trig:'“Cathy is waiting” — her text lands',
   what:'AUTO-PLAYS from this GO. The calendar docks; his phone lights on the nightstand — 9% battery — with her good-morning text. It sits there, readable, for four seconds. Then he pushes it off the screen — slowly, the whole width of the glass, a deliberate erasure and not a flick — unread, and the phone drops again. JUNE · YEAR 5 holds.',
-  hold:'The two pauses (3500 before, 900 after) and the swipe length (`ms` on notifDismiss) are the tuning knobs — David, Sept 20: two more seconds to read it, and a swipe a second and a half longer.',
+  hold:'He does not open it — he CLEARS it. The card is pulled LEFT off its own Clear button, the word is held long enough to read, and only then does the card go (David, Sept 21: “you swipe right to unlock and open, you should swipe LEFT and see the word Clear”). The tuning knobs are the two pauses (3500 before, 900 after) and `ms` on notifDismiss, which is the whole gesture — it splits into the pull, the hold on Clear, and the card leaving.',
   do:[{op:'device',dev:'iphone',who:'jamie'},
       {op:'notif',app:'Messages',w:'now',title:'Cathy 💛',t:'good morning. can’t wait to see you — what time does your flight land?'},
       {op:'pause',ms:3500},{op:'notifDismiss',ms:1880},{op:'pause',ms:900},{op:'black'}]},
