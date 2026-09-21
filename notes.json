@@ -311,7 +311,7 @@
    "note": "A song selector, and the Menu must not dead-end.",
    "proof": "a_jump_panel",
    "clean": 3,
-   "secs": 13.9,
+   "secs": 14.0,
    "last_build": "3ae4ec1d6d65"
   },
   {
@@ -753,7 +753,7 @@
    "proof": "a_warp_fits_roll",
    "clean": 2,
    "last_build": "3ae4ec1d6d65",
-   "secs": 1.4
+   "secs": 1.2
   },
   {
    "id": "D-054",
@@ -924,6 +924,18 @@
    "proof": "a_house_leaves_bed",
    "clean": 0,
    "secs": 9.7
+  },
+  {
+   "id": "D-067",
+   "status": "fixed",
+   "family": "the operator's gate / multiple windows",
+   "cues": [
+    "start screen"
+   ],
+   "note": "Loading the cue URL took me to the projection screen instead of the start screen.",
+   "proof": "a_gate_recoverable",
+   "clean": 0,
+   "secs": 11.8
   }
  ]
 }

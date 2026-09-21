@@ -4193,7 +4193,7 @@ function paintChrome(){
   $('barView').textContent='view: '+view;
   const bt=$('barBuild'); if(bt) bt.textContent=BUILD;
 }
-function hardRender(){          // no animation — scrub, resize, view swap, remote sync
+function hardRender(){ LAST_ACT(Date.now());          // no animation — scrub, resize, view swap, remote sync
   if(typeof BED!=='undefined' && BED && BED.si!==si) bedStop(1.2);   // the bed belongs to its song
   if(typeof WARP!=='undefined' && WARP) warpStop(.2);
   animTok++; animRunning=false; if(typeof playStart!=='undefined') playStart=0; sfxRingStop(); camTimersClear();
@@ -4265,7 +4265,7 @@ setInterval(()=>{
     if(gone>playEst+6000){ playStart=0; }
   }
 },100);
-async function advance(){
+async function advance(){ LAST_ACT(Date.now());
   const cue=cues()[ci];
   const wasRunning=animRunning;
   animTok++; const tok=animTok;
@@ -4295,13 +4295,13 @@ function sync(){ persistPos(); try{ ch.postMessage({from:CID,si,ci,blk,started:t
 function next(){ if(ci<cues().length){ advance(); sync(); }
   else if(si<SHOW.length-1){ si++; ci=0; hardRender(); sync(); } }
 let SHOW_OVER=false;
-function prev(){ if(SHOW_OVER) return;   // past the final curtain there is no rewind (David, Sept 19 night)
+function prev(){ LAST_ACT(Date.now()); if(SHOW_OVER) return;   // past the final curtain there is no rewind (David, Sept 19 night)
   if(ci>0){ci--; hardRender(); sync();}
   else if(si>0){ si--; ci=cues().length; hardRender(); sync(); } }
 function goSong(d){ si=(si+d+SHOW.length)%SHOW.length; ci=0; hardRender(); sync(); }
 function setView(v){ view=v; document.body.classList.remove('v-presenter','v-projection');
   document.body.classList.add('v-'+v); hardRender(); }
-function startAs(v){ soundHostInit(v);
+function startAs(v){ LAST_ACT(Date.now()); soundHostInit(v);
   document.body.classList.remove('needgate','gatewait');
   try{ ch.postMessage({from:CID, gateowner:true, live:true}); }catch(e){}
   if(SHOW_OVER){ SHOW_OVER=false; si=0; ci=0; blk=false; try{ localStorage.removeItem('l5y_pos'); }catch(e){} }
@@ -4465,9 +4465,18 @@ const CID=Math.random().toString(36).slice(2);
 let ch; try{ ch=new BroadcastChannel('l5y-cues'); }catch(e){}
 if(ch) ch.onmessage=e=>{ const m=e.data; if(!m || m.from===CID) return;
   if(m.gatehello){   // a new window is asking whether anyone owns the questions
-    if(GATE_OWNER() || started) { try{ ch.postMessage({from:CID, gateowner:true, live:!!started}); }catch(x){} }
+    if(GATE_OWNER() || started) { try{ ch.postMessage({from:CID, gateowner:true, live:!!started,
+      idle: LAST_ACT() ? Date.now()-LAST_ACT() : 0}); }catch(x){} }
     return; }
-  if(m.gateowner){ if(m.live) gateWake(); else gateStandDown(); return; }
+  if(m.gateowner){
+    // A live show takes this window as its projector, exactly as before. An owner that has sat
+    // idle past the threshold is a stale tab: this window keeps the questions instead of being
+    // silently swallowed, and the old tab is left alone (standing a real presenter down
+    // mid-performance would be far worse than one extra questionnaire).
+    if(m.live && (m.idle||0) < GATE_IDLE_MS()) gateWake();
+    else if(m.live) { GATE_STOOD_DOWN.v=false; }
+    else gateStandDown();
+    return; }
   if(m.soundclaim && m.from!==CID && SOUND_HOST) yieldSound();   // two windows would double every cue
   if(m.cast && m.cast!==CAST) setCast(m.cast, true);
   if(m.perf!==undefined && m.perf!==PERF){ PERF=m.perf; try{ localStorage.setItem('l5y_perf',PERF); }catch(e){} if(started) hardRender(); }
@@ -4482,6 +4491,12 @@ if(ch) ch.onmessage=e=>{ const m=e.data; if(!m || m.from===CID) return;
 };
 
 addEventListener('keydown',e=>{
+  // SHIFT+G TAKES THE QUESTIONS BACK. A window that stood down, or that woke as a projector because
+  // another window already had the show up, has no gate and - until this line - no key that did
+  // anything: the operator was left looking at a title card with no way to start the night. This is
+  // checked before every other key and before the `started` guard, so it works in a dead window too,
+  // and it is not a GO key, so it can never fire a cue by accident during a performance.
+  if(e.key==='G' && e.shiftKey){ e.preventDefault(); gateRetake(); return; }
   if(!started) return;
   if(document.body.classList.contains('needgate')) return;   // the gate owns the keyboard too
   if(document.body.classList.contains('jumping')){ jumpKey(e); return; }   // the picker owns it while it is open
@@ -4497,7 +4512,7 @@ addEventListener('keydown',e=>{
   else if(e.key==='Escape'){ if(view==='projection') return; jumpOpen(); }   // Esc opens the picker — it never un-starts the show (David, Sept 20)
 });
 /* one blackout for key, button and the other window — never a stale class after a hardRender */
-function setBlackout(v){ blk=!!v;
+function setBlackout(v){ LAST_ACT(Date.now()); blk=!!v;
   /* BLACKOUT IS A BLACKOUT (David, Sept 20 audit): it used to take the picture and leave the sound —
      the lake, the Time Warp music and the phone buzzing on the table all played on to a black stage.
      The operator hits this when something has gone wrong in the house; it has to take everything. */
@@ -4634,6 +4649,25 @@ function gateClaim(){
 }
 function GATE_OWNER(v){ if(v!==undefined) GATE_OWNER.v=!!v; return !!GATE_OWNER.v; }
 function GATE_STOOD_DOWN(){ return !!GATE_STOOD_DOWN.v; }
+// WHEN DID THIS WINDOW LAST DO ANYTHING? A tab left open from an earlier rehearsal still answers
+// "the show is live" for ever, and every window opened afterwards silently became its projector -
+// David loaded the URL cold and got the title card with no start screen and no key that worked.
+// A real performance fires a GO every few minutes (the longest gap in the show is the intermission),
+// so an owner that has done nothing for 45 minutes is a leftover, not a live show. Accessor, not a
+// top-level let: boot code reaches it (BOOT-ORDER LAW).
+function LAST_ACT(v){ if(v!==undefined) LAST_ACT.t=v; return LAST_ACT.t||0; }
+function GATE_IDLE_MS(){ return 45*60*1000; }
+function gateRetake(){               // THE WAY BACK: this window asks tonight's questions, whatever
+  GATE_STOOD_DOWN.v=false; GATE_OWNER(true);   // another window believes. It never touches that window.
+  started=false; SHOW_OVER=false; blk=false; bootProj=false;
+  si=0; ci=0;
+  try{ gateArmStop(); }catch(e){}
+  document.body.classList.remove('gatewait','started','blk','jumping','erastage');
+  setView('presenter');
+  GATE.step=1; GATE.cast=null; GATE.perf=null; gatePaint();
+  document.body.classList.add('needgate');
+  hardRender();
+}
 function gateStandDown(){            // someone else owns the questions: be a projector and be black
   GATE_STOOD_DOWN.v=true; GATE_OWNER(false);
   document.body.classList.add('gatewait'); document.body.classList.remove('needgate'); }

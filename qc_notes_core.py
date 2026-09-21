@@ -504,6 +504,63 @@ def a_qr(pg):
             'confirm the destination before the house scans it']
 
 
+# ---------- D-067 · a second window must not be a dead end ----------
+def a_gate_recoverable(pg):
+    """David, Sept 21: he loaded the cue URL and landed on the projection screen with no start
+    screen. A window opened while another window of the same origin has the show up deliberately
+    becomes that show's projector - that is the design and it must not change. What was wrong is
+    that a tab left open from an EARLIER session claimed the same thing for ever, and a window
+    swallowed either way had no gate, no explanation and no key that did anything."""
+    import os
+    bad = []
+    URL = 'file://' + os.path.abspath('L5Y-Show-STANDALONE.html')
+    Q = """(()=>{const b=document.body, gw=document.getElementById('gatewrap');
+      return {gate: gw?getComputedStyle(gw).display:null,
+              needgate: b.classList.contains('needgate'),
+              gatewait: b.classList.contains('gatewait'),
+              started: b.classList.contains('started'),
+              view: b.classList.contains('v-projection')?'projection':'presenter'};})()"""
+
+    # 1 · a cold load asks the questions, full-screen
+    pg.wait_for_timeout(1200)
+    m = pg.evaluate(Q)
+    if not m['needgate'] or m['gate'] == 'none':
+        bad.append('a cold load does not put the questionnaire up (%r)' % m)
+
+    # 2 · while a show is genuinely LIVE, a second window is still its silent projector
+    pg.evaluate("startAs('presenter'); advance();")
+    pg.wait_for_timeout(900)
+    live = pg.context.new_page()
+    try:
+        live.goto(URL); live.wait_for_timeout(3200)
+        m = live.evaluate(Q)
+        if m['view'] != 'projection' or m['needgate']:
+            bad.append('a window opened during a live show no longer becomes its projector (%r) — '
+                       'the operator would get a questionnaire on the house screen' % m)
+        # 3 · …and Shift+G takes the questions back on that window
+        live.keyboard.press('Shift+G')
+        live.wait_for_timeout(1200)
+        m = live.evaluate(Q)
+        if not m['needgate'] or m['gate'] == 'none' or m['started']:
+            bad.append('Shift+G does not recover a swallowed window (%r) — it is a dead end again'
+                       % m)
+    finally:
+        live.close()
+
+    # 4 · a STALE owner (idle past the threshold) does not swallow a fresh window
+    pg.evaluate("LAST_ACT(Date.now() - 3*3600e3)")
+    stale = pg.context.new_page()
+    try:
+        stale.goto(URL); stale.wait_for_timeout(3200)
+        m = stale.evaluate(Q)
+        if not m['needgate'] or m['gate'] == 'none':
+            bad.append('a tab left open from an earlier session still swallows a fresh load (%r) — '
+                       'David gets the projection screen instead of the start screen' % m)
+    finally:
+        stale.close()
+    return bad
+
+
 # ---------- D-037 · one receipt in a thread, ever ----------
 def a_one_receipt(pg):
     bad = []

@@ -144,7 +144,19 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   no work-around until tonight is chosen: (1) cast, (2) preshow performer (Gayle King · Kenneth Bailey ·
   Taylor Thomas · Elijah Pahls · none), (3) both read back with “is this right?”, (4) **a SECOND person
   confirms**, and only then do the Start buttons exist. Stored as `l5y_perf`, synced to the projection window;
-  a `?view=projection` window is never gated. **Cue 1.0** turns the pad to the performer's name; “none” leaves
+  a `?view=projection` window is never gated. **ONE WINDOW ASKS, AND NO WINDOW IS A DEAD END (David,
+  Sept 21: "I just loaded the cue url and it appears to take me to the projection screen instead of the
+  start screen")**: a window opened while another window of the same origin has the show up becomes that
+  show's silent projector — that is the design and it stays. What was wrong is that a tab left open from an
+  EARLIER session answered "the show is live" for ever, so every later load was swallowed, with no gate, no
+  explanation and no key that did anything. The owner now reports how long it has been idle (`LAST_ACT`,
+  stamped by advance/prev/hardRender/blackout/start) and an owner idle past 45 minutes (`GATE_IDLE_MS` —
+  longer than any gap in a performance, intermission included) is treated as a leftover: the new window
+  keeps the questions and the old tab is NEVER stood down from here (blacking out a real presenter
+  mid-show would be far worse than one extra questionnaire). And **Shift+G (`gateRetake`) takes the
+  questions back on ANY window**, checked before the `started` guard so it works in a dead one; it is not
+  a GO key, so it cannot fire a cue by accident. Proof: `a_gate_recoverable` (D-067).
+  **Cue 1.0** turns the pad to the performer's name; “none” leaves
   the title page up so that GO is a harmless no-op, and 1.1 tears whatever page is on top either way.
 - **THE FINAL CURTAIN LOCKS (David, Sept 19 night; amended Sept 20)**: the `curtain` op sets `SHOW_OVER` —
   `prev()` does nothing (there is no rewind past the end). The questionnaire NO LONGER arms itself 2.6 s
