@@ -936,6 +936,82 @@
    "proof": "a_gate_recoverable",
    "clean": 0,
    "secs": 11.8
+  },
+  {
+   "id": "D-068",
+   "status": "fixed",
+   "family": "typed scene names / readability",
+   "cues": [
+    "all stamps"
+   ],
+   "note": "There are some moments where the typing of the day description disappears too quickly for the audience to read. Ie. 10.1 Audition Season - make sure they stay on the screen for at least 2-3 seconds fully typed.",
+   "proof": "a_foot_dwell",
+   "clean": 0,
+   "secs": 217.9
+  },
+  {
+   "id": "D-069",
+   "status": "fixed",
+   "family": "the dash / no white",
+   "cues": [
+    "12.1"
+   ],
+   "note": "12.2 there's a random white flash before the navigation starts.",
+   "proof": "a_dash_never_white",
+   "clean": 0,
+   "secs": 16.2
+  },
+  {
+   "id": "D-070",
+   "status": "fixed",
+   "family": "notifications / the real gesture",
+   "cues": [
+    "13.2"
+   ],
+   "note": "The swipe to dismiss Cathy's message on 13.2 is the wrong way - you swipe right to unlock and open, you should swipe LEFT and see the word Clear on the screen.",
+   "proof": "a_swipe_left_clear",
+   "clean": 0,
+   "secs": 10.2
+  },
+  {
+   "id": "D-071",
+   "status": "fixed",
+   "family": "the camera / the subject of the beat",
+   "cues": [
+    "13.3"
+   ],
+   "note": "The Find My change for 13.3 is VERY close, we just need to see 'sharing location from Jamie's iPad' on the screen for longer - just change the camera zoom effect there.",
+   "proof": "a_share_row_held",
+   "clean": 0,
+   "secs": 22.0
+  },
+  {
+   "id": "D-072",
+   "status": "fixed",
+   "family": "the ending",
+   "cues": [
+    "14.4",
+    "14.6",
+    "14.7"
+   ],
+   "note": "The last thing we should see before the blackout is the text 'tonight was amazing'. Cut everything else after that; the blackout should be a slow blackout to actual black, then one final cue to show the end screen.",
+   "proof": "a_ending_on_her_text",
+   "clean": 0,
+   "secs": 27.1
+  },
+  {
+   "id": "D-073",
+   "status": "fixed",
+   "family": "the calendar morph",
+   "cues": [
+    "1.7",
+    "3.4",
+    "3.7"
+   ],
+   "note": "End of 1.7 there's a text size issue - it recurs anytime we go back to the main YEAR # month/day screen initially, then fixes itself as the warp happens.",
+   "proof": "a_home_morph_clean",
+   "clean": 0,
+   "secs": 23.1
   }
  ]
 }

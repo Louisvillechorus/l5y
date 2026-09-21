@@ -203,7 +203,7 @@ def a_ending_on_her_text(pg):
         bad.append('14.4 never settles')
     st = pg.evaluate("""(()=>{const t=document.querySelector('#projDevice .thread');
       return {tail: t?(t.innerText||'').replace(/\\n+/g,' | ').slice(-46):null,
-              scroff: !!(window.CUR && CUR.scroff),
+              scroff: (typeof CUR!=='undefined' && !!CUR && !!CUR.scroff),
               blk: document.body.classList.contains('blk')};})()""")
     if st['scroff']:
         bad.append('her screen still goes dark in her hand — the text is meant to be the last image')
@@ -228,7 +228,7 @@ def a_ending_on_her_text(pg):
     # …and one more GO brings the end screen back
     _fire(pg)
     end = pg.evaluate("""(()=>{const e=document.getElementById('era');const pad=e.querySelector('.pad');
-      return {bows: !!(window.CUR && CUR.bows), face: e.dataset.face||'',
+      return {bows: (typeof CUR!=='undefined' && !!CUR && !!CUR.bows), face: e.dataset.face||'',
               cls: pad?pad.className:'', loop: !!document.querySelector('#loop')};})()""")
     if not end['bows']:
         bad.append('the last GO does not bring the end screen back')
