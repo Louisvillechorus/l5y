@@ -3,6 +3,7 @@ at the built STANDALONE (700 ms elapsed) and returns a list of plain-English com
 Empty list = the note is satisfied, measured, on the live path."""
 
 FILE_Q = '?view=projection'
+QR_WANT = 'https://givebutter.com/friends-of-rpa-xgna4k'   # D-029, David, Sept 21
 
 
 # ---------- helpers ----------
@@ -498,10 +499,48 @@ def a_paper(pg):
 
 
 def a_qr(pg):
-    if not pg.evaluate("!!(window.L5Y_IMG||{})['qr-next5']"):
-        return ['the money-minute QR is not embedded']
-    return ['WAITING ON DAVID: the new code decodes to a Cloudinary .jpg, not a donation page — '
-            'confirm the destination before the house scans it']
+    """D-029. The code David gave on Sept 21 decodes to the Redline donation page. This no longer
+    takes his word for it: it decodes the image the BUILD actually embedded, and then decodes the
+    money-minute card as rendered, shrunk, the way a phone in the house sees it across the room."""
+    import base64, io as _io, os
+    bad = []
+    src = pg.evaluate("(window.L5Y_IMG||{})['qr-next5']||''")
+    if not src:
+        return ['the money-minute QR is not embedded in the build']
+    try:
+        from PIL import Image
+        from pyzbar.pyzbar import decode
+    except Exception as e:
+        return ['cannot verify the QR: %s' % e]
+    raw = base64.b64decode(src.split(',', 1)[1]) if ',' in src else b''
+    im = Image.open(_io.BytesIO(raw)).convert('RGB')
+    got = [d.data.decode() for d in decode(im)]
+    if got != [QR_WANT]:
+        bad.append('the embedded code points at %r, not the donation page (%r)' % (got, QR_WANT))
+
+    # …and it must survive being printed onto the paper and read from the back of the house
+    loc = pg.evaluate("(()=>{for(let s=0;s<SHOW.length;s++){const k=SHOW[s].cues.findIndex(c=>c.id==='8.5');"
+                      " if(k>=0) return [s,k];} return null;})()")
+    if not loc:
+        return bad + ['there is no 8.5 to render the money minute']
+    pg.evaluate("startAs('projection')")
+    pg.evaluate("si=%d; ci=%d; animTok++; animRunning=false; hardRender();" % (loc[0], loc[1]))
+    pg.wait_for_timeout(500)
+    pg.evaluate("setTimeout(()=>advance(),0)")
+    pg.wait_for_timeout(3000)
+    shot = pg.screenshot()
+    card = Image.open(_io.BytesIO(shot)).convert('RGB')
+    floor = None
+    for w in (1920, 1200, 900, 700, 600, 500, 400):
+        r = card.resize((w, int(card.height * w / card.width)), Image.LANCZOS)
+        if [d.data.decode() for d in decode(r)] == [QR_WANT]:
+            floor = w
+    if floor is None:
+        bad.append('the rendered money-minute card does not scan at any size — the code is printed '
+                   'onto the paper in a way a phone cannot read')
+    elif floor > 900:
+        bad.append('the rendered card only scans down to %dpx wide — too tight for the house' % floor)
+    return bad
 
 
 # ---------- D-067 · a second window must not be a dead end ----------

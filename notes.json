@@ -380,12 +380,12 @@
   },
   {
    "id": "D-029",
-   "status": "confirm",
+   "status": "fixed",
    "family": "assets",
    "cues": [
     "8.5"
    ],
-   "note": "The new money-minute QR.",
+   "note": "The new money-minute QR. Installed Sept 21: it decodes to the Redline donation page.",
    "proof": "a_qr",
    "blocked_on": "it decodes to a Cloudinary .jpg, not a donation page — David to confirm the destination",
    "clean": 0,
