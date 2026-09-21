@@ -362,11 +362,12 @@ def a_144_send(page):
         bad.append('14.4 never sends it (D-020 reverses the old "do not send")')
     elif names.index('send') < max(i for i, n in enumerate(names) if n == 'type'):
         bad.append('14.4 sends before she has finished typing')
+    # (the old `elif` here asked where `screenoff` sat relative to the send — with the op gone it
+    # raised ValueError and the probe crashed instead of reporting, which is a failure that tells
+    # nobody anything. There is no ordering left to check: there is no screenoff.)
     if 'screenoff' in names:
         bad.append('14.4 still ends with the screen going black inside the phone — reversed Sept 21, '
                    'her text is the last image of the show (D-072)')
-    elif names.index('screenoff') < names.index('send'):
-        bad.append('14.4 goes black before the send')
 
     _goto(page, S14, k)
     page.evaluate("""() => { window.__snd=[]; if(!window.__sfxWrapped){ window.__sfxWrapped=true;
