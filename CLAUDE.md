@@ -154,8 +154,12 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   MINUTE** — “THE NEXT 5 YEARS” over Redline's QR code, fired when the speaker picks up the handheld mic ·
   8.6 the same band again when the ask is over. The QR (`assets/img/qr-next5.png`, embedded by build.py as
   `window.L5Y_IMG`) prints ONTO the paper with `mix-blend-mode:multiply` and **carries no ink grit** — a
-  filtered QR does not scan. It resolves to https://qrfy.io/xdf5ivr784 and was verified by decoding the
-  rendered 1920×1080 card down to 400 px wide.
+  filtered QR does not scan. **THE INSTALLED CODE IS WRONG AND DAVID KNOWS (D-029, open)**: it decodes to
+  a Cloudinary `.jpg`, not a donation page. His replacement is on Google Drive, which this environment's
+  network policy denies, so it cannot be fetched from here — the file must be committed to `assets/img/`,
+  or David can give the destination URL as text and the code is generated from it. On the current card the
+  render scans down to 600 px wide of the whole 1920×1080 frame (it was 400 px before the money minute
+  scaled to leave the photo bed room; the QR itself is still 590 px on a 1920 stage).
 - **TIME ONLY EVER CHANGES ON THE CALENDAR** (`eraRoll`), and every roll rides the TIME WARP MUSIC
   (`assets/sfx/timewarp.mp3`, David's file, `warpStart`: in on the first page, out as the last settles,
   stopped on a scrub): forward = pages tear off and fall;
