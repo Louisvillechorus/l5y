@@ -477,6 +477,13 @@
     font-size:.85em;overflow:hidden}
   .notif .nh .nw{margin-left:auto;font-weight:400;text-transform:none}
   .notif .nb{font-size:.8em;color:#000}
+  /* the Clear action a left swipe reveals under the card's trailing edge (David, Sept 21 — 13.2).
+     Same material as the card it belongs to, so it reads as part of the same object at 25 ft. */
+  .nstack{position:relative}
+  .nclear{position:absolute;right:3.5%;display:flex;align-items:center;justify-content:center;
+    min-width:4.4em;padding:0 .7em;border-radius:1.1em;background:rgba(250,250,252,.86);
+    backdrop-filter:blur(16px);color:#000;font-size:.78em;font-weight:600;opacity:0;pointer-events:none;
+    box-shadow:0 1px 6px rgba(0,0,0,.12)}
   .notif .ntitle{font-size:.8em;font-weight:600}
 
   /* ---------- realism: home screen ----------
@@ -1574,7 +1581,7 @@ const FALLBACK_SHOW = [
       {op:'pause',ms:3500},{op:'notifDismiss',ms:1880},{op:'pause',ms:900},{op:'black'}]},
  {id:'13.3',kind:'lyric',trig:'“…in love with someone like you” — his last line; Find My, the location device swapped',
   what:'THE WHOLE PHONE, so the house watches him unlock it. Find My opens on People: Cathy, Mount Orab, OH — she is exactly where she says she is. He taps ME. His own card reads Share My Location ON, Sharing From: Jamie’s iPad — the iPad on the desk at home, where she thinks HE is. One blue row: “Use This iPhone as My Location.” He taps it, and Sharing From becomes Jamie’s iPhone. The map now follows his body. Nothing turns on, nothing turns off — he just moves the dot into his pocket.',
-  hold:'He has been “sharing” with her all along; only the DEVICE changes. This iPhone was never the source and we never see him make the iPad one. Every step inside Find My is held long enough to READ (David, Sept 20 — “it’s way too fast”): 1.8 s on Cathy in Mount Orab, 2.8 s on “Sharing From: Jamie’s iPad”, and 2.8 s on “Jamie’s iPhone” after the swap, so the house sees the one word that changes. The hesitation is the house’s, not his: he still presses without pausing (the 0.8 s between the press and the tap is the finger on the row, not doubt). Hold on the settled card through the final chord; 14.1 takes it away.',
+  hold:'He has been “sharing” with her all along; only the DEVICE changes. This iPhone was never the source and we never see him make the iPad one. Every step inside Find My is held long enough to READ (David, Sept 20 — “it’s way too fast”): 1.8 s on Cathy in Mount Orab, then the camera goes to the SHARING FROM ROW ITSELF (David, Sept 21 — “just change the camera zoom effect there”) and holds it 4.6 s on “Jamie’s iPad” and 4.2 s on “Jamie’s iPhone”. The camera does not move between the two: the row is already in frame, so the house watches the word change in place. The hesitation is the house’s, not his: he still presses without pausing (the 0.8 s between the press and the tap is the finger on the row, not doubt). Hold on the settled card through the final chord; 14.1 takes it away.',
   do:[{op:'clock',t:'5:24'},{op:'device',dev:'iphone',who:'jamie',whole:true},
       {op:'pause',ms:900},
       {op:'unlock'},
@@ -1584,11 +1591,11 @@ const FALLBACK_SHOW = [
       {op:'btnHover',b:'Me'},{op:'btnTap',b:'Me'},
       {op:'findmy',me:{n:'Jamie Wellerstein',share:true,from:'Jamie’s iPad',
         action:'Use This iPhone as My Location',friendReq:true,updates:'People You Share With'}},
-      {op:'pause',ms:2800},
+      {op:'pause',ms:4600},
       {op:'btnHover',b:'Use This iPhone as My Location'},{op:'pause',ms:800},
       {op:'btnTap',b:'Use This iPhone as My Location'},
       {op:'findmy',me:{n:'Jamie Wellerstein',share:true,from:'Jamie’s iPhone',friendReq:true,updates:'People You Share With'}},
-      {op:'pause',ms:2800}]},
+      {op:'pause',ms:4200}]},
 ]},
 
 /* ============ 14 · GOODBYE UNTIL TOMORROW / I COULD NEVER RESCUE YOU ====
@@ -1604,28 +1611,24 @@ const FALLBACK_SHOW = [
   what:'Back to her: the pages settle BACK to the first night.',
   do:[{op:'clock',t:'11:47',d:'Friday, September 3, 2021'},{op:'stamp',t:'the first night'}]},
  {id:'14.4',kind:'lyric',trig:'CATHY: “I will be waiting for you!” — her LAST line before he stands; his text lands',
-  what:'THE ONE ANIMATION. The calendar docks; her phone lights on the steps: “home safe?” — the text the house watched him send in Shiksa Goddess. She opens it and answers it, slowly, and then she SENDS it — we hear the send. The bubble lands, and her screen goes dark in her hand. Black, inside the phone, as the last thing the audience has of her.',
-  hold:'David, Sept 20 — SHE SENDS (this reverses the earlier “do not send”). The send is stamped 11:51, after the call the house watched him take in Shiksa Goddess, so his phone in Song 2 is not contradicted. Hold the dark phone through his line; 14.5 takes it away.',
+  what:'THE ONE ANIMATION, AND THE LAST IMAGE OF THE SHOW. The calendar docks; her phone lights on the steps: “home safe?” — the text the house watched him send in Shiksa Goddess. She opens it and answers it SLOWLY, and then she SENDS it — we hear the send. “safe 😊 tonight was amazing” lands as a sent bubble and STAYS THERE, lit, through the whole of his last verse. Nothing takes it away; the curtain fades it out.',
+  hold:'David, Sept 21: “the last thing we should see before the blackout is the text ‘tonight was amazing’ — you can cut everything else after that.” Her screen no longer goes dark in her hand (that reverses Sept 20’s baked-in `screenoff`), his last verse has no cue at all, and the only thing left is the slow curtain at 14.6. She types at the `slow` pace and the sent bubble holds eight seconds before his verse even begins. The send is stamped 11:51, after the call the house watched him take in Shiksa Goddess, so his phone in Song 2 is not contradicted.',
   do:[{op:'clock',t:'11:48'},{op:'device',dev:'iphone',who:'cathy'},
       {op:'notif',app:'Messages',w:'now',title:'Jamie ✨',t:'home safe?'},
       {op:'pause',ms:1500},
       {op:'notiftap',to:'thread',contact:'Jamie ✨',sub:'mobile'},
       {op:'history',items:[{k:'stamp',t:'Today|10:42 PM'},{k:'me',t:'it’s cathy 😊 — from tonight'},
                            {k:'stamp',t:'Today|11:48 PM'},{k:'them',t:'home safe?'}]},
-      {op:'pause',ms:500},
-      {op:'type',pace:'hesitant',t:'safe 😊 tonight was amazing'},
-      {op:'pause',ms:1400},
+      {op:'pause',ms:900},
+      {op:'type',pace:'slow',t:'safe 😊 tonight was amazing'},
+      {op:'pause',ms:2200},
       {op:'clock',t:'11:51'},
       {op:'send'},{op:'rcpt',t:'Delivered'},
-      {op:'pause',ms:2400},
-      {op:'screenoff',ms:1600}]},
- {id:'14.5',kind:'lyric',trig:'JAMIE: “You never noticed how the wind had changed” — he stands',
-  what:'The dark phone goes; the pages tear FORWARD to JUNE · YEAR 5 — the breakup — and hold as the last image while he sings his goodbye.',
-  hold:'Hold it. Do not resolve it.',
-  do:[{op:'black'},{op:'clock',t:'4:12',d:'Thursday, June 11, 2026'},{op:'stamp',t:'the last afternoon'}]},
+      {op:'pause',ms:8000}]},
  {id:'14.6',kind:'music',trig:'FINAL BLACKOUT — on the last “Goodbye”',
-  what:'Curtain: true black. End of show.',
-  do:[{op:'curtain'}]},
+  what:'THE SLOW CURTAIN. Nothing drops and nothing cuts: her lit phone, with “tonight was amazing” still on the glass, fades — all of it together — over three and a half seconds, to true black. End of show.',
+  hold:'David, Sept 21: “the blackout should be a slow blackout to actual black.” `fade` is the knob. An ordinary curtain drops the phone first, which would take her text away BEFORE the black did; this one never does. His last verse has no cue — her text is on screen for all of it.',
+  do:[{op:'curtain',fade:3500}]},
  {id:'14.7',kind:'stage',trig:'BOWS — the company comes back on',
   what:'The house comes back: the title page center-stage with the photographs flooding behind it, faster than they fell before the show. It holds for as long as the bows run — it never empties and it never ends. The operator’s questionnaire waits until the house lights are up and the show is left.',
   hold:'Nothing to fire after this. When the bows are over, ☰ MENU (or esc) comes off the show and the gate asks tonight’s questions again for the next performance.',
@@ -2385,7 +2388,7 @@ function findmyHTML(st){
         <div style="background:#f2f2f7;border-radius:.7em;overflow:hidden">
           <div style="padding:.55em .8em;display:flex;justify-content:space-between;align-items:center">
             <span style="color:#000">Share My Location</span>${iosToggle(m.share!==false)}</div>
-          ${m.from?`<div style="padding:.55em .8em;border-top:1px solid #e5e5ea;display:flex;justify-content:space-between;align-items:center">
+          ${m.from?`<div class="fmshare" style="padding:.55em .8em;border-top:1px solid #e5e5ea;display:flex;justify-content:space-between;align-items:center">
             <span style="color:#000">Sharing From</span><span style="color:#8e8e93">${m.from}</span></div>`:''}
           ${m.action?`<div data-btn="${m.action}" style="padding:.55em .8em;border-top:1px solid #e5e5ea;color:#2f7cf6">${m.action}</div>`:''}
         </div>
@@ -3712,12 +3715,35 @@ async function playCue(cue, st, tok){
       // already filling itself with the card (the notif op forced it there) — the follow rule says hold.
       // `ms` is the length of the swipe itself: a flick by default, a deliberate erasure when a cue
       // asks for one (David, Sept 20 — 13.2: "not a flick"). It eases in AND out, so it never snaps away.
+      // THE DIRECTION IS THE POINT (David, Sept 21): on a real iPhone you swipe a notification RIGHT
+      // to OPEN it. To get rid of one you swipe LEFT, and the card slides off its own Clear button.
+      // So: the card goes left, CLEAR is revealed on its trailing edge and held long enough to read,
+      // and only then does the card leave. He is not opening her text. He is clearing it.
       const SW=Math.max(120, o.ms||380);
+      const PULL=Math.round(SW*0.42), HOLD=Math.max(900, Math.round(SW*0.34)), GO=SW-PULL;
       await wait(500); if(tok!==animTok) return; sfx('swipe');
-      stacks().forEach(k=>{ const n=k.querySelector('.nstack .notif'); if(!n) return;
-        n.style.transition=`transform ${(SW/1000).toFixed(2)}s cubic-bezier(.45,.05,.55,.95), opacity ${(SW*0.85/1000).toFixed(2)}s ease-in`;
-        n.style.transform='translateX(115%)'; n.style.opacity='0'; });
-      await wait(SW+40); if(tok!==animTok) return;
+      const clears=[];
+      stacks().forEach(k=>{ const ns=k.querySelector('.nstack'); const n=ns&&ns.querySelector('.notif'); if(!n) return;
+        const cb=document.createElement('div'); cb.className='nclear'; cb.textContent='Clear';
+        ns.appendChild(cb);
+        // LAYOUT PX, NOT SCREEN PX. The phone is camera-scaled ~3.39x, so a getBoundingClientRect
+        // height dropped straight into a style is off by that factor — the pill came out 1473px tall
+        // and its centred label sat far below the card. offsetTop/offsetHeight are layout, like the
+        // style they are feeding.
+        cb.style.top=n.offsetTop+'px'; cb.style.height=n.offsetHeight+'px';
+        clears.push({cb,n});
+        const w=cb.offsetWidth + n.offsetHeight*0.18;
+        n.style.transition=`transform ${(PULL/1000).toFixed(2)}s cubic-bezier(.3,.7,.3,1)`;
+        n.style.transform=`translateX(${-Math.round(w)}px)`;
+        cb.style.transition=`opacity ${(PULL*0.8/1000).toFixed(2)}s ease`; cb.style.opacity='1'; });
+      await wait(PULL+HOLD); if(tok!==animTok) return;          // CLEAR sits there and is read
+      clears.forEach(({cb,n})=>{
+        n.style.transition=`transform ${(GO/1000).toFixed(2)}s cubic-bezier(.45,.05,.7,.95), opacity ${(GO*0.85/1000).toFixed(2)}s ease-in`;
+        n.style.transform='translateX(-118%)'; n.style.opacity='0';
+        cb.style.transition=`opacity ${(GO*0.5/1000).toFixed(2)}s ease-in`; cb.style.opacity='0'; });
+      await wait(GO+40);
+      clears.forEach(({cb})=>cb.remove());
+      if(tok!==animTok) return;
       applyOp(st,o); swapLayer(st,null); camWide(); await wait(200); continue; }
     if(o.op==='screenoff'){
       // the display sleeps in her hand: the black is inside the phone, not painted over the stage
@@ -4067,6 +4093,12 @@ async function playCue(cue, st, tok){
         ftrecents:'ftrecents',maps:'maps',music:'music',shot:'shot',note:'note',vm:'vm',igreq:'igreq',
         books:'books',mapsdrive:'mapsdrive'};
       swapLayer(st, appMap[o.op]&&wasApp!==st.app ? 'appOpen' : 'fadeUp'); if(wasApp!==st.app) camWide();   // the camera rests only when the register changes
+      // THE ONE ROW THAT MATTERS (David, Sept 21 — 13.3: "we just need to see 'sharing location from
+      // Jamie's iPad' on the screen for longer, so just change the camera zoom effect there"). The whole
+      // beat is one word changing on one row, and at the resting fill that row is a stripe in a card.
+      // The camera goes to the row itself. The second findmy names the same selector, so the FOLLOW RULE
+      // holds the camera still while the device swaps under it — the house watches the word change.
+      if(o.op==='findmy' && o.me && o.me.from) camPush('.fmshare', 3.0, 260);
       if(o.op==='mapsdrive' && st.dev!=='carplay') camPush('.mapsdrive .dv-map', 2.2, 900);   // on a phone: a medium shot on the road (the dash needs none)
       /* Find My needs no push: CLAUDE.md — "a Find My sheet rises into a frame that already holds
          it", and camRest already anchors this register to the BOTTOM. The old push re-centred the
@@ -4093,6 +4125,22 @@ async function playCue(cue, st, tok){
       gateArmWatch(1200);   // it will ask its questions the moment the operator comes off the show
       await wait(600); continue; }
     if(o.op==='curtain'){ bedStop(2); SHOW_OVER=true; gateArmWatch(2600); }   // the night is over: ask the questions again
+    if(o.op==='curtain' && o.fade){
+      // A SLOW CURTAIN (David, Sept 21): "the last thing we should see before the blackout is the
+      // text… then the blackout should be a slow blackout to actual black." So nothing drops and
+      // nothing cuts — the phone with her sent message, the calendar and the bed all fade together,
+      // over `fade` ms, to true black. Dropping the phone first (what an ordinary curtain does)
+      // would take the text away BEFORE the black did, and the text is the whole point of the beat.
+      const F=Math.max(400, o.fade);
+      const els=[...stages()];
+      const era=document.getElementById('era'), loop=document.getElementById('loop');
+      if(era) els.push(era); if(loop) els.push(loop);
+      els.forEach(e=>{ e.style.transition='opacity '+(F/1000).toFixed(2)+'s linear'; e.style.opacity='0'; });
+      await wait(F+80); if(tok!==animTok) return;
+      applyOp(st,o); paintAll(st); setStamp(st);
+      els.forEach(e=>{ e.style.transition=''; e.style.opacity=''; });   // blk holds them out from here
+      document.body.classList.toggle('blk', true);
+      continue; }
     if(o.op==='black'||o.op==='curtain'){
       // the phone drops away, then the era returns to center (or the curtain falls)
       const ph=stages().map(x=>x.querySelector('.iphone,.macbook,.carplay,.fullstage')).filter(Boolean);
@@ -4219,7 +4267,8 @@ function estDuration(cue){
       case 'clock': t+=o.d?6000:0; break;
       case 'stamp': t+=(String(o.t||'').trim()?340+String(o.t).length*70:0); break;   // the scene name types itself (D-013)
       case 'prologue': t+=(o.ms||0)+1100; break;
-      case 'black': case 'curtain': t+=520; break;
+      case 'black': t+=520; break;
+      case 'curtain': t+= o.fade ? Math.max(400,o.fade)+80 : 520; break;   // the slow curtain owns its own time
       case 'memgo': t+=1400+1600; break;
       case 'notiftap': t+=980; break;
       case 'unlock': t+=940; break;
