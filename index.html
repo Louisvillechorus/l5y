@@ -971,6 +971,11 @@
   .carplay .cp-home{margin-top:auto;width:2.5em;height:2.5em;opacity:1}
   .carplay .cp-home svg{width:100%;height:100%;display:block}
   .carplay .cp-main{position:absolute;inset:0;z-index:1;overflow:hidden;background:#1B1D21}
+  /* …and so does the app canvas inside it (David, Sept 21: "12.2 there's a random white flash before
+     the navigation starts"). `.app` is the phone's white page, which is right on a phone and wrong in
+     a car: the Maps layer fades up over it, so for the length of the fade the dash was a white screen
+     with the navigation ghosted on top. A head unit is never white. */
+  .carplay .app{background:#1B1D21}
   .carplay .cp-main .app{position:absolute;inset:0} .carplay .cp-main .screenstack{position:absolute;inset:0}
   .carplay .mapsdrive .dv-map{position:absolute;inset:0}
   .carplay .mapsdrive .dv-banner{position:absolute;left:13.2%;top:4%;width:40%;margin:0;z-index:3;
@@ -4265,7 +4270,7 @@ function estDuration(cue){
       case 'pause': t+=o.ms||800; break;
       case 'device': t+=800; break;
       case 'clock': t+=o.d?6000:0; break;
-      case 'stamp': t+=(String(o.t||'').trim()?340+String(o.t).length*70:0); break;   // the scene name types itself (D-013)
+      case 'stamp': t+=(String(o.t||'').trim()?340+String(o.t).length*70+FOOT_DWELL_():0); break;   // the scene name types itself (D-013) and is then HELD so it can be read (D-068)
       case 'prologue': t+=(o.ms||0)+1100; break;
       case 'black': t+=520; break;
       case 'curtain': t+= o.fade ? Math.max(400,o.fade)+80 : 520; break;   // the slow curtain owns its own time
@@ -5054,7 +5059,14 @@ async function typeFoot(st,tok,cueId,keys){
     await wait(c===' '?70+Math.round(R()*40):46+Math.round(R()*54));
   }
   el.textContent=txt;
+  // THE LINE HAS TO BE READ (David, Sept 21: "there are some moments where the typing of the day
+  // description disappears too quickly for the audience to read… make sure they stay on the screen
+  // for at least 2-3 seconds fully typed"). The scene name finishes typing and the very next op in
+  // the same cue can dock the calendar and raise the phone in the same breath — the finished line
+  // was on screen for a frame. Nothing else in the cue starts until it has been held.
+  await wait(FOOT_DWELL_());
 }
+function FOOT_DWELL_(){ return 2400; }   // accessor, not a top-level let: boot code reaches it
 /* tear-off time: forward pages tear away and fall, backward pages rise and settle */
 async function eraRoll(A,B,tok,st,long){
   const era=document.getElementById('era'); if(!era||era.classList.contains('hidden')) return;
