@@ -93,5 +93,25 @@ open('L5Y-Show-STANDALONE.html','w').write(out)
 print('cast assets:', {k:sorted(v) for k,v in cast.items()})
 print('embedded fonts:',len(faces))
 print('embedded sounds:',len(sfx),'paper scans:',len(paper),'images:',len(img),'| photo bed: %d ML / %d AC (%.1f MB)'%(len(loop['ml']),len(loop['ac']),loopbytes/1.4e6))
+# A BUILD THAT EMITS A DEAD SHOW MUST NOT EXIT 0. `node --check cues.js` only ever covered the cues;
+# a duplicate `const` inside the ENGINE is an early error that kills the whole script, so SHOW is never
+# defined and every screen is blank — and the build still said "built" and went green. (Sept 21: one
+# slipped through exactly this way and only the register caught it, a gate run later.) Parse every
+# inline script the same way the browser will, and fail loudly.
+import subprocess, tempfile
+_scripts = re.findall(r'<script(?![^>]*\bsrc=)[^>]*>(.*?)</script>', out, re.S)
+for _i, _js in enumerate(_scripts):
+    if not _js.strip():
+        continue
+    with tempfile.NamedTemporaryFile('w', suffix='.js', delete=False, encoding='utf-8') as _f:
+        _f.write(_js); _tmp=_f.name
+    _r = subprocess.run(['node','--check',_tmp], capture_output=True, text=True)
+    os.unlink(_tmp)
+    if _r.returncode:
+        first = (_r.stderr.strip().splitlines() or ['?'])
+        raise SystemExit('BUILD REFUSED — inline script #%d does not parse, the show would be blank:\n  %s'
+                         % (_i, '\n  '.join(first[:6])))
+print('engine parses: %d inline scripts' % len([x for x in _scripts if x.strip()]))
+
 open('docs/index.html','w').write(open('L5Y-Show-STANDALONE.html').read())
 print('built: index.html, L5Y-Show-STANDALONE.html, docs/index.html')

@@ -153,15 +153,26 @@ def a_132_timing(page):
             for tok in part.split():
                 if tok.endswith('s') and tok[:-1].replace('.', '', 1).isdigit():
                     dur = float(tok[:-1])
-    if dur < 1.85:
-        bad.append('13.2: the swipe itself lasts %.2f s (it was 0.38 s; David asked for 1.5 s '
-                   'longer, so it must be at least 1.85 s)' % dur)
+    # MEASURE THE WHOLE GESTURE, NOT ITS FIRST LEG. The swipe used to be one transition, so its
+    # duration was the gesture. Since Sept 21 it is three beats — the card pulls left off its Clear
+    # button, Clear is held long enough to read, then the card goes (D-070) — and reading only the
+    # first transition reported 0.79 s for a gesture that actually runs the better part of three
+    # seconds. What David asked for is a deliberate erasure rather than a flick, so the floor belongs
+    # on the whole thing: from the card first moving to the card leaving the DOM.
+    gesture = None
+    if d['gone'] is not None and d['swipe'] is not None:
+        gesture = (d['gone'] - d['swipe']) / 1000.0
+    if gesture is None:
+        bad.append('13.2: the card never leaves — the erasure does not finish')
+    elif gesture < 1.85:
+        bad.append('13.2: the whole erasure lasts %.2f s (it was 0.38 s; David asked for 1.5 s '
+                   'longer, so it must be at least 1.85 s)' % gesture)
+    if dur and dur < 0.4:
+        bad.append('13.2: the card is pulled off its Clear button in %.2f s — that leg reads as a '
+                   'flick' % dur)
     if 'ease-in' in (d['trans'] or '') and 'cubic-bezier' not in (d['trans'] or ''):
         bad.append('13.2: the swipe still accelerates away on a plain ease-in — that reads as a '
                    'flick, not a deliberate erasure')
-    if d['gone'] is not None and d['swipe'] is not None and (d['gone'] - d['swipe']) < 1700:
-        bad.append('13.2: the card is torn off the DOM %.2f s into a %.2f s swipe — the audience '
-                   'never sees the erasure finish' % ((d['gone'] - d['swipe']) / 1000.0, dur))
     return bad
 
 
@@ -314,15 +325,20 @@ def a_133_device_swap(page):
         bad.append('13.3: Share My Location does not read as already ON (%s) — canon says the '
                    'location was never seen being turned on or off' % tog)
 
-    # 5. faster than the sequence it replaces. The comparison is the Find My sequence itself —
-    #    everything from the app opening to the swap landing — because the navigation before it
-    #    (the whole phone, the unlock) is D-017's beat and is meant to be longer, not shorter.
-    d_new, d_old = page.evaluate("""(old) => {
-      const after=(ops)=>{ const i=ops.findIndex(o=>o.op==='openapp'); return estDuration({do:ops.slice(i+1)}); };
-      return [after(SHOW[%d].cues[%d].do), after(old)]; }""" % (S13, k), page.evaluate(OLD_133_DO))
-    if d_new >= d_old:
-        bad.append('the Find My sequence runs %.2f s against the %.2f s of the sequence it '
-                   'replaces — David asked for it to move' % (d_new / 1000.0, d_old / 1000.0))
+    # 5. SLOWER, NOT FASTER — David reversed this one twice and the later word wins. The original
+    #    note wanted the swap to move; on Sept 20 he said "it's way too fast to read", and on
+    #    Sept 21, "we just need to see 'sharing location from Jamie's iPad' on the screen for
+    #    longer". What this note still owns is the SEMANTICS of the beat (sharing already on, only
+    #    the device changing), asserted above. How long it takes is D-071's, which measures the
+    #    seconds the row actually sits still rather than an estimate of the op list. Asserting
+    #    "faster than before" here would enforce a direction he has withdrawn, so all that is left
+    #    of the timing clause is a floor: it must not collapse back to a flick.
+    d_new = page.evaluate("""() => {
+      const ops=SHOW[%d].cues[%d].do; const i=ops.findIndex(o=>o.op==='openapp');
+      return estDuration({do:ops.slice(i+1)}); }""" % (S13, k))
+    if d_new < 8000:
+        bad.append('the Find My sequence runs only %.2f s — too quick to read the one word that '
+                   'changes (David, Sept 20 and again Sept 21)' % (d_new / 1000.0))
     return bad
 
 
@@ -373,8 +389,15 @@ def a_144_send(page):
                    % st['bubs'])
     if st['draft']:
         bad.append('14.4 settles with %r still sitting in the field — it was never sent' % st['draft'])
-    if not st['off'] or not st['scroff']:
-        bad.append('14.4 settles with the screen still lit; the black is supposed to be in the phone')
+    # THE BLACK MOVED OUT OF THE PHONE (David, Sept 21: "the last thing we should see before the
+    # blackout is the text 'tonight was amazing'… then the blackout should be a slow blackout to
+    # actual black"). Sept 20's `screenoff` is reversed: her screen must NOT go dark in her hand, and
+    # the fade now belongs to the curtain at 14.6, which D-072 proves. What survives of this note is
+    # everything before that — she finishes it, she sends it, we hear the send — and it is asserted
+    # above. Keeping the old clause here would enforce a direction David has withdrawn.
+    if st['scroff']:
+        bad.append('14.4 still blacks out inside the phone — her text is meant to be the last image '
+                   'of the show, held through his last verse (D-072)')
     if st['camVis'] != 'hidden':
         bad.append('14.4: the screen content is still visible behind the black (visibility %s)'
                    % st['camVis'])

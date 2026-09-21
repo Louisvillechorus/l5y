@@ -2193,7 +2193,10 @@ function ftHTML(st){
   const ringing=/facetime…|calling|ringing/i.test(f.st||'');
   const ended=/ended/i.test(f.st||'');
   const AV='calc(var(--ph,800px) * 0.20)', AVF='calc(var(--ph,800px) * 0.072)';
-  const NAME='calc(var(--ph,800px) * 0.050)', SUB='calc(var(--ph,800px) * 0.024)';
+  // SUB carries “FaceTime…”, “connected” and the timer. At 0.024 it lands at 18px on a 910px screen —
+  // under the 22px floor for 25 feet (D-038 caught it the moment the whole gate ran). 0.031 puts it
+  // at ~28px, clear of the floor, and still reads as secondary to the 46px name above it.
+  const NAME='calc(var(--ph,800px) * 0.050)', SUB='calc(var(--ph,800px) * 0.031)';
   const BTN='calc(var(--ph,800px) * 0.075)', BTNF='calc(var(--ph,800px) * 0.034)';
   const FOOT='calc(var(--ph,800px) * 0.045)';
   const endBtn=`<div style="position:absolute;bottom:${FOOT};left:50%;transform:translateX(-50%);width:${BTN};height:${BTN};
@@ -3946,6 +3949,14 @@ async function playCue(cue, st, tok){
       stacks().forEach(k=>{
         const f=k.querySelector('.field'); if(f){ f.textContent='iMessage'; f.style.color=''; }
         const sb=k.querySelector('.sendbtn'); if(sb) sb.classList.remove('on');
+        // …AND THE QUICKTYPE ROW GOES BACK TO ITS DEFAULT. The field is empty again, so a real phone
+        // stops suggesting words for a message that has already gone. The live path used to leave the
+        // last draft's suggestions sitting above the keyboard, which the settled render never
+        // reproduces — a scrub to 14.4 repainted a different screen than the one that played (D-043).
+        // It only became visible when her screen stopped going dark at the end of that cue.
+        const prRow=k.querySelector('.predict');
+        if(prRow){ const P=predictCells(''), cells=prRow.querySelectorAll('div');
+          cells.forEach((c,i)=>{ c.textContent = i===0 ? '\u201c'+P[i]+'\u201d' : P[i]; }); }
         const t=k.querySelector('.thread'); if(t){
           t.querySelectorAll('.rcpt').forEach(r=>r.remove());   // the state drops every receipt on a send; the DOM must too
           const d=document.createElement('div');
