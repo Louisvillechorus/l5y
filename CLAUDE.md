@@ -28,7 +28,7 @@ Every screen must survive the question **"is this exactly what a real iPhone/Mac
 - Never let months pass "invisibly" inside one continuous scene. Time jumps are song-top events, with the clock roll.
 
 ## Storyline canon (do not contradict)
-Meet Sept 3 2021 · movers-in Oct 2021 (Sat Oct 16) · proposal June 12 2023 (the rowboat) · **wedding May 18 2024** (the only shared date) · Ohio summers 2024, 2025 & 2026 (she is in Ohio when he leaves — "what time does your flight land") · pier birthday July 19 2025 (he visits and leaves early) · Cathy's Stelmyer call May 9 2025 · Elise/R.H. affair seeded May 2024 → Feb 2025 ("for you I'm always up") → April 2026 · **his last day is Thursday June 11 2026**: before dawn with Elise (song 13), the afternoon he packs, writes the pad and leaves the ring on the table (song 14), breakup email "Some practical things" (lawyer at 2:50, her at 4:12 — he told the lawyer first) · **she reads the pad Friday June 12 2026, 9:41 AM** (song 1); her final text READ 9:44, never answered; the ring only reaches her with the note, so nothing before Thursday can mention it · **she finishes it — “safe 😊 tonight was amazing” — sends it at 11:51, we hear the send, and her screen goes black, baked in (David, Sept 20; this reverses “still typing”)**; the show's last image of her is a dark phone, then the bows. Whitfield is his literary AGENT (Linda; agency never named — he saved her office number as "Ms. Whitfield (office)"); The Atlantic Monthly prints his chapter; Random House is Elise's house; Stelmyer's agency is never named. Jamie escalates by silence and administration (accounts, movers, lawyers); Cathy escalates by asking. His ghosts are cowardice; hers are courage. He cannot delete anything about her (Cancel, every time) except the two sharing buttons he does press: Stop Sharing and Leave Playlist.
+Meet Sept 3 2021 · movers-in Oct 2021 (Sat Oct 16) · proposal June 12 2023 (the rowboat) · **wedding May 18 2024** (the only shared date) · Ohio summers 2024, 2025 & 2026 (she is in Ohio when he leaves — "what time does your flight land") · pier birthday July 19 2025 (he visits and leaves early) · Cathy's Stelmyer call May 9 2025 · Elise/R.H. affair seeded May 2024 → Feb 2025 ("for you I'm always up") → April 2026 · **his last day is Thursday June 11 2026**: before dawn with Elise (song 13), the afternoon he packs, writes the pad and leaves the ring on the table (song 14), breakup email "Some practical things" (lawyer at 2:50, her at 4:12 — he told the lawyer first) · **she reads the pad Friday June 12 2026, 9:41 AM** (song 1); her final text READ 9:44, never answered; the ring only reaches her with the note, so nothing before Thursday can mention it · **she finishes it — “safe 😊 tonight was amazing” — and sends it at 11:51; we hear the send and the bubble STAYS LIT (David, Sept 21 — “the last thing we should see before the blackout is the text”; this reverses Sept 20’s baked-in `screenoff`, which reversed “still typing”)**; the show's last image is her text, held through the whole of his last verse, then a slow fade to true black, then the end screen. Whitfield is his literary AGENT (Linda; agency never named — he saved her office number as "Ms. Whitfield (office)"); The Atlantic Monthly prints his chapter; Random House is Elise's house; Stelmyer's agency is never named. Jamie escalates by silence and administration (accounts, movers, lawyers); Cathy escalates by asking. His ghosts are cowardice; hers are courage. He cannot delete anything about her (Cancel, every time) except the two sharing buttons he does press: Stop Sharing and Leave Playlist.
 
 ## TWO CASTS, ONE SHOW (David, Sept 14)
 Two couples alternate performances: **Maegan & Landon** and **Andrew & Charlie**. There is ONE
@@ -84,11 +84,21 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   "connected · M:SS" status counts up second by second from the moment it appears
   (`liveTimerHTML`/`.calltimer`), FaceTime duration included. **Song 7 is a full call
   arc**: ringing (FaceTime…) → connected (V2 plays, timer runs) → Call Ended → era holds.
+- **LEFT CLEARS, RIGHT OPENS (David, Sept 21, with a reference shot — 13.2)**: on a real iPhone you swipe a
+  notification RIGHT to open it; to get rid of one you swipe LEFT and the card slides off its own **Clear**
+  button. `notifDismiss` pulls the card left, reveals Clear on its trailing edge, holds it long enough to
+  read, and only then takes the card away. He is not opening her text; he is clearing it. Proof:
+  `a_swipe_left_clear` (D-070).
 - **No touch dots (cut by David).** The blue finger circles are gone everywhere. Taps read
   the way a real screen recording reads: the beat, the control's own pressed state (icon
   press animation, iOS pressed-gray on rows and buttons via `hover`/`btnHover`), then the
   transition. The `hover`/`tap`/`btnHover`/`btnTap` ops remain as timing + pressed-state beats.
 - **Preshow**: the house card (title + the two-handed clock) renders at song 1 · cue 0.
+- **THE ENDING (David, Sept 21 — supersedes the Sept 20 shape)**: **14.5 is CUT** — his last verse carries no
+  screen event, because her text is still on it. **14.6 is a SLOW curtain** (`{op:'curtain',fade:3500}`): nothing
+  drops and nothing cuts, because an ordinary curtain drops the phone first and that would take her text away
+  BEFORE the black did. Everything on stage fades together to true black. Then **14.7** is the end screen.
+  Proof: `a_ending_on_her_text` (D-072).
 - **BOWS (David, Sept 20)**: 14.6 is the curtain, then **14.7 `{op:'bows'}`** brings the title card and the
   photo bed back at a faster rate (a print every 0.9–1.5 s against a 15–20 s fall, so it can never go
   blank and never ends). The operator's questionnaire no longer arms itself 2.6 s after the curtain —
@@ -166,18 +176,28 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   MINUTE** — “THE NEXT 5 YEARS” over Redline's QR code, fired when the speaker picks up the handheld mic ·
   8.6 the same band again when the ask is over. The QR (`assets/img/qr-next5.png`, embedded by build.py as
   `window.L5Y_IMG`) prints ONTO the paper with `mix-blend-mode:multiply` and **carries no ink grit** — a
-  filtered QR does not scan. **THE INSTALLED CODE IS WRONG AND DAVID KNOWS (D-029, open)**: it decodes to
-  a Cloudinary `.jpg`, not a donation page. His replacement is on Google Drive, which this environment's
-  network policy denies, so it cannot be fetched from here — the file must be committed to `assets/img/`,
-  or David can give the destination URL as text and the code is generated from it. On the current card the
-  render scans down to 600 px wide of the whole 1920×1080 frame (it was 400 px before the money minute
-  scaled to leave the photo bed room; the QR itself is still 590 px on a 1920 stage).
+  filtered QR does not scan. **THE CODE IS DAVID'S, INSTALLED SEPT 21 (D-029)**: it decodes to
+  https://givebutter.com/friends-of-rpa-xgna4k — the Redline donation page. Flattened onto white, because the
+  card prints it with `multiply` and transparency would carry the dark stage through. The proof does not take
+  anyone's word for it: `a_qr` decodes the image the BUILD embedded, then renders 8.5 and decodes the card the
+  way a phone across the room sees it — it scans down to 400 px wide of the whole 1920×1080 frame.
 - **TIME ONLY EVER CHANGES ON THE CALENDAR** (`eraRoll`), and every roll rides the TIME WARP MUSIC
   (`assets/sfx/timewarp.mp3`, David's file, `warpStart`: in on the first page, out as the last settles,
   stopped on a scrub): forward = pages tear off and fall;
   backward = pages rise and settle. Long journeys skip months (≤16 pages). **EVERY ROLL LASTS EXACTLY 6 s** (David, Sept 19 — the
   Time Warp music, five clock ticks; the pages share the 6 s whatever their number). The phone never rolls; a dated `clock` op rolls the era, then `device` docks it
   and the phone rises already at the new time. `stamp` is now the calendar's FOOT line.
+- **THE SCENE NAME IS HELD (David, Sept 21: “some moments where the typing of the day description disappears
+  too quickly for the audience to read… at least 2-3 seconds fully typed”)**: `typeFoot` finishes typing and
+  then waits `FOOT_DWELL_()` (2.4 s) before ANYTHING else in the cue runs — the next op could dock the
+  calendar and raise the phone in the same breath. All 21 typed lines measure 2.3-2.5 s fully typed.
+  Proof: `a_foot_dwell` (D-068).
+- **COMING HOME, THE TYPE DOES NOT PAINT (David, Sept 21 — D-073)**: the era morph is a FLIP, and on the
+  homeward leg the type’s “old box” can be measured after the card has already taken its centre layout, so
+  the words flew at full card size across a strip-width sheet and hung off the paper until fitPad caught up
+  (“it fixes itself as the warp happens”). The paper still morphs; the words sit out the journey and fade up
+  as it lands (`#era.morphing.homing`). Docking is unaffected. A morph whose type cannot be measured at all
+  is now instant rather than half-flipped.
 - **YEAR 1…5**, never real years on stage: Year N = years since the night they met (Sept 3);
   the real dates stay in cues.js (`yearN()` derives the label). The wedding is May · Year 3.
 - **The phone only comes up when it is used.** Calendar-only songs: 5, **6**, 8 (three moves), 11.
@@ -200,6 +220,10 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   the target fits, and re-zooms only when it must. Every move is one slow glide (1.4 s,
   ease-in-out). No drift. Nothing moves while a receipt changes or a bubble lands in frame. The MacBook (song 7) and the dash (song 12) fill
   the frame natively. The presenter preview is a 16:9 frame running the same camera.
+- **A HEAD UNIT IS NEVER WHITE (David, Sept 21: “12.2 there’s a random white flash before the navigation
+  starts”)**: not a flash, a fade — the Maps layer fades up over `.app`, the phone’s white page, which is
+  right on a phone and wrong in a car, so for the length of the fade the dash was a white screen with the
+  navigation ghosted on it. `.carplay .app` carries the dash ground. Proof: `a_dash_never_white` (D-069).
 - **CARPLAY (song 12)**: the drive plays on the dash — `dev:'carplay'`, a landscape head unit
   (sidebar: clock, signal, recent apps, home; Maps with the maneuver card and the trip card over the
   map, the same live route model as the phone). The dash clock rides with the trip.
@@ -275,7 +299,7 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   character, NOW with progress, the GO card, THEN, the whole queue, BLACKOUT and MENU. Nothing else.
 - Restore point before this sprint: git tag `restore-sept18-line-by-line`.
 
-## THE LINE-BY-LINE BUILD (David, Sept 18 — the spec; 69 cues after Sept 20)
+## THE LINE-BY-LINE BUILD (David, Sept 18 — the spec; 68 cues after Sept 21)
 - **1** prologue = the title page tears off (one GO, no phone); on her verse-2 line the phone rises
   and she sends her text (auto, ~50 s — SLOW by direction, Sept 19 night: she reads the list, she
   reads his name and the history, she types slowly, she waits before Send; every pause is tunable);
@@ -284,7 +308,11 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
 - **2** 2.1 the roll then his lock screen; 2.2 = ONE ~50 s piece (three drafts → “home safe?” →
   Delivered → her typing bubble); 2.3 her call; 2.4 hang up. Same-night compression kept.
 - **3** the LAKE BED (`{op:'bed',file:'lake.mp3'}` on 3.1, fades in 5 s; `stop` on 3.10, fades out 5 s — David's licensed lake ambience, quiet; a `bed` is by cue only and dies with its song or the curtain). **THE LAKE IS HERS (David, Sept 19 night)**: it ducks out (2 s) on 3.2, 3.5 and 3.8 as his phone comes up and returns (4 s) on 3.4 and 3.7 with the roll home to her — never under a Whitfield/Rob call. Era-center only for her; Jamie's three calls (Whitfield ×2, Rob — he dials, per the
-  script) with return rolls; hang-up on the downbeat of 4.
+  script) with return rolls; hang-up on the downbeat of 4. **NO WARP INTO MOVING TOO FAST (David, Sept 21:
+  “we’re going to operate as if he sings that song right after he gets off the phone with rob”)**: 3.10 does
+  not date the clock, so nothing tears and SEPTEMBER · YEAR 1 holds through the hang-up; 4.3 comes home to
+  8:16 the same evening, so the win streak belongs to the night he called Rob. The only roll left in 4 is
+  Cathy’s May 2025 call, which David pinned himself.
 - **4** her Stelmyer call (dial → connect → end), then his notifications. **5** calendar only (the dedication is CUT). **6 is CALENDAR ONLY
   (David, Sept 20: "I think we've cut 6.2, the only thing visible on Schmuel is the date, so just cut
   that one. No background with christmas needed") — 6.2 and the Christmas lock screen are gone; the
@@ -296,7 +324,10 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   married”, the wedding portrait M4 as his wallpaper); the stack is only what a real phone shows —
   Instagram COMMENTS preview text (a stranger's DM never does; a request says “wants to send you a
   message”), the book's growth arrives from Linda Whitfield (Goodreads pushes nothing like it),
-  Elise is “Elise (Random House)”, the clock ticks 11:22 → 11:25 → 11:29 across the number. 9.2,
+  Elise is “Elise (Random House)”, the clock ticks 11:22 → 11:25 → 11:29 across the number. **PAIGE.TURNER
+  (David, Sept 21) lands on 9.3 as a COMMENT, not a DM**: a stranger’s direct message shows no preview text on
+  a real iPhone — which is exactly why lit.with.lena on the same cue can only say “wants to send you a
+  message” — and her line has to be read to land. She arrives second, so she is the top card of the two. 9.2,
   9.4, 9.5, 9.6 carry `confirm:true` (⚠CONFIRM) until David ticks them on the worksheet; the
   attribution “— Elise” was removed from the 9.5 trigger (the score does not name her). Her
   interpolation has no cue — David's call whether the phone drops on her lines.
@@ -309,7 +340,12 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
 - **13** two beats: her text lands (5:05 AM — before dawn means before the 5:24 sunrise), holds 4 s so the
   house can read it, and he swipes it away over 1.9 s — deliberate, not a flick (David, Sept 20); on his last line the **whole phone** is on stage so we see him unlock it, then Find My → **Me** →
   **“Use This iPhone as My Location”** — sharing was always ON and stays ON; only the reporting device
-  changes, iPad → iPhone, the classic cover-up (David, Sept 20). We never see the iPad made the source. Her Ohio is **Mount Orab, OH** (forty miles east of
+  changes, iPad → iPhone, the classic cover-up (David, Sept 20). We never see the iPad made the source. **THE CAMERA GOES
+  TO THE ROW (David, Sept 21: “we just need to see ‘sharing location from Jamie’s iPad’ on the screen for
+  longer — just change the camera zoom effect there”)**: the whole beat is one word changing on one row, so
+  `camPush('.fmshare')` takes the camera to the row itself and BOTH findmy ops name the same selector, so the
+  follow rule holds the camera still and the house watches the word change in place — 4.0 s settled on each.
+  Proof: `a_share_row_held` (D-071). Her Ohio is **Mount Orab, OH** (forty miles east of
   Cincinnati, per the script — confirmed by David, Sept 19). 4.8 keeps “SONNY READ IT.” (David’s call).
 - **Continuity law (Sept 19)**: her Friday thread (1.2) carries Thursday — the flight text from
   13.2 verbatim, “landed?”, “I read it. please call me”, “I’m not angry. just talk to me” — because
@@ -317,8 +353,10 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   Her contact for him is “Jamie 💙” through June 2024 (7.1). The drive is dated Nov 6 2021 (after
   the Oct 16 move-in) — if the licensed script's drive contains the move-in invitation, David must
   re-date it; never fill that from memory.
-- **14** era flips with the singer; her one animation (his “home safe?” lands, she opens it, types,
-  **finishes it and SENDS — Delivered, a 2.4 s hold, then the screen goes black in the phone (`screenoff`)**); his last verse rolls to JUNE 2026 and holds; FINAL BLACKOUT = true black.
+- **14** era flips with the singer; her one animation (his “home safe?” lands, she opens it, types at the
+  `slow` pace, **SENDS — Delivered — and the bubble holds eight seconds and never goes away**). His last
+  verse has NO CUE: her text is the picture for all of it. 14.6 fades the whole stage to true black over
+  3.5 s; 14.7 is the end screen. (David, Sept 21.)
 - Instrumental passages auto-play from one GO using `{op:'pause', ms}` beats — tunable in tech.
 - Assets: M24, M25, M26, M3a, M2 (THE BEAR), M4 (Songs 1 and 9), M23 (Song 6), V2 (Song 7), plus loop-only
   photos (S00-LOOP-…). CUT: M1, M7/M7b, M12, M15.

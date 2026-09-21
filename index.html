@@ -919,6 +919,9 @@
   #era .pad.cardin .pf,#era .pad.ghost .pf,#era.morphing .pf,
   #era .sheet.tear .pf,#era .sheet.settle .pf{box-shadow:0 16px 34px rgba(0,0,0,.5)}
   #era.morphing .pf,#era.morphing .yr,#era.morphing .ynum,#era.morphing .mo{will-change:transform}
+  /* the words sit out the journey home and fade up as the paper lands (David, Sept 21) */
+  #era .grp,#era .ft{transition:opacity .24s ease}
+  #era.morphing.homing .grp,#era.morphing.homing .ft{opacity:0;transition:none}
   #era .pad.house.inter .ttl{font-family:'Poppins',sans-serif;font-weight:700;font-size:17vh;line-height:1.02;letter-spacing:-.01em;margin-top:0;white-space:nowrap;width:100%}
   #era .pad.house.perf .ttl{font-size:17vh;margin-top:0;width:100%}
   #era .pad.house .fl{display:block;width:fit-content;margin:0 auto;white-space:nowrap;line-height:.98}
@@ -4983,10 +4986,18 @@ function setEraHome(era, home, instant, pre){
   if(era.dataset.home===home) return;
   const pad=era.querySelector('.pad');
   const first=era.getBoundingClientRect();
-  const live = !instant && !!first.width && !era.classList.contains('hidden') && animRunning;
+  let live = !instant && !!first.width && !era.classList.contains('hidden') && animRunning;
   const parts=[];
   if(live) ERA_PARTS_().forEach(p=>{ const el=pad&&pad.querySelector('.sheet.top '+p[0]); if(!el) return;
     const b=(pre&&pre.get(el))||eraBox(el); if(b.w>0&&b.h>0) parts.push({el,rot:p[1],mode:p[2],f:b}); });
+  // ALL OR NOTHING (David, Sept 21: "end of 1.7 there's a text size issue… it recurs anytime we go back
+  // to the main YEAR # month/day screen initially then fixes itself as the warp happens"). The morph is a
+  // FLIP: the paper is held back on the box it came from and released, and so is every piece of type. If
+  // the type could not be measured — the pad is mid-rebuild, a part has no box yet — the old code still
+  // held the PAPER back, so for the length of the morph a strip-width sheet carried card-sized type and
+  // the words hung off the paper into the black. Either everything flips or nothing does; an instant
+  // home is honest, a half-flipped one is a bug.
+  if(live && !parts.length) live=false;
   era.classList.remove('center','docked'); era.classList.add(home); era.dataset.home=home;
   // a page still falling out of the home we are LEAVING was aimed across a stage the phone is
   // about to occupy: the last month of a roll is still in the air when the device paints. The
@@ -4997,6 +5008,13 @@ function setEraHome(era, home, instant, pre){
   fitEra(era);
   if(!live){ era.classList.remove('morphing'); return; }
   era.classList.add('morphing');
+  // COMING HOME, THE TYPE DOES NOT PAINT (David, Sept 21). The paper's FLIP is reliable; the TYPE's is
+  // not on this leg — its "old box" can be measured after the card has already taken its centre layout,
+  // so the scale comes out ~1 and the words fly at full card size across a sheet that is still strip
+  // width, hanging off the paper into the black until the morph lands and fitPad re-lays them. Rather
+  // than show a wrong frame, the words sit out the journey and fade up as the paper arrives. Going the
+  // other way (docking) the flip is correct and is left alone.
+  if(home==='center') era.classList.add('homing');
   const last=era.getBoundingClientRect();
   const toDock = home==='docked';
   const dur = toDock ? ERA_DUR_().dock : ERA_DUR_().home, ease=ERA_EASE_();
@@ -5021,7 +5039,7 @@ function setEraHome(era, home, instant, pre){
   pfs.forEach(el=>{ el.style.transition=`transform ${dur}ms ${ease}`; el.style.transform='translate(0px,0px) scale(1,1) '+el.dataset.base; });
   parts.forEach(p=>{ p.el.style.transition=`transform ${dur}ms ${ease}`; p.el.style.transform='translate(0px,0px) rotate(0deg) scale(1)'; });
   const tok=animTok;
-  setTimeout(()=>{ era.classList.remove('morphing');
+  setTimeout(()=>{ era.classList.remove('morphing','homing');
     if(tok!==animTok) return; if(era.dataset.home!==home) return; eraMorphClear(era); }, dur+90);
 }
 /* THE SCENE NAME IS TYPED (David, Sept 20 — D-013): the foot line of a date card comes in letter by
