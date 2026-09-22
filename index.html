@@ -5310,15 +5310,15 @@ function tornPath(side,seed){
 // SLOWER AGAIN, AND THE SPAWN GOES WITH IT. A fall this long at the old spawn rate piles forty-odd
 // prints on the stage: past full, into a moving wall, and the frame rate goes with it. The density
 // that read well was about a dozen at once, so `every` is scaled to hold that as the fall grows.
-function PILE_CFG(){ return PILE_CFG.o||(PILE_CFG.o={h:50, every:[3800,5400], fall:[54000,66000]}); }
+function PILE_CFG(){ return PILE_CFG.o||(PILE_CFG.o={h:50, every:[6000,8600], fall:[54000,66000]}); }
 /* THE BOWS FLOOD (David, Sept 20): same bed, same seeded order, a print every second or so. The slowest
    spawn (1.5 s) stays an order of magnitude under the shortest fall (15 s), so prints always overlap —
    the bed cannot go blank however long the company bows, and it never stops spawning, so it cannot end. */
 function pileRate(mode){ const C=PILE_CFG();
   // the bows spawn scales WITH the fall, or a 29 s fall at the old 0.52 s spawn would put forty
   // prints on the stage at once: the same flood relative to the house, not four times it.
-  if(mode==='bows'){ C.every=[2800,4000]; C.fall=[54000,66000]; }
-  else { C.every=[3800,5400]; C.fall=[54000,66000]; }
+  if(mode==='bows'){ C.every=[3600,5200]; C.fall=[54000,66000]; }
+  else { C.every=[6000,8600]; C.fall=[54000,66000]; }
   return C; }
 function PILE_S(){ return PILE_S.o||(PILE_S.o={t:null, i:0, order:null}); }
 function pileList(){ const L=window.L5Y_LOOP||{}; return (L[CAST]||[]); }
@@ -5383,8 +5383,18 @@ function pileDrop(){
   const swa=1.1+R()*1.4, tilt=(R()*2-1)*(15-swa);
   const sway=4200+R()*3600, ph=-R()*sway;
   const el=document.createElement('div'); el.className='print';
+  /* CLEAR THE ROTATED BOX, NOT THE UPRIGHT ONE. The tilt lives on the inner .pw, which rotates
+     about its centre and overflows its parent: a 78vh print 108vh wide at 15 deg occupies a 103vh
+     box, 25vh taller than the element it sits in. Lifting the print by its own HEIGHT therefore
+     left up to 10vh of its lower corner already on stage at frame one — it appeared, exactly as
+     the director kept reporting, and the first fix only cured the upright case. The .pw's box is
+     centred on the .print's centre, so entry needs (h + rotH)/2 of lift and exit needs the same
+     arithmetic at the foot. */
+  const rad=Math.abs(tilt)*Math.PI/180 + swa*Math.PI/180;
+  const rotH=h*Math.cos(rad) + w*Math.sin(rad);
+  const y0=-((h+rotH)/2 + 2), y1=100 + (rotH-h)/2 + 2;
   el.style.cssText='height:'+h.toFixed(2)+'vh;width:'+w.toFixed(2)+'vh;left:'+x.toFixed(2)+'%;top:0;'+
-    '--y0:'+(-(h+3)).toFixed(2)+'vh;--y1:103vh;--dx0:'+d0.toFixed(2)+'vw;--dx1:'+(d0+drift).toFixed(2)+'vw;'+
+    '--y0:'+y0.toFixed(2)+'vh;--y1:'+y1.toFixed(2)+'vh;--dx0:'+d0.toFixed(2)+'vw;--dx1:'+(d0+drift).toFixed(2)+'vw;'+
     'animation:pfall '+(fall/1000).toFixed(2)+'s linear forwards';
   const inner=document.createElement('div'); inner.className='pw';
   inner.style.cssText='height:100%;box-sizing:border-box;--tilt:'+tilt.toFixed(1)+'deg;--swa:'+swa.toFixed(2)+'deg;'+

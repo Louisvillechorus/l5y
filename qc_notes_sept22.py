@@ -27,7 +27,9 @@ window.__bedStart=function(){
     all.forEach(el=>{
       if(el.__bid===-1) return;
       if(!el.__bid) el.__bid = ++B.seq;
-      const b=el.getBoundingClientRect(), pw=el.querySelector('.pw');
+      const pw=el.querySelector('.pw');
+      // the PAINTED box: .pw carries the rotation and overflows its parent
+      const b=(pw||el).getBoundingClientRect();
       let ang=0;
       if(pw){ const m=new DOMMatrixReadOnly(getComputedStyle(pw).transform); ang=Math.atan2(m.b,m.a)*180/Math.PI; }
       let r=B.rows.get(el.__bid);
@@ -120,9 +122,13 @@ def a_bed_falls(pg):
     cols = [0] * N
     for r in rows:
         cols[min(max(int(min(max(r['cx0'], 0), W - 1) / (W / N)), 0), N - 1)] += 1
+    # SAMPLE SIZE IS PART OF THE TEST. Seven lanes dealt round-robin cannot come out even over
+    # eighteen prints, and each print then drifts up to 4vw as it falls, so a few cross a bucket
+    # edge. An empty column is always wrong; a ragged one is only wrong once there is enough
+    # sample to say so.
     if 0 in cols:
         bad.append(f'column {cols.index(0)+1} of {N} never receives a print (columns {cols}) — the bed clumps')
-    elif max(cols) > 2.6 * min(cols):
+    elif len(rows) >= 4 * N and max(cols) > 2.6 * min(cols):
         bad.append(f'the columns run {min(cols)}…{max(cols)} ({cols}) — the placement is still lumpy')
 
     # the house opens on an empty stage and fills; judge the bed once it is actually running
