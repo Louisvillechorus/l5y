@@ -34,6 +34,7 @@ import io
 # THE CAST PHOTOS (M/V codes). One build serves both couples: a cue references M2, never a file,
 # and CAST_ASSETS resolves it per cast at runtime. Files are named <CODE>-ML / -AC / -SHARED.
 cast={'ml':{},'ac':{}}
+vids=[]
 for f in sorted(glob.glob('assets/cast/*')):
     base=os.path.basename(f); stem,ext=os.path.splitext(base); ext=ext.lower().lstrip('.')
     m=re.match(r'^([MV]\d+[a-z]?)-(ML|AC|SHARED)$', stem, re.I)
@@ -50,8 +51,23 @@ for f in sorted(glob.glob('assets/cast/*')):
         else:
             data='data:image/%s;base64,%s'%(mt, base64.b64encode(open(f,'rb').read()).decode())
     elif ext in ('mp4','m4v','mov','webm'):
-        mt={'mov':'quicktime','m4v':'mp4'}.get(ext,ext)
-        data='data:video/%s;base64,%s'%(mt, base64.b64encode(open(f,'rb').read()).decode())
+        # VIDEO IS A SIDECAR, NEVER EMBEDDED. Base64 inflates by a third, and GitHub hard-rejects any
+        # file over 100 MB: one 720p FaceTime for each cast would take docs/index.html from 18 MB to
+        # well past that, so the team URL would simply stop existing. A sidecar also STREAMS - it
+        # starts and seeks instead of being parsed as a hundred-megabyte string and held in memory.
+        # The engine already plays a URL: swapMedia makes a <video> for any assetFor value ending
+        # .mp4/.webm/.mov. The file is copied next to each build so a relative path resolves for the
+        # hosted page and for the STANDALONE opened out of the repo; if it is missing, assetFor finds
+        # nothing and the cue falls back to the greeked placeholder rather than breaking.
+        data='assets/video/'+base
+        vids.append(f)
+        # more than one encode of the same code? list them all, webm first (see swapMedia)
+        prev=cast.get(who.lower(),{}).get(code) if who!='SHARED' else cast['ml'].get(code)
+        if prev and prev.startswith('assets/video/'):
+            parts=[x for x in prev.split(',') if x]
+            parts.append(data)
+            parts.sort(key=lambda u: 0 if u.endswith('.webm') else 1)
+            data=','.join(dict.fromkeys(parts))
     else:
         continue
     for c in (['ml','ac'] if who=='SHARED' else [who.lower()]): cast[c][code]=data
@@ -112,6 +128,17 @@ for _i, _js in enumerate(_scripts):
         raise SystemExit('BUILD REFUSED — inline script #%d does not parse, the show would be blank:\n  %s'
                          % (_i, '\n  '.join(first[:6])))
 print('engine parses: %d inline scripts' % len([x for x in _scripts if x.strip()]))
+
+# the sidecar videos travel with each build
+import shutil
+for _dst in ('assets/video','docs/assets/video'):
+    os.makedirs(_dst, exist_ok=True)
+for _v in vids:
+    for _dst in ('assets/video','docs/assets/video'):
+        _t=os.path.join(_dst, os.path.basename(_v))
+        if os.path.abspath(_t)!=os.path.abspath(_v) and (not os.path.exists(_t) or os.path.getmtime(_v)>os.path.getmtime(_t)):
+            shutil.copy2(_v,_t)
+print('sidecar video:', [os.path.basename(v) for v in vids] or 'none')
 
 open('docs/index.html','w').write(open('L5Y-Show-STANDALONE.html').read())
 print('built: index.html, L5Y-Show-STANDALONE.html, docs/index.html')

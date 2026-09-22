@@ -1251,7 +1251,7 @@ const FALLBACK_SHOW = [
   what:'ONE GO. The title page tears off the pad and falls; beneath it the calendar reads JUNE · YEAR 5, the morning after, and holds center-stage through the whole prologue. No phone, no sound.',
   hold:'`ms` on this cue delays the tear after GO (0 = on the GO). Nothing else moves until her verse-two line.',
   do:[{op:'clock',t:'9:41',d:'Friday, June 12, 2026'},{op:'stamp',t:'the morning after'},
-      {op:'wall',t:'M24 — cast photo of JAMIE — she never changed it'},
+      {op:'wall',t:'M27 — the two of them — she never changed it'},
       {op:'prologue',ms:0}]},
  {id:'1.2',kind:'lyric',trig:'“…something wonderful died” — she picks up the phone and sends it',
   what:'AUTO-PLAYS from this GO (~50 s — slowed by direction; every pause is tunable in tech). The calendar docks; her phone rises, locked — a Facebook Memories notification lands and she ignores it. Unlock, Messages (the whole list is condolences), his thread mid-history — days of her asking, all silent. She types it live, hesitant, and SENDS. Delivered.',
@@ -4427,7 +4427,16 @@ function swapMedia(el){
   if(/\.(mp4|webm|mov)(\?|#|$)/i.test(src)){       // V-codes: the file plays in place
     if(!el.querySelector('video')){
       const v=document.createElement('video');
-      v.src=src; v.autoplay=true; v.muted=true; v.playsInline=true; v.loop=false;
+      // EVERY FORMAT THE ROOM MIGHT NEED. A build may carry more than one encode, comma separated
+      // (webm first): Chromium ships without H.264, so an mp4-only show plays a black rectangle on
+      // a machine that looks identical to the one it was tested on. Browsers pick the first source
+      // they can decode, so listing both costs nothing and removes the guess.
+      const list=String(src).split(',').map(x=>x.trim()).filter(Boolean);
+      if(list.length>1){ list.forEach(u=>{ const so=document.createElement('source'); so.src=u;
+          so.type = /\.webm$/i.test(u)?'video/webm':(/\.mov$/i.test(u)?'video/quicktime':'video/mp4');
+          v.appendChild(so); }); }
+      else v.src=list[0]||src;
+      v.autoplay=true; v.muted=true; v.playsInline=true; v.loop=false;
       v.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover';
       if(!el.style.position) el.style.position='relative';
       el.appendChild(v);
@@ -5166,13 +5175,16 @@ function tornPath(side,seed){
    accumulates. The spawn never stops, so a 30-minute house open can never go blank; the order is a
    seeded shuffle of the cast's set, so every night is identical.
    BOOT-ORDER LAW: no top-level `let` — boot code reaches these through hoisted accessors. */
-function PILE_CFG(){ return PILE_CFG.o||(PILE_CFG.o={h:25, every:[3000,5000], fall:[20000,26000]}); }
+// THE BED IS BIG AND BUSY (David, Sept 22: "need to be like 2x the size they are right now, they can
+// completely envelope the screen... it needs to feel like more busy and full"). h is the BASE print
+// height in vh; each print then varies around it, so the bed is never a grid of identical rectangles.
+function PILE_CFG(){ return PILE_CFG.o||(PILE_CFG.o={h:50, every:[1100,2000], fall:[20000,26000]}); }
 /* THE BOWS FLOOD (David, Sept 20): same bed, same seeded order, a print every second or so. The slowest
    spawn (1.5 s) stays an order of magnitude under the shortest fall (15 s), so prints always overlap —
    the bed cannot go blank however long the company bows, and it never stops spawning, so it cannot end. */
 function pileRate(mode){ const C=PILE_CFG();
-  if(mode==='bows'){ C.every=[900,1500]; C.fall=[15000,20000]; }
-  else { C.every=[3000,5000]; C.fall=[20000,26000]; }
+  if(mode==='bows'){ C.every=[500,950]; C.fall=[15000,20000]; }
+  else { C.every=[1100,2000]; C.fall=[20000,26000]; }
   return C; }
 function PILE_S(){ return PILE_S.o||(PILE_S.o={t:null, i:0, order:null}); }
 function pileList(){ const L=window.L5Y_LOOP||{}; return (L[CAST]||[]); }
@@ -5196,12 +5208,21 @@ function pileDrop(){
   // asset, the screen is empty. The bed wakes up unchanged the moment window.L5Y_LOOP has entries.
   if(!n){ L.classList.remove('on'); if(S.t){ clearTimeout(S.t); S.t=null; } return; }
   if(!S.order || S.order.length!==n){ const R=prng('pile'+CAST+':'+n); S.order=[...Array(n).keys()];
-    for(let k=n-1;k>0;k--){ const j=Math.floor(R()*(k+1)); [S.order[k],S.order[j]]=[S.order[j],S.order[k]]; } }
+    for(let k=n-1;k>0;k--){ const j=Math.floor(R()*(k+1)); [S.order[k],S.order[j]]=[S.order[j],S.order[k]]; }
+    // a shuffled deck dealt end to end can still put the same face last and first; with only a dozen
+    // photographs the repeat is the thing the eye catches, so rotate the seam away from itself
+    if(n>2 && S.order[0]===S.lastShown){ S.order.push(S.order.shift()); } }
   const ent=list[S.order[S.i % n]], R=prng('fall'+CAST+':'+S.i);
-  const ratio=ent?ent.r:(R()<.45?0.75:1.4), h=C.h, w=h*ratio;
-  const x=(-4 + R()*96);                                   // where it enters across the top
-  const fall=C.fall[0] + R()*(C.fall[1]-C.fall[0]);        // slow and consistent
-  const sway=3200 + R()*2200, tilt=(R()*10-5);
+  // EVERY PRINT IS ITS OWN PRINT (David, Sept 22: the bed "is not very good... it needs to feel like
+  // more busy and full"). One base height for the whole bed reads as a conveyor of identical cards.
+  // Each print now takes its own size between 0.7x and 1.45x of the base, its own tilt over a much
+  // wider arc, and its own entry anywhere from off the left edge to off the right — so prints
+  // overlap, sit at different depths and genuinely cover the stage instead of filing past it.
+  const ratio=ent?ent.r:(R()<.45?0.75:1.4);
+  const h=C.h*(0.70+R()*0.75), w=h*ratio;
+  const x=(-18 + R()*126);                                 // enters anywhere, including half off each edge
+  const fall=C.fall[0] + R()*(C.fall[1]-C.fall[0]);        // slow, and each one its own
+  const sway=2600 + R()*3000, tilt=(R()*22-11);
   const el=document.createElement('div'); el.className='print';
   el.style.cssText='height:'+h+'vh;width:'+w.toFixed(2)+'vh;left:'+x.toFixed(2)+'%;top:0;'+
     'animation:pfall '+(fall/1000).toFixed(2)+'s linear forwards';
@@ -5211,6 +5232,7 @@ function pileDrop(){
   inner.innerHTML = !ent ? '<div class="greek">S00-LOOP</div>'
     : ent.k==='vid' ? '<video muted playsinline preload="auto" src="'+ent.s+'"></video>'
     : '<img alt="" src="'+ent.s+'">';
+  S.lastShown=S.order[S.i % n];
   el.appendChild(inner); L.appendChild(el);
   el.addEventListener('animationend', ()=>el.remove());
   setTimeout(()=>{ if(el.isConnected) el.remove(); }, fall+1500);   // belt and braces: nothing is left behind
