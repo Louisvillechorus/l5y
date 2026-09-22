@@ -575,6 +575,9 @@
   .memcard .memlabel span{font-size:.76em;opacity:.85}
   .ph-tabs div i{display:block;font-size:1.5em;font-style:normal;margin-bottom:.05em}
 
+  /* the Mac's call controls fade a few seconds in (see endBtn) */
+  @keyframes ftctlhide{0%,62%{opacity:1}100%{opacity:0}}
+  .ftend.auto{animation:ftctlhide 4.6s ease-in forwards}
   .fillmedia{position:absolute !important;inset:0 !important;aspect-ratio:auto !important;
     min-height:0 !important;width:auto !important;height:auto !important;border-radius:0 !important}
   .scard2{position:absolute;inset:0;border-radius:.9em;overflow:hidden;background:#1c1c1f;
@@ -2215,7 +2218,14 @@ function ftHTML(st){
   const NAME='calc(var(--ph,800px) * 0.050)', SUB='calc(var(--ph,800px) * 0.031)';
   const BTN='calc(var(--ph,800px) * 0.075)', BTNF='calc(var(--ph,800px) * 0.034)';
   const FOOT='calc(var(--ph,800px) * 0.045)';
-  const endBtn=`<div style="position:absolute;bottom:${FOOT};left:50%;transform:translateX(-50%);width:${BTN};height:${BTN};
+  /* A MAC HIDES ITS CALL CONTROLS. macOS FaceTime fades the control bar out a few seconds into a
+     call and brings it back on hover. Ours sat in the middle of the frame for the whole of song 7 —
+     four minutes of a red button on the chest of the person the audience is watching. During a
+     CONNECTED call it now behaves like the Mac: there as the call lands, gone by the time the number
+     is under way. It stays put while RINGING, where it is the only affordance on the screen and the
+     thing that says a call is being placed. The name and the ticking duration never go: at 25 ft
+     they are what tells the house this is a call at all. */
+  const endBtn=(cls='')=>`<div class="ftend${cls?' '+cls:''}" style="position:absolute;bottom:${FOOT};left:50%;transform:translateX(-50%);width:${BTN};height:${BTN};
       border-radius:50%;background:#e0483e;color:#fff;display:flex;align-items:center;justify-content:center;font-size:${BTNF};z-index:4">✕</div>`;
   const face=(op)=>`<div style="width:${AV};height:${AV};border-radius:50%;${avStyle(f.n,'#3a4568')};display:flex;
       align-items:center;justify-content:center;font-size:${AVF};color:#fff;flex:none;${op}">${avText(f.n,(f.n||'?')[0])}</div>`;
@@ -2225,7 +2235,7 @@ function ftHTML(st){
       ${face('animation:ftpulse 1.6s ease-in-out infinite')}
       <div style="font-size:${NAME};font-weight:500;white-space:nowrap">${f.n||''}</div>
       <div style="font-family:'Courier Prime',monospace;font-size:${SUB};letter-spacing:.18em;color:#aeb6cc;text-transform:uppercase;white-space:nowrap">FaceTime…</div></div>
-    ${endBtn}
+    ${endBtn()}
   </div>`;
   if(ended) return `<div class="layer fs" style="background:linear-gradient(180deg,#1c2430,#0b0e14)">
     <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -2243,7 +2253,7 @@ function ftHTML(st){
     ${f.pip?`<div style="position:absolute;right:calc(var(--ph,800px) * 0.02);bottom:calc(var(--ph,800px) * 0.14);width:22%;aspect-ratio:3/4;border-radius:.7em;overflow:hidden;
       border:2px solid rgba(255,255,255,.7);z-index:3">
       <div class="media fillmedia"><div class="ml" style="font-size:.5em">${f.pip}</div></div></div>`:''}
-    ${endBtn}
+    ${endBtn('auto')}
 </div>`;
 }
 function cardsHTML(st){

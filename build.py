@@ -35,6 +35,7 @@ import io
 # and CAST_ASSETS resolves it per cast at runtime. Files are named <CODE>-ML / -AC / -SHARED.
 cast={'ml':{},'ac':{}}
 vids=[]
+_VDIR='assets/cast/'   # where a sidecar video is referenced FROM (see the copy step at the foot)
 for f in sorted(glob.glob('assets/cast/*')):
     base=os.path.basename(f); stem,ext=os.path.splitext(base); ext=ext.lower().lstrip('.')
     m=re.match(r'^([MV]\d+[a-z]?)-(ML|AC|SHARED)$', stem, re.I)
@@ -65,11 +66,16 @@ for f in sorted(glob.glob('assets/cast/*')):
         # ALREADY lives, in git, as the source of truth -- means the root build needs no copy at all
         # and only docs takes one. At ~16 MB an encode, two casts and two encodes each, the copy this
         # removes was 60-odd MB of duplicated binary in a repo whose .git is already 682 MB.
-        data='assets/cast/'+base
+        data=_VDIR+base
         vids.append(f)
         # more than one encode of the same code? list them all, webm first (see swapMedia)
+        # ONE PREFIX, ONE PLACE. This test used to carry its own copy of the directory literal, so
+        # moving the video out of assets/video silently stopped the merge from matching: the two
+        # encodes no longer joined, the later filename just overwrote the earlier, and the build
+        # printed both files as sidecars while shipping only one source. A path spelled twice is a
+        # path that will disagree with itself.
         prev=cast.get(who.lower(),{}).get(code) if who!='SHARED' else cast['ml'].get(code)
-        if prev and prev.startswith('assets/video/'):
+        if prev and prev.startswith(_VDIR):
             parts=[x for x in prev.split(',') if x]
             parts.append(data)
             parts.sort(key=lambda u: 0 if u.endswith('.webm') else 1)
@@ -137,7 +143,7 @@ print('engine parses: %d inline scripts' % len([x for x in _scripts if x.strip()
 
 # the sidecar videos travel with each build
 import shutil
-_VDST='docs/assets/cast'
+_VDST='docs/'+_VDIR.rstrip('/')
 os.makedirs(_VDST, exist_ok=True)
 for _v in vids:
     _t=os.path.join(_VDST, os.path.basename(_v))
