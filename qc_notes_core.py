@@ -373,16 +373,26 @@ def a_105_hold(pg):
 def a_photo_bed(pg):
     """With photographs it falls; with none it shows NOTHING (a renderer never invents filler)."""
     bad = []
+    # THE NUMBERS MOVED, THE LAW DID NOT. David's Sept 22 notes supersede the original 25%-of-stage,
+    # one-every-3-5s spec: the prints are twice the size ("they can completely envelope the screen")
+    # and cross in about ten seconds. What this probe still owns is the part he never changed —
+    # nothing accumulates, nothing is invented, the bed never runs dry. The fall geometry and the
+    # ten seconds are D-074's to prove, measured on the glass rather than read off the config.
     cfg = pg.evaluate('PILE_CFG()')
-    if cfg['h'] != 25:
-        bad.append(f'the prints are {cfg["h"]}% of stage height, not 25%')
+    if cfg['h'] < 40:
+        bad.append(f'the prints are {cfg["h"]}% of stage height — the bed is meant to envelope the screen')
     lo, hi = cfg['every']
-    if not (2500 <= lo <= 3500 and 4500 <= hi <= 5500):
-        bad.append(f'a new print every {lo}-{hi} ms, not every 3-5 s')
+    flo, fhi = cfg['fall']
+    if lo < 400 or hi > 2200:
+        bad.append(f'a new print every {lo}-{hi} ms — too sparse to stay full, or too frantic to read')
+    if hi >= flo:
+        bad.append(f'the slowest spawn ({hi} ms) is not under the shortest fall ({flo} ms) — '
+                   f'the bed can go blank')
     css = pg.evaluate("""(()=>{ for(const s of document.styleSheets){ let r; try{ r=s.cssRules; }catch(e){ continue; }
         for(const x of r) if(x.name==='pfall') return x.cssText; } return ''; })()""")
-    if '120vh' not in css:
-        bad.append('the prints do not fall all the way off the bottom of the stage')
+    if '--y1' not in css or '--y0' not in css:
+        bad.append('pfall no longer travels between the print\'s own start and end — a fixed offset '
+                   'puts big prints on stage before they have fallen')
     boot(pg)
     pg.evaluate("(()=>{ const st=buildState(SHOW[0],0); st.housecard=true; setStamp(st); })()")
     pg.wait_for_timeout(400)

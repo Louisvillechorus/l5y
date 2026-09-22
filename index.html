@@ -786,9 +786,17 @@
   #loop .print .greek{display:flex;align-items:center;justify-content:center;height:100%;width:100%;
     background:repeating-linear-gradient(135deg,#d9d4c9 0 8px,#cfc9bd 8px 16px);
     font-family:'Courier Prime',monospace;font-size:1.5vh;letter-spacing:.2em;color:#6b665c}
-  /* it falls the whole way and leaves; nothing piles up. The sway is a leaf in wind, never a spin. */
-  @keyframes pfall{from{transform:translate3d(-3vw,-42vh,0)}to{transform:translate3d(9vw,120vh,0)}}
-  @keyframes psway{from{transform:translateX(-1.4vh) rotate(-3.5deg)}to{transform:translateX(1.4vh) rotate(3.5deg)}}
+  /* IT FALLS FROM ABOVE THE FRAME AND LEAVES BELOW IT (David, Sept 22: "everything falls from the sky
+     and falls off the page"). A single fixed start (-42vh) meant any print taller than 42vh was ALREADY
+     ON STAGE at frame one -- it appeared rather than fell, which is exactly what he saw. --y0 is the
+     print's own height, so whatever size it is, its bottom edge starts on the top edge of the stage.
+     THE SWAY CARRIES THE TILT. A keyframe's transform REPLACES the element's, so the per-print
+     rotate() written inline was discarded the instant psway began and every print in the show swayed
+     through the same +/-3.5deg. The tilt is inside the keyframe now, and the sway rides on top of it. */
+  @keyframes pfall{from{transform:translate3d(var(--dx0,0vw),var(--y0,-60vh),0)}
+                   to{transform:translate3d(var(--dx1,0vw),var(--y1,103vh),0)}}
+  @keyframes psway{from{transform:translateX(calc(var(--sx,1vh) * -1)) rotate(calc(var(--tilt,0deg) - var(--swa,1.5deg)))}
+                   to{transform:translateX(var(--sx,1vh)) rotate(calc(var(--tilt,0deg) + var(--swa,1.5deg)))}}
   /* (the cut falling-pages rule: the photo bed sets its own level above) */
   #loop:not(.on) .fall,#loop:not(.on) .sway{animation-play-state:paused}
   .fall{position:absolute;top:-34vh;left:0;animation:fall var(--dur) linear var(--delay) infinite;transition:opacity 1.4s ease}
@@ -3219,7 +3227,7 @@ function memoriesHTML(st){
       ${mem.map(m=>`<div class="memscreen">
         <div class="memyear">${m.yr}</div>
         <div class="post" style="margin:0;border-radius:0;box-shadow:none;flex:1;display:flex;flex-direction:column">
-          <div class="ph"><div class="pav" style="${avStyle(m.who,m.col||'#c2447a')}">${avText(m.who,m.av||'C')}</div>
+          <div class="ph"><div class="pav" style="${avStyleS(m.who,m.col||'#c2447a')}">${avTextS(m.who,m.av||'C')}</div>
             <div><div class="pn">${m.who}</div><div class="pt">${m.when}</div></div></div>
           <div class="body" style="font-size:1.12em;line-height:1.4">${m.txt}</div>
           ${m.media?`<div class="media" style="flex:1;aspect-ratio:auto"><div class="mi">📷</div>
@@ -3233,7 +3241,7 @@ function fbFeedHTML(st){
     <div class="top"><span class="logo">facebook</span></div>
     <div class="fbfeed">
     ${st.feed.map(f=>`<div class="post"><div class="ph">
-      <div class="pav" style="${avStyle(f.who,f.col||'#c2447a')}">${avText(f.who,f.av||'C')}</div>
+      <div class="pav" style="${avStyleS(f.who,f.col||'#c2447a')}">${avTextS(f.who,f.av||'C')}</div>
       <div><div class="pn">${f.who}</div><div class="pt">${f.when||''}</div></div></div>
       <div class="body">${f.txt||''}</div>
       ${f.media?`<div class="media"><div class="mi">📷</div><div class="ml">${f.media}</div></div>`:''}
@@ -4410,6 +4418,13 @@ const CAST_ASSETS=(function(){ const L=(typeof window!=='undefined'&&window.L5Y_
 /* CONTACT PHOTOS (David, Sept 19): they wind up in each other's phone books. Jamie's photo is M24, Cathy's is M25;
    when the file exists every avatar of that person (rows, thread header, calls, FaceTime, Find My, Facebook) shows it. */
 function avAsset(name){ const n=String(name||''); return /^jamie/i.test(n)?assetFor('M24'):/^cathy/i.test(n)?assetFor('M25'):null; }
+// THE SOCIAL PROFILE PICTURE IS NOT THE CONTACT PHOTO (David, Sept 22). What you set as your
+// Facebook picture and what HE has saved for you in his phone are two different photographs of two
+// different relationships: the profile is the two of you, the contact is a face. M28 is the couple.
+// Phone registers keep avAsset; anything that is Facebook uses this.
+function avSocial(name){ return assetFor('M28') || avAsset(name); }
+function avStyleS(name,fallback){ const u=avSocial(name); return u ? `background:url('${u}') center/cover no-repeat` : `background:${fallback}`; }
+function avTextS(name,fallback){ return avSocial(name) ? '' : (fallback||''); }
 function avStyle(name,fallback){ const u=avAsset(name); return u ? `background:url('${u}') center/cover no-repeat` : `background:${fallback}`; }
 /* an unsaved number that Siri has put a name to ("Maybe: Cathy") has no contact card, so iOS
    draws the generic person, never a monogram — the whole point is that she is not in Contacts */
@@ -5178,17 +5193,35 @@ function tornPath(side,seed){
 // THE BED IS BIG AND BUSY (David, Sept 22: "need to be like 2x the size they are right now, they can
 // completely envelope the screen... it needs to feel like more busy and full"). h is the BASE print
 // height in vh; each print then varies around it, so the bed is never a grid of identical rectangles.
-function PILE_CFG(){ return PILE_CFG.o||(PILE_CFG.o={h:50, every:[1100,2000], fall:[20000,26000]}); }
+// TEN SECONDS, TOP TO BOTTOM (David, Sept 22: "each photo should take like 10 seconds to fall from the
+// top to bottom from first appearance to last appearance"). fall is the WHOLE journey now -- bottom edge
+// entering the top of the stage to top edge leaving the foot -- not a window onto a longer one.
+function PILE_CFG(){ return PILE_CFG.o||(PILE_CFG.o={h:50, every:[900,1500], fall:[9200,11400]}); }
 /* THE BOWS FLOOD (David, Sept 20): same bed, same seeded order, a print every second or so. The slowest
    spawn (1.5 s) stays an order of magnitude under the shortest fall (15 s), so prints always overlap —
    the bed cannot go blank however long the company bows, and it never stops spawning, so it cannot end. */
 function pileRate(mode){ const C=PILE_CFG();
-  if(mode==='bows'){ C.every=[500,950]; C.fall=[15000,20000]; }
-  else { C.every=[1100,2000]; C.fall=[20000,26000]; }
+  if(mode==='bows'){ C.every=[520,900]; C.fall=[9200,11400]; }
+  else { C.every=[900,1500]; C.fall=[9200,11400]; }
   return C; }
 function PILE_S(){ return PILE_S.o||(PILE_S.o={t:null, i:0, order:null}); }
 function pileList(){ const L=window.L5Y_LOOP||{}; return (L[CAST]||[]); }
-function pileReset(){ const L=document.getElementById('loop'); if(L) L.innerHTML=''; const S=PILE_S(); S.i=0; S.order=null; }
+function pileReset(){ const L=document.getElementById('loop'); if(L) L.innerHTML=''; const S=PILE_S(); S.i=0; S.order=null; S.lanes=null; }
+/* PLACEMENT IS DEALT, NOT ROLLED (David, Sept 22: "the placement needs some improvement"). A bare
+   random() clumps -- three prints down one column and a bare stripe beside them -- and over a long
+   house that reads as carelessness. The stage is cut into lanes, the deck of lanes is shuffled, and
+   each print takes the next card, so across any seven consecutive prints every column gets exactly
+   one. The seam between two deals is rotated away from itself the same way the photo order is. */
+function pileLane(S,R){
+  const N=7;
+  if(!S.lanes || !S.lanes.length){
+    S.lanes=[...Array(N).keys()];
+    for(let k=N-1;k>0;k--){ const j=Math.floor(R()*(k+1)); [S.lanes[k],S.lanes[j]]=[S.lanes[j],S.lanes[k]]; }
+    if(S.lastLane===S.lanes[0]) S.lanes.push(S.lanes.shift());
+  }
+  const l=S.lanes.shift(); S.lastLane=l;
+  return (l + R()*0.94)/N;          // its own lane, jittered inside it -- even, never a grid
+}
 function pileStop(){ const S=PILE_S(); if(S.t){ clearTimeout(S.t); S.t=null; }
   const L=document.getElementById('loop'); if(L) L.classList.remove('on'); }
 function pileStart(){
@@ -5220,15 +5253,27 @@ function pileDrop(){
   // overlap, sit at different depths and genuinely cover the stage instead of filing past it.
   const ratio=ent?ent.r:(R()<.45?0.75:1.4);
   const h=C.h*(0.70+R()*0.75), w=h*ratio;
-  const x=(-18 + R()*126);                                 // enters anywhere, including half off each edge
-  const fall=C.fall[0] + R()*(C.fall[1]-C.fall[0]);        // slow, and each one its own
-  const sway=2600 + R()*3000, tilt=(R()*22-11);
+  // a print is sized in vh but placed in %, so the stage's own aspect converts the one to the other;
+  // the lane span reaches half a print off each edge, so the bed runs to the corners without a print
+  // ever being dealt somewhere it is more off the stage than on it.
+  const AR=(window.innerHeight||1080)/(window.innerWidth||1920);
+  const wp=w*AR, x=-wp*0.5 + pileLane(S,R)*100;   // the lane places the print's CENTRE, not its left
+                                                  // edge, or every deal leans half a print rightward
+  const fall=C.fall[0] + R()*(C.fall[1]-C.fall[0]);        // the whole journey, ~10 s, and each one its own
+  const d0=(R()*8-4), drift=(R()*9-4.5);                   // it drifts as it falls, and not always the same way
+  // FIFTEEN DEGREES, LEFT AND RIGHT, AND NO MORE (David, Sept 22). The sway is budgeted INSIDE that arc
+  // rather than added to it, so tilt + sway can never leave it. The phase is offset per print, or the
+  // whole bed breathes in lockstep like a chorus line.
+  const swa=1.1+R()*1.4, tilt=(R()*2-1)*(15-swa);
+  const sway=4200+R()*3600, ph=-R()*sway;
   const el=document.createElement('div'); el.className='print';
-  el.style.cssText='height:'+h+'vh;width:'+w.toFixed(2)+'vh;left:'+x.toFixed(2)+'%;top:0;'+
+  el.style.cssText='height:'+h.toFixed(2)+'vh;width:'+w.toFixed(2)+'vh;left:'+x.toFixed(2)+'%;top:0;'+
+    '--y0:'+(-(h+3)).toFixed(2)+'vh;--y1:103vh;--dx0:'+d0.toFixed(2)+'vw;--dx1:'+(d0+drift).toFixed(2)+'vw;'+
     'animation:pfall '+(fall/1000).toFixed(2)+'s linear forwards';
   const inner=document.createElement('div'); inner.className='pw';
-  inner.style.cssText='height:100%;box-sizing:border-box;transform:rotate('+tilt.toFixed(1)+'deg);'+
-    'animation:psway '+(sway/1000).toFixed(2)+'s ease-in-out infinite alternate';
+  inner.style.cssText='height:100%;box-sizing:border-box;--tilt:'+tilt.toFixed(1)+'deg;--swa:'+swa.toFixed(2)+'deg;'+
+    '--sx:'+(0.6+R()*1.2).toFixed(2)+'vh;transform:rotate('+tilt.toFixed(1)+'deg);'+
+    'animation:psway '+(sway/1000).toFixed(2)+'s ease-in-out '+(ph/1000).toFixed(2)+'s infinite alternate';
   inner.innerHTML = !ent ? '<div class="greek">S00-LOOP</div>'
     : ent.k==='vid' ? '<video muted playsinline preload="auto" src="'+ent.s+'"></video>'
     : '<img alt="" src="'+ent.s+'">';

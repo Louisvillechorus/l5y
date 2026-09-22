@@ -100,7 +100,7 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   BEFORE the black did. Everything on stage fades together to true black. Then **14.7** is the end screen.
   Proof: `a_ending_on_her_text` (D-072).
 - **BOWS (David, Sept 20)**: 14.6 is the curtain, then **14.7 `{op:'bows'}`** brings the title card and the
-  photo bed back at a faster rate (a print every 0.9–1.5 s against a 15–20 s fall, so it can never go
+  photo bed back at a faster rate (a print every 0.52–0.9 s against the same ~10 s fall, so it can never go
   blank and never ends). The operator's questionnaire no longer arms itself 2.6 s after the curtain —
   it waits for the bows and for the operator to leave the show, and never arms in the projection window.
 - **Non-diegetic is allowed.** The phone plays even when the actor isn't holding it; in
@@ -201,6 +201,24 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
 - **YEAR 1…5**, never real years on stage: Year N = years since the night they met (Sept 3);
   the real dates stay in cues.js (`yearN()` derives the label). The wedding is May · Year 3.
 - **The phone only comes up when it is used.** Calendar-only songs: 5, **6**, 8 (three moves), 11.
+- **THE PHOTO BED FALLS (David, Sept 22 — “the photos are like appearing randomly, not falling from the
+  sky… I want it to be SLOWER, and everything falls from the sky and falls off the page”)**: the house
+  bed is not a slideshow, it is weather. Four laws, each with an arithmetic behind it.
+  **IT ENTERS ABOVE THE FRAME**: `pfall` starts at the print's OWN height (`--y0`), never a fixed
+  offset — the old −42vh start meant any print taller than 42vh was already a third of the way onto
+  the stage at frame one, which is precisely what he saw. **IT LEAVES BELOW THE FOOT**: it ends at
+  `--y1:103vh`, top edge clear of the stage. **TEN SECONDS, WHOLE JOURNEY** (9.2–11.4 s, and the
+  duration is the same whatever the size, so a bigger print crosses faster — which is what closer
+  looks like). **±15° AND NO MORE**, sway INCLUDED: a keyframe's `transform` REPLACES the element's, so
+  the per-print `rotate()` written inline was thrown away the instant `psway` began and every print in
+  the show swayed through the identical ±3.5° — there was no angle variation at all. The tilt lives
+  inside the keyframe now (`--tilt`) and the sway (`--swa`) is budgeted inside the arc, never added to
+  it. **PLACEMENT IS DEALT, NOT ROLLED**: a bare `random()` clumps, so the stage is cut into seven
+  lanes, the deck is shuffled, and each print takes the next card jittered inside its lane — the lane
+  places the print's CENTRE, not its left edge, or every deal leans half a print rightward. Proof:
+  `bed_probe` measures 18 complete falls frame by frame — every one entering above the frame and
+  leaving below it, median 10.5 s, peak 14.8°, 27 distinct tilts, columns 5/4/5/2/4/3/4, never fewer
+  than 7 prints on stage at once.
 - **Preshow / intermission (David, Sept 19 night — the falling pages are CUT, “too cartoonlike”)**:
   the calendar pad sits center-stage, STILL. Before the show its top page reads the title
   (Redline Performing Arts / The Last Five Years); at the break it reads Intermission (Act Two).

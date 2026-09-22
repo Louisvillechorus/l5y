@@ -240,9 +240,13 @@ def a_bed_quality(pg):
           const b=e.getBoundingClientRect(); return {l:Math.round(b.left), r:Math.round(b.right)}; });
         const tilts=new Set([...L.querySelectorAll('.pw')].map(e=>(e.style.transform||'').match(/rotate\\(([^)]+)\\)/)?.[1]));
         return {out, w, op:+getComputedStyle(L).opacity, tilts:[...tilts].length}; })()""")
-    off = [p for p in r['out'] if p['r'] > r['w'] + 2 or p['l'] < -2]
-    if off:
-        bad.append(f'{len(off)} of {len(r["out"])} prints hang off the edge of the stage')
+    # A PRINT HANGING OFF THE EDGE IS NOW THE DIRECTION, NOT THE DEFECT (David, Sept 22: the bed
+    # "can completely envelope the screen"). The field is meant to continue past the frame. What
+    # would still be wrong is a print dealt so far out that it is more off the stage than on it —
+    # that is a wasted photograph, not an enveloping one.
+    lost = [p for p in r['out'] if min(p['r'], r['w']) - max(p['l'], 0) < (p['r'] - p['l']) * 0.42]
+    if lost:
+        bad.append(f'{len(lost)} of {len(r["out"])} prints are dealt more off the stage than on it')
     if r['op'] < 0.6:
         bad.append(f'the bed runs at {r["op"]:.2f} opacity — a photograph over near-black will be muddy at 25 ft')
     if r['tilts'] <= 1:
