@@ -778,7 +778,11 @@
      seconds, flat, with a real contact shadow, and stays. Nothing tumbles, nothing spins, nothing
      crosses the card. A Live Photo plays once as it lands and holds on its last frame. */
   #loop{position:absolute;inset:0;overflow:hidden;opacity:0;transition:opacity 1.2s ease;pointer-events:none;z-index:4}
-  #loop.on{opacity:.46}
+  /* THE BED IS SEEN (D-065). At .46 a photograph over the near-black ground is a rumour at 25 ft,
+     and the house pages were shrunk to .66 precisely so the photographs could be read around them
+     -- a bed nobody can see wastes that. The paper card above it is opaque, so nothing it carries
+     (the title, the performer's name, the QR of the money minute) loses a shade to this. */
+  #loop.on{opacity:.74}
   #loop .print{position:absolute;will-change:transform}
   #loop .print .pw{display:block;padding:.5vh;background:#faf8f3;
     box-shadow:0 2.4vh 4vh rgba(0,0,0,.34),0 .5vh 1vh rgba(0,0,0,.20)}

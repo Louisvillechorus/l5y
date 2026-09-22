@@ -13,7 +13,7 @@
     "1.0b",
     "1.1"
    ],
-   "note": "1.0b to 1.1 does a stupid framing thing — the house card to the prologue is wrong.",
+   "note": "1.0b to 1.1 does a stupid framing thing \u2014 the house card to the prologue is wrong.",
    "proof": "a_house_to_prologue",
    "clean": 5,
    "secs": 4.3,
@@ -66,7 +66,7 @@
    "cues": [
     "2.2"
    ],
-   "note": "2.2 is not centred on the two texts — the clock is chopped and so is Rob's card.",
+   "note": "2.2 is not centred on the two texts \u2014 the clock is chopped and so is Rob's card.",
    "proof": "a_22_two_notifs_framed",
    "clean": 5,
    "secs": 15.4,
@@ -92,7 +92,7 @@
    "cues": [
     "2.3"
    ],
-   "note": "Cathy's message is not in centre frame while he types — it is cut off. It should go back and forth, keyboard to message, like his mind, until 'home safe?'.",
+   "note": "Cathy's message is not in centre frame while he types \u2014 it is cut off. It should go back and forth, keyboard to message, like his mind, until 'home safe?'.",
    "proof": "a_23_pingpong",
    "clean": 5,
    "secs": 61.2,
@@ -134,7 +134,7 @@
    "cues": [
     "*"
    ],
-   "note": "The text in the device view does not transition to the text on the card view — YEAR / month / numeral moving to and from the side strip is jarring.",
+   "note": "The text in the device view does not transition to the text on the card view \u2014 YEAR / month / numeral moving to and from the side strip is jarring.",
    "proof": "a_era_morph",
    "clean": 2,
    "secs": 128.5,
@@ -151,7 +151,7 @@
     "8.5",
     "8.6"
    ],
-   "note": "The house cards must FALL from top to bottom, on and off screen — never appear or vanish out of thin air.",
+   "note": "The house cards must FALL from top to bottom, on and off screen \u2014 never appear or vanish out of thin air.",
    "proof": "a_cards_fall",
    "clean": 3,
    "secs": 22.3,
@@ -169,7 +169,7 @@
     "8.5",
     "8.6"
    ],
-   "note": "The house cards waste the black space left and right. The title card sits in a 96vh square with ~440px of dead black each side at 1920x1080, and the INTERMISSION band is barely 40% of the stage width with a small word in it. Set them in the house brand language — full-width fill-lines — and use the stage.",
+   "note": "The house cards waste the black space left and right. The title card sits in a 96vh square with ~440px of dead black each side at 1920x1080, and the INTERMISSION band is barely 40% of the stage width with a small word in it. Set them in the house brand language \u2014 full-width fill-lines \u2014 and use the stage.",
    "proof": "a_title_fills",
    "clean": 2,
    "secs": 6.6,
@@ -260,7 +260,7 @@
    "cues": [
     "13.3"
    ],
-   "note": "Find My is him changing WHICH DEVICE reports his location — iPad to iPhone — not re-sharing with her. Faster.",
+   "note": "Find My is him changing WHICH DEVICE reports his location \u2014 iPad to iPhone \u2014 not re-sharing with her. Faster.",
    "proof": "a_133_device_swap",
    "clean": 1,
    "secs": 21.9,
@@ -298,7 +298,7 @@
    "cues": [
     "12.2"
    ],
-   "note": "The map itself is not moving — only the text changes.",
+   "note": "The map itself is not moving \u2014 only the text changes.",
    "proof": "a_map_moves",
    "clean": 6,
    "last_build": "b59ffc5200ae",
@@ -364,7 +364,7 @@
    "cues": [
     "4.8"
    ],
-   "note": "The agent's \"SONNY READ IT\" text should arrive on a different notification from the bank alert and the emails (David clarified Sept 20 that this, not 4.9, is the cue he meant). It now carries its own tone — a custom text tone on that contact, which is what you set for the one person you cannot miss.",
+   "note": "The agent's \"SONNY READ IT\" text should arrive on a different notification from the bank alert and the emails (David clarified Sept 20 that this, not 4.9, is the cue he meant). It now carries its own tone \u2014 a custom text tone on that contact, which is what you set for the one person you cannot miss.",
    "proof": "a_bell",
    "clean": 5,
    "secs": 0.3,
@@ -392,7 +392,7 @@
    ],
    "note": "The new money-minute QR. Installed Sept 21: it decodes to the Redline donation page.",
    "proof": "a_qr",
-   "blocked_on": "it decodes to a Cloudinary .jpg, not a donation page — David to confirm the destination",
+   "blocked_on": "it decodes to a Cloudinary .jpg, not a donation page \u2014 David to confirm the destination",
    "clean": 2,
    "secs": 4.2,
    "last_build": "b59ffc5200ae"
@@ -497,7 +497,7 @@
     "13.3",
     "14.4"
    ],
-   "note": "THE CALENDAR SLIDES ACROSS THE PHONE. The docked strip's FLIP is still travelling when the phone paints 560 ms in, so the last ~440 ms of its journey plays OVER the screen — up to 16.6% of the reading window. CLAUDE.md: nothing ever overlays the phone.",
+   "note": "THE CALENDAR SLIDES ACROSS THE PHONE. The docked strip's FLIP is still travelling when the phone paints 560 ms in, so the last ~440 ms of its journey plays OVER the screen \u2014 up to 16.6% of the reading window. CLAUDE.md: nothing ever overlays the phone.",
    "proof": "a_era_never_overlays",
    "clean": 1,
    "secs": 547.7,
@@ -513,7 +513,7 @@
     "1.4",
     "1.5"
    ],
-   "note": "THE 1.2 CROP BUG, ROOT CAUSE. The send handler appends a bubble to the live thread but never re-renders, so the Thursday 'Delivered' the state deleted stays in the DOM. From 1.3 on the thread shows 'Delivered' AND 'Read 9:44 AM' at once — no iPhone ever does that. This is the text from previous scenes permeating the crop.",
+   "note": "THE 1.2 CROP BUG, ROOT CAUSE. The send handler appends a bubble to the live thread but never re-renders, so the Thursday 'Delivered' the state deleted stays in the DOM. From 1.3 on the thread shows 'Delivered' AND 'Read 9:44 AM' at once \u2014 no iPhone ever does that. This is the text from previous scenes permeating the crop.",
    "proof": "a_one_receipt",
    "clean": 8,
    "last_build": "b59ffc5200ae",
@@ -528,7 +528,7 @@
     "7.2",
     "7.3"
    ],
-   "note": "Song 7's MacBook type is the smallest in the show — 14.6 px projected against 76-81 px on the phone. The laptop is the only device whose type is hardcoded in pixels instead of derived from --ph, and it is never framed.",
+   "note": "Song 7's MacBook type is the smallest in the show \u2014 14.6 px projected against 76-81 px on the phone. The laptop is the only device whose type is hardcoded in pixels instead of derived from --ph, and it is never framed.",
    "proof": "a_laptop_legible",
    "clean": 1,
    "secs": 19.5,
@@ -551,7 +551,7 @@
     "9.2",
     "10.1"
    ],
-   "note": "22 cues leave black bars — the phone does not fill the reading window (1.6 is 28% empty, 13.3 is 24%, every notification cue ~5%). The law is edge to edge.",
+   "note": "22 cues leave black bars \u2014 the phone does not fill the reading window (1.6 is 28% empty, 13.3 is 24%, every notification cue ~5%). The law is edge to edge.",
    "proof": "a_fills_window",
    "clean": 5,
    "secs": 73.2,
@@ -564,7 +564,7 @@
    "cues": [
     "*"
    ],
-   "note": "The settled camera takes seven different scales for the same register — the same lock screen reads 76 px on one cue and 81 px on the next, and body text spans 58-81 px across the show. That is the 'text sizing weirdness across the board'.",
+   "note": "The settled camera takes seven different scales for the same register \u2014 the same lock screen reads 76 px on one cue and 81 px on the next, and body text spans 58-81 px across the show. That is the 'text sizing weirdness across the board'.",
    "proof": "a_one_scale_per_register",
    "clean": 5,
    "secs": 73.6,
@@ -581,7 +581,7 @@
     "4.2",
     "2.3"
    ],
-   "note": "A connected call's first frame reads 'connected · 00:00'. A real iPhone never leading-zeroes the minutes.",
+   "note": "A connected call's first frame reads 'connected \u00b7 00:00'. A real iPhone never leading-zeroes the minutes.",
    "proof": "a_timer_format",
    "clean": 8,
    "last_build": "b59ffc5200ae",
@@ -595,7 +595,7 @@
     "12.1",
     "12.2"
    ],
-   "note": "CarPlay's SPEED LIMIT sign is 18.2 px — the only sub-22 px type on a dash that otherwise reads 32.5 px.",
+   "note": "CarPlay's SPEED LIMIT sign is 18.2 px \u2014 the only sub-22 px type on a dash that otherwise reads 32.5 px.",
    "proof": "a_dash_legible",
    "clean": 6,
    "last_build": "b59ffc5200ae",
@@ -608,7 +608,7 @@
    "cues": [
     "14.4"
    ],
-   "note": "The predictive bar and the settled state disagree — a scrub or a resize snaps the suggestion back to a stale word mid-scene.",
+   "note": "The predictive bar and the settled state disagree \u2014 a scrub or a resize snaps the suggestion back to a stale word mid-scene.",
    "proof": "a_predict_matches",
    "clean": 1,
    "secs": 99.3,
@@ -648,7 +648,7 @@
     "3.9",
     "2.4"
    ],
-   "note": "A CONNECTED CALL SHOWS NO CONTROLS. At 4.2 the crop holds the caller name and 'connected · 0:00' and nothing else — mute / end / speaker are below the frame. CLAUDE.md: a connected call shows mute/end/speaker. The state is unprovable on stage.",
+   "note": "A CONNECTED CALL SHOWS NO CONTROLS. At 4.2 the crop holds the caller name and 'connected \u00b7 0:00' and nothing else \u2014 mute / end / speaker are below the frame. CLAUDE.md: a connected call shows mute/end/speaker. The state is unprovable on stage.",
    "proof": "a_call_controls",
    "clean": 5,
    "secs": 42.9,
@@ -663,7 +663,7 @@
     "4.2",
     "2.4"
    ],
-   "note": "BUTTONS DID NOT MATCH STATE. Answering a call changed only the status line, so a CONNECTED call still showed Answer/Decline. CLAUDE.md: a connected call shows mute/end/speaker, never Answer. Same class as the receipt bug — a live handler mutating in place and diverging from the settled render.",
+   "note": "BUTTONS DID NOT MATCH STATE. Answering a call changed only the status line, so a CONNECTED call still showed Answer/Decline. CLAUDE.md: a connected call shows mute/end/speaker, never Answer. Same class as the receipt bug \u2014 a live handler mutating in place and diverging from the settled render.",
    "proof": "a_call_buttons_match",
    "clean": 5,
    "secs": 73.9,
@@ -676,7 +676,7 @@
    "cues": [
     "8.6"
    ],
-   "note": "A STRAY GREY RECTANGLE sits at the top-left of the stage on 8.6, both mid-flight and settled — a torn page fragment left behind by the previous card. Nothing should be on the stage but the calendar and the photo bed.",
+   "note": "A STRAY GREY RECTANGLE sits at the top-left of the stage on 8.6, both mid-flight and settled \u2014 a torn page fragment left behind by the previous card. Nothing should be on the stage but the calendar and the photo bed.",
    "proof": "a_no_stray_pages",
    "clean": 5,
    "secs": 557.3,
@@ -689,7 +689,7 @@
    "cues": [
     "*"
    ],
-   "note": "THE SUBJECT LAW (the family rule behind 2.2, 9.x, 4.x and 14.4): content may leave the frame with feathers, but the SUBJECT of a cue — whatever the camera was last aimed at — must sit WHOLE inside the reading window when the glide settles. One gate, swept across all 14 songs, so this defect cannot return in a song nobody looked at.",
+   "note": "THE SUBJECT LAW (the family rule behind 2.2, 9.x, 4.x and 14.4): content may leave the frame with feathers, but the SUBJECT of a cue \u2014 whatever the camera was last aimed at \u2014 must sit WHOLE inside the reading window when the glide settles. One gate, swept across all 14 songs, so this defect cannot return in a song nobody looked at.",
    "proof": "a_subject_never_sliced",
    "clean": 0,
    "secs": 588.2
@@ -714,7 +714,7 @@
    "cues": [
     "*"
    ],
-   "note": "Two embedded sound files never decoded on any boot — Reflection.m4r, an iOS RINGTONE shipped under a law that says NO RINGTONES, and Swish.m4r, mapped to a swipe the law already silences. Both out of the build; 24 of 24 files now decode.",
+   "note": "Two embedded sound files never decoded on any boot \u2014 Reflection.m4r, an iOS RINGTONE shipped under a law that says NO RINGTONES, and Swish.m4r, mapped to a swipe the law already silences. Both out of the build; 24 of 24 files now decode.",
    "proof": "a_all_sounds_decode",
    "clean": 4,
    "last_build": "b59ffc5200ae",
@@ -730,7 +730,7 @@
     "3.10",
     "4.3"
    ],
-   "note": "The hang-up tone was reported firing twice per call. Not reproducible on the merged build — swept every call, black and device cue in the show; it fires once. Kept as a standing guard.",
+   "note": "The hang-up tone was reported firing twice per call. Not reproducible on the merged build \u2014 swept every call, black and device cue in the show; it fires once. Kept as a standing guard.",
    "proof": "a_one_hangup",
    "clean": 4,
    "last_build": "b59ffc5200ae",
@@ -743,7 +743,7 @@
    "cues": [
     "*"
    ],
-   "note": "The time-warp taper is a 0.3 s collapse and the reverb never rings out, so every roll ends in about 1.2 s of silence — not the taper David asked for.",
+   "note": "The time-warp taper is a 0.3 s collapse and the reverb never rings out, so every roll ends in about 1.2 s of silence \u2014 not the taper David asked for.",
    "proof": "a_warp_tapers",
    "clean": 2,
    "secs": 6.8,
@@ -770,7 +770,7 @@
     "2.2",
     "2.3"
    ],
-   "note": "73% of backspaces are silent during the draft wipes — David asked for key_press_delete on every one.",
+   "note": "73% of backspaces are silent during the draft wipes \u2014 David asked for key_press_delete on every one.",
    "proof": "a_every_backspace",
    "clean": 4,
    "last_build": "b59ffc5200ae",
@@ -786,7 +786,7 @@
     "3.9",
     "4.2"
    ],
-   "note": "The ringback does not stop when the call is answered — up to 1.9 s of ringing tolls over the connected call.",
+   "note": "The ringback does not stop when the call is answered \u2014 up to 1.9 s of ringing tolls over the connected call.",
    "proof": "a_ring_stops_on_answer",
    "clean": 2,
    "secs": 1.9,
@@ -799,7 +799,7 @@
    "cues": [
     "4.6"
    ],
-   "note": "The bank alert's bell was 22 milliseconds long — inaudible as an event. A bank alert is a text message and iOS gives it the text tone; the special case is gone.",
+   "note": "The bank alert's bell was 22 milliseconds long \u2014 inaudible as an event. A bank alert is a text message and iOS gives it the text tone; the special case is gone.",
    "proof": "a_bell_audible",
    "clean": 4,
    "last_build": "b59ffc5200ae",
@@ -836,7 +836,7 @@
    "cues": [
     "6"
    ],
-   "note": "Song 6 was calendar-only in the build but a Christmas lock screen in the law and the Bible. The BUILD was right — David cut 6.2 and the Christmas background on Sept 20 — and the law was stale. CLAUDE.md now records the cut and lists 6 among the calendar-only songs.",
+   "note": "Song 6 was calendar-only in the build but a Christmas lock screen in the law and the Bible. The BUILD was right \u2014 David cut 6.2 and the Christmas background on Sept 20 \u2014 and the law was stale. CLAUDE.md now records the cut and lists 6 among the calendar-only songs.",
    "proof": "a_song6_agrees",
    "clean": 3,
    "secs": 0.3,
@@ -849,7 +849,7 @@
    "cues": [
     "14.4"
    ],
-   "note": "On the first night her contact for him reads 'Jamie' — the 2026 name. 'Jamie ✨' never appears in the show.",
+   "note": "On the first night her contact for him reads 'Jamie' \u2014 the 2026 name. 'Jamie \u2728' never appears in the show.",
    "proof": "a_contact_name_era",
    "clean": 3,
    "secs": 0.0,
@@ -862,7 +862,7 @@
    "cues": [
     "9"
    ],
-   "note": "Two names for Whitfield is CORRECT and IS the chain of custody: he saves a stranger's office number from Dr. Adler's tip as 'Ms. Whitfield (office)' in 2021, and by the time she is his agent of three years she is 'Linda Whitfield' — the same progression the law sets for Jamie's name in her phone. The probe now guards the ORDER instead of counting names.",
+   "note": "Two names for Whitfield is CORRECT and IS the chain of custody: he saves a stranger's office number from Dr. Adler's tip as 'Ms. Whitfield (office)' in 2021, and by the time she is his agent of three years she is 'Linda Whitfield' \u2014 the same progression the law sets for Jamie's name in her phone. The probe now guards the ORDER instead of counting names.",
    "proof": "a_one_whitfield",
    "clean": 3,
    "secs": 0.0,
@@ -875,7 +875,7 @@
    "cues": [
     "*"
    ],
-   "note": "The census's FAST CAMERA test cannot fail — its match list covers every transition string the engine emits. A gate that cannot fail proves nothing.",
+   "note": "The census's FAST CAMERA test cannot fail \u2014 its match list covers every transition string the engine emits. A gate that cannot fail proves nothing.",
    "proof": "a_census_can_fail",
    "clean": 0,
    "secs": 0.0
@@ -887,7 +887,7 @@
    "cues": [
     "*"
    ],
-   "note": "ERA_ZONE_ reserves 19% of the frame for a docked strip that measures 14.4% (276.5 px of 1920), leaving about 58 px of black between the phone and the strip. NOT CHANGING IT TWO DAYS OUT: ERA_ZONE_ feeds camFill, so every framing measurement in the show — the 3.39x resting scale, the notification stack rule, the subject law thresholds, the laptop and CarPlay widths — was tuned against it. Reclaiming 58 px risks re-breaking framing David has already approved. Recommend 0.165 as a post-run change, measured and re-gated. David's call.",
+   "note": "ERA_ZONE_ reserves 19% of the frame for a docked strip that measures 14.4% (276.5 px of 1920), leaving about 58 px of black between the phone and the strip. NOT CHANGING IT TWO DAYS OUT: ERA_ZONE_ feeds camFill, so every framing measurement in the show \u2014 the 3.39x resting scale, the notification stack rule, the subject law thresholds, the laptop and CarPlay widths \u2014 was tuned against it. Reclaiming 58 px risks re-breaking framing David has already approved. Recommend 0.165 as a post-run change, measured and re-gated. David's call.",
    "proof": "a_no_gutter",
    "clean": 2,
    "secs": 13.7,
@@ -908,15 +908,15 @@
   },
   {
    "id": "D-065",
-   "status": "open",
+   "status": "fixed",
    "family": "house",
    "cues": [
     "*"
    ],
-   "note": "The photo bed, once photographs land: the bed runs at 46% opacity and a print may be dealt more off the stage than on it. (The per-print tilt never rendering, and the order repeating verbatim, are fixed; prints reaching past the edge is now the direction — David, Sept 22: the bed 'can completely envelope the screen'.)",
+   "note": "The photo bed, once photographs land: the bed runs at 46% opacity and a print may be dealt more off the stage than on it. (The per-print tilt never rendering, and the order repeating verbatim, are fixed; prints reaching past the edge is now the direction \u2014 David, Sept 22: the bed 'can completely envelope the screen'.)",
    "proof": "a_bed_quality",
    "clean": 0,
-   "secs": 1.3
+   "secs": 1.2
   },
   {
    "id": "D-066",
@@ -932,7 +932,7 @@
    "note": "The preshow and home screens are too large right now, we won't be able to see the falling photos behind them.",
    "proof": "a_house_leaves_bed",
    "clean": 2,
-   "secs": 9.6,
+   "secs": 9.7,
    "last_build": "b59ffc5200ae"
   },
   {
