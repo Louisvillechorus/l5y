@@ -1289,7 +1289,7 @@ const FALLBACK_SHOW = [
   do:[{op:'clock',t:'9:41',d:'Friday, June 12, 2026'},{op:'stamp',t:'the morning after'},
       {op:'prologue',ms:0}]},
  {id:'1.2',kind:'lyric',trig:'“Jamie arrived at the end of the line” — she picks up the phone and sends it',
-  what:'AUTO-PLAYS from this GO (~50 s — slowed by direction; every pause is tunable in tech). The calendar docks; her phone rises, locked — a Facebook Memories notification lands and she ignores it. Unlock, Messages (the whole list is condolences), his thread mid-history — days of her asking, all silent. She types it live, hesitant, and SENDS. Delivered.',
+  what:'AUTO-PLAYS from this GO (~50 s — slow; every pause is tunable in tech). The calendar docks; her phone rises, locked — a Facebook Memories notification lands and she ignores it. Unlock, Messages (the whole list is condolences), his thread mid-history — days of her asking, all silent. She types it live, hesitant, and SENDS. Delivered.',
   hold:'Nothing to fire until her next sung line. If the verse runs long, the Delivered sits — let it.',
   do:[{op:'device',dev:'iphone',who:'cathy'},
       {op:'pause',ms:900},
@@ -1332,7 +1332,7 @@ const FALLBACK_SHOW = [
   hold:'The cruellest silence available in Year 5.',
   do:[{op:'untyping'}]},
  {id:'1.6',kind:'lyric',trig:'“Go and hide and run away” — GO AFTER THIS LINE',
-  what:'AUTO-PLAYS from this GO (~46 s — 15% slower by direction, Sept 20: each card’s caption centers, then the eye drifts down into the photograph). She leaves the thread and opens the Memories the notification offered: four cards scroll past — the dressing-room mirror (last year, Ohio round 2 day 1), the wedding, the ring, and the bear he brought at nine months — and she stays on the bear.',
+  what:'AUTO-PLAYS from this GO (~46 s — slow: each card’s caption centres, then the eye drifts down into the photograph). She leaves the thread and opens the Memories the notification offered: four cards scroll past — the dressing-room mirror (last year, Ohio round 2 day 1), the wedding, the ring, and the bear he brought at nine months — and she stays on the bear.',
   hold:'The bear card is the last thing she looks at. Let the camera sit.',
   do:[{op:'openapp',icon:'Facebook',to:'memories'},
       {op:'pause',ms:2070},
@@ -1405,7 +1405,7 @@ const FALLBACK_SHOW = [
 /* ============ 3 · SEE I’M SMILING — CATHY & JAMIE (his calls disrupt her time) ============ */
 {n:3,t:'See I’m Smiling',who:'both',cues:[
  {id:'3.1',kind:'music',trig:'“tragic but it’s true… hey hey shiksa goddess, I’ve been waiting for someone like you” — GO AFTER THIS LINE',
-  what:'No phone for her, by direction. The calendar rolls FORWARD, page by page — SEPTEMBER · YEAR 1 → JULY · YEAR 4, her birthday in Ohio — and holds while she sings.',
+  what:'No phone for her. The calendar rolls FORWARD, page by page — SEPTEMBER · YEAR 1 → JULY · YEAR 4, her birthday in Ohio — and holds while she sings.',
   do:[{op:'bed',file:'lake.mp3',fade:5,gain:.602},{op:'black'},{op:'clock',t:'6:12',d:'Saturday, July 19, 2025'},{op:'stamp',t:'Ohio · her birthday'}]},
  {id:'3.2',kind:'lyric',trig:'“We’re doing fine” — GO IMMEDIATELY ON THE WORD *FINE*',
   what:'The calendar rolls BACK to SEPTEMBER · YEAR 1 and docks; HIS phone rises already dialing — a cold call to the agent, via Dr. Adler (“Ms. Whitfield (office)”, from Adler’s text). Ringback under it.',
@@ -1416,7 +1416,7 @@ const FALLBACK_SHOW = [
   what:'Call Ended; the phone drops; the calendar comes back to center and rolls FORWARD home — SEPTEMBER · YEAR 1 → JULY · YEAR 4.',
   do:[{op:'bed',file:'lake.mp3',fade:4,gain:.602},{op:'black'},{op:'clock',t:'6:31',d:'Saturday, July 19, 2025'},{op:'stamp',t:'Ohio · her birthday'}]},
  {id:'3.5',kind:'lyric',trig:'“we’ll have tonight” — GO ON *TONIGHT*',
-  what:'The calendar rolls BACK and docks; HIS phone rises with an INCOMING call from Ms. Whitfield — two weeks later (script). The ring under it.',
+  what:'The calendar rolls BACK and docks; HIS phone rises with an INCOMING call from Ms. Whitfield — two weeks later. The ring under it.',
   do:[{op:'bed',stop:true,fade:2},{op:'clock',t:'4:18',d:'Tuesday, September 21, 2021'},{op:'stamp',t:''},
       {op:'device',dev:'iphone',who:'jamie'},
       {op:'call',n:'Ms. Whitfield (office)',st:'incoming call',dir:'in'}]},
@@ -1424,20 +1424,20 @@ const FALLBACK_SHOW = [
   what:'Again: Call Ended, the phone drops, the calendar rolls FORWARD to her evening.',
   do:[{op:'bed',file:'lake.mp3',fade:4,gain:.602},{op:'black'},{op:'clock',t:'6:47',d:'Saturday, July 19, 2025'},{op:'stamp',t:'Ohio · her birthday'}]},
  {id:'3.8',kind:'lyric',trig:'“and not do anything at all”',
-  what:'SCRIPT: he dials — “perplexed but not unhappy.” The calendar rolls BACK and docks; his phone rises dialing Rob. The lease is up; an apartment WITH Cathy.',
+  what:'He dials — perplexed, but not unhappy. The calendar rolls BACK and docks; his phone rises dialing Rob. The lease is up; an apartment WITH Cathy.',
   do:[{op:'bed',stop:true,fade:2},{op:'clock',t:'8:02',d:'Thursday, September 30, 2021'},{op:'stamp',t:''},
       {op:'device',dev:'iphone',who:'jamie'},
       {op:'call',n:'Rob',st:'calling mobile…',dir:'out'}]},
  {id:'3.10',kind:'music',trig:'DOWNBEAT OF MOVING TOO FAST — he hangs up',
   what:'Call Ended on the downbeat; the phone drops and SEPTEMBER · YEAR 1 holds center — no page tears. He hangs up on Rob and sings.',
-  hold:'David, Sept 21: “take the timewarp out between the conversation with Rob and Movin’ Too Fast — we’re going to operate as if he sings that song right after he gets off the phone with rob.” The calendar does not move here, and the win-streak in 4 is dated the same evening.',
+  hold:'The calendar does NOT move here — no page tears. He hangs up on Rob and sings, and the win streak in song 4 is the same evening.',
   do:[{op:'bed',stop:true,fade:5},{op:'black'}]},
 ]},
 
 /* ============ 4 · MOVING TOO FAST — JAMIE (with Cathy’s gig call) ============ */
 {n:4,t:'Moving Too Fast',who:'both',cues:[
  {id:'4.1',kind:'lyric',trig:'“But oh, oh — what else am I s’pposed to do?” — CATHY DIALS',
-  what:'The calendar rolls FORWARD — SEPTEMBER · YEAR 1 → MAY · YEAR 4 (pinned by David: her backward line, between the pier and the party) — and docks; HER phone rises dialing Mike Stelmyer. His agency is never named (script).',
+  what:'The calendar rolls FORWARD — SEPTEMBER · YEAR 1 → MAY · YEAR 4 (her backward line, between the pier and the party) — and docks; HER phone rises dialing Mike Stelmyer. His agency is never named.',
   do:[{op:'clock',t:'10:10',d:'Friday, May 9, 2025'},{op:'stamp',t:''},
       {op:'device',dev:'iphone',who:'cathy'},
       {op:'call',n:'Mike Stelmyer',st:'calling…',dir:'out'}]},
@@ -1468,14 +1468,14 @@ const FALLBACK_SHOW = [
 /* ============ 5 · I’M A PART OF THAT — CATHY · the calendar only ============ */
 {n:5,t:'I’m a Part of That',who:'cathy',cues:[
  {id:'5.1',kind:'music',trig:'TOP OF I’M A PART OF THAT — the first notes of the intro',
-  what:'Calendar only, by direction (the dedication is cut). The pages roll FORWARD — OCTOBER · YEAR 1 → MARCH · YEAR 4, the book party — and hold for the whole song.',
+  what:'Calendar only. The pages roll FORWARD — OCTOBER · YEAR 1 → MARCH · YEAR 4, the book party — and hold for the whole song.',
   do:[{op:'black'},{op:'clock',t:'8:12',d:'Saturday, March 8, 2025'},{op:'stamp',t:'the book party'}]},
 ]},
 
 /* ============ 6 · THE SCHMUEL SONG — JAMIE, his iPhone · the season only ============ */
 {n:6,t:'The Schmuel Song',who:'jamie',cues:[
  {id:'6.1',kind:'music',trig:'TOP OF THE SCHMUEL SONG — the tree lights come up, before he speaks',
-  what:'CALENDAR ONLY (David, Sept 20 — the phone is cut from Schmuel). The pages roll BACK, MARCH · YEAR 4 → DECEMBER · YEAR 2, and the date holds center-stage for the whole song. No phone, no wallpaper.',
+  what:'CALENDAR ONLY — no phone in Schmuel. The pages roll BACK, MARCH · YEAR 4 → DECEMBER · YEAR 2, and the date holds center-stage for the whole song. No phone, no wallpaper.',
   hold:'Nothing else fires in this song. The next GO is the top of song 7.',
   do:[{op:'black'},{op:'clock',t:'9:12',d:'Saturday, December 24, 2022'},{op:'stamp',t:'their second Christmas'}]},
 ]},
@@ -1499,7 +1499,7 @@ const FALLBACK_SHOW = [
 /* ============ 8 · THE NEXT TEN MINUTES — DUET · the calendar only · then INTERMISSION ============ */
 {n:8,t:'The Next Ten Minutes',who:'both',cues:[
  {id:'8.1',kind:'stage',trig:'JAMIE: “No, that one’s Jerry Seinfeld” — his first line, in the rowboat',
-  what:'No phones, by direction. The calendar rolls BACK — JUNE · YEAR 3 → JUNE · YEAR 2, the engagement — and holds.',
+  what:'No phones. The calendar rolls BACK — JUNE · YEAR 3 → JUNE · YEAR 2, the engagement — and holds.',
   do:[{op:'black'},{op:'clock',t:'4:44',d:'Monday, June 12, 2023'},{op:'stamp',t:'the engagement'}]},
  {id:'8.2',kind:'lyric',trig:'JAMIE: “For the next ten lifetimes?” — the altar',
   what:'The pages tear FORWARD to the only date both timelines will ever share — MAY · YEAR 3 · THE WEDDING.',
@@ -1530,7 +1530,7 @@ const FALLBACK_SHOW = [
   do:[{op:'notif',app:'Instagram',w:'now',title:'a.reader.somewhere',t:'commented: okay the ending WRECKED me. how are you real'}]},
  {id:'9.3',kind:'lyric',trig:'“Every other woman in the world suddenly finds you attractive” — GO',
   what:'Two at once — a message request he cannot read, and one he can. paige.turner is not shy.',
-  hold:'David, Sept 21 asked for paige.turner. Hers is a COMMENT, not a DM: a stranger’s direct message shows no preview text on a real iPhone (that is why lit.with.lena only “wants to send you a message”), and the line has to be READ to land. A comment on his post carries its text, needs no relationship, and is exactly what a reader who found him attractive would leave. Hers arrives last so it is the top card.',
+  hold:'Two cards land together. lit.with.lena is a message request, so it says only that she wants to send one; paige.turner is a comment, so hers carries its words. Paige arrives second, so she is the card on top.',
   do:[{op:'notif',app:'Instagram',w:'now',title:'lit.with.lena',t:'wants to send you a message'},
       {op:'notif',app:'Instagram',w:'now',title:'paige.turner',t:'commented: Hey handsome, didn’t know an author could be so handsome ;)'}]},
  {id:'9.4',kind:'lyric',trig:'“wouldn’t give you the time of day before” — GO',
@@ -1596,7 +1596,7 @@ const FALLBACK_SHOW = [
 /* ============ 11 · IF I DIDN’T BELIEVE IN YOU — JAMIE · the calendar only ============ */
 {n:11,t:'If I Didn’t Believe In You',who:'jamie',cues:[
  {id:'11.1',kind:'stage',trig:'JAMIE: “Okay, stop. Cathy, stop.” — his first words',
-  what:'Calendar only, by direction. The pages tear FORWARD — FEBRUARY · YEAR 3 → MARCH · YEAR 5, the night of the party — and hold for the whole fight.',
+  what:'Calendar only. The pages tear FORWARD — FEBRUARY · YEAR 3 → MARCH · YEAR 5, the night of the party — and hold for the whole fight.',
   do:[{op:'black'},{op:'clock',t:'7:41',d:'Friday, March 6, 2026'},{op:'stamp',t:'the night of the party'}]},
 ]},
 
@@ -1624,13 +1624,13 @@ const FALLBACK_SHOW = [
   do:[{op:'black'},{op:'batt',v:9},{op:'clock',t:'5:05',d:'Thursday, June 11, 2026'},{op:'stamp',t:'before dawn'}]},
  {id:'13.2',kind:'lyric',trig:'“Cathy is waiting” — her text lands',
   what:'AUTO-PLAYS from this GO. The calendar docks; his phone lights on the nightstand — 9% battery — with her good-morning text. It sits there, readable, for four seconds. Then he pushes it off the screen — slowly, the whole width of the glass, a deliberate erasure and not a flick — unread, and the phone drops again. JUNE · YEAR 5 holds.',
-  hold:'He does not open it — he CLEARS it. The card is pulled LEFT off its own Clear button, the word is held long enough to read, and only then does the card go (David, Sept 21: “you swipe right to unlock and open, you should swipe LEFT and see the word Clear”). The tuning knobs are the two pauses (3500 before, 900 after) and `ms` on notifDismiss, which is the whole gesture — it splits into the pull, the hold on Clear, and the card leaving.',
+  hold:'He does not open it — he CLEARS it. The card is pulled LEFT off its own Clear button, the word is held long enough to read, and only then does the card go. The tuning knobs are the two pauses (3500 before, 900 after) and `ms` on notifDismiss, which is the whole gesture — it splits into the pull, the hold on Clear, and the card leaving.',
   do:[{op:'device',dev:'iphone',who:'jamie'},
       {op:'notif',app:'Messages',w:'now',title:'Cathy 💛',t:'good morning. can’t wait to see you — what time does your flight land?'},
       {op:'pause',ms:3500},{op:'notifDismiss',ms:1880},{op:'pause',ms:900},{op:'black'}]},
  {id:'13.3',kind:'lyric',trig:'“…in love with someone like you” — his last line; Find My, the location device swapped',
   what:'THE WHOLE PHONE, so the house watches him unlock it. Find My opens on People: Cathy, Mount Orab, OH — she is exactly where she says she is. He taps ME. His own card reads Share My Location ON, Sharing From: Jamie’s iPad — the iPad on the desk at home, where she thinks HE is. One blue row: “Use This iPhone as My Location.” He taps it, and Sharing From becomes Jamie’s iPhone. The map now follows his body. Nothing turns on, nothing turns off — he just moves the dot into his pocket.',
-  hold:'He has been “sharing” with her all along; only the DEVICE changes. This iPhone was never the source and we never see him make the iPad one. Every step inside Find My is held long enough to READ (David, Sept 20 — “it’s way too fast”): 1.8 s on Cathy in Mount Orab, then the camera goes to the SHARING FROM ROW ITSELF (David, Sept 21 — “just change the camera zoom effect there”) and holds it 4.6 s on “Jamie’s iPad” and 4.2 s on “Jamie’s iPhone”. The camera does not move between the two: the row is already in frame, so the house watches the word change in place. The hesitation is the house’s, not his: he still presses without pausing (the 0.8 s between the press and the tap is the finger on the row, not doubt). Hold on the settled card through the final chord; 14.1 takes it away.',
+  hold:'He has been “sharing” with her all along; only the DEVICE changes. This iPhone was never the source and we never see him make the iPad one. Every step inside Find My is held long enough to READ: 1.8 s on Cathy in Mount Orab, then the camera goes to the SHARING FROM row itself and holds it 4.6 s on “Jamie’s iPad” and 4.2 s on “Jamie’s iPhone”. The camera does not move between the two: the row is already in frame, so the house watches the word change in place. The hesitation is the house’s, not his: he still presses without pausing (the 0.8 s between the press and the tap is the finger on the row, not doubt). Hold on the settled card through the final chord; 14.1 takes it away.',
   do:[{op:'clock',t:'5:24'},{op:'device',dev:'iphone',who:'jamie',whole:true},
       {op:'pause',ms:900},
       {op:'unlock'},
@@ -1661,7 +1661,7 @@ const FALLBACK_SHOW = [
   do:[{op:'clock',t:'11:47',d:'Friday, September 3, 2021'},{op:'stamp',t:'the first night'}]},
  {id:'14.4',kind:'lyric',trig:'CATHY: “I will be waiting for you!” — her LAST line before he stands; his text lands',
   what:'THE ONE ANIMATION, AND THE LAST IMAGE OF THE SHOW. The calendar docks; her phone lights on the steps: “home safe?” — the text the house watched him send in Shiksa Goddess. She opens it and answers it SLOWLY, and then she SENDS it — we hear the send. “safe 😊 tonight was amazing” lands as a sent bubble and STAYS THERE, lit, through the whole of his last verse. Nothing takes it away; the curtain fades it out.',
-  hold:'David, Sept 21: “the last thing we should see before the blackout is the text ‘tonight was amazing’ — you can cut everything else after that.” Her screen no longer goes dark in her hand (that reverses Sept 20’s baked-in `screenoff`), his last verse has no cue at all, and the only thing left is the slow curtain at 14.6. She types at the `slow` pace and the sent bubble holds eight seconds before his verse even begins. The send is stamped 11:51, after the call the house watched him take in Shiksa Goddess, so his phone in Song 2 is not contradicted.',
+  hold:'Her text is the last thing the house sees. Her screen does not go dark in her hand, his last verse has no cue at all, and the only thing left after this is the slow curtain at 14.6. She types slowly and the sent bubble holds eight seconds before his verse even begins. The send is stamped 11:51, after the call the house watched him take in Shiksa Goddess, so his phone in Song 2 is not contradicted.',
   do:[{op:'clock',t:'11:48'},{op:'device',dev:'iphone',who:'cathy'},
       {op:'notif',app:'Messages',w:'now',title:'Jamie ✨',t:'home safe?'},
       {op:'pause',ms:1500},
@@ -1676,7 +1676,7 @@ const FALLBACK_SHOW = [
       {op:'pause',ms:8000}]},
  {id:'14.6',kind:'music',trig:'FINAL BLACKOUT — on the last “Goodbye”',
   what:'THE SLOW CURTAIN. Nothing drops and nothing cuts: her lit phone, with “tonight was amazing” still on the glass, fades — all of it together — over three and a half seconds, to true black. End of show.',
-  hold:'David, Sept 21: “the blackout should be a slow blackout to actual black.” `fade` is the knob. An ordinary curtain drops the phone first, which would take her text away BEFORE the black did; this one never does. His last verse has no cue — her text is on screen for all of it.',
+  hold:'A SLOW blackout to true black — `fade` is the knob. Nothing drops and nothing cuts: an ordinary curtain takes the phone away first, which would lose her text before the black did. His last verse has no cue — her text is on screen for all of it.',
   do:[{op:'curtain',fade:3500}]},
  {id:'14.7',kind:'stage',trig:'BOWS — the company comes back on',
   what:'The house comes back: the title page center-stage with the photographs flooding behind it, faster than they fell before the show. It holds for as long as the bows run — it never empties and it never ends. The operator’s questionnaire waits until the house lights are up and the show is left.',
