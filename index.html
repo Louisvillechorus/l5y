@@ -4150,8 +4150,18 @@ async function playCue(cue, st, tok){
       await Promise.all(stacks().map(k=>{const f=k.querySelector('.memfeed'); if(!f) return null;
         const cards=f.querySelectorAll('.memscreen'); const i=Math.max(0,Math.min(cards.length-1,o.i||0));
         return humanScroll(f,i*f.clientHeight,'memgo'+cue.id,tok,{gesture:'drag',flicks:2,slow:MEM_SLOW_()});}));
-      camPush(`.memfeed .memscreen:nth-child(${(o.i||0)+1}) .body`, 2.6, 0, null, null, true); camPush(`.memfeed .memscreen:nth-child(${(o.i||0)+1}) .media`, 2.2, 2600*MEM_SLOW_(), 'subjtop', 3.2*MEM_SLOW_(), true, true);
-      await wait(400*MEM_SLOW_()); continue; }
+      const nth=(o.i||0)+1, CD=2600*MEM_SLOW_(), CG=3.2*MEM_SLOW_();   // when the drift up starts, and how long it glides
+      camPush(`.memfeed .memscreen:nth-child(${nth}) .body`, 2.6, 0, null, null, true);
+      camPush(`.memfeed .memscreen:nth-child(${nth}) .media`, 2.2, CD, 'subjtop', CG, true, true);
+      /* THE CUE OWNS ITS OWN CAMERA (D-048). The drift up into the photograph is scheduled 2.6 s
+         after the scroll and glides for another 3.2 — six and a quarter seconds of stage movement
+         that used to happen AFTER the cue had reported itself finished. Two things follow from
+         that, and both are bad: the presenter said "done" while the most tender image of song 1
+         was still arriving, and the operator's next GO does animTok++, which cancels a pending
+         camPush outright — so whether the house ever saw the bear depended on the operator
+         waiting past a cue sheet that told them not to. The cue waits for its own camera now, and
+         the subject law can measure a beat that has actually landed. */
+      await wait(CD + CG*1000 + 160); continue; }
     if(o.op==='bows'){
       // THE BOWS (David, Sept 20): the house sequence comes back after the curtain — the title page,
       // the photographs flooding behind it — and holds for as long as the company bows. The gate waits.

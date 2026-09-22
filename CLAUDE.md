@@ -259,6 +259,15 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   and the newest card is the subject, the older ones cascading off the bottom as they do on a real
   lock screen — at 3.39× five cards are 1829 px in a 1080 px frame, so "every card whole" is
   arithmetically impossible and the clock is what gives way first.
+- **A CUE OWNS ITS OWN CAMERA (Sept 22, from D-048)**: a `camPush` scheduled with a delay keeps
+  moving the stage after the cue's `await` has returned, and two bad things follow. The presenter
+  says “done” while the picture is still arriving, and the operator's next GO does `animTok++`,
+  which CANCELS a pending push outright — so whether the house ever saw the beat depended on the
+  operator waiting past a cue sheet telling them not to. 1.6 was the case: the drift up into the
+  bear fired at 2.99 s and landed at 6.67 s, while the cue reported itself finished at 0.46 s. A cue
+  waits for the last camera move it schedules. (This is also why the subject law could never pass
+  on 1.6 — it was measuring a frame the camera had not reached yet, and the fix was the cue's, not
+  the framing's: `subjtop` was right all along and now lands the photograph flush at 0 px.)
 - **MEASURE THE TYPE, NOT THE BOX (Sept 20, the hard-won one)**: `scrollWidth` on a `display:block`
   line can never report less than its own box, so a fit-to-width silently no-ops for anything
   narrower — and a QA that measures the same way will happily confirm it. `fitPad` and its probe both
@@ -419,5 +428,10 @@ fails is reported as a REGRESSION and fails the whole gate — closure is not pe
 1. **Verify before delivering.** Playwright harness must pass: state-integrity (all cues), POV/timeline, legibility QC, `audit_teleports.py` (no register appears without navigation), **`qc_census.py` (the live census: every sound and every camera move of the whole show, by cue — the sound law and the follow rule are checked HERE; any cue with more than three moves must justify itself)**, **`qc_notes.py` (David's register: every note he has given, proved by its own assertion)**, **`qc_livepath.py` (the operator's GO path: every cue fired via advance(), shell chrome + reading window asserted against settled truth — settled-render sweeps cannot see live-swap bugs)**, zero JS errors — plus a screenshot review of anything visually changed. Never hand David anything unverified.
 2. Rebuild = splice `cues.js` into `FALLBACK_SHOW`, emit `L5Y-Show-STANDALONE.html`, `node --check` the script.
 3. Regenerate the Cue Bible whenever cue content changes: `extract_book.py` → `build_bible_data.py` → `build_bible_docx.js` (DOCX) + `build_bible_pdf.py` (PDF, headless Chromium). Both render the same `bible.json`, so they cannot drift. The Bible carries: ON SCREEN verbatim, PLAYS mechanics, SOUND, PHONES state, gold dramaturgy notes.
-4. Ship: STANDALONE + Bible PDF; push to this repo so the team URL stays current.
-5. David's notes are punch lists: fix **every** item, then QA beyond the list in the same spirit. Proactive taste is expected; sloppiness anywhere invalidates polish everywhere.
+4. `./qa_all.sh` IS that list, in one command — it rebuilds, regenerates `book.json` AND the
+   whole Bible chain, then runs every gate. The Bible step is not housekeeping: `a_confirm_survives_bible`
+   asks whether `bible.json` is newer than the build it describes, and qa_all rebuilds the show on its
+   first line, so without it D-058 was stale by construction and could never pass inside the gate that
+   gates it (David, Sept 22).
+5. Ship: STANDALONE + Bible PDF; push to this repo so the team URL stays current.
+6. David's notes are punch lists: fix **every** item, then QA beyond the list in the same spirit. Proactive taste is expected; sloppiness anywhere invalidates polish everywhere.
