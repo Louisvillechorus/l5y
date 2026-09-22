@@ -38,7 +38,6 @@ window.L5Y_SHOW = [
   what:'ONE GO. The title page tears off the pad and falls; beneath it the calendar reads JUNE · YEAR 5, the morning after, and holds center-stage through the whole prologue. No phone, no sound.',
   hold:'`ms` on this cue delays the tear after GO (0 = on the GO). Nothing else moves until her verse-two line.',
   do:[{op:'clock',t:'9:41',d:'Friday, June 12, 2026'},{op:'stamp',t:'the morning after'},
-      {op:'wall',t:'M27 — the two of them — she never changed it'},
       {op:'prologue',ms:0}]},
  {id:'1.2',kind:'lyric',trig:'“Jamie arrived at the end of the line” — she picks up the phone and sends it',
   what:'AUTO-PLAYS from this GO (~50 s — slowed by direction; every pause is tunable in tech). The calendar docks; her phone rises, locked — a Facebook Memories notification lands and she ignores it. Unlock, Messages (the whole list is condolences), his thread mid-history — days of her asking, all silent. She types it live, hesitant, and SENDS. Delivered.',
