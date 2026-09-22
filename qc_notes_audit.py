@@ -56,11 +56,12 @@ def a_confirm_survives_bible(pg):
         eb = open('extract_book.py', encoding='utf-8').read()
         if 'confirm' not in eb:
             bad.append('extract_book.py drops the confirm flag before the Bible ever sees it')
-        for f, label in (('build_bible_docx.js', 'the DOCX renderer'),
-                         ('build_bible_pdf.py', 'the PDF renderer')):
-            if os.path.exists(f) and 'CONFIRM' not in open(f, encoding='utf-8').read():
-                bad.append(f'{label} cannot print a CONFIRM marker, so an unverified line would '
-                           f'print as verified the moment one appears')
+        # The marker is prepended where the Bible's data is assembled, not in the two renderers —
+        # they print whatever bible.json carries, so checking THEM for the word proves nothing.
+        bd = open('build_bible_data.py', encoding='utf-8').read()
+        if "c.get('confirm')" not in bd or 'CONFIRM' not in bd:
+            bad.append('build_bible_data.py no longer marks an unverified line, so one would print '
+                       'as verified the moment it appears')
         for f, label in (('book.json', 'the state record'), ('bible.json', 'the Bible')):
             if not os.path.exists(f):
                 bad.append(f'{f} has not been built')

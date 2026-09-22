@@ -739,8 +739,12 @@ def a_call_buttons_match(pg):
             ring = None
             for _ in range(200):
                 pg.wait_for_timeout(150)
+                # FROM THE GLASS, NOT FROM CUR. CUR is buildState(), which runs expandCalls itself,
+                # so it already holds the cue's SETTLED call state — "connected" — from the first
+                # instant. The ringing frame exists only on the rendered screen.
                 probe = pg.evaluate("""(()=>{ const row=document.querySelector('#projDevice .callbtns');
-                    const st=((CUR.call||{}).st)||''; if(!row) return {st, n:0};
+                    const cs=document.querySelector('#projDevice .cst');
+                    const st=cs?cs.textContent.trim():''; if(!row) return {st, n:0};
                     return {st, n:row.children.length,
                             glyphs:[...row.children].map(e=>(e.textContent||'').trim()).join('')}; })()""")
                 if 'incoming' in (probe['st'] or '').lower():
