@@ -1528,7 +1528,7 @@ const FALLBACK_SHOW = [
  {id:'9.2',kind:'lyric',trig:'“…suddenly finds you attractive”',
   what:'A reader.',
   do:[{op:'notif',app:'Instagram',w:'now',title:'a.reader.somewhere',t:'commented: okay the ending WRECKED me. how are you real'}]},
- {id:'9.3',kind:'lyric',trig:'“Every other woman in the world suddenly finds you attractive” — GO',
+ {id:'9.3',kind:'lyric',trig:'“wouldn’t give you the time of day before” — GO',
   what:'Two at once — a message request he cannot read, and one he can. paige.turner is not shy.',
   hold:'Two cards land together. lit.with.lena is a message request, so it says only that she wants to send one; paige.turner is a comment, so hers carries its words. Paige arrives second, so she is the card on top.',
   do:[{op:'notif',app:'Instagram',w:'now',title:'lit.with.lena',t:'wants to send you a message'},
@@ -1540,13 +1540,12 @@ const FALLBACK_SHOW = [
   what:'And Elise (the editor at Random House — the woman in this verse is unnamed in the score; the screen names her).',
   do:[{op:'notif',app:'Messages',w:'now',title:'Elise (Random House)',t:'paperback cover is in 🎉 celebratory drink sometime?'}]},
  {id:'9.6',kind:'lyric',trig:'“It’s not a problem, just a challenge, it’s a challenge to” — the *SECOND* time; GO ON *resist temptation*',
-  what:'Front row — a reader who will be in the room tonight.',
-  do:[{op:'clock',t:'11:29'},{op:'notif',app:'Instagram',w:'now',title:'novel.annie',t:'commented: front row at your reading tonight 🙋‍♀️'}]},
- {id:'9.6a',kind:'lyric',trig:'“It’s not a problem, it’s a challenge, just a challenge to resist temptation” — the *SECOND* time; GO AFTER THIS LINE',
-  what:'His phone goes and the stage becomes hers: the calendar rolls BACK — OCTOBER · YEAR 4 to APRIL · YEAR 3 — and holds in the centre. This is the Ohio audition, the one she gets.',
+  what:'ONE GO, two beats. The last comment lands — front row, a reader who will be in the room tonight — and the house gets a moment to read it. Then his phone goes and the stage becomes hers: the calendar rolls BACK, OCTOBER · YEAR 4 to APRIL · YEAR 3, and holds in the centre. This is the Ohio audition, the one she gets.',
   hold:'Hold on the card through her audition. The next GO brings him back.',
-  do:[{op:'black'},{op:'clock',t:'2:20',d:'Tuesday, April 16, 2024'},{op:'stamp',t:'Cathy’s Ohio audition'}]},
- {id:'9.6b',kind:'lyric',trig:'CATHY: “When finally you come home to me” — GO back to Jamie',
+  do:[{op:'clock',t:'11:29'},{op:'notif',app:'Instagram',w:'now',title:'novel.annie',t:'commented: front row at your reading tonight 🙋‍♀️'},
+      {op:'pause',ms:3400},
+      {op:'black'},{op:'clock',t:'2:20',d:'Tuesday, April 16, 2024'},{op:'stamp',t:'Cathy’s Ohio audition'}]},
+ {id:'9.6a',kind:'lyric',trig:'CATHY: “When finally you come home to me” — GO back to Jamie',
   what:'The calendar rolls FORWARD home — APRIL · YEAR 3 to OCTOBER · YEAR 4 — and docks; his phone comes back exactly as he left it, the whole stack still on the lock screen.',
   do:[{op:'clock',t:'11:31',d:'Friday, October 18, 2024'},{op:'stamp',t:'five months married'},
       {op:'device',dev:'iphone',who:'jamie'}]},
@@ -5339,15 +5338,19 @@ function tornPath(side,seed){
 // SLOWER AGAIN, AND THE SPAWN GOES WITH IT. A fall this long at the old spawn rate piles forty-odd
 // prints on the stage: past full, into a moving wall, and the frame rate goes with it. The density
 // that read well was about a dozen at once, so `every` is scaled to hold that as the fall grows.
-function PILE_CFG(){ return PILE_CFG.o||(PILE_CFG.o={h:50, every:[6000,8600], fall:[54000,66000]}); }
+// HOW MANY CAN THE STAGE ACTUALLY HOLD? A print is 50-77.5vh tall and up to 60% of the stage
+// wide, so about two fit vertically and two across: four or five before they must overlap.
+// Eight at once was therefore guaranteed to pile up whatever the lanes did. every = fall /
+// wanted-on-stage, so a 60 s fall and ~5 on stage is a print every twelve seconds.
+function PILE_CFG(){ return PILE_CFG.o||(PILE_CFG.o={h:50, every:[10000,14000], fall:[54000,66000]}); }
 /* THE BOWS FLOOD (David, Sept 20): same bed, same seeded order, a print every second or so. The slowest
    spawn (1.5 s) stays an order of magnitude under the shortest fall (15 s), so prints always overlap —
    the bed cannot go blank however long the company bows, and it never stops spawning, so it cannot end. */
 function pileRate(mode){ const C=PILE_CFG();
   // the bows spawn scales WITH the fall, or a 29 s fall at the old 0.52 s spawn would put forty
   // prints on the stage at once: the same flood relative to the house, not four times it.
-  if(mode==='bows'){ C.every=[3600,5200]; C.fall=[54000,66000]; }
-  else { C.every=[6000,8600]; C.fall=[54000,66000]; }
+  if(mode==='bows'){ C.every=[6000,8600]; C.fall=[54000,66000]; }
+  else { C.every=[10000,14000]; C.fall=[54000,66000]; }
   return C; }
 function PILE_S(){ return PILE_S.o||(PILE_S.o={t:null, i:0, order:null}); }
 function pileList(){ const L=window.L5Y_LOOP||{}; return (L[CAST]||[]); }
@@ -5364,7 +5367,12 @@ function pileLane(S,R){
     for(let k=N-1;k>0;k--){ const j=Math.floor(R()*(k+1)); [S.lanes[k],S.lanes[j]]=[S.lanes[j],S.lanes[k]]; }
     if(S.lastLane===S.lanes[0]) S.lanes.push(S.lanes.shift());
   }
-  const l=S.lanes.shift(); S.lastLane=l;
+  // NOR INTO THE COLUMN NEXT DOOR. A print is wide enough to cover several lanes, so two dealt
+  // back to back into neighbouring columns still land on top of each other. If the next card is
+  // adjacent to the one just used, take the one after it instead and put it back in the deck.
+  let l=S.lanes.shift();
+  if(S.lanes.length && S.lastLane!=null && Math.abs(l-S.lastLane)<=1){ S.lanes.push(l); l=S.lanes.shift(); }
+  S.lastLane=l;
   return (l + R()*0.94)/N;          // its own lane, jittered inside it -- even, never a grid
 }
 function pileStop(){ const S=PILE_S(); if(S.t){ clearTimeout(S.t); S.t=null; }
