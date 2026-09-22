@@ -44,6 +44,40 @@ def a_lines_flagged(pg):
 
 
 # ---------- D-058 · the CONFIRM flag survives into the printed Bible ----------
+
+def _bible_describes_build():
+    """Does the Bible describe the show that is built? Compare CONTENT, not timestamps.
+
+    mtime was the old test and it is a bad one: a git checkout rewrites the working tree and bumps
+    every mtime without changing a byte, so the Bible could be reported stale purely because a
+    branch was switched. What actually matters is whether the two agree about the show."""
+    out = []
+    try:
+        cues = open('cues.js', encoding='utf-8').read()
+        want = set(re.findall(r"\{id:'([^']+)'", cues))
+    except Exception as e:
+        return ['cannot read cues.js: %s' % e]
+    for f, label in (('book.json', 'the state record'), ('bible.json', 'the Bible')):
+        if not os.path.exists(f):
+            out.append('%s has not been built' % f); continue
+        try:
+            d = json.load(open(f, encoding='utf-8'))
+        except Exception as e:
+            out.append('%s will not parse: %s' % (f, e)); continue
+        got = set()
+        for s_ in (d.get('songs') or []):
+            for c in (s_.get('cues') or []):
+                if c.get('id'):
+                    got.add(c['id'])
+        if not got:
+            out.append('%s lists no cues at all' % f); continue
+        missing, extra = want - got, got - want
+        if missing:
+            out.append('%s is stale — it is missing %s' % (label, ', '.join(sorted(missing)[:6])))
+        if extra:
+            out.append('%s is stale — it still carries %s' % (label, ', '.join(sorted(extra)[:6])))
+    return out
+
 def a_confirm_survives_bible(pg):
     bad = []
     src = _cues_src()
@@ -62,20 +96,11 @@ def a_confirm_survives_bible(pg):
         if "c.get('confirm')" not in bd or 'CONFIRM' not in bd:
             bad.append('build_bible_data.py no longer marks an unverified line, so one would print '
                        'as verified the moment it appears')
-        for f, label in (('book.json', 'the state record'), ('bible.json', 'the Bible')):
-            if not os.path.exists(f):
-                bad.append(f'{f} has not been built')
-            elif os.path.getmtime(f) < os.path.getmtime('L5Y-Show-STANDALONE.html'):
-                bad.append(f'{f} predates the build — {label} is stale')
+        bad += _bible_describes_build()
         return bad
     if 'confirm' not in open('extract_book.py', encoding='utf-8').read():
         bad.append('extract_book.py drops the confirm flag before the Bible ever sees it')
-    for f, label in (('book.json', 'the state record'), ('bible.json', 'the Bible')):
-        if not os.path.exists(f):
-            bad.append(f'{f} has not been built')
-            continue
-        if os.path.getmtime(f) < os.path.getmtime('L5Y-Show-STANDALONE.html'):
-            bad.append(f'{f} predates the build — {label} is stale')
+    bad += _bible_describes_build()
     try:
         book = json.load(open('book.json'))
         got = {c['id'] for s in book['songs'] for c in s['cues'] if c.get('confirm')}
