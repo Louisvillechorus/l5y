@@ -59,7 +59,13 @@ for f in sorted(glob.glob('assets/cast/*')):
         # .mp4/.webm/.mov. The file is copied next to each build so a relative path resolves for the
         # hosted page and for the STANDALONE opened out of the repo; if it is missing, assetFor finds
         # nothing and the cue falls back to the greeked placeholder rather than breaking.
-        data='assets/video/'+base
+        # STORED TWICE, NOT THREE TIMES. The path has to resolve from the repo root (the STANDALONE)
+        # and from docs/ (Pages serves that folder AS the root), and docs/index.html is a byte copy of
+        # the STANDALONE, so both read the same string. Pointing it at assets/cast -- where the file
+        # ALREADY lives, in git, as the source of truth -- means the root build needs no copy at all
+        # and only docs takes one. At ~16 MB an encode, two casts and two encodes each, the copy this
+        # removes was 60-odd MB of duplicated binary in a repo whose .git is already 682 MB.
+        data='assets/cast/'+base
         vids.append(f)
         # more than one encode of the same code? list them all, webm first (see swapMedia)
         prev=cast.get(who.lower(),{}).get(code) if who!='SHARED' else cast['ml'].get(code)
@@ -131,13 +137,12 @@ print('engine parses: %d inline scripts' % len([x for x in _scripts if x.strip()
 
 # the sidecar videos travel with each build
 import shutil
-for _dst in ('assets/video','docs/assets/video'):
-    os.makedirs(_dst, exist_ok=True)
+_VDST='docs/assets/cast'
+os.makedirs(_VDST, exist_ok=True)
 for _v in vids:
-    for _dst in ('assets/video','docs/assets/video'):
-        _t=os.path.join(_dst, os.path.basename(_v))
-        if os.path.abspath(_t)!=os.path.abspath(_v) and (not os.path.exists(_t) or os.path.getmtime(_v)>os.path.getmtime(_t)):
-            shutil.copy2(_v,_t)
+    _t=os.path.join(_VDST, os.path.basename(_v))
+    if os.path.abspath(_t)!=os.path.abspath(_v) and (not os.path.exists(_t) or os.path.getmtime(_v)>os.path.getmtime(_t)):
+        shutil.copy2(_v,_t)
 print('sidecar video:', [os.path.basename(v) for v in vids] or 'none')
 
 open('docs/index.html','w').write(open('L5Y-Show-STANDALONE.html').read())

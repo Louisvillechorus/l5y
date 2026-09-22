@@ -1041,6 +1041,19 @@
    "proof": "a_bed_falls",
    "clean": 0,
    "secs": 27.3
+  },
+  {
+   "id": "D-075",
+   "status": "fixed",
+   "family": "song 7 / assets",
+   "cues": [
+    "7.1",
+    "7.2",
+    "7.3"
+   ],
+   "note": "Both casts' prerecorded FaceTime recordings, delivered Sept 22. Song 7 IS the video: if it does not decode there is no song 7. Shipped as WebM + MP4 on one <video>, WebM first, because Chromium ships without H.264 and an mp4-only show plays a black rectangle on a machine that looks identical to the one it was tested on.",
+   "proof": "a_ft_video_plays",
+   "clean": 0
   }
  ]
 }

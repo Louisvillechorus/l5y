@@ -132,4 +132,92 @@ def a_bed_falls(pg):
     return bad
 
 
-PROBES = [a_bed_falls]
+# ---------- D-075 · the FaceTime video actually plays, on both casts ----------
+def a_ft_video_plays(pg):
+    """David, Sept 22, sending both casts' FaceTime recordings: song 7 IS the video. If it does not
+    decode there is no song 7 — the number plays against a black rectangle and nobody finds out
+    until the room is full.
+
+    So this does not ask whether the <video> element exists, or whether the file is on disk, or
+    whether the src looks right. Those all pass on a machine that cannot decode the file. It asks
+    the only question that matters: is the picture MOVING? readyState past HAVE_CURRENT_DATA, a
+    non-zero videoWidth, no MediaError, and currentTime further along after a wait than before it.
+
+    Chromium ships without H.264, so an mp4-only show plays a black rectangle on a machine that
+    looks identical to the one it was tested on. Both encodes are listed as <source> children,
+    WebM first, and this proves the element picked one it can actually decode — whichever it is.
+
+    Run for BOTH casts, because the two files are different files and only one of them is the one
+    playing tonight."""
+    bad = []
+    pg.set_viewport_size({'width': W, 'height': H})
+    if not pg.evaluate('typeof started !== "undefined" && started'):
+        pg.evaluate("startAs('projection')")
+        pg.wait_for_timeout(400)
+
+    loc = pg.evaluate("""(()=>{ for(let s=0;s<SHOW.length;s++){
+        const k=SHOW[s].cues.findIndex(c=>c.id==='7.2'); if(k>=0) return [s,k]; } return null; })()""")
+    if not loc:
+        return ['cue 7.2 is missing — song 7 has no connected FaceTime']
+
+    for cast in ('ml', 'ac'):
+        pg.evaluate(f"setCast('{cast}')")
+        pg.wait_for_timeout(200)
+        src = pg.evaluate("assetFor('V2')")
+        if not src:
+            bad.append(f'{cast.upper()}: V2 resolves to nothing — song 7 would play the greeked placeholder')
+            continue
+        parts = [x.strip() for x in str(src).split(',') if x.strip()]
+        if not any(x.lower().endswith('.webm') for x in parts):
+            bad.append(f'{cast.upper()}: V2 carries no WebM encode ({parts}) — a Chromium without '
+                       f'H.264 plays a black rectangle')
+        if parts and not parts[0].lower().endswith('.webm'):
+            bad.append(f'{cast.upper()}: the first source is {parts[0]} — WebM must be listed first')
+
+        pg.evaluate(f'si={loc[0]}; ci={loc[1]}; animTok++; animRunning=false; hardRender();')
+        pg.wait_for_timeout(300)
+        pg.evaluate('setTimeout(()=>advance(),0)')
+        w = 0
+        while w < 20000 and pg.evaluate('animRunning'):
+            pg.wait_for_timeout(200); w += 200
+        pg.wait_for_timeout(1200)
+
+        v0 = pg.evaluate("""(()=>{ const v=document.querySelector('.media video'); if(!v) return null;
+            return {ready:v.readyState, vw:v.videoWidth, vh:v.videoHeight,
+                    err:v.error?v.error.code:0, t:v.currentTime, paused:v.paused,
+                    cur:(v.currentSrc||'').split('/').pop(),
+                    srcs:[...v.querySelectorAll('source')].map(s=>s.src.split('/').pop())}; })()""")
+        if not v0:
+            bad.append(f'{cast.upper()}: 7.2 renders no <video> at all — the FaceTime frame is empty')
+            continue
+        if v0['err']:
+            bad.append(f"{cast.upper()}: the video reports MediaError {v0['err']} "
+                       f"({'SRC_NOT_SUPPORTED — nothing in the source list decodes here' if v0['err'] == 4 else 'decode failed'})")
+        if v0['vw'] < 1 or v0['ready'] < 2:
+            bad.append(f"{cast.upper()}: no picture — videoWidth {v0['vw']}, readyState {v0['ready']} "
+                       f"(needs 2+); sources offered {v0['srcs']}")
+            continue
+        pg.wait_for_timeout(1500)
+        t1 = pg.evaluate("(()=>{ const v=document.querySelector('.media video'); return v?v.currentTime:-1; })()")
+        if t1 <= v0['t'] + 0.25:
+            bad.append(f"{cast.upper()}: the picture is frozen — currentTime {v0['t']:.2f}s then "
+                       f"{t1:.2f}s after 1.5 s of wall clock (paused={v0['paused']})")
+
+        # the composition: only Jamie, filling the frame, and the call duration ticking
+        fr = pg.evaluate("""(()=>{ const v=document.querySelector('.media video'); if(!v) return null;
+            const b=v.getBoundingClientRect(), m=v.parentElement.getBoundingClientRect();
+            const tm=document.querySelector('.calltimer');
+            return {vr:v.videoWidth/Math.max(1,v.videoHeight), fr:m.width/Math.max(1,m.height),
+                    fill:(b.width*b.height)/Math.max(1,m.width*m.height),
+                    timer: tm?tm.textContent.trim():null,
+                    pip: !!document.querySelector('.ftpip')}; })()""")
+        if fr:
+            if fr['fill'] < 0.98:
+                bad.append(f"{cast.upper()}: the video covers {fr['fill']*100:.0f}% of the FaceTime "
+                           f"frame — black down the sides of a call")
+            if fr['timer'] is None:
+                bad.append(f'{cast.upper()}: the connected call shows no duration — the timer must tick')
+    return bad
+
+
+PROBES = [a_bed_falls, a_ft_video_plays]
