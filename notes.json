@@ -15,9 +15,9 @@
    ],
    "note": "1.0b to 1.1 does a stupid framing thing — the house card to the prologue is wrong.",
    "proof": "a_house_to_prologue",
-   "clean": 3,
+   "clean": 5,
    "secs": 4.3,
-   "last_build": "3ae4ec1d6d65"
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-002",
@@ -29,9 +29,9 @@
    ],
    "note": "The jump from 1.3 to 1.4 is JARRING.",
    "proof": "a_13_to_14",
-   "clean": 3,
-   "secs": 47.6,
-   "last_build": "3ae4ec1d6d65"
+   "clean": 5,
+   "secs": 47.5,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-003",
@@ -42,9 +42,9 @@
    ],
    "note": "We never see her click Facebook.",
    "proof": "a_17_facebook_tap",
-   "clean": 3,
-   "secs": 6.6,
-   "last_build": "3ae4ec1d6d65"
+   "clean": 5,
+   "secs": 6.5,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-004",
@@ -55,9 +55,9 @@
    ],
    "note": "Slow the memory animations 15%.",
    "proof": "a_17_slower",
-   "clean": 3,
-   "secs": 3.6,
-   "last_build": "3ae4ec1d6d65"
+   "clean": 1,
+   "secs": 3.5,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-005",
@@ -68,21 +68,22 @@
    ],
    "note": "2.2 is not centred on the two texts — the clock is chopped and so is Rob's card.",
    "proof": "a_22_two_notifs_framed",
-   "clean": 3,
-   "secs": 13.1,
-   "last_build": "3ae4ec1d6d65"
+   "clean": 5,
+   "secs": 15.4,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-006",
-   "status": "fixed",
+   "status": "closed",
    "family": "navigation",
    "cues": [
     "2.3"
    ],
    "note": "We never see him click the Messages app; the camera must get up there quicker and the press must last longer. EVERYWHERE this happens.",
    "proof": "a_app_tap_visible",
-   "clean": 0,
-   "secs": 29.3
+   "clean": 2,
+   "secs": 30.8,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-007",
@@ -93,9 +94,9 @@
    ],
    "note": "Cathy's message is not in centre frame while he types — it is cut off. It should go back and forth, keyboard to message, like his mind, until 'home safe?'.",
    "proof": "a_23_pingpong",
-   "clean": 3,
-   "secs": 61.5,
-   "last_build": "3ae4ec1d6d65"
+   "clean": 5,
+   "secs": 61.2,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-008",
@@ -109,9 +110,9 @@
    ],
    "note": "An unsaved number reads 'Maybe: Cathy' (the real iOS feature), not a bare number.",
    "proof": "a_maybe_cathy",
-   "clean": 3,
-   "secs": 83.6,
-   "last_build": "3ae4ec1d6d65"
+   "clean": 5,
+   "secs": 82.4,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-009",
@@ -122,25 +123,26 @@
    ],
    "note": "2.4 should zoom out to the whole call UI first, then quickly in on Maybe: Cathy.",
    "proof": "a_24_wide_then_in",
-   "clean": 3,
-   "secs": 13.4,
-   "last_build": "3ae4ec1d6d65"
+   "clean": 5,
+   "secs": 13.2,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-010",
-   "status": "fixed",
+   "status": "closed",
    "family": "era",
    "cues": [
     "*"
    ],
    "note": "The text in the device view does not transition to the text on the card view — YEAR / month / numeral moving to and from the side strip is jarring.",
    "proof": "a_era_morph",
-   "clean": 0,
-   "secs": 117.3
+   "clean": 2,
+   "secs": 128.5,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-011",
-   "status": "fixed",
+   "status": "closed",
    "family": "house",
    "cues": [
     "1.0a",
@@ -151,13 +153,13 @@
    ],
    "note": "The house cards must FALL from top to bottom, on and off screen — never appear or vanish out of thin air.",
    "proof": "a_cards_fall",
-   "clean": 1,
+   "clean": 3,
    "secs": 22.3,
-   "last_build": "3ae4ec1d6d65"
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-012",
-   "status": "fixed",
+   "status": "closed",
    "family": "house",
    "cues": [
     "1.0",
@@ -169,21 +171,22 @@
    ],
    "note": "The house cards waste the black space left and right. The title card sits in a 96vh square with ~440px of dead black each side at 1920x1080, and the INTERMISSION band is barely 40% of the stage width with a small word in it. Set them in the house brand language — full-width fill-lines — and use the stage.",
    "proof": "a_title_fills",
-   "clean": 0,
-   "secs": 6.7
+   "clean": 2,
+   "secs": 6.6,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-013",
-   "status": "fixed",
+   "status": "closed",
    "family": "era",
    "cues": [
     "8.4"
    ],
    "note": "Scene names on the date cards should appear TYPED, with a typo and a backspace one time in five, with keyboard haptics behind it.",
    "proof": "a_typed_foot",
-   "clean": 1,
-   "secs": 383.6,
-   "last_build": "3ae4ec1d6d65"
+   "clean": 3,
+   "secs": 463.6,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-014",
@@ -194,9 +197,9 @@
    ],
    "note": "At the top of 9.2 'Intermission' is briefly visible in the square frame, cut off.",
    "proof": "a_92_no_inter_flash",
-   "clean": 3,
-   "secs": 14.2,
-   "last_build": "3ae4ec1d6d65"
+   "clean": 5,
+   "secs": 16.5,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-015",
@@ -207,8 +210,8 @@
    ],
    "note": "Cut the low-battery chime entirely.",
    "proof": "a_no_lowbat",
-   "clean": 6,
-   "last_build": "3ae4ec1d6d65",
+   "clean": 8,
+   "last_build": "b59ffc5200ae",
    "secs": 0.5
   },
   {
@@ -220,9 +223,9 @@
    ],
    "note": "Two more seconds with her message on screen, and the swipe 1.5 s longer and dramatic.",
    "proof": "a_132_timing",
-   "clean": 3,
-   "secs": 9.3,
-   "last_build": "3ae4ec1d6d65"
+   "clean": 1,
+   "secs": 10.2,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-017",
@@ -233,9 +236,9 @@
    ],
    "note": "13.3 starts on the whole phone screen so we see him unlock it.",
    "proof": "a_133_full_phone",
-   "clean": 3,
-   "secs": 10.0,
-   "last_build": "3ae4ec1d6d65"
+   "clean": 5,
+   "secs": 21.9,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-018",
@@ -246,9 +249,9 @@
    ],
    "note": "We hear the unlock, here and everywhere a phone is unlocked.",
    "proof": "a_unlock_audible",
-   "clean": 6,
-   "last_build": "3ae4ec1d6d65",
-   "secs": 113.6
+   "clean": 8,
+   "last_build": "b59ffc5200ae",
+   "secs": 125.4
   },
   {
    "id": "D-019",
@@ -259,9 +262,9 @@
    ],
    "note": "Find My is him changing WHICH DEVICE reports his location — iPad to iPhone — not re-sharing with her. Faster.",
    "proof": "a_133_device_swap",
-   "clean": 3,
-   "secs": 10.0,
-   "last_build": "3ae4ec1d6d65"
+   "clean": 1,
+   "secs": 21.9,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-020",
@@ -272,21 +275,21 @@
    ],
    "note": "She finishes 'tonight was amazing', hits send, we hear the send, then full black baked into the screen.",
    "proof": "a_144_send",
-   "clean": 3,
-   "secs": 15.0,
-   "last_build": "3ae4ec1d6d65"
+   "clean": 0,
+   "secs": 0.0
   },
   {
    "id": "D-021",
-   "status": "fixed",
+   "status": "closed",
    "family": "house",
    "cues": [
     "14.6+"
    ],
    "note": "After the final black: the opening sequence again as a BOWS screen, photos flooding faster, still loopable.",
    "proof": "a_bows",
-   "clean": 0,
-   "secs": 209.5
+   "clean": 2,
+   "secs": 211.7,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-022",
@@ -297,9 +300,9 @@
    ],
    "note": "The map itself is not moving — only the text changes.",
    "proof": "a_map_moves",
-   "clean": 4,
-   "last_build": "3ae4ec1d6d65",
-   "secs": 59.2
+   "clean": 6,
+   "last_build": "b59ffc5200ae",
+   "secs": 61.6
   },
   {
    "id": "D-023",
@@ -310,9 +313,9 @@
    ],
    "note": "A song selector, and the Menu must not dead-end.",
    "proof": "a_jump_panel",
-   "clean": 3,
-   "secs": 14.0,
-   "last_build": "3ae4ec1d6d65"
+   "clean": 5,
+   "secs": 16.2,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-024",
@@ -323,9 +326,9 @@
    ],
    "note": "The projection window must be black during the cast questionnaire.",
    "proof": "a_gate_black",
-   "clean": 3,
-   "secs": 12.8,
-   "last_build": "3ae4ec1d6d65"
+   "clean": 5,
+   "secs": 12.7,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-025",
@@ -336,12 +339,13 @@
    ],
    "note": "Preshow performer names span the full width, each line the same.",
    "proof": "a_perf_fill",
-   "clean": 0,
-   "secs": 0.9
+   "clean": 2,
+   "secs": 0.7,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-026",
-   "status": "fixed",
+   "status": "closed",
    "family": "assets",
    "cues": [
     "3.9",
@@ -349,8 +353,9 @@
    ],
    "note": "A licensed dial-tone, played twice, wherever someone dials. David sent the recording Sept 20; trimmed to the single 2.01 s burst of real North American ringback (440+480 Hz), dead air off both ends, played exactly twice with 0.92 s between.",
    "proof": "a_ringback_twice",
-   "clean": 0,
-   "secs": 48.4
+   "clean": 2,
+   "secs": 49.2,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-027",
@@ -361,9 +366,9 @@
    ],
    "note": "The agent's \"SONNY READ IT\" text should arrive on a different notification from the bank alert and the emails (David clarified Sept 20 that this, not 4.9, is the cue he meant). It now carries its own tone — a custom text tone on that contact, which is what you set for the one person you cannot miss.",
    "proof": "a_bell",
-   "clean": 3,
-   "secs": 0.4,
-   "last_build": "3ae4ec1d6d65"
+   "clean": 5,
+   "secs": 0.3,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-028",
@@ -380,7 +385,7 @@
   },
   {
    "id": "D-029",
-   "status": "fixed",
+   "status": "closed",
    "family": "assets",
    "cues": [
     "8.5"
@@ -388,8 +393,9 @@
    "note": "The new money-minute QR. Installed Sept 21: it decodes to the Redline donation page.",
    "proof": "a_qr",
    "blocked_on": "it decodes to a Cloudinary .jpg, not a donation page — David to confirm the destination",
-   "clean": 0,
-   "secs": 0.0
+   "clean": 2,
+   "secs": 4.2,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-030",
@@ -400,9 +406,9 @@
    ],
    "note": "Reverb and a taper on the time warp; the reverse clip when time runs backwards.",
    "proof": "a_warp",
-   "clean": 3,
-   "secs": 9.0,
-   "last_build": "3ae4ec1d6d65"
+   "clean": 5,
+   "secs": 11.4,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-031",
@@ -413,9 +419,9 @@
    ],
    "note": "No divider between the month and the event when there is no event.",
    "proof": "a_foot_solo",
-   "clean": 3,
-   "secs": 0.7,
-   "last_build": "3ae4ec1d6d65"
+   "clean": 5,
+   "secs": 0.5,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-032",
@@ -427,9 +433,9 @@
    ],
    "note": "The camera move and zoom on the song 9 notifications had disappeared. It is back, but it OVER-corrected: the push now crops the neighbouring card (see D-044). Not closed until the stack is both large and whole.",
    "proof": "a_song9_push",
-   "clean": 3,
-   "secs": 13.4,
-   "last_build": "3ae4ec1d6d65"
+   "clean": 5,
+   "secs": 15.7,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-033",
@@ -441,9 +447,9 @@
    ],
    "note": "The Casting Networks mail arrives with its tone three seconds before his text.",
    "proof": "a_10_mail_first",
-   "clean": 3,
-   "secs": 11.6,
-   "last_build": "3ae4ec1d6d65"
+   "clean": 5,
+   "secs": 14.0,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-034",
@@ -454,9 +460,9 @@
    ],
    "note": "More time to read the flashback; cut the unlock, stay on the lock screen.",
    "proof": "a_105_hold",
-   "clean": 6,
-   "last_build": "3ae4ec1d6d65",
-   "secs": 33.0
+   "clean": 8,
+   "last_build": "b59ffc5200ae",
+   "secs": 35.4
   },
   {
    "id": "D-035",
@@ -467,9 +473,9 @@
    ],
    "note": "The photo bed falls left to right, a new print every 3-5 s, 25% of stage height, no accumulation, never blank.",
    "proof": "a_photo_bed",
-   "clean": 3,
-   "secs": 1.9,
-   "last_build": "3ae4ec1d6d65"
+   "clean": 5,
+   "secs": 1.8,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-036",
@@ -494,9 +500,9 @@
    ],
    "note": "THE CALENDAR SLIDES ACROSS THE PHONE. The docked strip's FLIP is still travelling when the phone paints 560 ms in, so the last ~440 ms of its journey plays OVER the screen — up to 16.6% of the reading window. CLAUDE.md: nothing ever overlays the phone.",
    "proof": "a_era_never_overlays",
-   "clean": 3,
-   "secs": 504.8,
-   "last_build": "3ae4ec1d6d65"
+   "clean": 1,
+   "secs": 547.7,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-037",
@@ -510,9 +516,9 @@
    ],
    "note": "THE 1.2 CROP BUG, ROOT CAUSE. The send handler appends a bubble to the live thread but never re-renders, so the Thursday 'Delivered' the state deleted stays in the DOM. From 1.3 on the thread shows 'Delivered' AND 'Read 9:44 AM' at once — no iPhone ever does that. This is the text from previous scenes permeating the crop.",
    "proof": "a_one_receipt",
-   "clean": 6,
-   "last_build": "3ae4ec1d6d65",
-   "secs": 98.7
+   "clean": 8,
+   "last_build": "b59ffc5200ae",
+   "secs": 101.0
   },
   {
    "id": "D-038",
@@ -525,9 +531,9 @@
    ],
    "note": "Song 7's MacBook type is the smallest in the show — 14.6 px projected against 76-81 px on the phone. The laptop is the only device whose type is hardcoded in pixels instead of derived from --ph, and it is never framed.",
    "proof": "a_laptop_legible",
-   "clean": 3,
-   "secs": 17.1,
-   "last_build": "3ae4ec1d6d65"
+   "clean": 1,
+   "secs": 19.5,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-039",
@@ -548,9 +554,9 @@
    ],
    "note": "22 cues leave black bars — the phone does not fill the reading window (1.6 is 28% empty, 13.3 is 24%, every notification cue ~5%). The law is edge to edge.",
    "proof": "a_fills_window",
-   "clean": 3,
-   "secs": 74.3,
-   "last_build": "3ae4ec1d6d65"
+   "clean": 5,
+   "secs": 73.2,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-040",
@@ -561,9 +567,9 @@
    ],
    "note": "The settled camera takes seven different scales for the same register — the same lock screen reads 76 px on one cue and 81 px on the next, and body text spans 58-81 px across the show. That is the 'text sizing weirdness across the board'.",
    "proof": "a_one_scale_per_register",
-   "clean": 3,
-   "secs": 74.4,
-   "last_build": "3ae4ec1d6d65"
+   "clean": 5,
+   "secs": 73.6,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-041",
@@ -578,9 +584,9 @@
    ],
    "note": "A connected call's first frame reads 'connected · 00:00'. A real iPhone never leading-zeroes the minutes.",
    "proof": "a_timer_format",
-   "clean": 6,
-   "last_build": "3ae4ec1d6d65",
-   "secs": 28.9
+   "clean": 8,
+   "last_build": "b59ffc5200ae",
+   "secs": 28.8
   },
   {
    "id": "D-042",
@@ -592,9 +598,9 @@
    ],
    "note": "CarPlay's SPEED LIMIT sign is 18.2 px — the only sub-22 px type on a dash that otherwise reads 32.5 px.",
    "proof": "a_dash_legible",
-   "clean": 4,
-   "last_build": "3ae4ec1d6d65",
-   "secs": 9.6
+   "clean": 6,
+   "last_build": "b59ffc5200ae",
+   "secs": 11.9
   },
   {
    "id": "D-043",
@@ -605,9 +611,9 @@
    ],
    "note": "The predictive bar and the settled state disagree — a scrub or a resize snaps the suggestion back to a stale word mid-scene.",
    "proof": "a_predict_matches",
-   "clean": 4,
-   "last_build": "3ae4ec1d6d65",
-   "secs": 75.4
+   "clean": 1,
+   "secs": 99.3,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-044",
@@ -628,9 +634,9 @@
    ],
    "note": "THE NOTIFICATION STACK IS CHOPPED, SHOW-WIDE. Wherever two cards are on the lock screen the second is cut in half by the bottom of the frame, and the clock is cut by the top. Same defect David photographed at 2.2; it is in songs 4 and 9 on every notification cue. The camera frames one card and crops its neighbour instead of framing the stack.",
    "proof": "a_stack_whole",
-   "clean": 3,
-   "secs": 293.9,
-   "last_build": "3ae4ec1d6d65"
+   "clean": 5,
+   "secs": 308.2,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-045",
@@ -645,9 +651,9 @@
    ],
    "note": "A CONNECTED CALL SHOWS NO CONTROLS. At 4.2 the crop holds the caller name and 'connected · 0:00' and nothing else — mute / end / speaker are below the frame. CLAUDE.md: a connected call shows mute/end/speaker. The state is unprovable on stage.",
    "proof": "a_call_controls",
-   "clean": 3,
-   "secs": 42.8,
-   "last_build": "3ae4ec1d6d65"
+   "clean": 5,
+   "secs": 42.9,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-046",
@@ -660,9 +666,9 @@
    ],
    "note": "BUTTONS DID NOT MATCH STATE. Answering a call changed only the status line, so a CONNECTED call still showed Answer/Decline. CLAUDE.md: a connected call shows mute/end/speaker, never Answer. Same class as the receipt bug — a live handler mutating in place and diverging from the settled render.",
    "proof": "a_call_buttons_match",
-   "clean": 3,
-   "secs": 74.1,
-   "last_build": "3ae4ec1d6d65"
+   "clean": 5,
+   "secs": 73.9,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-047",
@@ -673,9 +679,9 @@
    ],
    "note": "A STRAY GREY RECTANGLE sits at the top-left of the stage on 8.6, both mid-flight and settled — a torn page fragment left behind by the previous card. Nothing should be on the stage but the calendar and the photo bed.",
    "proof": "a_no_stray_pages",
-   "clean": 3,
-   "secs": 530.8,
-   "last_build": "3ae4ec1d6d65"
+   "clean": 5,
+   "secs": 557.3,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-048",
@@ -687,19 +693,20 @@
    "note": "THE SUBJECT LAW (the family rule behind 2.2, 9.x, 4.x and 14.4): content may leave the frame with feathers, but the SUBJECT of a cue — whatever the camera was last aimed at — must sit WHOLE inside the reading window when the glide settles. One gate, swept across all 14 songs, so this defect cannot return in a song nobody looked at.",
    "proof": "a_subject_never_sliced",
    "clean": 0,
-   "secs": 528.8
+   "secs": 588.2
   },
   {
    "id": "D-049",
-   "status": "fixed",
+   "status": "closed",
    "family": "operator",
    "cues": [
     "*"
    ],
    "note": "BLACKOUT WAS PICTURE ONLY. The operator hit it and the lake, the Time Warp music and the phone buzzing on the table all played on to a black stage. It now takes the bed, the warp and the ring with it.",
    "proof": "a_blackout_is_silent",
-   "clean": 0,
-   "secs": 3.5
+   "clean": 2,
+   "secs": 3.3,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-050",
@@ -710,9 +717,9 @@
    ],
    "note": "Two embedded sound files never decoded on any boot — Reflection.m4r, an iOS RINGTONE shipped under a law that says NO RINGTONES, and Swish.m4r, mapped to a swipe the law already silences. Both out of the build; 24 of 24 files now decode.",
    "proof": "a_all_sounds_decode",
-   "clean": 2,
-   "last_build": "3ae4ec1d6d65",
-   "secs": 3.0
+   "clean": 4,
+   "last_build": "b59ffc5200ae",
+   "secs": 2.7
   },
   {
    "id": "D-051",
@@ -726,21 +733,22 @@
    ],
    "note": "The hang-up tone was reported firing twice per call. Not reproducible on the merged build — swept every call, black and device cue in the show; it fires once. Kept as a standing guard.",
    "proof": "a_one_hangup",
-   "clean": 2,
-   "last_build": "3ae4ec1d6d65",
-   "secs": 321.4
+   "clean": 4,
+   "last_build": "b59ffc5200ae",
+   "secs": 366.2
   },
   {
    "id": "D-052",
-   "status": "fixed",
+   "status": "closed",
    "family": "sound",
    "cues": [
     "*"
    ],
    "note": "The time-warp taper is a 0.3 s collapse and the reverb never rings out, so every roll ends in about 1.2 s of silence — not the taper David asked for.",
    "proof": "a_warp_tapers",
-   "clean": 0,
-   "secs": 7.1
+   "clean": 2,
+   "secs": 6.8,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-053",
@@ -751,8 +759,8 @@
    ],
    "note": "reverse_timewarp.mp3 is 7.4 s inside a 6.0 s roll: 1.4 s of David's clip is never reached.",
    "proof": "a_warp_fits_roll",
-   "clean": 2,
-   "last_build": "3ae4ec1d6d65",
+   "clean": 4,
+   "last_build": "b59ffc5200ae",
    "secs": 1.2
   },
   {
@@ -765,13 +773,13 @@
    ],
    "note": "73% of backspaces are silent during the draft wipes — David asked for key_press_delete on every one.",
    "proof": "a_every_backspace",
-   "clean": 2,
-   "last_build": "3ae4ec1d6d65",
-   "secs": 59.8
+   "clean": 4,
+   "last_build": "b59ffc5200ae",
+   "secs": 59.5
   },
   {
    "id": "D-055",
-   "status": "fixed",
+   "status": "closed",
    "family": "sound",
    "cues": [
     "3.3",
@@ -781,8 +789,9 @@
    ],
    "note": "The ringback does not stop when the call is answered — up to 1.9 s of ringing tolls over the connected call.",
    "proof": "a_ring_stops_on_answer",
-   "clean": 0,
-   "secs": 2.2
+   "clean": 2,
+   "secs": 1.9,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-056",
@@ -793,8 +802,8 @@
    ],
    "note": "The bank alert's bell was 22 milliseconds long — inaudible as an event. A bank alert is a text message and iOS gives it the text tone; the special case is gone.",
    "proof": "a_bell_audible",
-   "clean": 2,
-   "last_build": "3ae4ec1d6d65",
+   "clean": 4,
+   "last_build": "b59ffc5200ae",
    "secs": 0.3
   },
   {
@@ -823,42 +832,42 @@
   },
   {
    "id": "D-059",
-   "status": "fixed",
+   "status": "closed",
    "family": "canon",
    "cues": [
     "6"
    ],
    "note": "Song 6 was calendar-only in the build but a Christmas lock screen in the law and the Bible. The BUILD was right — David cut 6.2 and the Christmas background on Sept 20 — and the law was stale. CLAUDE.md now records the cut and lists 6 among the calendar-only songs.",
    "proof": "a_song6_agrees",
-   "clean": 1,
+   "clean": 3,
    "secs": 0.3,
-   "last_build": "3ae4ec1d6d65"
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-060",
-   "status": "fixed",
+   "status": "closed",
    "family": "canon",
    "cues": [
     "14.4"
    ],
    "note": "On the first night her contact for him reads 'Jamie' — the 2026 name. 'Jamie ✨' never appears in the show.",
    "proof": "a_contact_name_era",
-   "clean": 1,
+   "clean": 3,
    "secs": 0.0,
-   "last_build": "3ae4ec1d6d65"
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-061",
-   "status": "fixed",
+   "status": "closed",
    "family": "canon",
    "cues": [
     "9"
    ],
    "note": "Two names for Whitfield is CORRECT and IS the chain of custody: he saves a stranger's office number from Dr. Adler's tip as 'Ms. Whitfield (office)' in 2021, and by the time she is his agent of three years she is 'Linda Whitfield' — the same progression the law sets for Jamie's name in her phone. The probe now guards the ORDER instead of counting names.",
    "proof": "a_one_whitfield",
-   "clean": 1,
+   "clean": 3,
    "secs": 0.0,
-   "last_build": "3ae4ec1d6d65"
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-062",
@@ -881,21 +890,22 @@
    ],
    "note": "ERA_ZONE_ reserves 19% of the frame for a docked strip that measures 14.4% (276.5 px of 1920), leaving about 58 px of black between the phone and the strip. NOT CHANGING IT TWO DAYS OUT: ERA_ZONE_ feeds camFill, so every framing measurement in the show — the 3.39x resting scale, the notification stack rule, the subject law thresholds, the laptop and CarPlay widths — was tuned against it. Reclaiming 58 px risks re-breaking framing David has already approved. Recommend 0.165 as a post-run change, measured and re-gated. David's call.",
    "proof": "a_no_gutter",
-   "clean": 0,
-   "secs": 11.4
+   "clean": 2,
+   "secs": 13.7,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-064",
-   "status": "fixed",
+   "status": "closed",
    "family": "engine",
    "cues": [
     "*"
    ],
    "note": "deviceHTML and paintAll are each defined twice and the later declaration wins, so two fixes already landed in a shadowed copy and did nothing. Removing ~1200 lines of dead code two days before a run is the wrong risk: every shadowed copy now carries a loud DO-NOT-EDIT marker, the probe asserts the marker AND asks the running page which copy it resolved. Delete after the run.",
    "proof": "a_no_dead_renderer",
-   "clean": 1,
-   "secs": 0.2,
-   "last_build": "3ae4ec1d6d65"
+   "clean": 3,
+   "secs": 0.3,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-065",
@@ -907,11 +917,11 @@
    "note": "The photo bed, once photographs land: prints clip off the right edge, the bed runs at 46% opacity, 62% of prints fall behind the opaque card, the per-print tilt never renders, and the order repeats verbatim.",
    "proof": "a_bed_quality",
    "clean": 0,
-   "secs": 1.0
+   "secs": 1.1
   },
   {
    "id": "D-066",
-   "status": "fixed",
+   "status": "closed",
    "family": "house pages / the photo bed",
    "cues": [
     "1.0",
@@ -922,72 +932,78 @@
    ],
    "note": "The preshow and home screens are too large right now, we won't be able to see the falling photos behind them.",
    "proof": "a_house_leaves_bed",
-   "clean": 0,
-   "secs": 9.7
+   "clean": 2,
+   "secs": 9.6,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-067",
-   "status": "fixed",
+   "status": "closed",
    "family": "the operator's gate / multiple windows",
    "cues": [
     "start screen"
    ],
    "note": "Loading the cue URL took me to the projection screen instead of the start screen.",
    "proof": "a_gate_recoverable",
-   "clean": 0,
-   "secs": 11.8
+   "clean": 2,
+   "secs": 11.5,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-068",
-   "status": "fixed",
+   "status": "closed",
    "family": "typed scene names / readability",
    "cues": [
     "all stamps"
    ],
    "note": "There are some moments where the typing of the day description disappears too quickly for the audience to read. Ie. 10.1 Audition Season - make sure they stay on the screen for at least 2-3 seconds fully typed.",
    "proof": "a_foot_dwell",
-   "clean": 0,
-   "secs": 217.9
+   "clean": 2,
+   "secs": 217.7,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-069",
-   "status": "fixed",
+   "status": "closed",
    "family": "the dash / no white",
    "cues": [
     "12.1"
    ],
    "note": "12.2 there's a random white flash before the navigation starts.",
    "proof": "a_dash_never_white",
-   "clean": 0,
-   "secs": 16.2
+   "clean": 2,
+   "secs": 15.9,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-070",
-   "status": "fixed",
+   "status": "closed",
    "family": "notifications / the real gesture",
    "cues": [
     "13.2"
    ],
    "note": "The swipe to dismiss Cathy's message on 13.2 is the wrong way - you swipe right to unlock and open, you should swipe LEFT and see the word Clear on the screen.",
    "proof": "a_swipe_left_clear",
-   "clean": 0,
-   "secs": 10.2
+   "clean": 2,
+   "secs": 10.1,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-071",
-   "status": "fixed",
+   "status": "closed",
    "family": "the camera / the subject of the beat",
    "cues": [
     "13.3"
    ],
    "note": "The Find My change for 13.3 is VERY close, we just need to see 'sharing location from Jamie's iPad' on the screen for longer - just change the camera zoom effect there.",
    "proof": "a_share_row_held",
-   "clean": 0,
-   "secs": 22.0
+   "clean": 2,
+   "secs": 21.9,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-072",
-   "status": "fixed",
+   "status": "closed",
    "family": "the ending",
    "cues": [
     "14.4",
@@ -996,12 +1012,13 @@
    ],
    "note": "The last thing we should see before the blackout is the text 'tonight was amazing'. Cut everything else after that; the blackout should be a slow blackout to actual black, then one final cue to show the end screen.",
    "proof": "a_ending_on_her_text",
-   "clean": 0,
-   "secs": 27.1
+   "clean": 2,
+   "secs": 26.9,
+   "last_build": "b59ffc5200ae"
   },
   {
    "id": "D-073",
-   "status": "fixed",
+   "status": "closed",
    "family": "the calendar morph",
    "cues": [
     "1.7",
@@ -1010,8 +1027,9 @@
    ],
    "note": "End of 1.7 there's a text size issue - it recurs anytime we go back to the main YEAR # month/day screen initially, then fixes itself as the warp happens.",
    "proof": "a_home_morph_clean",
-   "clean": 0,
-   "secs": 23.1
+   "clean": 2,
+   "secs": 23.0,
+   "last_build": "b59ffc5200ae"
   }
  ]
 }
