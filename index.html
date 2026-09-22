@@ -571,7 +571,8 @@
   .ph-tabs div{flex:1;text-align:center;padding:.4em 0 .7em;font-size:.58em;color:#8e8e93}
   .ph-tabs div.on{color:#007aff}
   .memfeed{flex:1;min-height:0;overflow:hidden}
-  .memscreen{height:100%;display:flex;flex-direction:column;background:#fff;border-bottom:8px solid #f0f2f5}
+  .memscreen{height:auto;display:flex;flex-direction:column;background:#fff;border-bottom:8px solid #f0f2f5}
+  /* a real Facebook card is as tall as its content and you scroll past it; it is not a page. */
   .memyear{flex:0 0 auto;background:#f0f2f5;padding:.5em .9em;font-size:.86em;font-weight:700;color:#050505}
   .memcard{border-radius:1em;overflow:hidden;position:relative;box-shadow:0 2px 10px rgba(0,0,0,.18)}
   .memcard .memlabel{position:absolute;left:0;right:0;bottom:0;padding:1.6em .8em .7em;color:#fff;
@@ -1536,11 +1537,12 @@ const FALLBACK_SHOW = [
  {id:'9.2',kind:'lyric',trig:'“…suddenly finds you attractive”',
   what:'A reader.',
   do:[{op:'notif',app:'Instagram',w:'now',title:'a.reader.somewhere',t:'commented: okay the ending WRECKED me. how are you real'}]},
- {id:'9.3',kind:'lyric',trig:'“wouldn’t give you the time of day before” — GO',
-  what:'Two at once — a message request he cannot read, and one he can. paige.turner is not shy.',
-  hold:'Two cards land together. lit.with.lena is a message request, so it says only that she wants to send one; paige.turner is a comment, so hers carries its words. Paige arrives second, so she is the card on top.',
-  do:[{op:'notif',app:'Instagram',w:'now',title:'lit.with.lena',t:'wants to send you a message'},
-      {op:'notif',app:'Instagram',w:'now',title:'paige.turner',t:'commented: Hey handsome, didn’t know an author could be so handsome ;)'}]},
+ {id:'9.2a',kind:'lyric',trig:'ON THE NEXT PHRASE — GO (no specific line; the second card)',
+  what:'A message request from a stranger. It says only that she wants to send one — a real iPhone shows no preview text for a request from someone he does not follow.',
+  do:[{op:'notif',app:'Instagram',w:'now',title:'lit.with.lena',t:'wants to send you a message'}]},
+ {id:'9.3',kind:'lyric',trig:'“Every other woman in the world suddenly finds you attractive” — GO',
+  what:'And one who is not shy. Hers is a comment, so it carries its words; it lands on top.',
+  do:[{op:'notif',app:'Instagram',w:'now',title:'paige.turner',t:'commented: Hey handsome, didn’t know an author could be so handsome ;)'}]},
  {id:'9.4',kind:'lyric',trig:'“And every other girl would fly away” — GO',
   what:'The book keeps growing without him — his agent, not a stranger, says so.',
   do:[{op:'clock',t:'11:25'},{op:'notif',app:'Messages',w:'now',title:'Linda Whitfield',t:'third printing confirmed. do NOT post it yet 🍾'}]},
@@ -1867,7 +1869,14 @@ function applyOp(st,o){
     case 'fq': if(st.focus) st.focus.q.push(o); break;
     case 'fqRelease': if(st.focus) st.focus.q.forEach(x=>x.rel=true); break;
     case 'openMemory': st.photoTab='memory'; break;
-    case 'black': st.black=true; break;
+    case 'black': st.black=true;
+      /* AND THE CALL ENDS WITH IT. Ending a call as the phone goes away lived only in playCue's
+         animation guard, so the STATE never recorded it: buildState replayed the song, left
+         st.call reading "connected", and the NEXT cue that raised a device saw a live call and
+         played the end tone again — after the time warp and before the phone buzzed, which is
+         exactly where it was heard at 3.5 and at 3.8. State is truth; the call ends here too. */
+      if(st.call && !/ended/i.test(st.call.st||'')) st.call={...st.call, st:'Call Ended'};
+      break;
   }
 }
 function buildState(song,upto){
@@ -3749,7 +3758,8 @@ function scrollThreads(){ stacks().forEach(k=>{
     jump(f, Math.max(0,(p.length-1)*f.clientHeight)); }
   const m=k.querySelector('.memfeed'); if(m){ const c=m.querySelectorAll('.memscreen');
     const at=(typeof CUR==='object'&&CUR&&CUR.memAt!=null)?CUR.memAt:c.length-1;
-    jump(m, Math.max(0,Math.min(at,c.length-1)*m.clientHeight)); }
+    const tgt=c[Math.max(0,Math.min(at,c.length-1))];
+    jump(m, tgt?tgt.offsetTop:0); }
   const d=k.querySelector('.docsheet'); if(d) jump(d,d.scrollHeight);   // follow the caret
 }); }
 function swapLayer(st,cls){ // replace the screen inside each stack, with an entry animation
@@ -4122,10 +4132,12 @@ async function playCue(cue, st, tok){
     if(o.op==='mem'){ applyOp(st,o); swapLayer(st,null); const memSeed='mem'+cue.id; sfx('swipe',{soft:true,seed:memSeed});
       stacks().forEach(k=>{ const f=k.querySelector('.memfeed'); if(!f) return;
         const cards=f.querySelectorAll('.memscreen');
-        jump(f,Math.max(0,(cards.length-2)*f.clientHeight)); });
+        const prev=cards[Math.max(0,cards.length-2)];
+        jump(f, prev?prev.offsetTop:0); });
       await wait(120);
       await Promise.all(stacks().map(k=>{const f=k.querySelector('.memfeed'); if(!f) return null;
-        return humanScroll(f,(f.querySelectorAll('.memscreen').length-1)*f.clientHeight,memSeed,tok,{gesture:o.scroll,slow:MEM_SLOW_()});}));
+        const cards=f.querySelectorAll('.memscreen'); const last=cards[cards.length-1];
+        return humanScroll(f, last?last.offsetTop:0, memSeed,tok,{gesture:o.scroll,slow:MEM_SLOW_()});}));
       /* the photograph now arrives already filling the reading window, so the old 2.6 s-delayed
          7 s drift into it is both unnecessary and unfinishable inside the card's own gap. One
          short settle onto the picture, then stillness — which is what 'let them breathe' means. */
@@ -4190,7 +4202,8 @@ async function playCue(cue, st, tok){
       applyOp(st,o);
       await Promise.all(stacks().map(k=>{const f=k.querySelector('.memfeed'); if(!f) return null;
         const cards=f.querySelectorAll('.memscreen'); const i=Math.max(0,Math.min(cards.length-1,o.i||0));
-        return humanScroll(f,i*f.clientHeight,'memgo'+cue.id,tok,{gesture:'drag',flicks:2,slow:MEM_SLOW_()});}));
+        const tgt=cards[i];
+        return humanScroll(f, tgt?tgt.offsetTop:0, 'memgo'+cue.id,tok,{gesture:'drag',flicks:2,slow:MEM_SLOW_()});}));
       const nth=(o.i||0)+1, CD=1200*MEM_SLOW_(), CG=1.2*MEM_SLOW_();   // when the settle onto the picture starts, and how long it takes
       camPush(`.memfeed .memscreen:nth-child(${nth}) .body`, 2.6, 0, null, null, true);
       camPush(`.memfeed .memscreen:nth-child(${nth}) .media`, 2.2, CD, 'subjtop', CG, true, true);
@@ -4561,8 +4574,8 @@ function avText(name,fallback){ if(avAsset(name)) return '';
    Measured per photograph and per cast, not guessed. 50 is the default, so any code not listed
    behaves exactly as before and nothing else in the show moves. */
 function CAST_FOCUS(){ return {
-  ml:{M26:78.2, M3a:32.3, M2:42.7, M4:54.2},
-  ac:{M26:50.0, M3a:28.1, M2:36.4, M4:69.8}}; }
+  ml:{M26:62.0, M3a:32.3, M2:42.7, M4:16.0},
+  ac:{M26:50.0, M3a:28.1, M2:36.4, M4:46.0}}; }
 function focusFor(label){
   const m=/^\s*([MV]\d+[a-z]?)\b/.exec(label||''); if(!m) return 50;
   const t=(CAST_FOCUS()[CAST]||{})[m[1]];
@@ -5947,7 +5960,7 @@ function SFX_MAP_(){ return {send:'SentMessage.caf',receive:'ReceivedMessage.caf
    with 0.00% at full scale and the crest back up to 4.90 dB, so its trim is 1.0 again. */
 function SFX_TRIM_(){ return {ringback:1.0,click:.667,del:.690,keymod:.667,tink:.919,send:1.148,
   receive:1.108,notif:1.518,mail:2.153,mailsent:2.239,connect:.804,end:.708,lock:.859,unlock:3.078,
-  ring:.634,ftring:.360}; }
+  ring:.793,ftring:.360}; }
 /* THE SOUND LAW (David, Sept 19 night): the screen makes ONLY the sounds a real iPhone makes with its volume up, and
    quietly. No paper, no ambience, no taps, no swipes, the unlock IS audible (David, Sept 20) and the ringback is David's own licensed
    recording, trimmed to one 2.01 s burst and played exactly twice.
