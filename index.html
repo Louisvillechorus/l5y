@@ -4483,8 +4483,15 @@ async function advance(){ LAST_ACT(Date.now());
 }
 function render(){ hardRender(); }
 function sync(){ persistPos(); try{ ch.postMessage({from:CID,si,ci,blk,started:true,cast:CAST,perf:PERF}); }catch(e){} }
-function next(){ if(ci<cues().length){ advance(); sync(); }
-  else if(si<SHOW.length-1){ si++; ci=0; hardRender(); sync(); } }
+/* ONE GO IS ONE CUE, INCLUDING ACROSS A SONG BOUNDARY. This used to spend a press loading the
+   next song without firing anything, so the operator pressed GO twice at every one of the thirteen
+   boundaries and the first press did nothing visible. The load happens inside the same press now,
+   and sync() runs BEFORE advance() so the projection window is told which song it is on before the
+   cue paints into it. `]` / goSong() still loads a song without firing, for an operator who wants
+   to park at the top of one. */
+function next(){
+  if(ci>=cues().length){ if(si>=SHOW.length-1) return; si++; ci=0; sync(); }
+  advance(); sync(); }
 let SHOW_OVER=false;
 function prev(){ LAST_ACT(Date.now()); if(SHOW_OVER) return;   // past the final curtain there is no rewind (David, Sept 19 night)
   if(ci>0){ci--; hardRender(); sync();}
@@ -4968,7 +4975,18 @@ function fitStrip(era){   // the docked strip is narrow: a long month shrinks to
     const base=parseFloat(getComputedStyle(e).fontSize);
     e.style.fontSize=(base*inner/w*0.98).toFixed(2)+'px'; });
 }
-function fitEra(era){ if(!era) return; if(era.classList.contains('center')) fitPad(era); else fitStrip(era); }
+/* NEVER MEASURE THE TYPE THROUGH A FLIP (MEASURE IN ONE SPACE, applied to the other half).
+   fitPad compares ink measured with a Range — a SCREEN rect — against the sheet's LAYOUT width.
+   That is sound on a still card and nonsense during the morph, because the flip puts a transient
+   transform on .mo and .foot: the ink measures up to 1787 px against an 897 px sheet, the fit
+   shrinks a line that never needed shrinking, and it writes an inline font-size that nothing
+   recomputes. The GO path walks straight into it — advance() calls setStamp ~5 ms after the 780 ms
+   flip begins — which is why nine cues settled with their foot line at 49-66% of size, and why the
+   dead GO at a song boundary appeared to "fix the fonts": its hardRender re-measured the still
+   card. The morph owns the type while it runs; the cleanup below re-fits once it is over. */
+function fitEra(era){ if(!era) return;
+  if(era.classList.contains('morphing')) return;
+  if(era.classList.contains('center')) fitPad(era); else fitStrip(era); }
 function eraParts(st){ const d=new Date(st.date||''); if(isNaN(d)) return {mo:'',abbr:'',yr:''}; return {mo:MO_(d.getMonth()),abbr:MA_(d.getMonth()),yr:yearN(d)}; }
 function eraLabel(st){ const p=eraParts(st); if(!p.mo) return ''; return (p.mo+' · YEAR '+p.yr+(st.foot?' · '+st.foot:'')).toUpperCase(); }
 function isPreshow(){ return si===0&&ci===0; }
@@ -5201,7 +5219,10 @@ function setEraHome(era, home, instant, pre){
   parts.forEach(p=>{ p.el.style.transition=`transform ${dur}ms ${ease}`; p.el.style.transform='translate(0px,0px) rotate(0deg) scale(1)'; });
   const tok=animTok;
   setTimeout(()=>{ era.classList.remove('morphing','homing');
-    if(tok!==animTok) return; if(era.dataset.home!==home) return; eraMorphClear(era); }, dur+90);
+    if(tok!==animTok) return; if(era.dataset.home!==home) return;
+    eraMorphClear(era);
+    fitEra(era);   // the flip is over: measure the settled card, so a text change that landed mid-morph is still laid out
+  }, dur+90);
 }
 /* THE SCENE NAME IS TYPED (David, Sept 20 — D-013): the foot line of a date card comes in letter by
    letter with the real key clicks behind it, and one cue in five fumbles a letter and backspaces it.
