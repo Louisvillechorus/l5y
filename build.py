@@ -114,7 +114,30 @@ for f in sorted(glob.glob('assets/loop/*')):
         continue
     for c in casts: loop[c].append(ent)
 loopbytes=sum(len(e['s']) for c in loop for e in loop[c])
-assets='<script id="l5yassets">window.L5Y_SFX=%s;window.L5Y_PAPER=%s;window.L5Y_IMG=%s;window.L5Y_LOOP=%s;window.L5Y_CAST=%s;</script>'%(json.dumps(sfx),json.dumps(paper),json.dumps(img),json.dumps(loop),json.dumps(cast))
+# WHICH BUILD AM I LOOKING AT? A cached page and a live one are indistinguishable on a projector,
+# and GitHub Pages serves docs/index.html with a ten-minute cache — so the operator (and the
+# director) can be looking at yesterday's show while being told it is today's. The build stamps
+# itself with the commit it was made from, and the presenter prints it behind an info button.
+def _build_stamp():
+    import subprocess as _sp
+    def _git(*a):
+        try: return _sp.run(['git',*a],capture_output=True,text=True,timeout=10).stdout.strip()
+        except Exception: return ''
+    sha = _git('rev-parse','--short','HEAD')
+    iso = _git('log','-1','--format=%cI')
+    sub = _git('log','-1','--format=%s')
+    # the build's OWN output is always modified at this moment — that is not a dirty source tree.
+    GEN = ('L5Y-Show-STANDALONE.html','docs/index.html','L5Y-Cue-Bible.docx','L5Y-Cue-Bible.pdf',
+           'bible.json','book.json')
+    dirty = any(l[3:].strip() not in GEN and not l[3:].strip().startswith('docs/assets/')
+                for l in _git('status','--porcelain').splitlines() if l.strip())
+    return {'sha':sha or 'unknown','iso':iso or '','subject':sub or '','dirty':dirty,
+            'built':__import__('datetime').datetime.now(__import__('datetime').timezone.utc)
+                      .isoformat(timespec='seconds')}
+BUILD = _build_stamp()
+print('build stamp:', BUILD['sha'], BUILD['iso'], '(dirty)' if BUILD['dirty'] else '')
+
+assets='<script id="l5yassets">window.L5Y_SFX=%s;window.L5Y_PAPER=%s;window.L5Y_IMG=%s;window.L5Y_LOOP=%s;window.L5Y_CAST=%s;window.L5Y_BUILDINFO=%s;</script>'%(json.dumps(sfx),json.dumps(paper),json.dumps(img),json.dumps(loop),json.dumps(cast),json.dumps(BUILD))
 out=eng.replace('<script src="cues.js"></script>',assets+'\n<script>\n'+cues+'\n</script>')
 out=out.replace('</head>', fontcss+'\n</head>', 1)
 open('L5Y-Show-STANDALONE.html','w').write(out)

@@ -1047,6 +1047,20 @@
   body.nofade .iphone .screen{animation:none !important}
   /* ---- presenter: booth simplification ---- */
   .now .dev,.now .pov,#barView,#barBuild{display:none !important}
+  .ibtn{margin-left:14px;background:none;border:1.5px solid rgba(233,199,102,.45);color:var(--gold);
+    border-radius:50%;width:1.9em;height:1.9em;font-size:clamp(13px,1.1vw,18px);line-height:1;cursor:pointer;flex:none}
+  .ibtn:hover{background:rgba(233,199,102,.14)}
+  #buildinfo{display:none;position:fixed;inset:0;z-index:320;background:rgba(3,5,9,.86);align-items:center;justify-content:center}
+  body.infoing.v-presenter #buildinfo{display:flex}
+  #buildinfo .bi{background:#0b111d;border:1px solid rgba(233,199,102,.35);border-radius:14px;
+    padding:26px 30px;width:min(760px,92vw);color:#e9edf6}
+  #buildinfo h3{font-family:'Fraunces',serif;font-size:clamp(20px,2vw,30px);margin:0 0 14px;color:var(--gold)}
+  #buildinfo .row{display:flex;gap:14px;padding:7px 0;border-bottom:1px solid rgba(243,239,228,.08);
+    font-family:'Courier Prime',monospace;font-size:clamp(13px,1.15vw,19px)}
+  #buildinfo .row b{color:var(--dim);font-weight:400;min-width:12em;letter-spacing:.1em;text-transform:uppercase}
+  #buildinfo .row span{color:#fff}
+  #buildinfo .warn{color:#ff8a8a;margin-top:12px;font-size:clamp(12px,1vw,16px)}
+  #buildinfo .mbtn{margin-top:18px}
   .phead .song small{font-family:'Courier Prime',monospace;font-size:11px;letter-spacing:.2em;color:var(--gold);margin-left:12px;text-transform:uppercase}
   .projbtn.blackout{border-color:rgba(255,107,107,.6);color:#ff6b6b;margin-left:8px}
   .projbtn.blackout.live{background:#ff6b6b;color:#1a0505}
@@ -1158,6 +1172,7 @@
     <h2>Jump to a cue</h2>
     <span class="jn" id="jNow">—</span>
     <span class="sp">
+      <button class="mbtn" onclick="jumpClose();infoToggle()">ⓘ which build is this?</button>
       <button class="mbtn" onclick="jumpClose()">✕ close — back to the show</button>
     </span>
   </div>
@@ -1166,7 +1181,7 @@
     <div class="jcol"><h3 id="jCueHead">Cues</h3><div id="jCues"></div></div>
   </div>
   <div class="jfoot">
-    <span><kbd>esc</kbd> close</span><span><kbd>↑</kbd><kbd>↓</kbd> move</span><span><kbd>enter</kbd> jump</span>
+    <span><kbd>esc</kbd> close</span><span><kbd>↑</kbd><kbd>↓</kbd> move</span><span><kbd>enter</kbd> jump</span><span><kbd>i</kbd> which build</span>
     <span class="jwarn">Jumping scrubs the stage to that cue — the audience sees it. Blackout first if they are watching.</span>
     <label class="mbtn" style="cursor:pointer;margin-left:auto">↥ Load a cue file…
       <input type="file" id="cueFile2" accept=".js,.json" style="display:none"></label>
@@ -1201,7 +1216,8 @@
 
 <!-- PRESENTER -->
 <div id="presenter">
-  <div class="phead"><span class="song" id="pSong">—</span><span class="cnt" id="pCount"></span></div>
+  <div class="phead"><span class="song" id="pSong">—</span><span class="cnt" id="pCount"></span><button class="ibtn" id="pInfo" onclick="infoToggle()" title="Which build is this? (i)">ⓘ</button></div>
+  <div id="buildinfo" onclick="infoToggle()"><div class="bi" onclick="event.stopPropagation()"><h3>Which build is this?</h3><div id="biBody"></div><button class="mbtn" onclick="infoToggle()">✕ close</button></div></div>
   <div class="pcol pright">
     <div class="now">
       <div class="tag">on screen now</div>
@@ -4252,6 +4268,38 @@ function expandCalls(ops){
    trigger and the cue sheet prints it large and hot. Applied last, so it works inside a quoted
    fragment and inside a stage note alike, and it never disturbs the patterns above it. */
 function hotMark(h){ return h.replace(/\*([^*]+)\*/g, (m,w)=>`<span class="hot">${w}</span>`); }
+/* WHICH BUILD AM I LOOKING AT? (the director, Sept 22, after a cached page cost us twenty minutes)
+   GitHub Pages serves the show with a ten-minute cache and the file is 20 MB, so a browser will
+   happily hand back yesterday's build while everyone assumes it is today's. The commit is stamped
+   into the build itself, and the presenter prints it: the date and time of that commit in EDT, the
+   sha, and the subject line. Presenter only, never the projection, and never during the show
+   unless the operator asks. `i` opens it, Esc or the button closes it. */
+function infoToggle(){
+  const on = !document.body.classList.contains('infoing');
+  document.body.classList.toggle('infoing', on);
+  if(!on) return;
+  /* NOT L5Y_BUILD: cues.js carries a hand-written label under that name and is spliced in after
+     the asset block, so it silently overwrote the real stamp. */
+  const B = window.L5Y_BUILDINFO || {};
+  const fmt = (iso)=>{ if(!iso) return 'unknown';
+    try{ return new Date(iso).toLocaleString('en-US',{timeZone:'America/New_York',
+      weekday:'short', month:'short', day:'numeric', hour:'numeric', minute:'2-digit',
+      second:'2-digit', hour12:true, timeZoneName:'short'}); }catch(e){ return iso; } };
+  const age = (iso)=>{ if(!iso) return ''; const m=Math.round((Date.now()-new Date(iso))/60000);
+    if(!isFinite(m)) return '';
+    if(m<1) return 'just now'; if(m<60) return m+' min ago';
+    const h=Math.floor(m/60); if(h<24) return h+' hr '+(m%60)+' min ago';
+    return Math.floor(h/24)+' days ago'; };
+  const row=(k,v)=>`<div class="row"><b>${k}</b><span>${escTxt(String(v))}</span></div>`;
+  $('biBody').innerHTML =
+      row('commit made', fmt(B.iso))
+    + row('that was', age(B.iso))
+    + row('commit', B.sha || 'unknown')
+    + row('message', B.subject || '—')
+    + row('page loaded', fmt(new Date().toISOString()))
+    + (B.dirty ? '<div class="warn">\u26a0 Built from a working tree with uncommitted changes \u2014 this is not exactly any commit.</div>' : '')
+    + '<div class="warn" style="color:var(--dim)">If \u201ccommit made\u201d is older than you expect, your browser is serving a cached page \u2014 hard reload (\u2318\u21e7R / Ctrl\u21e7F5).</div>';
+}
 function trigHTML(t, kind){
   let s=escTxt(t||'');
   s=s.replace(/[“"]([^”"]+)[”"]/g,(m,q)=>`<q>${q}</q>`);
@@ -4648,6 +4696,12 @@ addEventListener('keydown',e=>{
   if(!started) return;
   if(document.body.classList.contains('needgate')) return;   // the gate owns the keyboard too
   if(document.body.classList.contains('jumping')){ jumpKey(e); return; }   // the picker owns it while it is open
+  /* the build panel owns the keyboard while it is open, exactly as the picker does, so GO can never
+     fire behind it; Esc closes it rather than opening the picker underneath. Presenter only. */
+  if(document.body.classList.contains('infoing')){
+    if(e.key==='Escape'||e.key==='i'||e.key==='I'){ e.preventDefault(); infoToggle(); }
+    else e.preventDefault();
+    return; }
   if(e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)){ if(e.key==='Escape'){ e.target.blur(); const p=document.getElementById('volPop'); if(p) p.classList.remove('on'); } return; }   // the volume slider keeps its keys
   if(e.key===' '||e.key==='ArrowRight'){e.preventDefault();next();}
   else if(e.key==='ArrowLeft'){e.preventDefault();prev();}
@@ -4657,6 +4711,7 @@ addEventListener('keydown',e=>{
   else if(e.key==='f'||e.key==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
   else if(e.key==='r'||e.key==='R'){if(view==='projection')setRot(rot===0?90:rot===90?270:0);}
   else if(e.key==='j'||e.key==='J'){ jumpToggle(); }
+  else if((e.key==='i'||e.key==='I') && view!=='projection'){ infoToggle(); }
   else if(e.key==='Escape'){ if(view==='projection') return; jumpOpen(); }   // Esc opens the picker — it never un-starts the show (David, Sept 20)
 });
 /* one blackout for key, button and the other window — never a stale class after a hardRender */
