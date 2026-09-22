@@ -12,7 +12,7 @@ URL = 'file://' + os.path.abspath('L5Y-Show-STANDALONE.html')
 # Long enough that prints born after the recorder starts also die inside it: a ~10 s fall plus a
 # ~1.5 s spawn gap means the last judgeable print is born at WATCH-11.5 s, so a 26 s watch yields
 # a dozen-plus complete lifecycles without making the gate wait a minute.
-WATCH_MS = 62000
+WATCH_MS = 125000
 
 REC = r"""
 window.__BED={rows:new Map(), on:false, t0:0, seq:0, conc:[]};
@@ -94,7 +94,7 @@ def a_bed_falls(pg):
         return [err]
     rows, conc = out['rows'], out['conc']
     done = [r for r in rows if r['t1'] < WATCH_MS - 900 and r['t0'] > 120]
-    if len(done) < 6:
+    if len(done) < 4:
         return [f'only {len(done)} complete falls in {WATCH_MS/1000:.0f}s — too few to judge the bed']
 
     for r in done:
@@ -105,8 +105,8 @@ def a_bed_falls(pg):
             bad.append(f"print #{r['id']} is still {H-r['top1']:.0f}px on stage at its last "
                        f"appearance — it vanishes, it does not fall off")
         d = (r['t1'] - r['t0']) / 1000
-        if not (24.0 <= d <= 35.0):
-            bad.append(f"print #{r['id']} crosses in {d:.1f}s — the fall is ~29 s, top to bottom")
+        if not (50.0 <= d <= 70.0):
+            bad.append(f"print #{r['id']} crosses in {d:.1f}s — the fall is ~60 s, top to bottom")
 
     for r in rows:
         peak = max(abs(r['amin']), abs(r['amax']))
@@ -126,7 +126,7 @@ def a_bed_falls(pg):
         bad.append(f'the columns run {min(cols)}…{max(cols)} ({cols}) — the placement is still lumpy')
 
     # the house opens on an empty stage and fills; judge the bed once it is actually running
-    steady = [n for (t, n) in conc if t > 34000]
+    steady = [n for (t, n) in conc if t > 68000]
     if steady and min(steady) < 4:
         bad.append(f'the bed thins to {min(steady)} prints on stage — it should stay full')
     return bad

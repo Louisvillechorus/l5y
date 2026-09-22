@@ -1521,7 +1521,6 @@ window.L5Y_SHOW = [
       {op:'device',dev:'iphone',who:'jamie'},{op:'wall',t:'M4 — the wedding portrait'}]},
  {id:'9.2',kind:'lyric',trig:'“…suddenly finds you attractive”',
   what:'A reader.',
-  confirm:true,
   do:[{op:'notif',app:'Instagram',w:'now',title:'a.reader.somewhere',t:'commented: okay the ending WRECKED me. how are you real'}]},
  {id:'9.3',kind:'lyric',trig:'“Every other woman in the world suddenly finds you attractive” — GO',
   what:'Two at once — a message request he cannot read, and one he can. paige.turner is not shy.',
@@ -1530,15 +1529,12 @@ window.L5Y_SHOW = [
       {op:'notif',app:'Instagram',w:'now',title:'paige.turner',t:'commented: Hey handsome, didn’t know an author could be so handsome ;)'}]},
  {id:'9.4',kind:'lyric',trig:'“wouldn’t give you the time of day before” — GO',
   what:'The book keeps growing without him — his agent, not a stranger, says so.',
-  confirm:true,
   do:[{op:'clock',t:'11:25'},{op:'notif',app:'Messages',w:'now',title:'Linda Whitfield',t:'third printing confirmed. do NOT post it yet 🍾'}]},
  {id:'9.5',kind:'lyric',trig:'“And every other girl would fly away”',
   what:'And Elise (the editor at Random House — the woman in this verse is unnamed in the score; the screen names her).',
-  confirm:true,
   do:[{op:'notif',app:'Messages',w:'now',title:'Elise (Random House)',t:'paperback cover is in 🎉 celebratory drink sometime?'}]},
  {id:'9.6',kind:'lyric',trig:'“It’s not a problem, just a challenge, it’s a challenge to” — GO ON *resist temptation*',
-  what:'Front row. (⚠CONFIRM which occurrence of the phrase — David pins it on the Cue Sheet.)',
-  confirm:true,
+  what:'Front row — a reader who will be in the room tonight.',
   do:[{op:'clock',t:'11:29'},{op:'notif',app:'Instagram',w:'now',title:'novel.annie',t:'commented: front row at your reading tonight 🙋‍♀️'}]},
  {id:'9.7',kind:'music',trig:'FINAL CHORD — the last note of the song',
   what:'The phone drops; OCTOBER · YEAR 4 holds center.',
@@ -1946,7 +1942,6 @@ const FALLBACK_SHOW = [
       {op:'device',dev:'iphone',who:'jamie'},{op:'wall',t:'M4 — the wedding portrait'}]},
  {id:'9.2',kind:'lyric',trig:'“…suddenly finds you attractive”',
   what:'A reader.',
-  confirm:true,
   do:[{op:'notif',app:'Instagram',w:'now',title:'a.reader.somewhere',t:'commented: okay the ending WRECKED me. how are you real'}]},
  {id:'9.3',kind:'lyric',trig:'“Every other woman in the world suddenly finds you attractive” — GO',
   what:'Two at once — a message request he cannot read, and one he can. paige.turner is not shy.',
@@ -1955,15 +1950,12 @@ const FALLBACK_SHOW = [
       {op:'notif',app:'Instagram',w:'now',title:'paige.turner',t:'commented: Hey handsome, didn’t know an author could be so handsome ;)'}]},
  {id:'9.4',kind:'lyric',trig:'“wouldn’t give you the time of day before” — GO',
   what:'The book keeps growing without him — his agent, not a stranger, says so.',
-  confirm:true,
   do:[{op:'clock',t:'11:25'},{op:'notif',app:'Messages',w:'now',title:'Linda Whitfield',t:'third printing confirmed. do NOT post it yet 🍾'}]},
  {id:'9.5',kind:'lyric',trig:'“And every other girl would fly away”',
   what:'And Elise (the editor at Random House — the woman in this verse is unnamed in the score; the screen names her).',
-  confirm:true,
   do:[{op:'notif',app:'Messages',w:'now',title:'Elise (Random House)',t:'paperback cover is in 🎉 celebratory drink sometime?'}]},
  {id:'9.6',kind:'lyric',trig:'“It’s not a problem, just a challenge, it’s a challenge to” — GO ON *resist temptation*',
-  what:'Front row. (⚠CONFIRM which occurrence of the phrase — David pins it on the Cue Sheet.)',
-  confirm:true,
+  what:'Front row — a reader who will be in the room tonight.',
   do:[{op:'clock',t:'11:29'},{op:'notif',app:'Instagram',w:'now',title:'novel.annie',t:'commented: front row at your reading tonight 🙋‍♀️'}]},
  {id:'9.7',kind:'music',trig:'FINAL CHORD — the last note of the song',
   what:'The phone drops; OCTOBER · YEAR 4 holds center.',
@@ -5691,15 +5683,18 @@ function tornPath(side,seed){
 // TEN SECONDS, TOP TO BOTTOM (David, Sept 22: "each photo should take like 10 seconds to fall from the
 // top to bottom from first appearance to last appearance"). fall is the WHOLE journey now -- bottom edge
 // entering the top of the stage to top edge leaving the foot -- not a window onto a longer one.
-function PILE_CFG(){ return PILE_CFG.o||(PILE_CFG.o={h:50, every:[900,1500], fall:[26300,32600]}); }
+// SLOWER AGAIN, AND THE SPAWN GOES WITH IT. A fall this long at the old spawn rate piles forty-odd
+// prints on the stage: past full, into a moving wall, and the frame rate goes with it. The density
+// that read well was about a dozen at once, so `every` is scaled to hold that as the fall grows.
+function PILE_CFG(){ return PILE_CFG.o||(PILE_CFG.o={h:50, every:[3800,5400], fall:[54000,66000]}); }
 /* THE BOWS FLOOD (David, Sept 20): same bed, same seeded order, a print every second or so. The slowest
    spawn (1.5 s) stays an order of magnitude under the shortest fall (15 s), so prints always overlap —
    the bed cannot go blank however long the company bows, and it never stops spawning, so it cannot end. */
 function pileRate(mode){ const C=PILE_CFG();
   // the bows spawn scales WITH the fall, or a 29 s fall at the old 0.52 s spawn would put forty
   // prints on the stage at once: the same flood relative to the house, not four times it.
-  if(mode==='bows'){ C.every=[1490,2570]; C.fall=[26300,32600]; }
-  else { C.every=[900,1500]; C.fall=[26300,32600]; }
+  if(mode==='bows'){ C.every=[2800,4000]; C.fall=[54000,66000]; }
+  else { C.every=[3800,5400]; C.fall=[54000,66000]; }
   return C; }
 function PILE_S(){ return PILE_S.o||(PILE_S.o={t:null, i:0, order:null}); }
 function pileList(){ const L=window.L5Y_LOOP||{}; return (L[CAST]||[]); }
