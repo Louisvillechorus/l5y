@@ -1406,7 +1406,7 @@ const FALLBACK_SHOW = [
 {n:3,t:'See I’m Smiling',who:'both',cues:[
  {id:'3.1',kind:'music',trig:'“tragic but it’s true… hey hey shiksa goddess, I’ve been waiting for someone like you” — GO AFTER THIS LINE',
   what:'No phone for her, by direction. The calendar rolls FORWARD, page by page — SEPTEMBER · YEAR 1 → JULY · YEAR 4, her birthday in Ohio — and holds while she sings.',
-  do:[{op:'bed',file:'lake.mp3',fade:5,gain:.45},{op:'black'},{op:'clock',t:'6:12',d:'Saturday, July 19, 2025'},{op:'stamp',t:'Ohio · her birthday'}]},
+  do:[{op:'bed',file:'lake.mp3',fade:5,gain:.602},{op:'black'},{op:'clock',t:'6:12',d:'Saturday, July 19, 2025'},{op:'stamp',t:'Ohio · her birthday'}]},
  {id:'3.2',kind:'lyric',trig:'“We’re doing fine” — GO IMMEDIATELY ON THE WORD *FINE*',
   what:'The calendar rolls BACK to SEPTEMBER · YEAR 1 and docks; HIS phone rises already dialing — a cold call to the agent, via Dr. Adler (“Ms. Whitfield (office)”, from Adler’s text). Ringback under it.',
   do:[{op:'bed',stop:true,fade:2},{op:'clock',t:'2:41',d:'Tuesday, September 7, 2021'},{op:'stamp',t:''},
@@ -1414,7 +1414,7 @@ const FALLBACK_SHOW = [
       {op:'call',n:'Ms. Whitfield (office)',st:'calling…',dir:'out'}]},
  {id:'3.4',kind:'stage',trig:'“What’s your address” — he hangs up',
   what:'Call Ended; the phone drops; the calendar comes back to center and rolls FORWARD home — SEPTEMBER · YEAR 1 → JULY · YEAR 4.',
-  do:[{op:'bed',file:'lake.mp3',fade:4,gain:.45},{op:'black'},{op:'clock',t:'6:31',d:'Saturday, July 19, 2025'},{op:'stamp',t:'Ohio · her birthday'}]},
+  do:[{op:'bed',file:'lake.mp3',fade:4,gain:.602},{op:'black'},{op:'clock',t:'6:31',d:'Saturday, July 19, 2025'},{op:'stamp',t:'Ohio · her birthday'}]},
  {id:'3.5',kind:'lyric',trig:'“we’ll have tonight” — GO ON *TONIGHT*',
   what:'The calendar rolls BACK and docks; HIS phone rises with an INCOMING call from Ms. Whitfield — two weeks later (script). The ring under it.',
   do:[{op:'bed',stop:true,fade:2},{op:'clock',t:'4:18',d:'Tuesday, September 21, 2021'},{op:'stamp',t:''},
@@ -1422,7 +1422,7 @@ const FALLBACK_SHOW = [
       {op:'call',n:'Ms. Whitfield (office)',st:'incoming call',dir:'in'}]},
  {id:'3.7',kind:'stage',trig:'“thank you this is great” — GO AFTER',
   what:'Again: Call Ended, the phone drops, the calendar rolls FORWARD to her evening.',
-  do:[{op:'bed',file:'lake.mp3',fade:4,gain:.45},{op:'black'},{op:'clock',t:'6:47',d:'Saturday, July 19, 2025'},{op:'stamp',t:'Ohio · her birthday'}]},
+  do:[{op:'bed',file:'lake.mp3',fade:4,gain:.602},{op:'black'},{op:'clock',t:'6:47',d:'Saturday, July 19, 2025'},{op:'stamp',t:'Ohio · her birthday'}]},
  {id:'3.8',kind:'lyric',trig:'“and not do anything at all”',
   what:'SCRIPT: he dials — “perplexed but not unhappy.” The calendar rolls BACK and docks; his phone rises dialing Rob. The lease is up; an apartment WITH Cathy.',
   do:[{op:'bed',stop:true,fade:2},{op:'clock',t:'8:02',d:'Thursday, September 30, 2021'},{op:'stamp',t:''},
@@ -5668,7 +5668,11 @@ function interHTML(){ return `<div class="house"><div class="ht">Intermission</d
    Sound plays from the window the operator started with a click (the laptop
    feeding the house); a programmatically opened projection window stays silent. */
 var SOUND_HOST, AC, MASTER, SFX_VOL;
-function sfxVol(){ if(SFX_VOL===undefined){ let v=0.35; try{ const st=localStorage.getItem('l5y_vol2'); if(st!==null) v=+st; }catch(e){} SFX_VOL=v; } return SFX_VOL; }   // quiet by default
+function sfxVol(){ if(SFX_VOL===undefined){ let v=0.60; try{ const st=localStorage.getItem('l5y_vol2'); if(st!==null) v=+st; }catch(e){} SFX_VOL=v; } return SFX_VOL; }
+/* RUN IT HOT AND TURN DOWN FROM THE SYSTEM (David, Sept 22). Now that the sounds are normalised
+   against each other, the master can come up: 0.35 -> 0.60. NOTE FOR TECH: this reads
+   localStorage l5y_vol2 FIRST, so a machine whose slider has ever been moved keeps its old
+   value and will never see this default. Clear it, or set the slider once at tech. */
 function claimSound(){ try{ ch.postMessage({from:CID, soundclaim:true}); }catch(e){} }
 function yieldSound(){ SOUND_HOST=false;
   try{ localStorage.setItem('l5y_soundhost_'+view,'0'); }catch(e){}
@@ -5708,7 +5712,7 @@ function sfx(name,o={}){
     case 'del': noise(t,.04,{gain:.07,lo:600+R()*300,hi:2400+R()*900,attack:.002}); break;
     case 'keymod': noise(t,.035,{gain:.05,lo:700+R()*300,hi:2600+R()*900,attack:.002}); break;
     case 'tap': noise(t,.05,{gain:.07,lo:300,hi:1800,attack:.003}); tone(1900+R()*200,t,.04,{gain:.03}); break;
-    case 'unlock': noise(t,.08,{gain:.06,lo:500,hi:6000,sweepTo:900}); tone(1320,t+.02,.06,{gain:.04}); break;
+    case 'unlock': noise(t,.08,{gain:.41,lo:500,hi:6000,sweepTo:900}); tone(1320,t+.02,.06,{gain:.27}); break;   // x6.84: the synth sat 17 dB under the tier (a real unlock.caf would be better)
     case 'send': noise(t,.32,{gain:.12,lo:300,hi:900,sweepTo:5200,attack:.02}); tone(1567,t+.12,.16,{gain:.05,type:'triangle'}); break;
     case 'receive': [[1318,0],[1046,.09],[1567,.17]].forEach(([f,d])=>{ tone(f,t+d,.28,{gain:.11,attack:.004,release:.16}); tone(f*2,t+d,.18,{gain:.02,attack:.004}); }); break;
     case 'mail': tone(1244,t,.32,{gain:.09,attack:.004,release:.2}); tone(1864,t+.06,.26,{gain:.04,attack:.004,release:.18}); break;
@@ -5732,7 +5736,7 @@ function sfxRing(kind){ sfxRingStop(); if(!sfxOn()) return;
     let left=2; const beat=()=>{ if(!RING||RING.kind!=='ringback') return;
       // KEEP THE SOURCE. Discarding it meant sfxRingStop() could cancel the NEXT ring but not the one
       // already sounding, so answering left up to 1.9 s of ringback tolling over the connected call.
-      const src=sample('ringback',{gain:.55});
+      const src=sample('ringback',{gain:SFX_TRIM_().ringback});   // trim-governed like everything else
       if(src) RING.src=src;
       else { const t=AC.currentTime+.02;
         tone(440,t,1.9,{gain:.085,attack:.02,release:.16}); tone(480,t,1.9,{gain:.085,attack:.02,release:.16}); }
@@ -5741,11 +5745,13 @@ function sfxRing(kind){ sfxRingStop(); if(!sfxOn()) return;
   if(kind==='ring'){                 // the phone buzzing on the table: TWO buzzes, then it is answered
     RING={kind,timer:null};
     let left=2; const buzz=()=>{ if(!RING||RING.kind!=='ring') return;
-      const src=sample('ring',{gain:.55}); if(src) RING.src=src;
+      // stop the buzz already sounding before starting the next, or two 32 s buffers overlap
+      if(RING && RING.src){ try{ RING.src.stop(); }catch(e){} }
+      const src=sample('ring',{gain:SFX_TRIM_().ring}); if(src) RING.src=src;
       if(--left>0) RING.timer=setTimeout(buzz,2130); };
     buzz(); return; }
   RING={kind,timer:null};
-  const src=sample(kind,{loop:true,gain:kind==='ftring'?.65:.55}); if(src){ RING.src=src; } return;   // the FaceTime ring, looped until answered
+  const src=sample(kind,{loop:true,gain:SFX_TRIM_()[kind]==null?.7:SFX_TRIM_()[kind]}); if(src){ RING.src=src; } return;   // the FaceTime ring, looped until answered
   const beat=()=>{ if(!RING||RING.kind!==kind) return; const t=AC.currentTime+.02;
     if(kind==='ringback'){ tone(440,t,1.9,{gain:.07,attack:.02,release:.12}); tone(480,t,1.9,{gain:.07,attack:.02,release:.12}); RING.timer=setTimeout(beat,6000); }
     else if(kind==='ring'){ [[1568,0],[1318,.18],[1760,.36],[1318,.54],[1568,.9],[1318,1.08],[1976,1.26]].forEach(([f,d])=>tone(f,t+d,.22,{gain:.09,type:'triangle',attack:.004,release:.12})); RING.timer=setTimeout(beat,3200); }
@@ -5894,7 +5900,25 @@ function SFX_MAP_(){ return {send:'SentMessage.caf',receive:'ReceivedMessage.caf
   click:'key_press_click.caf',del:'key_press_delete.caf',keymod:'key_press_modifier.caf',tap:'Tock.caf',tink:'Tink.caf',lock:'lock.caf',unlock:'unlock.caf',
   connect:'vc~invitation-accepted.caf',end:'vc~ended.caf',ftring:'vc~ringing.caf',ring:'vibrate.mp3',ringback:'ringback.mp3',busy:'ct-busy.caf',error:'ct-error.caf',keytone:'ct-keytone2.caf',
   }; }   /* low battery: CUT (David, Sept 20) */
-function SFX_TRIM_(){ return {ringback:.55,click:.35,del:.35,keymod:.35,tink:.6,send:.7,receive:.7,notif:.7,mail:.7,mailsent:.7,connect:.7,end:.7,lock:.5,unlock:.45,ring:.55,ftring:.65}; }
+/* NORMALISED, NOT HAND-TUNED. These were guesses that bore no relation to any measured level, and
+   the show's spread was 37 dB: the ringback sat 6.6 dB above the next loudest sound and 37 dB above
+   the key clicks — "the ringtone is blowing us out of the water" and "pushing as hard as it can on
+   some of the haptics", exactly. Every file was measured (ffmpeg ebur128, then re-measured THROUGH
+   the engine's own CAF decoder into an OfflineAudioContext, agreeing within 0.10 dB) and these are
+   the gains that land them on a target.
+   TWO TIERS, because one LUFS target for everything is arithmetically wrong: a 4.5 ms key click has
+   a 25 dB crest factor, so loudness-matching it to the alert tier would drive its peak to -4.9 dBFS
+   and it would crack. Crest >= 18 dB (click, del, keymod, lock) is PEAK-normalised to -12 dBFS;
+   everything else is LOUDNESS-normalised to -18 LUFS-M, under a -9 dBFS ceiling so no two sounds
+   can sum past -3 dBFS. Warp music -20, the lake bed -30. */
+/* ringback: the FILE was the problem, not the trim. It was clipped — 31.24% of its samples at
+   digital full scale, +2.2 dBTP, crest 3.05 dB — so it was not merely loud, it was distorted,
+   and distortion is what reads as blowing out through a PA. Trim scales a clipped waveform
+   down; it cannot un-clip it. The file is declipped and re-rendered to -18.4 LUFS / -12.9 dBTP
+   with 0.00% at full scale and the crest back up to 4.90 dB, so its trim is 1.0 again. */
+function SFX_TRIM_(){ return {ringback:1.0,click:.667,del:.690,keymod:.667,tink:.919,send:1.148,
+  receive:1.108,notif:1.518,mail:2.153,mailsent:2.239,connect:.804,end:.708,lock:.859,unlock:3.078,
+  ring:.634,ftring:.360}; }
 /* THE SOUND LAW (David, Sept 19 night): the screen makes ONLY the sounds a real iPhone makes with its volume up, and
    quietly. No paper, no ambience, no taps, no swipes, the unlock IS audible (David, Sept 20) and the ringback is David's own licensed
    recording, trimmed to one 2.01 s burst and played exactly twice.
@@ -5949,7 +5973,7 @@ function warpStart(durMs, back){ if(!sfxOn()) return; warpStop(0.15);
   // inside a 6 s roll, so starting at the top threw away its last 1.44 s — the part that lands on
   // the settle. Offsetting makes the music END with the last page instead of being cut off.
   const off = b.duration > d + 0.05 ? b.duration - d : 0;
-  g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(.8,t+.12);
+  g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(.374,t+.12);   // -6.6 dB: measured to -20 LUFS-M, or the warp becomes the new blowout
   // A REAL TAPER (David asked for reverb and a taper; an exponential ramp to near-zero perceptually
   // collapses in about 0.3 s and then crawls, which is why the end still felt abrupt). An equal-power
   // curve falls evenly across the whole tail, so the music recedes instead of dropping out.
