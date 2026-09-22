@@ -104,6 +104,13 @@ def run():
             n['secs'] = round(time.time() - t0, 1)   # so a slow probe can be found and moved to SLOW
             pg.close()
             ok = not bad
+            # WAITING ON A PERSON IS NOT A BROKEN SHOW. Two notes can only be finished by David —
+            # the licensed paper scans, and the worksheet pass over the quoted lines — and their
+            # probes say so in words. Printed as failures they sat in the same column as real
+            # breakage, and a gate that is permanently red is a gate people stop reading. They get
+            # their own verdict and their own line in the summary; they still cannot be forgotten,
+            # because they are still listed every single run.
+            waiting = bool(bad) and all(str(x).startswith('WAITING ON') for x in bad)
             # THE CLOSURE LAW: a clean run only counts if the build has changed since the last one,
             # and only a FULL run counts at all — a targeted check cannot close a loop.
             if ok:
@@ -118,10 +125,10 @@ def run():
                 n.pop('last_build', None)
             if ok and n['status'] == 'fixed' and n.get('clean', 0) >= 2:
                 n['status'] = 'closed'
-            rows.append((n, 'PASS' if ok else 'FAIL', bad))
-            print(f"  {'✓' if ok else '✗'} {n['id']} {n.get('secs', 0):>5.1f}s {n['status']:<8}"
+            rows.append((n, 'PASS' if ok else ('WAITING' if waiting else 'FAIL'), bad))
+            print(f"  {'✓' if ok else ('⏸' if waiting else '✗')} {n['id']} {n.get('secs', 0):>5.1f}s {n['status']:<8}"
                   f"{'' if ok else '  ' + bad[0][:90]}", flush=True)
-            if bad and n['status'] in ('fixed', 'closed'):
+            if bad and not waiting and n['status'] in ('fixed', 'closed'):
                 failed.append(n['id'])
         b.close()
     # MERGE, NEVER CLOBBER. This used to write back the whole document it read at start, so any note
@@ -145,7 +152,7 @@ def run():
     json.dump(live, open('notes.json', 'w'), indent=1, ensure_ascii=False)
     show_all = '--all' in sys.argv
     for n, verdict, bad in rows:
-        mark = {'PASS': '✓', 'FAIL': '✗', 'NO PROBE': '·', 'SKIPPED': '~'}[verdict]
+        mark = {'PASS': '✓', 'FAIL': '✗', 'WAITING': '⏸', 'NO PROBE': '·', 'SKIPPED': '~'}[verdict]
         if not show_all and n['status'] in ('blocked', 'confirm') and verdict != 'FAIL':
             continue
         seal = {0: '', 1: ' [1 of 2 clean]'}.get(n.get('clean', 0), ' [CLOSED]')
@@ -158,8 +165,12 @@ def run():
     open_n = [n['id'] for n, v, _ in rows if n['status'] == 'open']
     closed = [n['id'] for n, v, _ in rows if n['status'] == 'closed']
     pend = [n['id'] for n, v, _ in rows if n['status'] == 'fixed' and n.get('clean', 0) == 1]
+    waiting_n = [n['id'] for n, v, _ in rows if v == 'WAITING']
     print(f"\n{len(reg)} notes · {len(open_n)} open · {len(closed)} CLOSED · "
-          f"{len(pend)} awaiting a second clean build · {len(failed)} regressions")
+          f"{len(pend)} awaiting a second clean build · {len(waiting_n)} waiting on David · "
+          f"{len(failed)} regressions")
+    if waiting_n:
+        print('WAITING ON DAVID (not a code fault):', ', '.join(waiting_n))
     if pend:
         print('one more clean build closes:', ', '.join(pend))
     slowest = sorted((n.get('secs', 0), n['id'], n['proof']) for n, _, _ in rows)[-5:]

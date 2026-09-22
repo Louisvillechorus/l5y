@@ -382,7 +382,12 @@ def a_144_send(page):
       const bubs=[...r.querySelectorAll('.thread .bub.me')].map(b=>b.textContent.trim());
       const scr=r.querySelector('.iphone .screen');
       const cam=r.querySelector('.iphone .cam');
+      const th=r.querySelector('.thread');
+      const thCS=th?getComputedStyle(th):null;
+      const thB=th?th.getBoundingClientRect():null;
       return {bubs, off: !!(scr&&scr.classList.contains('off')),
+              threadVisible: !!(th && thCS.visibility!=='hidden' && +thCS.opacity>0.05
+                                && thB.width>2 && thB.height>2),
               camVis: cam?getComputedStyle(cam).visibility:'none',
               bg: scr?getComputedStyle(scr).backgroundColor:'none',
               draft: CUR.draft, kbd: !!CUR.kbd, scroff: !!CUR.scroff}; }""")
@@ -406,8 +411,14 @@ def a_144_send(page):
     if st['camVis'] == 'hidden':
         bad.append('14.4: the screen content is hidden — her text has to be readable through his '
                    'last verse')
-    if st['bg'] == 'rgb(0, 0, 0)':
-        bad.append('14.4: the phone screen is black — it should still be lit on her message')
+    # NOT backgroundColor. The .screen element's own background IS black — it is the phone's base
+    # layer, and the thread paints ON it. Reading that colour tests the wrong thing entirely: it
+    # reported "the screen is black" while her sent bubble and its Delivered receipt were plainly
+    # on the glass. What "still lit" means is that the MESSAGE is rendered and visible, which the
+    # bubble assertions above already establish; what is added here is that the thread is actually
+    # painted rather than merely present in the DOM.
+    if not st.get('threadVisible'):
+        bad.append('14.4: the thread is not painted — her text has to be the last image of the show')
     vis = page.evaluate(VIS_JS, '#projDevice .iphone .screen')
     if 'tonight was amazing' not in vis:
         bad.append('14.4: the settled screen does not read her sent message (%r)' % vis[:80])
@@ -515,7 +526,12 @@ def a_bows(page, minutes=3.3):
         bad.append('the bows bed went completely blank at some point in %.1f minutes' % minutes)
     if hi < 5:
         bad.append('only %d prints were ever on screen at once — that is not a flood' % hi)
-    if (i_end - i_start) < (total / 2000.0):
+    # AGAINST ITS OWN CONFIGURED RATE, not a constant from when the bed ran four times faster.
+    # `every` is derived from `fall`, so "one print every two seconds" stopped being the spec the
+    # moment the fall was slowed; what proves the bed is keeping up is that it spawns at the rate
+    # it was told to. A 25% shortfall against the slowest configured gap is a real stall.
+    _slowest = page.evaluate('PILE_CFG().every[1]') or 2000
+    if (i_end - i_start) < (total / float(_slowest)) * 0.75:
         bad.append('the bed produced only %d prints in %.1f minutes — it is not keeping up'
                    % (i_end - i_start, minutes))
     if tail <= 0:

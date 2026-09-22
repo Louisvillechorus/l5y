@@ -603,8 +603,11 @@ def a_call_controls(pg):
     bad = []
     boot(pg)
     hits = []
-    for si, ci, cid in cues_with(pg, 'callState'):
-        sts = pg.evaluate(f"SHOW[{si}].cues[{ci}].do.filter(o=>o.op==='callState').map(o=>o.st||'')")
+    # THE EXPANDED LIST, NOT THE WRITTEN ONE. A cue no longer writes its own connect: the phone
+    # rule rings twice and synthesises the callState, so scanning cue.do finds only the hang-ups
+    # and the probe concluded the show contains no connected call at all.
+    for si, ci, cid in cues_with(pg, 'call'):
+        sts = pg.evaluate(f"expandCalls(SHOW[{si}].cues[{ci}].do).filter(o=>o.op==='callState').map(o=>o.st||'')")
         if any(not re.search('ended', x, re.I) for x in sts):
             hits.append((si, ci, cid))
     if not hits:

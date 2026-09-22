@@ -345,27 +345,53 @@ def a_10_mail_first(pg):
     return []
 
 
-# ---------- D-034 · the flashback holds long enough to read ----------
+# ---------- D-034 · the November card holds long enough to read ----------
 def a_105_hold(pg):
+    """SUPERSEDED IN SUBSTANCE, KEPT IN SPIRIT. The note was about a paragraph of Jamie's that had
+    to stay on screen long enough to read. That text is cut from the show permanently, so there is
+    no paragraph left to hold — but the beat it belonged to survives as the NOVEMBER / YEAR 3 card,
+    and the thing the note was really protecting is that the audience gets time with it instead of
+    being hurried past. That is what is asserted now, plus the part of the original that still
+    stands: the phone is not unlocked and the thread is not opened here.
+
+    Rewritten rather than deleted, because a note that is retired quietly is a note whose lesson is
+    lost; the assertion should track the show, and it does."""
     bad = []
-    ops = cue_ops(pg, 10, '10.5')
+    nov = pg.evaluate("""(()=>{ const s=SHOW.find(s=>s.n===10); if(!s) return null;
+        const k=s.cues.findIndex(c=>(c.do||[]).some(o=>o.op==='clock' && /November/.test(o.d||'')));
+        return k<0?null:{k, id:s.cues[k].id}; })()""")
+    if not nov:
+        return ['song 10 never reaches the November card the flashback beat became']
+    ops = pg.evaluate("SHOW.find(s=>s.n===10).cues[%d].do" % nov['k'])
     if any(o.get('op') in ('notiftap', 'unlock', 'history') for o in ops):
-        bad.append('10.5 still unlocks the phone or opens the thread — David cut that')
-    pause = max([o.get('ms', 0) for o in ops if o.get('op') == 'pause'] or [0])
-    if pause < 10000:
-        bad.append(f'the paragraph holds only {pause} ms — not enough to read')
-    boot(pg)
-    goto(pg, 10, 4)
-    pg.evaluate('advance()')
-    pg.wait_for_timeout(12000)
-    r = pg.evaluate("""(()=>{ const d=document.querySelector('#projDevice .iphone'); if(!d) return null;
-        const lock=!!d.querySelector('.layer.lock, .lockwrap, .nstack');
-        const txt=(d.innerText||'').replace(/\\s+/g,' ').trim();
-        return {lock, len:txt.length}; })()""")
-    if not r or not r['lock']:
-        bad.append('twelve seconds in, the lock screen is gone')
-    elif r['len'] < 120:
-        bad.append(f'only {r["len"]} characters on screen — the paragraph is not there')
+        bad.append(f"{nov['id']} unlocks the phone or opens the thread — that was cut")
+    if any(o.get('op') == 'device' for o in ops):
+        bad.append(f"{nov['id']} raises a device — the card is the whole beat now")
+
+    si = pg.evaluate("SHOW.findIndex(s=>s.n===10)")
+    pg.evaluate(f"si={si}; ci={nov['k']}; animTok++; animRunning=false; hardRender();")
+    pg.wait_for_timeout(300)
+    pg.evaluate('setTimeout(()=>advance(),0)')
+    for _ in range(300):
+        pg.wait_for_timeout(100)
+        if not pg.evaluate('animRunning'):
+            break
+    pg.wait_for_timeout(2500)
+    r = pg.evaluate("""(()=>{ const pad=document.querySelector('#era .pad');
+        if(!pad) return null;
+        return {mo:(pad.querySelector('.mo')||{}).textContent||'',
+                yr:(pad.querySelector('.ynum')||{}).textContent||'',
+                foot:(pad.querySelector('.foot')||{}).textContent||'',
+                phone: !!document.querySelector('#projDevice .iphone')}; })()""")
+    if not r:
+        bad.append('the calendar is not on stage at the November beat')
+    else:
+        if 'November' not in r['mo']:
+            bad.append(f"the card reads {r['mo']!r}, not November")
+        if r['phone']:
+            bad.append('a phone is on stage — the November beat is the card alone')
+        if not r['foot'].strip():
+            bad.append('the November card carries no foot line, so the beat is unlabelled')
     return bad
 
 
@@ -383,8 +409,16 @@ def a_photo_bed(pg):
         bad.append(f'the prints are {cfg["h"]}% of stage height — the bed is meant to envelope the screen')
     lo, hi = cfg['every']
     flo, fhi = cfg['fall']
-    if lo < 400 or hi > 2200:
-        bad.append(f'a new print every {lo}-{hi} ms — too sparse to stay full, or too frantic to read')
+    # JUDGE THE RELATIONSHIP, NOT A CONSTANT. `every` is derived from `fall` — how many prints are
+    # wanted on stage at once — so a fixed millisecond window is meaningless the moment the fall
+    # changes, and it failed a bed that was deliberately slowed. What matters is how many are in
+    # the air: too few and the stage empties, too many and they pile on each other. The stage
+    # physically holds four or five prints at this size before they must overlap.
+    onstage_lo, onstage_hi = flo / hi, fhi / lo
+    if onstage_lo < 3:
+        bad.append(f'as few as {onstage_lo:.1f} prints in the air — the bed can look empty')
+    if onstage_hi > 14:
+        bad.append(f'up to {onstage_hi:.1f} prints in the air — they will pile on each other')
     if hi >= flo:
         bad.append(f'the slowest spawn ({hi} ms) is not under the shortest fall ({flo} ms) — '
                    f'the bed can go blank')
@@ -695,7 +729,33 @@ def a_call_buttons_match(pg):
             pg.evaluate(f'si={i}; ci={k}; animTok++; animRunning=false; hardRender();')
             pg.wait_for_timeout(150)
             cid = pg.evaluate(f'SHOW[{i}].cues[{k}].id')
-            fire(pg)
+            # INCOMING IS TRANSIENT NOW. A call rings twice and answers itself, so by the time the
+            # cue settles every call in the show reads "connected" and the ringing state — the one
+            # that must offer Answer — was never sampled at all. Catch it while it is ringing.
+            pg.evaluate('setTimeout(()=>advance(),0)')
+            # POLL for the ringing frame; do not sample at a fixed moment. Some of these cues open
+            # with a six-second calendar roll before the phone is even raised, so a fixed 1.5 s
+            # sample lands before the call exists and reports that the show has no incoming call.
+            ring = None
+            for _ in range(200):
+                pg.wait_for_timeout(150)
+                probe = pg.evaluate("""(()=>{ const row=document.querySelector('#projDevice .callbtns');
+                    const st=((CUR.call||{}).st)||''; if(!row) return {st, n:0};
+                    return {st, n:row.children.length,
+                            glyphs:[...row.children].map(e=>(e.textContent||'').trim()).join('')}; })()""")
+                if 'incoming' in (probe['st'] or '').lower():
+                    ring = probe; break
+                if not pg.evaluate('animRunning'):
+                    break
+            if ring:
+                if '\u2706' not in (ring.get('glyphs') or ''):
+                    bad.append(f'{cid}: an INCOMING call with no Answer button while it rings')
+                seen['in'] += 1
+            for _ in range(300):
+                pg.wait_for_timeout(100)
+                if not pg.evaluate('animRunning'):
+                    break
+            pg.wait_for_timeout(300)
             r = pg.evaluate("""(()=>{ const row=document.querySelector('#projDevice .callbtns');
                 const st=((CUR.call||{}).st)||''; if(!row) return {st, n:0};
                 return {st, n:row.children.length,
@@ -714,7 +774,8 @@ def a_call_buttons_match(pg):
                 bad.append(f'{cid}: "{r["st"]}" still shows Answer — a phone never does that')
             if not incoming and r['n'] != 3:
                 bad.append(f'{cid}: "{r["st"]}" shows {r["n"]} buttons, not mute/end/speaker')
-            seen['in' if incoming else 'live'] += 1
+            if not incoming:
+                seen['live'] += 1
     if not seen['in'] or not seen['live']:
         bad.append(f'the probe never saw both states: {seen}')
     return bad

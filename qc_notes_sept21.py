@@ -84,8 +84,13 @@ def a_dash_never_white(pg):
         return ['cannot verify the dash: %s' % e]
     bad = []
     _boot(pg, 1280, 720)
-    if not _park(pg, '12.1'):
-        return ['there is no 12.1 to drive']
+    # the dash moved to 12.2 when the drive split into "roll the calendar" and "the card becomes
+    # the dash"; find the cue that actually raises CarPlay rather than naming one.
+    drive = pg.evaluate("""(()=>{ for(let s=0;s<SHOW.length;s++){
+        const k=SHOW[s].cues.findIndex(c=>(c.do||[]).some(o=>o.op==='device'&&o.dev==='carplay'));
+        if(k>=0) return SHOW[s].cues[k].id; } return null; })()""")
+    if not drive or not _park(pg, drive):
+        return ['no cue in the show raises the CarPlay dash']
     pg.evaluate("setTimeout(()=>advance(),0)")
     peak, seen = 0.0, 0
     for _ in range(140):

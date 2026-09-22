@@ -68,14 +68,22 @@ def _goto_drive(page):
     idx = page.evaluate('SHOW.findIndex(s=>s.n===12)')
     if idx < 0:
         return None
+    # FIRE UNTIL THE DASH IS UP, rather than assuming it is the song's first cue. Song 12 now
+    # opens on the calendar and the head unit arrives on the NEXT GO, so firing cue 0 and stopping
+    # left every maps probe measuring an empty stage and reporting "the dash is not on screen".
+    # Walking the song until .carplay exists is immune to the cue numbering moving again.
     page.evaluate('si=%d; ci=0; animTok++; animRunning=false; hardRender();' % idx)
     page.wait_for_timeout(200)
-    page.evaluate('advance()')
-    for _ in range(200):
-        page.wait_for_timeout(100)
-        if not page.evaluate('animRunning'):
-            break
-    page.wait_for_timeout(400)
+    n = page.evaluate('SHOW[%d].cues.length' % idx)
+    for _ in range(n):
+        page.evaluate('advance()')
+        for _ in range(200):
+            page.wait_for_timeout(100)
+            if not page.evaluate('animRunning'):
+                break
+        page.wait_for_timeout(300)
+        if page.evaluate("!!document.querySelector('.carplay')"):
+            return idx
     return idx
 
 
@@ -422,7 +430,7 @@ def exit_timing(page, candidates=None):
     """
     return page.evaluate(
         """(vals)=>{
-          const cue=SHOW.find(s=>s.n===12).cues[0].do.find(o=>o.op==='mapsdrive');
+          const cue=SHOW.find(s=>s.n===12).cues.flatMap(c=>c.do).find(o=>o.op==='mapsdrive');
           const mph=(cue.miles/cue.mins)*60, step=DRIVE_STEPS[0];
           return {cue:{mins:cue.mins, miles:cue.miles, rate:cue.rate,
                        startAt:cue.startAt, mph:+mph.toFixed(1)},

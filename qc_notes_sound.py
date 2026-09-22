@@ -111,8 +111,13 @@ def a_warp_tapers(pg):
         read.append((ms, pg.evaluate("WARP? +WARP.g.gain.value : 0")))
     pg.evaluate('warpStop(0)')
     g = dict(read)
-    if g[3000] < 0.6:
-        bad.append(f'the warp is already fading at 3 s ({g[3000]:.2f}) — it should still be up')
+    # RELATIVE TO ITS OWN PEAK, not to a number frozen when the warp was louder. The clip's level
+    # is set by the normalisation pass, so a hardcoded 0.6 floor reported a perfectly healthy taper
+    # as "already fading" the moment the warp came down to its measured target.
+    peak = pg.evaluate("(function(){var m=/exponentialRampToValueAtTime\\(([\\d.]+)/.exec(warpStart.toString());"
+                       "return m?parseFloat(m[1]):0.8;})()")
+    if g[3000] < peak * 0.75:
+        bad.append(f'the warp is already fading at 3 s ({g[3000]:.2f} of a {peak:.2f} peak) — it should still be up')
     # a real taper falls gradually; a collapse is already near zero a second in
     if g[4200] < 0.45:
         bad.append(f'the taper collapses: {g[4200]:.2f} at 4.2 s, only 0.6 s into the fall')

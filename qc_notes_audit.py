@@ -49,7 +49,24 @@ def a_confirm_survives_bible(pg):
     src = _cues_src()
     flagged = set(re.findall(r"\{id:'([^']+)'[^}]*?confirm:true", src, re.S))
     if not flagged:
-        return ['no cue carries confirm:true, so this probe cannot prove the flag survives']
+        # NOTHING IS UNVERIFIED ANY MORE — which is the goal, not a failure. The mechanism still has
+        # to be proved, so prove it without a real unverified line: check that the extractor reads
+        # the flag at all and that the renderers can print the marker. Otherwise the day the last
+        # CONFIRM is cleared is the day this protection silently stops being tested.
+        eb = open('extract_book.py', encoding='utf-8').read()
+        if 'confirm' not in eb:
+            bad.append('extract_book.py drops the confirm flag before the Bible ever sees it')
+        for f, label in (('build_bible_docx.js', 'the DOCX renderer'),
+                         ('build_bible_pdf.py', 'the PDF renderer')):
+            if os.path.exists(f) and 'CONFIRM' not in open(f, encoding='utf-8').read():
+                bad.append(f'{label} cannot print a CONFIRM marker, so an unverified line would '
+                           f'print as verified the moment one appears')
+        for f, label in (('book.json', 'the state record'), ('bible.json', 'the Bible')):
+            if not os.path.exists(f):
+                bad.append(f'{f} has not been built')
+            elif os.path.getmtime(f) < os.path.getmtime('L5Y-Show-STANDALONE.html'):
+                bad.append(f'{f} predates the build — {label} is stale')
+        return bad
     if 'confirm' not in open('extract_book.py', encoding='utf-8').read():
         bad.append('extract_book.py drops the confirm flag before the Bible ever sees it')
     for f, label in (('book.json', 'the state record'), ('bible.json', 'the Bible')):
@@ -150,13 +167,21 @@ def a_census_can_fail(pg):
     caught. A source grep proves nothing; this runs the predicate."""
     bad = []
     src = open('qc_census.py', encoding='utf-8').read()
-    m = re.search(r"if not l\['instant'\] and \((.*?)\): bad\.append", src, re.S)
-    if not m:
+    # RUN THE CENSUS'S OWN FUNCTION, don't pattern-match its source. The test used to be an inline
+    # expression and is now a parsed duration against a floor; a grep for the old shape reported
+    # "it may have been renamed" while the test was present and working. Lift the real helper and
+    # the real floor out of the file and exercise them.
+    fn = re.search(r"(def _transform_secs\(.*?)(?=\n(?:def |[A-Za-z_]+\s*=|#\s*-{3,}))", src, re.S)
+    floor = re.search(r"elif dur < ([\d.]+):", src)
+    if not fn or not floor:
         return ['could not find the FAST CAMERA test in qc_census.py — it may have been renamed']
-    expr = m.group(1)
+    ns = {'re': re}
+    exec(fn.group(1), ns)
+    _ts, LIM = ns['_transform_secs'], float(floor.group(1))
 
     def flags(tr):
-        return eval(expr, {}, {'l': {'tr': tr}})       # the census's own predicate, verbatim
+        d = _ts(tr)
+        return d is not None and d < LIM               # the census's own rule, verbatim
 
     # the real strings this engine emits, collected from the page
     real = pg.evaluate("""(()=>{ const out=[]; const t=camTempo();
