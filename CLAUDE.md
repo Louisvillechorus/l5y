@@ -406,6 +406,52 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   edit a worksheet to make a change here." A stage note that describes the old behaviour is a
   bug, not a protected line.
 
+## SEPT 22 — THE NIGHT'S LAWS (each one measured, each one with a probe)
+- **ONE GO IS ONE CUE, ACROSS A SONG BOUNDARY TOO.** `next()` used to spend a press loading the next
+  song without firing (at `ci >= cues().length` it did `si++; ci=0; hardRender()` — a scrub, not a GO),
+  so all thirteen boundaries cost two presses. The load happens inside the same press, `sync()` before
+  `advance()` so the projection window knows the song before the cue paints. `]` still loads without firing.
+- **NEVER MEASURE THE TYPE THROUGH A FLIP.** `fitPad` compares Range ink (SCREEN) against the sheet's
+  layout width — sound on a still card, nonsense during the morph, where the flip puts a transient
+  transform on `.mo`/`.foot`: ink measured 1787 px against an 897 px sheet, so the fit shrank a line that
+  did not need it and wrote an inline size nothing recomputed. `advance()` calls `setStamp` ~5 ms into the
+  780 ms flip, so the GO path walked into it and NINE cues settled at 49-66% of size. `fitEra` returns
+  early while `morphing`; the cleanup re-fits after. This is MEASURE IN ONE SPACE applied to its other
+  half — `--hsc` was guarded, but nothing stopped fitPad RUNNING mid-flip.
+- **TWO RINGS AND IT CONNECTS** (`expandCalls`). Every dialled and incoming call rings twice and picks up
+  itself; the operator's next cue ends it. One rule, applied to the animation AND to `buildState`, so a
+  scrubbed cue matches a played one. Song 7 is the deliberate exception (a `facetime` op, not a `call` op).
+  A cue opts out with `{auto:false}`; a cue that writes its own connected state is left alone.
+- **THE SOUND IS NORMALISED, IN TWO TIERS.** The spread was 37 dB. Crest >= 18 dB (the key clicks, lock)
+  is PEAK-normalised to -12 dBFS; everything else is LOUDNESS-normalised to -18 LUFS-M under a -9 dBFS
+  ceiling; warp -20, lake bed -30. Master 0.60. Two traps: `sfxRing()` hardcoded its gains, so the three
+  LOUDEST sounds bypassed `SFX_TRIM_` entirely and editing the table changed nothing; and `ringback.mp3`
+  was CLIPPED (31.24% of samples at full scale, +2.2 dBTP) — trim scales a clipped wave down, it cannot
+  un-clip it, so the file was declipped and re-rendered. Result: spread 6.1 dB, worst peak -13.4 dBFS.
+  **`sfxVol()` reads localStorage first**, so a machine whose slider has ever moved never sees a new default.
+- **THE MEMORY PHOTOGRAPH IS THE SHAPE OF THE READING WINDOW.** It was `flex:1` — 1555 x 2187 on stage
+  against a 1080 window — so `subjtop` pinned its top and the house saw the TOP 49.4% of every picture.
+  Re-cropping the files could not have helped: the box is 2187 px tall whatever the file holds. The box
+  takes the window's aspect (1.4399 = (1 - ERA_ZONE) x 16/9), which also makes `cover` crop VERTICALLY,
+  which is what makes `focusFor()` possible — a measured per-photo, per-cast focus, defaulting to 50 so
+  nothing else moves. M4 carries a burned-in lockup too far from the faces for any focus to hold both;
+  it needs a new crop from the photographer.
+- **THE PHOTO BED IS WEATHER, NOT A SLIDESHOW.** ~60 s fall, ~5 prints on stage, 50-77.5vh tall, +/-15
+  degrees including the sway. Two arithmetic traps: the tilt lives on the inner `.pw`, which rotates about
+  its centre and OVERFLOWS its parent, so entry and exit must clear the ROTATED box (lifting by the
+  element's height left 10vh of a big tilted print on stage, and a probe measuring `.print` instead of
+  `.pw` could never see it); and `every` must scale with `fall`, or a slower fall silently multiplies the
+  count. The stage physically holds four or five prints this size before they must overlap — that is the
+  ceiling, whatever the lanes do.
+- **THE OPERATOR CAN SEE WHICH BUILD THEY ARE ON.** `i`, the info button, or the Menu: the commit's date
+  and time in EDT, how long ago, the sha, the subject, and when the page was loaded. Pages caches the
+  20 MB page for ten minutes, so a cached build and a live one are otherwise indistinguishable.
+- **NOTHING OPERATOR-FACING NAMES THE BUILDER.** `what:`, `hold:`, the stage-note half of `trig:`, and the
+  Bible's per-song prose are instructions to whoever is running the show — never a change log, a date, a
+  name, a note id or a quotation. The Bible's prose is hand-written in `build_bible_data.py` and does NOT
+  follow the cues automatically: it must be rewritten whenever the show changes, or it will describe a
+  show that no longer exists.
+
 ## THE NOTES REGISTER (David, Sept 20 — "trackable, traceable, fixable, provable, repeatable")
 `notes.json` holds every note David has given: an ID, the cues it touches, a `family` (so the same
 logic is swept everywhere it applies, not only where he caught it), a status, and the NAME OF THE

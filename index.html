@@ -583,6 +583,14 @@
   /* the Mac's call controls fade a few seconds in (see endBtn) */
   @keyframes ftctlhide{0%,62%{opacity:1}100%{opacity:0}}
   .ftend.auto{animation:ftctlhide 4.6s ease-in forwards}
+  /* THE MEMORY PHOTOGRAPH IS THE SHAPE OF THE READING WINDOW. It used to be flex:1 — "take the rest
+     of the card" — which measured 1555 x 2187 on stage against a 1080-tall window, so the camera's
+     subjtop anchor pinned its top edge and the house only ever saw the TOP 49.4% of every picture.
+     Re-cropping the files could not have helped: the box is 2187 px tall whatever the file holds,
+     and the top 1080 is all that is ever shown. Given the window's own shape the whole photograph
+     sits in frame, and `cover` starts scaling by WIDTH, which is what makes a vertical focus
+     possible at all (see focusFor). 1.4399 = (1 - ERA_ZONE 0.19) x 1920 / 1080. */
+  .memfeed .memscreen .media.memphoto{flex:none;aspect-ratio:1.4399}
   .fillmedia{position:absolute !important;inset:0 !important;aspect-ratio:auto !important;
     min-height:0 !important;width:auto !important;height:auto !important;border-radius:0 !important}
   .scard2{position:absolute;inset:0;border-radius:.9em;overflow:hidden;background:#1c1c1f;
@@ -3262,7 +3270,7 @@ function memoriesHTML(st){
           <div class="ph"><div class="pav" style="${avStyleS(m.who,m.col||'#c2447a')}">${avTextS(m.who,m.av||'C')}</div>
             <div><div class="pn">${m.who}</div><div class="pt">${m.when}</div></div></div>
           <div class="body" style="font-size:1.12em;line-height:1.4">${m.txt}</div>
-          ${m.media?`<div class="media" style="flex:1;aspect-ratio:auto"><div class="mi">📷</div>
+          ${m.media?`<div class="media memphoto"><div class="mi">📷</div>
             <div class="ml">${m.media}</div></div>`:''}
           <div class="stats" style="border-bottom:none"><span class="lk">👍 ${m.likes||0}</span><span></span></div>
         </div></div>`).join('')}
@@ -4118,7 +4126,12 @@ async function playCue(cue, st, tok){
       await wait(120);
       await Promise.all(stacks().map(k=>{const f=k.querySelector('.memfeed'); if(!f) return null;
         return humanScroll(f,(f.querySelectorAll('.memscreen').length-1)*f.clientHeight,memSeed,tok,{gesture:o.scroll,slow:MEM_SLOW_()});}));
-      camPush('.memfeed .memscreen:last-child .body', 2.6, 60*MEM_SLOW_(), null, null, true); camPush('.memfeed .memscreen:last-child .media', 2.2, 2600*MEM_SLOW_(), 'subjtop', 3.2*MEM_SLOW_(), true, true); await wait(520*MEM_SLOW_()); continue; }
+      /* the photograph now arrives already filling the reading window, so the old 2.6 s-delayed
+         7 s drift into it is both unnecessary and unfinishable inside the card's own gap. One
+         short settle onto the picture, then stillness — which is what 'let them breathe' means. */
+      camPush('.memfeed .memscreen:last-child .body', 2.6, 60*MEM_SLOW_(), null, null, true);
+      camPush('.memfeed .memscreen:last-child .media', 2.2, 1200*MEM_SLOW_(), 'subjtop', 1.2*MEM_SLOW_(), true, true);
+      await wait(520*MEM_SLOW_()); continue; }
     if(o.op==='post'){ applyOp(st,o); swapLayer(st,null); sfx('swipe',{soft:true,seed:'post'+cue.id});
       stacks().forEach(k=>{ const f=k.querySelector('.fbfeed'); if(!f) return;
         const posts=f.querySelectorAll('.post');
@@ -4178,7 +4191,7 @@ async function playCue(cue, st, tok){
       await Promise.all(stacks().map(k=>{const f=k.querySelector('.memfeed'); if(!f) return null;
         const cards=f.querySelectorAll('.memscreen'); const i=Math.max(0,Math.min(cards.length-1,o.i||0));
         return humanScroll(f,i*f.clientHeight,'memgo'+cue.id,tok,{gesture:'drag',flicks:2,slow:MEM_SLOW_()});}));
-      const nth=(o.i||0)+1, CD=2600*MEM_SLOW_(), CG=3.2*MEM_SLOW_();   // when the drift up starts, and how long it glides
+      const nth=(o.i||0)+1, CD=1200*MEM_SLOW_(), CG=1.2*MEM_SLOW_();   // when the settle onto the picture starts, and how long it takes
       camPush(`.memfeed .memscreen:nth-child(${nth}) .body`, 2.6, 0, null, null, true);
       camPush(`.memfeed .memscreen:nth-child(${nth}) .media`, 2.2, CD, 'subjtop', CG, true, true);
       /* THE CUE OWNS ITS OWN CAMERA (D-048). The drift up into the photograph is scheduled 2.6 s
@@ -4543,6 +4556,17 @@ function avText(name,fallback){ if(avAsset(name)) return '';
   return /^\s*maybe:/i.test(name||'')
     ? '<svg viewBox="0 0 24 24" fill="currentColor" style="width:.68em;height:.68em;opacity:.9"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.2 3.6-6.6 8-6.6s8 2.4 8 6.6z"/></svg>'
     : fallback; }
+/* WHERE THE PEOPLE ARE IN EACH PHOTOGRAPH. With the box now the window's shape, `cover` crops
+   vertically and this says where to crop to: the percentage of the source height to centre on.
+   Measured per photograph and per cast, not guessed. 50 is the default, so any code not listed
+   behaves exactly as before and nothing else in the show moves. */
+function CAST_FOCUS(){ return {
+  ml:{M26:78.2, M3a:32.3, M2:42.7, M4:54.2},
+  ac:{M26:50.0, M3a:28.1, M2:36.4, M4:69.8}}; }
+function focusFor(label){
+  const m=/^\s*([MV]\d+[a-z]?)\b/.exec(label||''); if(!m) return 50;
+  const t=(CAST_FOCUS()[CAST]||{})[m[1]];
+  return (typeof t==='number') ? t : 50; }
 function assetFor(label){
   const m=/^\s*([MV]\d+[a-z]?)\b/.exec(label||''); if(!m) return null;
   return (CAST_ASSETS[CAST]||{})[m[1]]||null;
@@ -4568,7 +4592,7 @@ function swapMedia(el){
       el.appendChild(v);
     }
   } else {
-    el.style.background=`#000 url("${src}") center/cover no-repeat`;
+    el.style.background=`#000 url("${src}") 50% ${focusFor(ml.textContent)}% / cover no-repeat`;
   }
   el.querySelectorAll('.mi,.ml').forEach(x=>x.style.display='none');
 }
