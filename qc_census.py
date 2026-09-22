@@ -26,6 +26,9 @@ BUSY_OK = {
   '2.2': "the keyboard-to-message ping-pong David asked for — \"back and forth as if we're in jamies "
          "mind\" — one move per 5.8 s across a 58 s cue",
   '14.4': "her one animation: the notification, opening it, the keyboard, the sent bubble",
+  '2.3': "she calls: the phone has to RISE first now that 2.2a puts it away, and answering is the "
+         "designed wide-then-close beat — out to the whole call UI while the buttons change under "
+         "our eyes, then back in on who it is",
 }
 KEEP={'send','receive','notif','mail','mailsent','lock','ftring','ring','end','connect','click','del','keymod','tink','unlock','ringback'}
 with sync_playwright() as p:
@@ -77,3 +80,8 @@ for c in out:
     elif len(cam)>3: print(f"      {c['cue']}: {len(cam)} moves — {BUSY_OK[c['cue']]}")
     print(f"{c['cue']:>5} {c['dur']:5.1f}s  sounds={names}  camMoves={len(cam)}  " + ' '.join(f"[z{l['z']} {l['anchor'] or 'c'} {'inst' if l['instant'] else l['tr'].split(' ')[1]}]" for l in cam))
 print('ERRS', errs if errs else 'none'); print('VIOLATIONS', bad if bad else 'none')
+# A GATE THAT PRINTS A VIOLATION AND EXITS 0 IS DECORATION. This printed its findings and returned
+# success, so qa_all could announce ALL GATES CLEAN with a violation on the screen above it. The
+# census now fails the run it is part of.
+import sys as _sys
+_sys.exit(1 if (bad or errs) else 0)
