@@ -5484,6 +5484,13 @@ function padFall(era, pad, ghost){
 async function tearTop(st,tok){
   const era=document.getElementById('era'); const pad=era&&era.querySelector('.pad'); if(!pad) return;
   const ghost=padGhost(era); if(!ghost) return;
+  /* ONLY THE TOP PAGE TEARS OFF. padGhost clones the WHOLE pad, because the falling page has to keep
+     its face (.house/.title/.inter carry --hsc and the band insets) — but the UNDERSTACK belongs to
+     the pad that stays. Left in the ghost, those two sheets are opaque blank paper pinned at the
+     outgoing face's geometry, sitting at z-index 8 OVER the page we just revealed for the whole
+     second of the tear, and then popping out in one frame. Measured: 931x670 covering 59% of the
+     date card at 1.1, and a 1617x305 band straight across the card at 9.1 — both for ~0.97 s. */
+  ghost.querySelectorAll('.sheet:not(.top)').forEach(e=>e.remove());
   const top=ghost.querySelector('.sheet.top');
   if(top){ top.classList.add('tear'); const pf=top.querySelector('.pf'); if(pf) pf.style.clipPath=tornPath('top',31); }
   st.tearing=true; setStamp(st); st.tearing=false;
