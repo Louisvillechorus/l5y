@@ -5581,7 +5581,7 @@ function tornPath(side,seed){
 // wide, so about two fit vertically and two across: four or five before they must overlap.
 // Eight at once was therefore guaranteed to pile up whatever the lanes did. every = fall /
 // wanted-on-stage, so a 60 s fall and ~5 on stage is a print every twelve seconds.
-function PILE_MODE(){ return 'wall'; }   // 'wall' (David, Sept 23) or 'fall' (the Sept 22 weather, kept in the engine)
+function PILE_MODE(){ return 'fall'; }   // 'wall' (David, Sept 23) or 'fall' (the Sept 22 weather, kept in the engine)
 function PILE_CFG(){ return PILE_CFG.o||(PILE_CFG.o={h:29, every:[2600,3400], fall:[15000,19000]}); }
 /* THE BOWS FLOOD (David, Sept 20): same bed, same seeded order, a print every second or so. The slowest
    spawn (1.5 s) stays an order of magnitude under the shortest fall (15 s), so prints always overlap —
