@@ -161,6 +161,9 @@
   .mapsdrive .dv-end{background:#ff3b30;border-radius:999px;padding:.55em 1.3em;font-weight:600;font-size:1.25em;flex:none}
   /* arrival: Maps drops the guidance card, not tints it blue, and the route line goes */
   .mapsdrive.arrived .dv-banner{background:rgba(44,44,46,.92)}
+  .mapsdrive.rerouting .dv-route,.mapsdrive.rerouting .dv-case{opacity:0}
+  .mapsdrive.rerouting .dv-ico{opacity:0}
+  .mapsdrive .dv-route,.mapsdrive .dv-case{transition:opacity .35s ease}
   .mapsdrive.arrived .dv-dist,.mapsdrive.arrived .dv-then{display:none}
   .mapsdrive.arrived .dv-route,.mapsdrive.arrived .dv-case{opacity:0}
   .mapsdrive.arrived .dv-col:not(:first-child){display:none}
@@ -859,6 +862,7 @@
      through the same +/-3.5deg. The tilt is inside the keyframe now, and the sway rides on top of it. */
   @keyframes pfall{from{transform:translate3d(var(--dx0,0vw),var(--y0,-60vh),0)}
                    to{transform:translate3d(var(--dx1,0vw),var(--y1,103vh),0)}}
+  @keyframes pwall{0%{opacity:0;transform:scale(.985)}12%{opacity:1;transform:scale(1)}88%{opacity:1;transform:scale(1.012)}100%{opacity:0;transform:scale(1.02)}}
   @keyframes psway{from{transform:translateX(calc(var(--sx,1vh) * -1)) rotate(calc(var(--tilt,0deg) - var(--swa,1.5deg)))}
                    to{transform:translateX(var(--sx,1vh)) rotate(calc(var(--tilt,0deg) + var(--swa,1.5deg)))}}
   /* (the cut falling-pages rule: the photo bed sets its own level above) */
@@ -1665,10 +1669,11 @@ const FALLBACK_SHOW = [
   hold:'Hold on the card until she is in the car.',
   do:[{op:'clock',t:'5:53',d:'Saturday, November 6, 2021'},{op:'stamp',t:'the drive'}]},
  {id:'12.2',kind:'music',trig:'LIGHTS UP — GO',
-  what:'The calendar docks to the right and the dash lights up — CarPlay, already navigating: Apple Maps, New York to the Eastern Shore, the head unit filling the frame. The drive runs in REAL TIME for the rest of the song: the puck rides the route, the miles and the minutes fall, and the Delaware Memorial Bridge exit arrives mid-song. She never gets there before the last chord; that is the point.',
-  hold:'`rate` (trip minutes per real minute; 1 = real time) and `startAt` (fraction of the trip at GO) live on this cue — tune in tech.',
+  what:'The calendar docks to the right and the dash lights up — CarPlay, already navigating: Apple Maps, New York to the Eastern Shore, the head unit filling the frame, an exit less than a mile ahead. The drive runs in REAL TIME: the banner counts the exit down for about fifty seconds and she sails past it. Maps goes to “Rerouting…”, the blue line drops out for a beat, then the next maneuver comes up and the trip card jumps — 45 minutes and 33 miles more, the arrival later. Nothing is highlighted; the numbers just change. The drive keeps running to the last chord and she never gets there; that is the point.',
+  hold:'`rate` (trip minutes per real minute; 1 = real time) and `startAt` (fraction of the trip at GO) live on this cue; the missed exit is `exit` — `secs` after GO it is missed, `reroute` seconds of thinking, `addMins` / `addMiles` the price. Tune in tech.',
   do:[{op:'device',dev:'carplay',who:'cathy'},
-      {op:'mapsdrive',key:'12',rate:1,startAt:.5,mins:220,miles:214,startMin:1073,arrive:'7:45 PM',dest:'St. Michaels — the Eastern Shore'}]},
+      {op:'mapsdrive',key:'12',rate:1,startAt:.5,mins:220,miles:214,startMin:1073,arrive:'7:45 PM',dest:'St. Michaels — the Eastern Shore',
+       exit:{secs:50,reroute:3,instr:'Take exit 4A for DE‑1 S',via:'toward Christiana',addMins:45,addMiles:33}}]},
  {id:'12.3',kind:'music',trig:'FINAL CHORD — the last note of the song',
   what:'The dash goes dark; NOVEMBER · YEAR 1 holds center.',
   do:[{op:'black'}]},
@@ -3098,22 +3103,40 @@ function drivePct(o){                   // where the car is, right now
   return o.rate ? Math.min(1, o.at0+((performance.now()-t0)/60000)*o.rate/o.mins)
                 : Math.min(1, (performance.now()-t0)/(o.dur*1000));
 }
+/* THE MISSED EXIT (David, Sept 23): the drive opens with an exit some seconds ahead — `exit.secs` of
+   real time after the dash lights up — and she does not take it. Maps says "Rerouting…" for a
+   moment with the blue line gone, then the next maneuver comes up and the trip card jumps:
+   `exit.addMins` more minutes, `exit.addMiles` more road, a later arrival. Nothing is highlighted;
+   the numbers just change, the way they do. The car never slows: p runs on as before. */
+function driveExit(o){
+  const e=o.exit; if(!e || !o.rate) return null;
+  const at=o.at0+((+e.secs||50)/60)*o.rate/o.mins;                 // the trip fraction where the exit is
+  const rr=((+e.reroute||3)/60)*o.rate/o.mins;                      // how long Maps thinks, as a fraction
+  return {at:at, until:at+rr, step:{at:at, icon:e.icon||'rampRight', instr:e.instr||'Take the exit', via:e.via||'', limit:e.limit||65},
+          addMins:+e.addMins||0, addMiles:+e.addMiles||0};
+}
 function driveVals(o,p){                // everything the chrome reads
-  const done=p>=1, mi=o.miles;
-  const step=DRIVE_STEPS.find(function(s){return s.at>p;})||DRIVE_STEPS[DRIVE_STEPS.length-1];
-  const nxt=DRIVE_STEPS[DRIVE_STEPS.indexOf(step)+1]||null;
-  const toGo=Math.max(0,(step.at-p)*mi), left=mi*(1-p);
+  const done=p>=1, mi=o.miles, ex=driveExit(o);
+  const missed = ex && p>=ex.at, rerouting = ex && p>=ex.at && p<ex.until && !done;
+  let step=DRIVE_STEPS.find(function(s){return s.at>p;})||DRIVE_STEPS[DRIVE_STEPS.length-1];
+  if(ex && !missed) step=ex.step;                                     // the exit is the first thing on the banner
+  const nxt=(ex && !missed) ? null : (DRIVE_STEPS[DRIVE_STEPS.indexOf(step)+1]||null);
+  const addM=missed?ex.addMins:0, addMi=missed?ex.addMiles:0;
+  const toGo=Math.max(0,(step.at-p)*mi), left=mi*(1-p)+addMi;
   const dist = toGo>=10 ? Math.round(toGo)+' mi'
              : toGo>=0.1 ? toGo.toFixed(1)+' mi'
              : toGo>0.0095 ? (Math.round(toGo*5280/50)*50)+' ft' : 'Now';
-  return {done:done, step:step,
+  if(rerouting) return {done:false, step:step, rerouting:true, then:null, dist:'', instr:'Rerouting…', via:'',
+          left:fmtMins(o.mins*(1-p)), miles:(left-addMi>=10?Math.round(left-addMi):+(left-addMi).toFixed(1))+' mi',
+          eta:fmtClock(o.start+o.mins*(1-o.at0)), clock:fmtClock(o.start+o.mins*(p-o.at0)), limit:String(step.limit||65)};
+  return {done:done, step:step, rerouting:false,
           // Maps only shows “then” when the second maneuver is right behind the first
           then:(!done && nxt && (nxt.at-step.at)*mi<1.2) ? nxt : null,
           dist:done?'Arrived':dist.replace(/ (mi|ft)$/,'<u>$1</u>'),
           instr:done?'You have arrived':step.instr, via:done?'':(step.via||''),
-          left:done?'Arrived':fmtMins(o.mins*(1-p)),
+          left:done?'Arrived':fmtMins(o.mins*(1-p)+addM),
           miles:(done?0:(left>=10?Math.round(left):+left.toFixed(1)))+' mi',
-          eta:fmtClock(o.start+o.mins*(1-o.at0)), clock:fmtClock(o.start+o.mins*(p-o.at0)),
+          eta:fmtClock(o.start+o.mins*(1-o.at0)+addM), clock:fmtClock(o.start+o.mins*(p-o.at0)),
           limit:String(step.limit||65)};
 }
 /* Apple's maneuver glyphs: solid white, heavy, drawn — never a font character */
@@ -3143,15 +3166,15 @@ function mapsDriveHTML(st){
   const dd=st.drive||{}, key=dd.key||'drive';
   if(!DRIVE_T0[key]) DRIVE_T0[key]=performance.now();
   const o={key:key, dur:+dd.dur||300, mins:+dd.mins||220, miles:+dd.miles||214,
-           start:+dd.startMin||965, rate:+dd.rate||0, at0:+dd.startAt||0};
+           start:+dd.startMin||965, rate:+dd.rate||0, at0:+dd.startAt||0, exit:dd.exit||null};
   const W=driveWorld(), p=drivePct(o), v=driveVals(o,p), a=drivePointAt(p);
   const asp=(st.dev==='carplay')?16/9:0.62;
   const Wy=DRIVE_WIN*DRIVE_UPM, Wx=Wy*asp, N=driveSlice(p), L=N.len;
   const vb=(a.x-Wx/2).toFixed(1)+' '+(a.y-Wy*0.74).toFixed(1)+' '+Wx.toFixed(1)+' '+Wy.toFixed(1);
   const fd=driveDone(N,p);
   const dash='0 '+(L*fd).toFixed(0)+' '+(L*(1-fd)+60).toFixed(0);
-  return `<div class="layer fs mapsdrive${v.done?' arrived':''}" data-key="${key}" data-dur="${o.dur}" data-mins="${o.mins}"
-      data-miles="${o.miles}" data-start="${o.start}" data-rate="${o.rate}" data-at0="${o.at0}"
+  return `<div class="layer fs mapsdrive${v.done?' arrived':''}${v.rerouting?' rerouting':''}" data-key="${key}" data-dur="${o.dur}" data-mins="${o.mins}"
+      data-miles="${o.miles}" data-start="${o.start}" data-rate="${o.rate}" data-at0="${o.at0}" data-exit="${o.exit?escTxt(JSON.stringify(o.exit)).replace(/"/g,'&quot;'):''}"
       style="--ang:${a.ang.toFixed(1)}deg;background:#1B1D21;display:flex;flex-direction:column;overflow:hidden;color:#fff">
     <div class="dv-banner"><div class="dv-ico">${manSVG(v.done?'dest':v.step.icon)}</div>
       <div class="dv-txt"><div class="dv-dist">${v.dist}</div>
@@ -3219,9 +3242,10 @@ function driveTick(){
   document.querySelectorAll('.mapsdrive').forEach(function(el){
     const map=el.querySelector('.dv-map'); if(!map) return;
     const mr=map.getBoundingClientRect(); if(!mr.height||!mr.width) return;   // hidden stage: nothing to measure
+    let ex=null; try{ ex=el.dataset.exit?JSON.parse(el.dataset.exit):null; }catch(e){}
     const o={key:el.dataset.key, dur:+el.dataset.dur||300, mins:+el.dataset.mins||220,
              miles:+el.dataset.miles||214, start:+el.dataset.start||965,
-             rate:+el.dataset.rate||0, at0:+el.dataset.at0||0};
+             rate:+el.dataset.rate||0, at0:+el.dataset.at0||0, exit:ex};
     if(!DRIVE_T0[o.key]) return;
     const p=drivePct(o), v=driveVals(o,p), a=drivePointAt(p);
     /* the camera: heading-up, the puck low in the frame, the window an exact
@@ -3271,6 +3295,7 @@ function driveTick(){
     dvTxt(el.querySelector('.dv-miles'),v.miles);
     const sl=el.querySelector('.dv-speed b'); dvTxt(sl,v.limit);
     el.classList.toggle('arrived',v.done);
+    el.classList.toggle('rerouting',!!v.rerouting);   // the blue line goes while Maps thinks
     // the phone's own clock advances with the trip — 3 h 40 of road, in real time
     const scr=el.closest('.screen'); if(scr){ const sb=scr.querySelector('.statusbar span'); dvTxt(sb,v.clock); }
     const cp=el.closest('.carplay'); if(cp) dvTxt(cp.querySelector('.cp-time'),v.clock);
@@ -5556,13 +5581,15 @@ function tornPath(side,seed){
 // wide, so about two fit vertically and two across: four or five before they must overlap.
 // Eight at once was therefore guaranteed to pile up whatever the lanes did. every = fall /
 // wanted-on-stage, so a 60 s fall and ~5 on stage is a print every twelve seconds.
-function PILE_CFG(){ return PILE_CFG.o||(PILE_CFG.o={h:50, every:[10000,14000], fall:[54000,66000]}); }
+function PILE_MODE(){ return 'wall'; }   // 'wall' (David, Sept 23) or 'fall' (the Sept 22 weather, kept in the engine)
+function PILE_CFG(){ return PILE_CFG.o||(PILE_CFG.o={h:29, every:[2600,3400], fall:[15000,19000]}); }
 /* THE BOWS FLOOD (David, Sept 20): same bed, same seeded order, a print every second or so. The slowest
    spawn (1.5 s) stays an order of magnitude under the shortest fall (15 s), so prints always overlap —
    the bed cannot go blank however long the company bows, and it never stops spawning, so it cannot end. */
 function pileRate(mode){ const C=PILE_CFG();
   // the bows spawn scales WITH the fall, or a 29 s fall at the old 0.52 s spawn would put forty
   // prints on the stage at once: the same flood relative to the house, not four times it.
+  if(PILE_MODE()==='wall'){ if(mode==='bows'){ C.every=[1300,1900]; C.fall=[11000,14000]; } else { C.every=[2600,3400]; C.fall=[15000,19000]; } return C; }
   if(mode==='bows'){ C.every=[6000,8600]; C.fall=[54000,66000]; }
   else { C.every=[10000,14000]; C.fall=[54000,66000]; }
   return C; }
@@ -5641,16 +5668,33 @@ function pileDrop(){
      the director kept reporting, and the first fix only cured the upright case. The .pw's box is
      centred on the .print's centre, so entry needs (h + rotH)/2 of lift and exit needs the same
      arithmetic at the foot. */
+  const inner=document.createElement('div'); inner.className='pw';
+  if(PILE_MODE()==='wall'){
+    /* THE WALL (David, Sept 23: the falling bed "still looks wild and is just not good"). Nothing falls.
+       Eight fixed places around the card, like prints pinned to a wall; one at a time a print fades up in
+       a free place, sits, and fades away. A quiet tilt of a few degrees, fixed. Deterministic. */
+    const slots=[[12,18],[12,50],[12,82],[88,18],[88,50],[88,82]];   // two columns of three, clear of the card
+    if(!S.slots) S.slots=slots.map(()=>0);
+    const now=performance.now(); let k=-1;
+    for(let j=0;j<slots.length;j++){ const q=(S.i+j*3)%slots.length; if(S.slots[q]<=now){ k=q; break; } }
+    if(k<0){ k=S.slots.indexOf(Math.min(...S.slots)); }
+    const life=C.fall[0]+R()*(C.fall[1]-C.fall[0]);
+    S.slots[k]=now+life+400;
+    const hh=C.h*(0.92+R()*0.24), ww=hh*ratio, wpp=ww*AR, ti=(R()*2-1)*5;
+    el.style.cssText='height:'+hh.toFixed(2)+'vh;width:'+ww.toFixed(2)+'vh;left:'+(slots[k][0]-wpp/2).toFixed(2)+'%;top:'+(slots[k][1]-hh/2).toFixed(2)+'vh;'+
+      'animation:pwall '+(life/1000).toFixed(2)+'s ease-in-out forwards';
+    inner.style.cssText='height:100%;box-sizing:border-box;transform:rotate('+ti.toFixed(1)+'deg)';
+  } else {
   const rad=Math.abs(tilt)*Math.PI/180 + swa*Math.PI/180;
   const rotH=h*Math.cos(rad) + w*Math.sin(rad);
   const y0=-((h+rotH)/2 + 2), y1=100 + (rotH-h)/2 + 2;
   el.style.cssText='height:'+h.toFixed(2)+'vh;width:'+w.toFixed(2)+'vh;left:'+x.toFixed(2)+'%;top:0;'+
     '--y0:'+y0.toFixed(2)+'vh;--y1:'+y1.toFixed(2)+'vh;--dx0:'+d0.toFixed(2)+'vw;--dx1:'+(d0+drift).toFixed(2)+'vw;'+
     'animation:pfall '+(fall/1000).toFixed(2)+'s linear forwards';
-  const inner=document.createElement('div'); inner.className='pw';
   inner.style.cssText='height:100%;box-sizing:border-box;--tilt:'+tilt.toFixed(1)+'deg;--swa:'+swa.toFixed(2)+'deg;'+
     '--sx:'+(0.6+R()*1.2).toFixed(2)+'vh;transform:rotate('+tilt.toFixed(1)+'deg);'+
     'animation:psway '+(sway/1000).toFixed(2)+'s ease-in-out '+(ph/1000).toFixed(2)+'s infinite alternate';
+  }
   inner.innerHTML = !ent ? '<div class="greek">S00-LOOP</div>'
     : ent.k==='vid' ? '<video muted playsinline preload="auto" src="'+ent.s+'"></video>'
     : '<img alt="" src="'+ent.s+'">';
