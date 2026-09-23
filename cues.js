@@ -36,7 +36,7 @@ window.L5Y_SHOW = [
   do:[{op:'house'}]},
  {id:'1.1',kind:'music',trig:'PROLOGUE — the first note of the wedding waltz',
   what:'ONE GO. The title page tears off the pad and falls; beneath it the calendar reads JUNE · YEAR 5, the morning after, and holds center-stage through the whole prologue. No phone, no sound.',
-  hold:'`ms` on this cue delays the tear after GO (0 = on the GO). Nothing else moves until her verse-two line.',
+  hold:'The tear happens on the GO. Nothing else moves until her verse-two line.',
   do:[{op:'clock',t:'9:41',d:'Friday, June 12, 2026'},{op:'stamp',t:'the morning after'},
       {op:'prologue',ms:0}]},
  {id:'1.2',kind:'lyric',trig:'“Jamie arrived at the end of the line” — she picks up the phone and sends it',
@@ -135,7 +135,7 @@ window.L5Y_SHOW = [
       {op:'pause',ms:3400},{op:'wipe'},{op:'pause',ms:1800},
       {op:'clock',t:'11:44'},{op:'type',pace:'hesitant',look:true,t:'ok so I know this is fast but'},
       {op:'pause',ms:2600},{op:'wipe'},{op:'pause',ms:4200},
-      {op:'clock',t:'11:48'},{op:'stampline',t:'|11:48 PM'},{op:'type',t:'home safe?'},
+      {op:'clock',t:'11:48'},{op:'stampline',t:'Today|11:48 PM'},{op:'type',t:'home safe?'},
       {op:'pause',ms:2400},
       {op:'send'},{op:'rcpt',t:'Delivered'},
       {op:'pause',ms:4200},
@@ -211,7 +211,7 @@ window.L5Y_SHOW = [
   do:[{op:'notif',app:'Chase',w:'now',title:'Chase',t:'You received a deposit of $2,000.00'}]},
  {id:'4.7',kind:'lyric',trig:'“I left Columbia and don’t regret it” — GO AFTER THIS LINE',
   what:'The withdrawal confirmation.',
-  do:[{op:'notif',app:'Mail',w:'now',title:'Columbia University',t:'Withdrawal processed — Fall term ✓'}]},
+  do:[{op:'notif',app:'Mail',w:'now',title:'Columbia University',t:'Withdrawal processed — Fall term ✓'}]},
  {id:'4.8',kind:'lyric',trig:'“I wrote a book and Sonny Mehta read it!” — GO AFTER THIS LINE',
   what:'THE BIGGEST HIT.',
   do:[{op:'notif',app:'Messages',w:'now',title:'Linda Whitfield',t:'SONNY READ IT. CALL ME NOW.',tone:'receive'}]},
@@ -223,7 +223,7 @@ window.L5Y_SHOW = [
 /* ============ 5 · I’M A PART OF THAT — CATHY · the calendar only ============ */
 {n:5,t:'I’m a Part of That',who:'cathy',cues:[
  {id:'5.1',kind:'music',trig:'TOP OF I’M A PART OF THAT — the first notes of the intro',
-  what:'Calendar only. The pages roll FORWARD — OCTOBER · YEAR 1 to MARCH · YEAR 4, the night before his book party — and hold for the whole song.',
+  what:'Calendar only. The pages roll FORWARD — SEPTEMBER · YEAR 1 to MARCH · YEAR 4, the night before his book party — and hold for the whole song.',
   do:[{op:'black'},{op:'clock',t:'8:12',d:'Friday, March 7, 2025'},{op:'stamp',t:'the night before the book party'}]},
 ]},
 
@@ -238,7 +238,7 @@ window.L5Y_SHOW = [
 /* ============ 7 · A SUMMER IN OHIO — CATHY’s laptop · ONE FACETIME ============ */
 {n:7,t:'A Summer in Ohio',who:'cathy',cues:[
  {id:'7.1',kind:'music',trig:'THE PIANO COMES IN — not the first notes of the number; GO when the piano enters',
-  what:'The calendar rolls FORWARD — DECEMBER · YEAR 2 → JUNE · YEAR 3 — and docks; her laptop rises and she places the FaceTime call: the RINGING screen, his initial pulsing, the FaceTime ring under it.',
+  what:'The calendar rolls FORWARD — DECEMBER · YEAR 2 → JUNE · YEAR 3 — and docks; her laptop rises and she places the FaceTime call: the RINGING screen, his photo pulsing, the FaceTime ring under it.',
   do:[{op:'clock',t:'9:38',d:'Friday, June 21, 2024'},{op:'stamp',t:'Ohio'},
       {op:'device',dev:'macbook',who:'cathy'},
       {op:'facetime',n:'Jamie 💙',st:'FaceTime…'}]},
@@ -247,7 +247,7 @@ window.L5Y_SHOW = [
   hold:'Nothing else to fire until the final chord. The video carries the number.',
   do:[{op:'ftState',st:'connected',main:'V2 — JAMIE AT HIS DESK · the prerecorded FaceTime plays here'}]},
  {id:'7.3',kind:'music',trig:'FINAL CHORD — the last note; the call ends and she closes the laptop',
-  what:'Call Ended (his initial dimmed, the end tone), a breath, then the laptop drops — JUNE · YEAR 3 holds center until the wedding rolls it.',
+  what:'Call Ended (his photo dimmed, the end tone), a breath, then the laptop drops — JUNE · YEAR 3 holds center until the wedding rolls it.',
   do:[{op:'ftState',st:'Call Ended'},{op:'pause',ms:2600},{op:'black'}]},
 ]},
 
@@ -323,12 +323,12 @@ window.L5Y_SHOW = [
       {op:'notif',app:'Mail',w:'now',title:'Casting Networks',t:'Reminder: sign-in opens 10:00 AM — Equity chorus call'},
       {op:'pause',ms:3000},
       {op:'notif',app:'Messages',w:'now',title:'Jamie 💙',t:'break a leg'}]},
- {id:'10.2',kind:'stage',trig:'CATHY: “Okay. Thank you” — *her first spoken word*',
+ {id:'10.2',kind:'lyric',trig:'CATHY: “Okay. Thank you” — *her first spoken word*',
   what:'A rejection lands over the lock screen — last week’s audition, answered. Just enough to read: they are not moving forward.',
-  do:[{op:'notif',app:'Mail',w:'now',title:'Meridian Stage Company — Casting',
+  do:[{op:'notif',app:'Mail',w:'now',title:'Meridian Stage Company',
        t:'Thank you for auditioning. We will not be moving forward at this time, but we hope to see you…'}]},
  {id:'10.4',kind:'lyric',trig:'“christ I suck I suck when finally you come home to” — GO',
-  what:'Her phone drops; time jumps FORWARD — FEBRUARY · YEAR 3 to JANUARY · YEAR 5 — and docks; HIS phone rises ALREADY ON THE CALL — “Cathy 💛”, connected, the timer running from 0:10. He walks in mid-conversation: no buzz, no Answer, just mute · end · speaker and the seconds counting.',
+  what:'Her phone drops; time jumps FORWARD — FEBRUARY · YEAR 3 to JANUARY · YEAR 5 — and docks; HIS phone rises ALREADY ON THE CALL: her photo, “Cathy 💛”, and the timer running from 0:10. He walks in mid-conversation: no buzz, no Answer.',
   hold:'Nothing to fire while they talk. The next GO ends the call and brings the calendar back to her.',
   do:[{op:'black'},{op:'clock',t:'9:12',d:'Thursday, January 15, 2026'},{op:'stamp',t:'she calls him'},
       {op:'device',dev:'iphone',who:'jamie'},
@@ -348,7 +348,7 @@ window.L5Y_SHOW = [
 /* ============ 11 · IF I DIDN’T BELIEVE IN YOU — JAMIE · the calendar only ============ */
 {n:11,t:'If I Didn’t Believe In You',who:'jamie',cues:[
  {id:'11.1',kind:'stage',trig:'JAMIE: “Okay, stop. Cathy, stop.” — his first words',
-  what:'Calendar only. The pages tear FORWARD — FEBRUARY · YEAR 3 → MARCH · YEAR 5, the night of the party — and hold for the whole fight.',
+  what:'Calendar only. The pages tear FORWARD — NOVEMBER · YEAR 3 → MARCH · YEAR 5, the night of the party — and hold for the whole fight.',
   do:[{op:'black'},{op:'clock',t:'7:41',d:'Friday, March 6, 2026'},{op:'stamp',t:'the night of the party'}]},
 ]},
 
@@ -360,7 +360,8 @@ window.L5Y_SHOW = [
   do:[{op:'clock',t:'5:53',d:'Saturday, November 6, 2021'},{op:'stamp',t:'the drive'}]},
  {id:'12.2',kind:'music',trig:'LIGHTS UP — GO',
   what:'The calendar docks to the right and the dash lights up — CarPlay, already navigating: Apple Maps, New York to the Eastern Shore, the head unit filling the frame, an exit less than a mile ahead. The drive runs in REAL TIME: the banner counts the exit down for about fifty seconds and she sails past it. Maps goes to “Rerouting…”, the blue line drops out for a beat, then the next maneuver comes up and the trip card jumps — 45 minutes and 33 miles more, the arrival later. Nothing is highlighted; the numbers just change. The drive keeps running to the last chord and she never gets there; that is the point.',
-  hold:'`rate` (trip minutes per real minute; 1 = real time) and `startAt` (fraction of the trip at GO) live on this cue; the missed exit is `exit` — `secs` after GO it is missed, `reroute` seconds of thinking, `addMins` / `addMiles` the price. Tune in tech.',
+  hold:'Nothing to fire. The exit is missed about fifty seconds after this GO; “Rerouting…”, the new route and the later arrival follow on their own. The next GO is the final chord.',
+
   do:[{op:'device',dev:'carplay',who:'cathy'},
       {op:'mapsdrive',key:'12',rate:1,startAt:.5,mins:220,miles:214,startMin:1073,arrive:'7:45 PM',dest:'St. Michaels — the Eastern Shore',
        exit:{secs:50,reroute:3,instr:'Take exit 4A for DE‑1 S',via:'toward Christiana',addMins:45,addMiles:33}}]},
@@ -376,7 +377,7 @@ window.L5Y_SHOW = [
   do:[{op:'black'},{op:'batt',v:9},{op:'clock',t:'5:05',d:'Thursday, June 11, 2026'},{op:'stamp',t:'before dawn'}]},
  {id:'13.2',kind:'lyric',trig:'“Cathy is waiting” — her text lands',
   what:'AUTO-PLAYS from this GO. The calendar docks; his phone lights on the nightstand — 9% battery — with her good-morning text. It sits there, readable, for four seconds. Then he pushes it off the screen — slowly, the whole width of the glass, a deliberate erasure and not a flick — unread, and the phone drops again. JUNE · YEAR 5 holds.',
-  hold:'He does not open it — he CLEARS it. The card is pulled LEFT off its own Clear button, the word is held long enough to read, and only then does the card go. The tuning knobs are the two pauses (3500 before, 900 after) and `ms` on notifDismiss, which is the whole gesture — it splits into the pull, the hold on Clear, and the card leaving.',
+  hold:'He does not open it — he CLEARS it. The card is pulled LEFT off its own Clear button, the word is held long enough to read, and only then does the card go. It all runs from this one GO.',
   do:[{op:'device',dev:'iphone',who:'jamie'},
       {op:'notif',app:'Messages',w:'now',title:'Cathy 💛',t:'good morning. can’t wait to see you — what time does your flight land?'},
       {op:'pause',ms:3500},{op:'notifDismiss',ms:1880},{op:'pause',ms:900},{op:'black'}]},
@@ -428,7 +429,7 @@ window.L5Y_SHOW = [
       {op:'pause',ms:8000}]},
  {id:'14.6',kind:'music',trig:'FINAL BLACKOUT — on the last “Goodbye”',
   what:'THE SLOW CURTAIN. Nothing drops and nothing cuts: her lit phone, with “tonight was amazing” still on the glass, fades — all of it together — over three and a half seconds, to true black. End of show.',
-  hold:'A SLOW blackout to true black — `fade` is the knob. Nothing drops and nothing cuts: an ordinary curtain takes the phone away first, which would lose her text before the black did. His last verse has no cue — her text is on screen for all of it.',
+  hold:'A SLOW blackout to true black over three and a half seconds. Nothing drops and nothing cuts: an ordinary curtain takes the phone away first, which would lose her text before the black did. His last verse has no cue — her text is on screen for all of it.',
   do:[{op:'curtain',fade:3500}]},
  {id:'14.7',kind:'stage',trig:'BOWS — the company comes back on',
   what:'The house comes back: the title page center-stage with the photographs flooding behind it, faster than they fell before the show. It holds for as long as the bows run — it never empties and it never ends. The operator’s questionnaire waits until the house lights are up and the show is left.',

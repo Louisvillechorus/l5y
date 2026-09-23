@@ -511,6 +511,34 @@ The structure, the cues and every duration are LOCKED; what follows is cosmetics
   year carries its year.
 - The sound: the vibrate trim is 1.0 (+2 dB; the buzz is low rumble and the first thing a band hides).
 
+## SEPT 23 — THE VISUAL QA (every cue captured, seven reviewers, each finding verified)
+- **A DELETED DRAFT KEEPS THE KEYBOARD UP.** Nobody dismisses the keyboard to backspace. The wipe used to drop it, the
+  whole thread slid down by its height under a camera that stayed on the field, and 2.2 showed a WHITE frame for
+  seconds between drafts. QuickType follows every delete. The send still drops it (a taste call left with David).
+- **THE CAMERA GOES TO THE FIELD AFTER THE KEYBOARD HAS LIFTED IT** (420 ms, the rise is 340): measured at 80 ms the
+  field was still low, the follow rule held, and in 14.4 — the last animation of the show — her words rose out of frame.
+- **9.1 TEARS THE BAND.** applyOp 'clock' clears `st.inter` (the settled truth), so playCue must read it BEFORE applyOp
+  (`wasInter`) or the tear never runs and the whole roll plays on the Intermission band (D-014 caught it).
+- **FIND MY**: the Me sheet's switch rows keep the 44 pt row height (a negative margin on the larger UISwitch) and the
+  map is pinned to the measured sheet edge (`FM_TOP_EM` 19.46): his dot and Home sit whole above the sheet. Chelsea is
+  north-up: 10th Ave west (left) of 9th, the High Line west of 10th.
+- **NOTIFICATIONS AGE**: a card is stamped with its arrival (`at`) and reads "2m ago", "6m ago" as the clock moves, in
+  the settled render and live. The swipe actions sit UNDER the card. A new card fades in inside its own slot (it used
+  to slide down from above the stack and was sliced by it). Monograms are app-icon size with smaller initials; an
+  unsaved number is the grey silhouette. The Messages badge counts texts (cleared ones too), never a Facebook card.
+  A framing plan that keeps the lock clock keeps its DATE line whole.
+- **CALLS** print the number's label: "mobile", "work" for an office line, nothing for an unsaved number; outgoing
+  "calling mobile…" / "calling work…". Two initials on the avatar, like everywhere else.
+- **THE PAPER**: a page settling back is opaque from the start (a fade double-exposed two YEARs); docking, the month
+  sits out the flip and fades up as the strip lands (the turning YEAR printed over it).
+- **THE MAC**: the notch is the menu bar's height and the menus clear it; FaceTime's connected window is the call's dark
+  ground and the video fades up on its first frame (no black blink on HE ANSWERS).
+- **THE OPERATOR**: the queue gives up its height before THEN does (9.6 hid THEN); the GO line is sized by height too;
+  the jump panel is opaque and says NEXT for the cue the next GO fires; on the gate neither cast looks pre-chosen; hold
+  notes are plain instructions (no tuning knobs); 10.2 is a line cue.
+- **THE BUILD GUARD WRITES FIRST AND CHECKS SECOND**: a refused build still leaves a broken STANDALONE on disk (docs/ is
+  written after the check and stays safe). Never filter build.py's output — a `grep parses|built` hid a refusal.
+
 ## THE NOTES REGISTER (David, Sept 20 — "trackable, traceable, fixable, provable, repeatable")
 `notes.json` holds every note David has given: an ID, the cues it touches, a `family` (so the same
 logic is swept everywhere it applies, not only where he caught it), a status, and the NAME OF THE

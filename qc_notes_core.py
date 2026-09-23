@@ -310,8 +310,12 @@ def a_song9_push(pg):
     bad = []
     boot(pg)
     goto(pg, 9, 0)
-    fire(pg)
-    fire(pg)          # 9.2 — the first notification (fire() settles the camera for us)
+    # FIRE UP TO 9.2 BY ID, NOT BY COUNT (Sept 23: 9.1 split into the card and 9.1a, the phone —
+    # counting two GOs landed on 9.1a, a lock screen with no notification yet)
+    for _ in range(4):
+        fire(pg)
+        if pg.evaluate("SHOW[si].cues[ci-1] && SHOW[si].cues[ci-1].id") == '9.2':
+            break
     r = pg.evaluate("""(()=>{ const n=document.querySelector('#projDevice .nstack .notif'); if(!n) return null;
         const b=n.getBoundingClientRect(); return {w:b.width,h:b.height,x:b.x,y:b.y,
         fw:innerWidth*(1-ERA_ZONE_()), fh:innerHeight}; })()""")
@@ -405,8 +409,11 @@ def a_photo_bed(pg):
     # nothing accumulates, nothing is invented, the bed never runs dry. The fall geometry and the
     # ten seconds are D-074's to prove, measured on the glass rather than read off the config.
     cfg = pg.evaluate('PILE_CFG()')
-    if cfg['h'] < 40:
-        bad.append(f'the prints are {cfg["h"]}% of stage height — the bed is meant to envelope the screen')
+    # THE SIZE MOVED AGAIN (David, Sept 23, after seeing 29-45vh prints: "I don't want any of the
+    # photos to be small, so your smallest size is probably good"). The smallest print is 29vh and
+    # pileDrop grows it to 49vh; below that floor is what he called small.
+    if cfg['h'] < 29:
+        bad.append(f'the smallest print is {cfg["h"]}% of stage height — below the size approved on Sept 23')
     lo, hi = cfg['every']
     flo, fhi = cfg['fall']
     # JUDGE THE RELATIONSHIP, NOT A CONSTANT. `every` is derived from `fall` — how many prints are
@@ -415,7 +422,9 @@ def a_photo_bed(pg):
     # the air: too few and the stage empties, too many and they pile on each other. The stage
     # physically holds four or five prints at this size before they must overlap.
     onstage_lo, onstage_hi = flo / hi, fhi / lo
-    if onstage_lo < 3:
+    # Sept 23: one print per third of a fall, sides alternating, never behind the card and never on
+    # the print before — two or three in the air is the design ("they're overlapping too much").
+    if onstage_lo < 2:
         bad.append(f'as few as {onstage_lo:.1f} prints in the air — the bed can look empty')
     if onstage_hi > 14:
         bad.append(f'up to {onstage_hi:.1f} prints in the air — they will pile on each other')
@@ -463,7 +472,7 @@ def a_photo_bed(pg):
     if pg.evaluate("document.querySelectorAll('#loop .print').length") < 1:
         bad.append('the bed goes blank after seven passes through the photographs')
     inflight = cfg['fall'][0] / hi
-    if inflight < 3:
+    if inflight < 2:   # Sept 23: two or three in the air by design (one per third of a fall, never on each other)
         bad.append(f'only ~{inflight:.1f} prints in flight — the stage goes empty between them')
     return bad
 

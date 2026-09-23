@@ -597,7 +597,10 @@ def a_predict_matches(page, songs=(S13, S14)):
           const d=document.createElement('div'); d.innerHTML=screenHTML(st);
           const cells=[...d.querySelectorAll('.predict div')].map(x=>x.textContent);
           return {cells, want:predictCells(st.draft)}; }""")
+        # QuickType quotes the literal itself now (Sept 23: only mid-word, and the case as typed), so
+        # the quotes are part of the one source; compare the words, quotes off both sides
         got = [c.replace('“', '').replace('”', '') for c in probe['cells']]
+        probe['want'] = [c.replace('“', '').replace('”', '') for c in probe['want']]
         if got != probe['want']:
             bad.append('a re-rendered keyboard shows %s while the engine\'s own suggestions for '
                        'that draft are %s' % (got, probe['want']))

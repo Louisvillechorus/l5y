@@ -264,10 +264,10 @@ def a_paper_grit(pg):
     _fire(pg, 150)
     pg.wait_for_timeout(600)
     box = pg.evaluate("""(()=>{const e=document.querySelector('#era .sheet.top .pf'); if(!e) return null; const r=e.getBoundingClientRect();
-        return {x:Math.round(r.x+r.width*0.08), y:Math.round(r.y+r.height*0.62), w:Math.round(r.width*0.84), h:Math.round(r.height*0.16)};})()""")
+        return {x:Math.round(r.x+r.width*0.04), y:Math.round(r.y+r.height*0.40), w:Math.round(r.width*0.18), h:Math.round(r.height*0.26)};})()""")   # the margin left of the numeral: paper only
     if not box:
         return ['no top sheet on stage after 1.1']
-    im = Image.open(io.BytesIO(pg.screenshot(clip=box))).convert('L')
+    im = Image.open(io.BytesIO(pg.screenshot(clip={'x': box['x'], 'y': box['y'], 'width': box['w'], 'height': box['h']}))).convert('L')
     px = list(im.getdata())
     # the band under the numeral: paper only (the foot rule sits lower). Ink would spike the spread, so clamp it away.
     paper = [v for v in px if v > 150]
