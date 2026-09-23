@@ -744,16 +744,17 @@ def a_call_buttons_match(pg):
                 # instant. The ringing frame exists only on the rendered screen.
                 probe = pg.evaluate("""(()=>{ const row=document.querySelector('#projDevice .callbtns');
                     const cs=document.querySelector('#projDevice .cst');
-                    const st=cs?cs.textContent.trim():''; if(!row) return {st, n:0};
-                    return {st, n:row.children.length,
-                            glyphs:[...row.children].map(e=>(e.textContent||'').trim()).join('')}; })()""")
+                    // the STATE lives on data-st; the words on the glass are iOS copy (the duration, "mobile", "Call Ended")
+                    const st=cs?(cs.dataset.st||cs.textContent.trim()):''; if(!row) return {st, n:0};
+                    return {st, n:row.querySelectorAll('[data-act]').length,
+                            acts:[...row.querySelectorAll('[data-act]')].map(e=>e.dataset.act).join(' ')}; })()""")
                 if 'incoming' in (probe['st'] or '').lower():
                     ring = probe; break
                 if not pg.evaluate('animRunning'):
                     break
             if ring:
-                if '\u2706' not in (ring.get('glyphs') or ''):
-                    bad.append(f'{cid}: an INCOMING call with no Answer button while it rings')
+                if 'accept' not in (ring.get('acts') or ''):
+                    bad.append(f'{cid}: an INCOMING call with no Accept button while it rings')
                 seen['in'] += 1
             for _ in range(300):
                 pg.wait_for_timeout(100)
@@ -762,8 +763,8 @@ def a_call_buttons_match(pg):
             pg.wait_for_timeout(300)
             r = pg.evaluate("""(()=>{ const row=document.querySelector('#projDevice .callbtns');
                 const st=((CUR.call||{}).st)||''; if(!row) return {st, n:0};
-                return {st, n:row.children.length,
-                        glyphs:[...row.children].map(e=>(e.textContent||'').trim()).join('')}; })()""")
+                return {st, n:row.querySelectorAll('[data-act]').length,
+                        acts:[...row.querySelectorAll('[data-act]')].map(e=>e.dataset.act).join(' ')}; })()""")
             st = (r['st'] or '').lower()
             if 'ended' in st or not st:
                 continue
@@ -771,13 +772,16 @@ def a_call_buttons_match(pg):
             if not r['n']:
                 bad.append(f'{cid}: a live call ("{r["st"]}") with no buttons at all')
                 continue
-            answer = '✆' in (r.get('glyphs') or '')
+            acts = (r.get('acts') or '').split()
+            answer = 'accept' in acts
             if incoming and not answer:
-                bad.append(f'{cid}: an INCOMING call with no Answer button')
+                bad.append(f'{cid}: an INCOMING call with no Accept button')
             if not incoming and answer:
-                bad.append(f'{cid}: "{r["st"]}" still shows Answer — a phone never does that')
-            if not incoming and r['n'] != 3:
-                bad.append(f'{cid}: "{r["st"]}" shows {r["n"]} buttons, not mute/end/speaker')
+                bad.append(f'{cid}: "{r["st"]}" still shows Accept — a phone never does that')
+            if not incoming and 'end' not in acts:
+                bad.append(f'{cid}: "{r["st"]}" has no End button')
+            if not incoming and not {'mute','keypad','speaker'} <= set(acts):
+                bad.append(f'{cid}: "{r["st"]}" is missing the mute · keypad · speaker grid ({r["n"]} controls)')
             if not incoming:
                 seen['live'] += 1
     if not seen['in'] or not seen['live']:

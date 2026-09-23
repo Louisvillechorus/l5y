@@ -224,7 +224,8 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   (Redline Performing Arts / The Last Five Years); at the break it reads Intermission (Act Two).
   **Prologue** = one GO: the title page tears off and falls (`tearTop`), the era beneath it —
   JUNE · YEAR 5 — holds through the whole prologue. 9.1 tears the Intermission page the same way,
-  then rolls. Nothing else moves, nothing sounds. **Curtain** (`curtain` op) = true black.
+  then rolls — and stops there (David, Sept 23: 9.1 is the card alone, 9.1a raises his phone). A dated `clock`
+  clears `st.inter` in STATE as well as in the animation, or a card-only cue after the break settles back onto the band. Nothing else moves, nothing sounds. **Curtain** (`curtain` op) = true black.
 - **THE CAMERA (David, Sept 19 night — CALM; supersedes everything above)**: the screen SUPPORTS
   a live musical; it is not a show of its own. The frame is a window into the phone (never
   phone-sized): the docked strip owns the right 15% (`ERA_ZONE`), the screen fills the rest edge
@@ -345,10 +346,12 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   that one. No background with christmas needed") — 6.2 and the Christmas lock screen are gone; the
   date is the whole of Schmuel.** **7** the FaceTime arc (ring → V2 → Call Ended → black).
 - **8** calendar only: engagement → wedding → engagement on the singers' lines; **8.4 = INTERMISSION**
-  (the band; holds until 9.1). **9** notifications, then her Ohio audition inside his song (9.6 folds the last
+  (the band; holds until 9.1). **9** 9.1 = the tear and the roll to OCTOBER · YEAR 4, the card alone; **9.1a** = his
+  locked phone comes up (David, Sept 23; proof `a_91_card_then_phone`, D-076); then notifications, then her Ohio audition inside his song (9.6 folds the last
   comment and the roll to APRIL · YEAR 3 into one GO; 9.6a brings him back). **10 (Sept 23)** “break a leg”
   before her first note, ONE rejection email, then the calendar carries it: her phone drops and time jumps to
-  JANUARY · YEAR 5 (she calls him, two buzzes, he picks up) → back to FEBRUARY · YEAR 3 “audition season”,
+  JANUARY · YEAR 5 (**he walks in already on the call with her — no buzz, no Answer, the timer running from
+  0:10**; David, Sept 23 — a `call` op whose `st` is already connected never rings; proof `a_104_lands_connected`, D-077) → back to FEBRUARY · YEAR 3 “audition season”,
   where we left her → FEBRUARY · YEAR 5 “Jamie’s book reading” → NOVEMBER · YEAR 3 “Cathy’s audition prep”
   (the FIRST time that caption appears) held into 11. 10.3 and Jamie’s long text are CUT. **3.8 is the card, 3.8a
   is the call**: the roll to SEPTEMBER · YEAR 1 holds until the operator sees him pick up the phone and dial.
@@ -368,16 +371,31 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   incompatible: four miles ahead IS four minutes twenty-four at 58 mph). The banner opens 2.1 miles out
   and the Delaware Memorial Bridge maneuver lands at 2:12, mid-song; `seconds = (.51 − startAt) × 214 ÷
   58.4 × 3600`. On I-95 past Wilmington, the miles fall at highway speed, the dash clock runs 5:53 onward; she never arrives in
-  the song. (`dur` mode still exists for a compressed trip.)
+  the song. (`dur` mode still exists for a compressed trip.) **THE SHIELDS (David, Sept 23: “the interstate symbols
+  … have a text fit issue”)**: the numeral was set at a size and baseline that put it in the crest's POINT, spilling
+  over the edges; it now sits in the crest below the red band, and the shields are drawn at 1.3× so they read from
+  the house. Proof: `a_shield_fits` (D-079).
 - **13** two beats: her text lands (5:05 AM — before dawn means before the 5:24 sunrise), holds 4 s so the
   house can read it, and he swipes it away over 1.9 s — deliberate, not a flick (David, Sept 20); on his last line the **whole phone** is on stage so we see him unlock it, then Find My → **Me** →
   **“Use This iPhone as My Location”** — sharing was always ON and stays ON; only the reporting device
   changes, iPad → iPhone, the classic cover-up (David, Sept 20). We never see the iPad made the source. **THE CAMERA GOES
   TO THE ROW (David, Sept 21: “we just need to see ‘sharing location from Jamie’s iPad’ on the screen for
-  longer — just change the camera zoom effect there”)**: the whole beat is one word changing on one row, so
-  `camPush('.fmshare')` takes the camera to the row itself and BOTH findmy ops name the same selector, so the
+  longer — just change the camera zoom effect there”)**: BOTH findmy ops name the same selector, so the
   follow rule holds the camera still and the house watches the word change in place — 4.0 s settled on each.
-  Proof: `a_share_row_held` (D-071). Her Ohio is **Mount Orab, OH** (forty miles east of
+  Proof: `a_share_row_held` (D-071). **THE MAP SAYS HOME (David, Sept 23: “we see a label that says ‘Home’ on
+  the location where his ‘ipad’ is reporting and then it flashes over to elises apartment somewhere else in
+  NYC”)**: a word changing on a row does not read at 25 ft, a dot jumping across a map does. The Me tab's map is
+  a real street map (`fmMapSVG`, Apple-Maps light, deterministic): while the iPad reports, his dot sits on W 73rd
+  with the **Home** pin beside it; when he makes this iPhone the source the map fades to another block
+  (W 22nd, the High Line) with no Home anywhere near him and the pin fades out. The People tab shows Mount
+  Orab on a real map too (`fmMapOhio`). The camera's target is now `.fmfocus`, an invisible frame hung from
+  the sheet's FOOT (everything under the sharing group is constant, so the frame is identical in both states)
+  that holds the map strip, the name and the whole sharing group with the blue row 1.1em inside its margin —
+  so neither the press on the row nor the second findmy op moves the camera. The sheet's grabber, avatar row
+  and rows are at iOS proportions so all of that fits one frame at the resting fill. Nothing on the map is
+  laid out from the sheet: the dot, the pin and the streets are placed from the TOP of the screen
+  (`FM_TOP_EM`), so losing the blue row moves the sheet, never the map. A Find My tab switch is instant, not
+  a fade (a fade over the white page blinked the map). Proof: `a_findmy_home` (D-078). Her Ohio is **Mount Orab, OH** (forty miles east of
   Cincinnati, per the script — confirmed by David, Sept 19). 4.8 keeps “SONNY READ IT.” (David’s call).
 - **Continuity law (Sept 19)**: her Friday thread (1.2) carries Thursday — the flight text from
   13.2 verbatim, “landed?”, “I read it. please call me”, “I’m not angry. just talk to me” — because
@@ -456,6 +474,42 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   name, a note id or a quotation. The Bible's prose is hand-written in `build_bible_data.py` and does NOT
   follow the cues automatically: it must be rewritten whenever the show changes, or it will describe a
   show that no longer exists.
+
+## SEPT 23 — THE MAKEUP (David: "we're essentially throwing makeup at this now... fixing any glaring issues with how it looks on screen")
+The structure, the cues and every duration are LOCKED; what follows is cosmetics, judged by the prime directive.
+- **THE NOTIFICATION CARD IS iOS 15+** (`notifCardHTML`, one builder for the lock screen and the live `notif` op): the
+  app icon — or for a text the SENDER'S photo with a small Messages badge, a grey monogram when there is no photo — on
+  the left, the bold title with the time at its right, the body beneath. The app's name is not printed. Calendar's
+  icon carries today's date. The card was the iOS 12 layout (uppercase app name in a header row) for the whole show.
+- **THE LOCK SCREEN**: the clock at the iOS 16+ weight (600) so it reads over a photograph; no small time in the
+  status bar over the big one; the battery reddens its FILL at 20%, never its outline; the shell's home indicator is
+  the only bar (the bouncing swipe hint is gone). A photo wallpaper is CROPPED BY ITS OWNER (`WALL_CROP`, per cast, per
+  photo): the wedding portrait dropped centre/cover on a 9:19.5 screen put both faces under the window's foot; the
+  crop puts them around the clock. The colour wallpapers are LIT (`wallCSS`: brighter at the top, a glow behind the
+  clock), never flat slabs. A swipe reveals Options AND Clear, Clear outermost. The notification list starts 2.5em
+  under the clock (where iOS keeps its widget row), which is what lets two cards sit near-centred once the clock has
+  left the frame (D-005's law); `camStackPlan` also tries a centred plan first among the clock-out plans, for the
+  day a stack is short enough to allow it without cutting the clock.
+- **THE CALL SCREEN IS iOS 17** (`callHTML`): the photo above the name, the DURATION ALONE beneath it (a phone never
+  prints "connected"; ringing prints the number's label), a captioned 3×2 grid of white line symbols on translucent
+  discs, the red handset below; incoming offers Remind Me / Message over Decline and Accept. Call Ended keeps the same
+  layout and dims the controls — nothing leaps. The STATE lives on `.cst[data-st]` and the controls carry `data-act`
+  (probes read those, never the words). FaceTime captions are system sans, sentence case; the Mac scales the video to
+  FIT (a Mac never crops the other person's head); the menu bar has the Apple, Window, Wi-Fi, battery and the date.
+- **THE THREAD**: the keyboard carries no padding while it is down (a strip of keycaps peeked under the compose bar
+  on the show's final image); one height per key row; the send arrow lives INSIDE the field and only once there is
+  text (empty: the grey waveform); the "+" is a filled disc; the header carries the FaceTime button; a time stamp
+  lands WITH the message, not before the first keystroke (`.tstamp.pending`); a dead draft leaves the send control off
+  and QuickType at its default; QuickType never repeats the literal and keeps the case typed; one to three emoji alone
+  are shown large with no bubble; the typing indicator has its thought-bubble tail; monograms are grey.
+- **THE PAPER**: the sheet's shadow is a `drop-shadow` on `.sheet` (a box-shadow on the clipped `.pf` was clipped
+  away with it, so every sheet sat as a cut-out); pages in flight and the ghost pad drop it. The grain's formation,
+  fibre and tooth are up (`paperGrain` 0.085/0.06/0.09 — David: "more gritty"). A torn page stays opaque until 88%
+  of its fall. The money minute's `.grp` has no stacking context of its own, so the QR's multiply reaches the paper.
+- **FIND MY**: the tab bar is SF-symbol shapes, never emoji; Cathy's row and her marker carry her photo; hairlines
+  are inset; switches are UISwitch-sized. **MEMORIES** is a pushed page (back, title, gear) and a post from another
+  year carries its year.
+- The sound: the vibrate trim is 1.0 (+2 dB; the buzz is low rumble and the first thing a band hides).
 
 ## THE NOTES REGISTER (David, Sept 20 — "trackable, traceable, fixable, provable, repeatable")
 `notes.json` holds every note David has given: an ID, the cues it touches, a `family` (so the same

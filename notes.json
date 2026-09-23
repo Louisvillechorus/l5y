@@ -1063,6 +1063,125 @@
    "clean": 4,
    "last_build": "e9f19938d807",
    "secs": 7.7
+  },
+  {
+   "id": "D-076",
+   "status": "fixed",
+   "family": "song 9 / the card",
+   "cues": [
+    "9.1",
+    "9.1a"
+   ],
+   "note": "9.1 needs to be separated into 2 cues, the first cue just gets the 'Year 4 October' on the wall, 9.1a will trigger the phone starting, 9.2 will be unchanged and trigger the reader message.",
+   "proof": "a_91_card_then_phone",
+   "clean": 0
+  },
+  {
+   "id": "D-077",
+   "status": "fixed",
+   "family": "song 10 / calls",
+   "cues": [
+    "10.4"
+   ],
+   "note": "10.5 can just go straight from the January year 5 time warp into the call connected with Cathy, no calling needed, he will walk in on the phone, it's just too tight to hear the vibrations, so do the timewarp and then just have the phone connected and counting from 0:10 seconds (don't start it at 0:00 like normal).",
+   "proof": "a_104_lands_connected",
+   "clean": 0
+  },
+  {
+   "id": "D-078",
+   "status": "fixed",
+   "family": "Find My / the map",
+   "cues": [
+    "13.3"
+   ],
+   "note": "The find my beat idea is great, maybe to just add a LITTLE improvement to it, we see a label that says 'Home' on the location where his 'ipad' is reporting and then it flashes over to elises apartment somewhere else in NYC.",
+   "proof": "a_findmy_home",
+   "clean": 0
+  },
+  {
+   "id": "D-079",
+   "status": "fixed",
+   "family": "song 12 / the dash",
+   "cues": [
+    "12.2",
+    "12.3"
+   ],
+   "note": "In 'I can do better than that' the interstate symbols that are to the left and right of the interstate have a text fit issue.",
+   "proof": "a_shield_fits",
+   "clean": 0
+  },
+  {
+   "id": "D-080",
+   "status": "fixed",
+   "family": "lock screen / wallpapers",
+   "cues": [
+    "9.1a",
+    "2.1",
+    "4.3",
+    "13.2"
+   ],
+   "note": "One thing to notice and think about is the screensavers on phones, idk if they're super effective right now.",
+   "proof": "a_wallpapers",
+   "clean": 0
+  },
+  {
+   "id": "D-081",
+   "status": "fixed",
+   "family": "the paper",
+   "cues": [
+    "1.1",
+    "9.1",
+    "8.5"
+   ],
+   "note": "Are there simple ways to make features look more realistic, to make things feel more at home, lived in?? Making the textures of the paper more gritty.",
+   "proof": "a_paper_grit",
+   "clean": 0
+  },
+  {
+   "id": "D-082",
+   "status": "fixed",
+   "family": "lock screen / the card",
+   "cues": [
+    "2.1",
+    "4.4",
+    "4.8",
+    "9.2",
+    "10.2",
+    "13.2"
+   ],
+   "note": "Visual QA — fixing any glaring issues with how it looks on screen: the notification card was the iOS 12 layout (an uppercase app-name header) on every lock screen in the show.",
+   "proof": "a_notif_card",
+   "clean": 0
+  },
+  {
+   "id": "D-083",
+   "status": "fixed",
+   "family": "calls",
+   "cues": [
+    "2.3",
+    "3.2",
+    "3.5",
+    "3.8a",
+    "4.1",
+    "10.4",
+    "10.5"
+   ],
+   "note": "Visual QA — the call screen printed CONNECTED / INCOMING CALL in a typewriter face and offered three unlabeled circles; a phone prints the duration, the label, and the captioned grid.",
+   "proof": "a_call_screen",
+   "clean": 0
+  },
+  {
+   "id": "D-084",
+   "status": "fixed",
+   "family": "threads / the keyboard",
+   "cues": [
+    "1.2",
+    "2.2",
+    "14.4"
+   ],
+   "note": "Visual QA — making movement a bit more believable on the phone screens: a strip of keycaps stayed visible under the compose bar whenever the keyboard was down, on the show's final image included.",
+   "proof": "a_keyboard_down",
+   "clean": 0
   }
  ]
 }
