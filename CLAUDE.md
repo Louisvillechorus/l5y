@@ -345,8 +345,13 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   that one. No background with christmas needed") — 6.2 and the Christmas lock screen are gone; the
   date is the whole of Schmuel.** **7** the FaceTime arc (ring → V2 → Call Ended → black).
 - **8** calendar only: engagement → wedding → engagement on the singers' lines; **8.4 = INTERMISSION**
-  (the falling pages; holds until 9.1). **9** notifications only. **10** “break a leg” before her first note, two
-  rejection emails, black, the bell-tone FLASHBACK to NOVEMBER 2023 (his long text), return.
+  (the band; holds until 9.1). **9** notifications, then her Ohio audition inside his song (9.6 folds the last
+  comment and the roll to APRIL · YEAR 3 into one GO; 9.6a brings him back). **10 (Sept 23)** “break a leg”
+  before her first note, ONE rejection email, then the calendar carries it: her phone drops and time jumps to
+  JANUARY · YEAR 5 (she calls him, two buzzes, he picks up) → back to FEBRUARY · YEAR 3 “audition season”,
+  where we left her → FEBRUARY · YEAR 5 “Jamie’s book reading” → NOVEMBER · YEAR 3 “Cathy’s audition prep”
+  (the FIRST time that caption appears) held into 11. 10.3 and Jamie’s long text are CUT. **3.8 is the card, 3.8a
+  is the call**: the roll to SEPTEMBER · YEAR 1 holds until the operator sees him pick up the phone and dial.
 - **9** (dramaturg pass, Sept 19): one device, one era (Fri Oct 18 2024 = OCTOBER · YEAR 4, “five months
   married”, the wedding portrait M4 as his wallpaper); the stack is only what a real phone shows —
   Instagram COMMENTS preview text (a stranger's DM never does; a request says “wants to send you a
