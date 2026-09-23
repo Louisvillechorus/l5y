@@ -3906,7 +3906,10 @@ async function humanScroll(el,target,seed,tok,opts={}){
     else { await ra(el,el.scrollTop,target+over*.9,140,p=>p,tok);
            await ra(el,el.scrollTop,target,220+R()*120,easeInOut,tok);} };
 
-  if(g==='flick'){                       // quick and careless: barely touches it
+  if(g==='glide'){                       // one smooth pull, no stall, no bounce (the memories, Sept 23)
+    await ra(el,cur,target,1000,easeInOut,tok);
+  }
+  else if(g==='flick'){                       // quick and careless: barely touches it
     await ra(el,cur,cur+dist*0.08,60+R()*40,p=>p,tok);
     await ra(el,el.scrollTop,target,210+R()*90,easeOutCubic,tok);
     await bounce(14+R()*14);
@@ -4405,10 +4408,11 @@ async function playCue(cue, st, tok){
       await Promise.all(stacks().map(k=>{const f=k.querySelector('.memfeed'); if(!f) return null;
         const cards=f.querySelectorAll('.memscreen'); const i=Math.max(0,Math.min(cards.length-1,o.i||0));
         const tgt=cards[i];
-        return humanScroll(f, tgt?tgt.offsetTop:0, 'memgo'+cue.id,tok,{gesture:'drag',flicks:2,slow:MEM_SLOW_()});}));
+        // ONE SMOOTH GLIDE PER CARD (David, Sept 23: "a lot of jumps in the memory scrolling"): the
+        // stall-and-bounce drag and the zoom onto the caption mid-scroll made three moves per card.
+        return humanScroll(f, tgt?tgt.offsetTop:0, 'memgo'+cue.id,tok,{gesture:'glide',slow:MEM_SLOW_()});}));
       const nth=(o.i||0)+1, CD=1200*MEM_SLOW_(), CG=1.2*MEM_SLOW_();   // when the settle onto the picture starts, and how long it takes
-      camPush(`.memfeed .memscreen:nth-child(${nth}) .body`, 2.6, 0, null, null, true);
-      camPush(`.memfeed .memscreen:nth-child(${nth}) .media`, 2.2, CD, 'subjtop', CG, true, true);
+      camPush(`.memfeed .memscreen:nth-child(${nth}) .media`, 2.2, CD, 'subjtop', CG, true, true);   // the one camera move per card: the settle onto the photograph
       /* THE CUE OWNS ITS OWN CAMERA (D-048). The drift up into the photograph is scheduled 2.6 s
          after the scroll and glides for another 3.2 — six and a quarter seconds of stage movement
          that used to happen AFTER the cue had reported itself finished. Two things follow from
