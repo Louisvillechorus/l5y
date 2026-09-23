@@ -1522,7 +1522,7 @@ const FALLBACK_SHOW = [
       {op:'device',dev:'iphone',who:'jamie'}]},
  {id:'4.4',kind:'lyric',trig:'“Found an apartment on Seventy-Third!” — GO AFTER THIS LINE',
   what:'Move-in day pops up, both names on the day.',
-  do:[{op:'notif',app:'Calendar',w:'now',title:'Invitation: MOVE-IN DAY 🚚 — W 73rd St',t:'Cathy Hiatt invited you · Saturday, Oct 16, 9:00 AM'}]},
+  do:[{op:'notif',app:'Calendar',w:'now',title:'MOVE-IN DAY 🚚 — W 73rd St',t:'Cathy Hiatt invited you · Saturday, Oct 16, 9:00 AM'}]},
  {id:'4.5',kind:'lyric',trig:'“The Atlantic Monthly’s printing my first chapter” — GO AFTER THIS LINE',
   what:'The Atlantic says yes.',
   do:[{op:'notif',app:'Mail',w:'now',title:'The Atlantic Monthly',t:'We are delighted to publish your excerpt'}]},
@@ -2595,7 +2595,7 @@ function fmMapSVG(scene, anim){
   [[99,121],[279,301]].forEach(([a,b])=>{ o+=`<rect x="${a}" y="0" width="${b-a}" height="667" fill="${S}" stroke="${SE}" stroke-width="1.2"/>`; });
   hs.forEach(y=>{ o+=`<rect x="0" y="${y-7}" width="400" height="14" fill="${S}" stroke="${SE}" stroke-width="1"/>`; });
   if(!home){ o+=`<rect x="80" y="0" width="7" height="667" fill="#b9d5a8" stroke="#a5c494" stroke-width=".8"/>
-    <text x="74" y="${sy-60}" transform="rotate(-90 74 ${sy-60})" text-anchor="middle" font-size="8" font-weight="500" fill="#5e7a52">The High Line</text>`; }
+    <text x="74" y="${sy-60}" transform="rotate(-90 74 ${sy-60})" text-anchor="middle" font-size="9.4" font-weight="500" fill="#5e7a52">The High Line</text>`; }
   // labels: the street names ride the roads (Apple sets them on the white), the avenues run up theirs
   o+=`<text x="200" y="${sy0+3.4}" text-anchor="middle" font-size="9.4" font-weight="500" fill="${T}">${ST[0]}</text>`;
   o+=home ? `<text x="180" y="${sy+3.4}" text-anchor="end" font-size="9.4" font-weight="500" fill="${T}">${ST[1]}</text>`

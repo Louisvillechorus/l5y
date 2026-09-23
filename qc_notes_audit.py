@@ -235,7 +235,11 @@ def a_no_gutter(pg):
     i = song_ix(pg, 9)
     pg.evaluate(f'si={i}; ci=0; animTok++; animRunning=false; hardRender();')
     pg.wait_for_timeout(200)
-    fire(pg)
+    # 9.1 is the card alone and 9.1a raises his phone: fire until the phone is actually up
+    for _ in range(3):
+        fire(pg)
+        if pg.evaluate("!!document.querySelector('#projDevice .iphone')"):
+            break
     r = pg.evaluate("""(()=>{ const pj=document.getElementById('projection').getBoundingClientRect();
         const era=document.getElementById('era'); const dev=document.querySelector('#projDevice .iphone');
         if(!era||!dev) return null;

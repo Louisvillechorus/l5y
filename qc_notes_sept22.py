@@ -9,9 +9,8 @@ import os
 W, H = 1920, 1080
 URL = 'file://' + os.path.abspath('L5Y-Show-STANDALONE.html')
 
-# Long enough that prints born after the recorder starts also die inside it: a ~10 s fall plus a
-# ~1.5 s spawn gap means the last judgeable print is born at WATCH-11.5 s, so a 26 s watch yields
-# a dozen-plus complete lifecycles without making the gate wait a minute.
+# Long enough that prints born after the recorder starts also die inside it: a ~60 s fall and a
+# ~20 s spawn gap mean prints born in the first minute finish inside the watch, two or three of them.
 WATCH_MS = 125000
 
 REC = r"""
@@ -81,22 +80,28 @@ def a_bed_falls(pg):
 
     OFF THE PAGE. Its last painted frame has its top edge below the foot of the stage.
 
-    TEN SECONDS. First appearance to last appearance, the whole journey — not a window onto a
-    longer one.
+    THE WHOLE JOURNEY. First appearance to last appearance, 50-70 s (the fall was slowed to ~60 s
+    after the Sept 22 note) — not a window onto a longer one.
 
     FIFTEEN DEGREES, SWAY INCLUDED. A keyframe's transform REPLACES the element's, so the per-print
     rotate() written inline was discarded the moment psway began: every print in the show swayed
     through the identical ±3.5° and the tilt never rendered once. Measured off the real composited
     matrix, so the only way to pass is for the angle to actually be on the glass.
 
-    THE PLACEMENT IS DEALT. Seven lanes, shuffled, one print each — a bare random() clumps."""
+    CLEAR OF THE CARD, SIDES ALTERNATING (David, Sept 23, which replaced the seven dealt lanes):
+    prints were landing on each other's faces and falling behind the title where nothing sees them.
+    So no print is centred in the middle third, and two consecutive prints never share a side.
+
+    THE BED IS SLOW NOW. One print every ~20 s, each falling ~60 s, so a 125 s watch holds two or
+    three complete journeys and two or three prints on stage at once. The counts are judged
+    against that, not against the Sept 22 flood."""
     bad = []
     out, err = _watch_bed(pg)
     if err:
         return [err]
     rows, conc = out['rows'], out['conc']
     done = [r for r in rows if r['t1'] < WATCH_MS - 900 and r['t0'] > 120]
-    if len(done) < 4:
+    if len(done) < 2:
         return [f'only {len(done)} complete falls in {WATCH_MS/1000:.0f}s — too few to judge the bed']
 
     for r in done:
@@ -115,26 +120,24 @@ def a_bed_falls(pg):
         if peak > 15.05:
             bad.append(f"print #{r['id']} reaches {peak:.1f}° — the arc is ±15° left and right, no more")
     tilts = {round((r['amin'] + r['amax']) / 2, 1) for r in rows}
-    if len(tilts) < max(4, len(rows) // 3):
+    if len(rows) >= 3 and len(tilts) < min(len(rows), max(3, len(rows) // 3)):
         bad.append(f'only {len(tilts)} distinct tilts across {len(rows)} prints — the angle is not varying')
 
-    N = 7
-    cols = [0] * N
-    for r in rows:
-        cols[min(max(int(min(max(r['cx0'], 0), W - 1) / (W / N)), 0), N - 1)] += 1
-    # SAMPLE SIZE IS PART OF THE TEST. Seven lanes dealt round-robin cannot come out even over
-    # eighteen prints, and each print then drifts up to 4vw as it falls, so a few cross a bucket
-    # edge. An empty column is always wrong; a ragged one is only wrong once there is enough
-    # sample to say so.
-    if 0 in cols:
-        bad.append(f'column {cols.index(0)+1} of {N} never receives a print (columns {cols}) — the bed clumps')
-    elif len(rows) >= 4 * N and max(cols) > 2.6 * min(cols):
-        bad.append(f'the columns run {min(cols)}…{max(cols)} ({cols}) — the placement is still lumpy')
+    rows_by_birth = sorted(rows, key=lambda r: r['id'])
+    for r in rows_by_birth:
+        if W / 3 < r['cx0'] < 2 * W / 3:
+            bad.append(f"print #{r['id']} enters centred at {r['cx0']/W*100:.0f}% of the width — "
+                       f"the middle third belongs to the card")
+    sides = [0 if r['cx0'] < W / 2 else 1 for r in rows_by_birth]
+    for k in range(1, len(sides)):
+        if sides[k] == sides[k - 1]:
+            bad.append(f"prints #{rows_by_birth[k-1]['id']} and #{rows_by_birth[k]['id']} fall on the "
+                       f"same side back to back — the sides alternate")
 
-    # the house opens on an empty stage and fills; judge the bed once it is actually running
+    # the house opens with one print and fills; judge the bed once it is actually running
     steady = [n for (t, n) in conc if t > 68000]
-    if steady and min(steady) < 4:
-        bad.append(f'the bed thins to {min(steady)} prints on stage — it should stay full')
+    if steady and min(steady) < 2:
+        bad.append(f'the bed thins to {min(steady)} print on stage — it should never go bare')
     return bad
 
 

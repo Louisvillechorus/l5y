@@ -202,7 +202,7 @@ window.L5Y_SHOW = [
       {op:'device',dev:'iphone',who:'jamie'}]},
  {id:'4.4',kind:'lyric',trig:'“Found an apartment on Seventy-Third!” — GO AFTER THIS LINE',
   what:'Move-in day pops up, both names on the day.',
-  do:[{op:'notif',app:'Calendar',w:'now',title:'Invitation: MOVE-IN DAY 🚚 — W 73rd St',t:'Cathy Hiatt invited you · Saturday, Oct 16, 9:00 AM'}]},
+  do:[{op:'notif',app:'Calendar',w:'now',title:'MOVE-IN DAY 🚚 — W 73rd St',t:'Cathy Hiatt invited you · Saturday, Oct 16, 9:00 AM'}]},
  {id:'4.5',kind:'lyric',trig:'“The Atlantic Monthly’s printing my first chapter” — GO AFTER THIS LINE',
   what:'The Atlantic says yes.',
   do:[{op:'notif',app:'Mail',w:'now',title:'The Atlantic Monthly',t:'We are delighted to publish your excerpt'}]},

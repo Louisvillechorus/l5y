@@ -33,7 +33,7 @@ CHECK_JS = r"""() => {
     if((oy==='hidden'||ox==='hidden')){
       const vy = el.scrollHeight - el.clientHeight;
       const vx = el.scrollWidth  - el.clientWidth;
-      if(vy>6 && el.className && !/memfeed|thread|grid|nstack|mailrows|screenstack|hgrid|kbd|predict|fbfeed|screenstack|deck|layer|mailwrap|mailbody|msglist2|docsheet/.test(el.className))
+      if(vy>6 && el.className && !/memfeed|thread|grid|nstack|mailrows|screenstack|hgrid|kbd|predict|fbfeed|screenstack|deck|layer|mailwrap|mailbody|msglist2|docsheet|fmmapwrap/.test(el.className))   /* fmmapwrap: a map is a viewport, like a feed */
         clips.push({cls:String(el.className).slice(0,40), by:Math.round(vy), axis:'y',
                     txt:(el.textContent||'').trim().slice(0,42)});
       if(vx>4 && el.className && !/memfeed|thread|grid|screenstack|deck|layer|fbfeed|mailwrap|mailbody|msglist2|docsheet/.test(el.className))
