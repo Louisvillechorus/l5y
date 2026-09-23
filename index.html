@@ -5591,7 +5591,7 @@ function pileRate(mode){ const C=PILE_CFG();
   // prints on the stage at once: the same flood relative to the house, not four times it.
   if(PILE_MODE()==='wall'){ if(mode==='bows'){ C.every=[1300,1900]; C.fall=[11000,14000]; } else { C.every=[2600,3400]; C.fall=[15000,19000]; } return C; }
   if(mode==='bows'){ C.every=[6000,8600]; C.fall=[54000,66000]; }
-  else { C.every=[10000,14000]; C.fall=[54000,66000]; }
+  else { C.every=[19000,22000]; C.fall=[54000,66000]; }   // one print per third of a fall: never two in one column
   return C; }
 function PILE_S(){ return PILE_S.o||(PILE_S.o={t:null, i:0, order:null}); }
 function pileList(){ const L=window.L5Y_LOOP||{}; return (L[CAST]||[]); }
@@ -5634,7 +5634,7 @@ function pileDrop(){
   // (D-047 — David saw one at the top-left of 8.6). A renderer never invents filler: if the cue has no
   // asset, the screen is empty. The bed wakes up unchanged the moment window.L5Y_LOOP has entries.
   if(!n){ L.classList.remove('on'); if(S.t){ clearTimeout(S.t); S.t=null; } return; }
-  if(!S.order || S.order.length!==n){ const R=prng('pile'+CAST+':'+n); S.order=[...Array(n).keys()];
+  if(!S.order || S.order.length!==n || S.i % n === 0 && S.i>0 && S.round!==Math.floor(S.i/n)){ S.round=Math.floor(S.i/n); const R=prng('pile'+CAST+':'+n+':'+S.round); S.order=[...Array(n).keys()];
     for(let k=n-1;k>0;k--){ const j=Math.floor(R()*(k+1)); [S.order[k],S.order[j]]=[S.order[j],S.order[k]]; }
     // a shuffled deck dealt end to end can still put the same face last and first; with only a dozen
     // photographs the repeat is the thing the eye catches, so rotate the seam away from itself
@@ -5646,13 +5646,17 @@ function pileDrop(){
   // wider arc, and its own entry anywhere from off the left edge to off the right — so prints
   // overlap, sit at different depths and genuinely cover the stage instead of filing past it.
   const ratio=ent?ent.r:(R()<.45?0.75:1.4);
-  const h=C.h*(1.00+R()*0.55), w=h*ratio;
+  const h=C.h*(1.00+R()*0.70), w=h*ratio;   // 50vh to 85vh: the small end untouched (David, Sept 23), the big end bigger
   // a print is sized in vh but placed in %, so the stage's own aspect converts the one to the other;
   // the lane span reaches half a print off each edge, so the bed runs to the corners without a print
   // ever being dealt somewhere it is more off the stage than on it.
   const AR=(window.innerHeight||1080)/(window.innerWidth||1920);
-  const wp=w*AR, x=-wp*0.5 + pileLane(S,R)*100;   // the lane places the print's CENTRE, not its left
-                                                  // edge, or every deal leans half a print rightward
+  /* NEVER BEHIND THE CARD, NEVER ON THE ONE BEFORE (David, Sept 23: prints were landing on faces and
+     falling behind the title where nothing sees them). The card owns the middle third; a print takes the
+     left or the right clear zone, the sides alternating, so two consecutive prints are never in the same
+     column and one every third of a fall means the print above is well clear before the next enters. */
+  const wp=w*AR, side=(S.i%2===0)?0:1, zoneW=33.5, zx0=side?66.5:0;
+  const room=Math.max(0, zoneW-wp), x=zx0 + (side?room:0) + (side?-1:1)*R()*room*0.6 + (side?0:0);
   const fall=C.fall[0] + R()*(C.fall[1]-C.fall[0]);        // the whole journey, ~10 s, and each one its own
   const d0=(R()*8-4), drift=(R()*9-4.5);                   // it drifts as it falls, and not always the same way
   // FIFTEEN DEGREES, LEFT AND RIGHT, AND NO MORE (David, Sept 22). The sway is budgeted INSIDE that arc
