@@ -1625,23 +1625,20 @@ const FALLBACK_SHOW = [
       {op:'pause',ms:3400},
       {op:'black'},{op:'clock',t:'2:20',d:'Tuesday, April 16, 2024'},{op:'stamp',t:'Cathy’s Ohio audition'}]},
  {id:'9.6a',kind:'lyric',trig:'CATHY: “When finally you come home to me” — GO back to Jamie',
-  what:'The calendar rolls FORWARD home — APRIL · YEAR 3 to OCTOBER · YEAR 4 — and docks; his phone comes back exactly as he left it, the whole stack still on the lock screen.',
-  do:[{op:'clock',t:'11:31',d:'Friday, October 18, 2024'},{op:'stamp',t:'five months married'},
-      {op:'device',dev:'iphone',who:'jamie'}]},
- {id:'9.7',kind:'music',trig:'FINAL CHORD — the last note of the song',
-  what:'The phone drops; OCTOBER · YEAR 4 holds center.',
-  do:[{op:'black'}]},
+  what:'The calendar rolls FORWARD home — APRIL · YEAR 3 to OCTOBER · YEAR 4 — and holds in the centre. No phone: the card alone, to the end of the song.',
+  hold:'Hold on the card through the final chord. The next GO is the top of Climbing Uphill.',
+  do:[{op:'clock',t:'11:31',d:'Friday, October 18, 2024'},{op:'stamp',t:'five months married'}]},
 ]},
 
 /* ============ 10 · CLIMBING UPHILL — CATHY · two texts, two rejections, one flashback ============ */
 {n:10,t:'Climbing Uphill',who:'cathy',cues:[
  {id:'10.1',kind:'music',trig:'“I swear I will” — the last words of A Miracle Would Happen',
   what:'The calendar rolls BACK — OCTOBER · YEAR 4 → FEBRUARY · YEAR 3 — and docks; her phone rises, locked, in the audition hallway. A sign-in reminder sits on the lock screen; then his text lands on top: “break a leg” — lowercase, three seconds of effort.',
-  do:[{op:'clock',t:'9:52',d:'Monday, February 5, 2024'},{op:'stamp',t:'audition season'},
+  do:[{op:'clock',t:'9:52',d:'Monday, February 5, 2024',ms:2600},{op:'stamp',t:'audition season'},
       {op:'device',dev:'iphone',who:'cathy'},
-      {op:'pause',ms:700},
+      {op:'pause',ms:250},
       {op:'notif',app:'Mail',w:'now',title:'Casting Networks',t:'Reminder: sign-in opens 10:00 AM — Equity chorus call'},
-      {op:'pause',ms:3000},
+      {op:'pause',ms:900},
       {op:'notif',app:'Messages',w:'now',title:'Jamie 💙',t:'break a leg'}]},
  {id:'10.2',kind:'lyric',trig:'CATHY: “Okay. Thank you” — *her first spoken word*',
   what:'A rejection lands over the lock screen — last week’s audition, answered. Just enough to read: they are not moving forward.',
@@ -4066,7 +4063,7 @@ async function playCue(cue, st, tok){
       // back (backward); the phone appears already at the new time
       if(wasInter){ st.inter=false; const kD=st.date, kF=st.foot; st.date=prevDate; st.foot=''; paintAll(st); await tearTop(st,tok); st.date=kD; st.foot=kF; if(tok!==animTok) return; await wait(300); if(tok!==animTok) return; }
       if(o.d && prevDate!==o.d){ const A=new Date(prevDate), B=new Date(o.d);
-        if(!isNaN(A)&&!isNaN(B)) await eraRoll(A,B,tok,st, ci===1); if(tok!==animTok) return; }
+        if(!isNaN(A)&&!isNaN(B)) await eraRoll(A,B,tok,st, ci===1, o.ms); if(tok!==animTok) return; }
       stacks().forEach(k=>{ const shell=k.closest('.screen'); if(!shell) return;
         const sb=shell.querySelector('.statusbar span'); if(sb) sb.textContent=st.tm;
         const lt=k.querySelector('.lk-time'); if(lt) lt.textContent=st.tm;
@@ -4655,7 +4652,7 @@ function estDuration(cue){
     switch(o.op){
       case 'pause': t+=o.ms||800; break;
       case 'device': t+=800; break;
-      case 'clock': t+=o.d?6000:0; break;
+      case 'clock': t+=o.d?(o.ms>0?o.ms:6000):0; break;
       case 'stamp': t+=(String(o.t||'').trim()?340+String(o.t).length*70+FOOT_DWELL_():0); break;   // the scene name types itself (D-013) and is then HELD so it can be read (D-068)
       case 'prologue': t+=(o.ms||0)+1100; break;
       case 'black': t+=520; break;
@@ -5532,11 +5529,12 @@ async function typeFoot(st,tok,cueId,keys){
 }
 function FOOT_DWELL_(){ return 2400; }   // accessor, not a top-level let: boot code reaches it
 /* tear-off time: forward pages tear away and fall, backward pages rise and settle */
-async function eraRoll(A,B,tok,st,long){
+async function eraRoll(A,B,tok,st,long,ms){
   const era=document.getElementById('era'); if(!era||era.classList.contains('hidden')) return;
   const total=(B.getFullYear()-A.getFullYear())*12+(B.getMonth()-A.getMonth()); if(!total) return;
   const dir=total>0?1:-1, n=Math.min(Math.abs(total), long?16:12);
-  const ROLL_MS=6000; let base=0; for(let i=1;i<=n;i++) base+=(i<=2?200:(i===n?380:(i>n-3?260:135)));
+  /* a cue may shorten its own roll with ms: (10.1 — 2.6 s, so his text lands sooner); the music plays from its tail and still ends on the last page */
+  const ROLL_MS=(ms>0)?ms:6000; let base=0; for(let i=1;i<=n;i++) base+=(i<=2?200:(i===n?380:(i>n-3?260:135)));
   const scale=(ROLL_MS-700)/base;   // every roll lasts 6 s — the Time Warp music, five clock ticks (David); the pages share it
   warpStart(ROLL_MS, dir<0);   // 5-4-3-2-1 gets the reverse clip
   const pad=era.querySelector('.pad'), top=pad&&pad.querySelector('.sheet.top'); if(!top) return;

@@ -15,7 +15,7 @@ The closure law needs a FULL clean run on a new build, so --only and --fast do n
 the clean counter. Only the whole gate can close a loop.
 """
 
-# SHOW-WIDE SWEEPS — the probes that walk all 69 cues. Each is worth minutes on the shipping run
+# SHOW-WIDE SWEEPS — the probes that walk all 68 cues. Each is worth minutes on the shipping run
 # and is skipped by --fast so the operator's loop in tech stays under a minute. Measured, not guessed:
 # a_maybe_cathy 84s · a_13_to_14 48s · a_subject_never_sliced ~20min · a_bows 3.3min.
 SLOW = {'a_subject_never_sliced', 'a_bows', 'a_photo_bed', 'a_ringback_twice',

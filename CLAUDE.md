@@ -185,7 +185,9 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
   (`assets/sfx/timewarp.mp3`, David's file, `warpStart`: in on the first page, out as the last settles,
   stopped on a scrub): forward = pages tear off and fall;
   backward = pages rise and settle. Long journeys skip months (≤16 pages). **EVERY ROLL LASTS EXACTLY 6 s** (David, Sept 19 — the
-  Time Warp music, five clock ticks; the pages share the 6 s whatever their number). The phone never rolls; a dated `clock` op rolls the era, then `device` docks it
+  Time Warp music, five clock ticks; the pages share the 6 s whatever their number). **ONE EXCEPTION, HIS**: a clock op
+  may carry `ms:` and 10.1 does (2.6 s — David, Sept 24: “make the time warp and notifications on 10.1 faster… cut like
+  5 seconds”); the music plays from its tail so it still ends on the last page. The phone never rolls; a dated `clock` op rolls the era, then `device` docks it
   and the phone rises already at the new time. `stamp` is now the calendar's FOOT line.
 - **THE SCENE NAME IS HELD (David, Sept 21: “some moments where the typing of the day description disappears
   too quickly for the audience to read… at least 2-3 seconds fully typed”)**: `typeFoot` finishes typing and
@@ -348,8 +350,9 @@ Song 7 will be **one prerecorded FaceTime** (Jamie half-attending at his desk, w
 - **8** calendar only: engagement → wedding → engagement on the singers' lines; **8.4 = INTERMISSION**
   (the band; holds until 9.1). **9** 9.1 = the tear and the roll to OCTOBER · YEAR 4, the card alone; **9.1a** = his
   locked phone comes up (David, Sept 23; proof `a_91_card_then_phone`, D-076); then notifications, then her Ohio audition inside his song (9.6 folds the last
-  comment and the roll to APRIL · YEAR 3 into one GO; 9.6a brings him back). **10 (Sept 23)** “break a leg”
-  before her first note, ONE rejection email, then the calendar carries it: her phone drops and time jumps to
+  comment and the roll to APRIL · YEAR 3 into one GO; **9.6a rolls home to OCTOBER · YEAR 4 and holds — the card alone,
+  no phone, and there is no 9.7** (David, Sept 24)). **10 (Sept 23; faster Sept 24)** “break a leg”
+  before her first note — the roll is 2.6 s and the two cards land 0.9 s apart, so his text is up ~10 s after GO instead of ~15 —, ONE rejection email, then the calendar carries it: her phone drops and time jumps to
   JANUARY · YEAR 5 (**he walks in already on the call with her — no buzz, no Answer, the timer running from
   0:10**; David, Sept 23 — a `call` op whose `st` is already connected never rings; proof `a_104_lands_connected`, D-077) → back to FEBRUARY · YEAR 3 “audition season”,
   where we left her → FEBRUARY · YEAR 5 “Jamie’s book reading” → NOVEMBER · YEAR 3 “Cathy’s audition prep”

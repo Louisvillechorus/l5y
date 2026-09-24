@@ -17,7 +17,7 @@ import qc_notes_subject as S
 
 FILE = 'file://' + os.path.abspath('L5Y-Show-STANDALONE.html')
 
-# The two era probes that sweep all 69 cues are minutes each. The audit only has to prove the
+# The two era probes that sweep all 68 cues are minutes each. The audit only has to prove the
 # probe NOTICES a broken stage, and one broken cue proves that as well as sixty-nine do, so it
 # runs them over song 1 alone — which docks the phone (1.2) and swaps a house page (1.0a), the
 # two things they watch. `SHOW` is a top-level `let`, so it is assigned, never set on window.

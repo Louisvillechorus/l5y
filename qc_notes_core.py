@@ -344,8 +344,8 @@ def a_10_mail_first(pg):
     if not txt:
         return ['his text never lands after the mail']
     gap = (min(txt) - min(mail)) / 1000.0
-    if gap < 2.4:
-        return [f'his text lands {gap:.1f}s after the mail — David asked for three seconds']
+    if gap < 0.7:
+        return [f'his text lands {gap:.1f}s after the mail — it lands about a second after, and never with it']
     return []
 
 

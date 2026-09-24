@@ -184,9 +184,8 @@
    ],
    "note": "Scene names on the date cards should appear TYPED, with a typo and a backspace one time in five, with keyboard haptics behind it.",
    "proof": "a_typed_foot",
-   "clean": 9,
-   "secs": 570.0,
-   "last_build": "6df8012b75b9"
+   "clean": 0,
+   "secs": 415.8
   },
   {
    "id": "D-014",
@@ -198,7 +197,7 @@
    "note": "At the top of 9.2 'Intermission' is briefly visible in the square frame, cut off.",
    "proof": "a_92_no_inter_flash",
    "clean": 11,
-   "secs": 16.8,
+   "secs": 16.3,
    "last_build": "6df8012b75b9"
   },
   {
@@ -408,7 +407,7 @@
    "note": "Reverb and a taper on the time warp; the reverse clip when time runs backwards.",
    "proof": "a_warp",
    "clean": 11,
-   "secs": 11.6,
+   "secs": 10.5,
    "last_build": "6df8012b75b9"
   },
   {
@@ -435,7 +434,7 @@
    "note": "The camera move and zoom on the song 9 notifications had disappeared. It is back, but it OVER-corrected: the push now crops the neighbouring card (see D-044). Not closed until the stack is both large and whole.",
    "proof": "a_song9_push",
    "clean": 11,
-   "secs": 17.9,
+   "secs": 16.6,
    "last_build": "6df8012b75b9"
   },
   {
@@ -446,10 +445,10 @@
     "10.1",
     "10.2"
    ],
-   "note": "The Casting Networks mail arrives with its tone three seconds before his text.",
+   "note": "The Casting Networks mail arrives with its tone ahead of his text. (Was three seconds; the gap is about a second now — the whole of 10.1 was asked to run five seconds faster.)",
    "proof": "a_10_mail_first",
    "clean": 11,
-   "secs": 14.1,
+   "secs": 10.6,
    "last_build": "6df8012b75b9"
   },
   {
@@ -895,7 +894,7 @@
    "note": "ERA_ZONE_ reserves 19% of the frame for a docked strip that measures 14.4% (276.5 px of 1920), leaving about 58 px of black between the phone and the strip. NOT CHANGING IT TWO DAYS OUT: ERA_ZONE_ feeds camFill, so every framing measurement in the show — the 3.39x resting scale, the notification stack rule, the subject law thresholds, the laptop and CarPlay widths — was tuned against it. Reclaiming 58 px risks re-breaking framing David has already approved. Recommend 0.165 as a post-run change, measured and re-gated. David's call.",
    "proof": "a_no_gutter",
    "clean": 1,
-   "secs": 15.8,
+   "secs": 15.0,
    "last_build": "6df8012b75b9"
   },
   {
@@ -964,7 +963,7 @@
    "note": "There are some moments where the typing of the day description disappears too quickly for the audience to read. Ie. 10.1 Audition Season - make sure they stay on the screen for at least 2-3 seconds fully typed.",
    "proof": "a_foot_dwell",
    "clean": 8,
-   "secs": 258.0,
+   "secs": 206.1,
    "last_build": "6df8012b75b9"
   },
   {
@@ -1076,7 +1075,7 @@
    "proof": "a_91_card_then_phone",
    "clean": 2,
    "last_build": "6df8012b75b9",
-   "secs": 12.8
+   "secs": 11.6
   },
   {
    "id": "D-077",
@@ -1089,7 +1088,7 @@
    "proof": "a_104_lands_connected",
    "clean": 2,
    "last_build": "6df8012b75b9",
-   "secs": 11.3
+   "secs": 6.9
   },
   {
    "id": "D-078",
