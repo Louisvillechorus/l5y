@@ -290,6 +290,15 @@ def a_bed_quality(pg):
     pg.wait_for_timeout(300)
     pg.evaluate("(()=>{ for(let i=0;i<10;i++){ pileDrop(); const S=PILE_S(); if(S.t){clearTimeout(S.t); S.t=null;} } })()")
     pg.wait_for_timeout(400)
+    # THE BED FADES IN OVER 1.2 s. Read it settled, or the probe grades the fade instead of the bed
+    # (it read 0.43, 0.08 — whatever the ramp had reached when the timer fired).
+    last = -1
+    for _ in range(30):
+        op = pg.evaluate("+getComputedStyle(document.getElementById('loop')).opacity")
+        if abs(op - last) < 0.005 and op > 0:
+            break
+        last = op
+        pg.wait_for_timeout(100)
     r = pg.evaluate("""(()=>{ const L=document.getElementById('loop');
         const w=innerWidth; const out=[...L.querySelectorAll('.print')].map(e=>{
           const b=e.getBoundingClientRect(); return {l:Math.round(b.left), r:Math.round(b.right)}; });
