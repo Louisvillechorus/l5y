@@ -619,7 +619,12 @@ function chain(snd, dest){
 }
 function posWord(pan){ const v=+pan||0; if(Math.abs(v)<0.15) return "center"; const side=v<0?"left":"right"; return (Math.abs(v)>0.6?"far ":"")+side; }
 
-async function decodeUrl(url){ const r = await fetch(url); if(!r.ok) throw new Error(url+" "+r.status); return await ctx.decodeAudioData(await r.arrayBuffer()); }
+async function decodeUrl(url, tries=3){
+  for(let i=1;;i++){
+    try{ const r = await fetch(url, {cache:"force-cache"}); if(!r.ok) throw new Error(url+" "+r.status); return await ctx.decodeAudioData(await r.arrayBuffer()); }
+    catch(e){ if(i>=tries) throw e; await new Promise(res=>setTimeout(res, 1500*i)); }
+  }
+}
 async function loadSound(id){
   const takes = MANIFEST[id] || []; let buf = null;
   if(choice[id]==="custom"){ const blob = await DB.get(id); if(blob){ try{ buf = await ctx.decodeAudioData(await blob.arrayBuffer()); }catch(e){} } }
@@ -1176,6 +1181,7 @@ async function arm(){
     buildGraph(); await ctx.resume();
     const ids = Object.keys(show.sounds); let done=0, missing=[];
     await Promise.all(ids.map(async id=>{ try{ const b=await loadSound(id); if(!b) missing.push(id);}catch(e){ missing.push(id);} done++; $("armBar").style.width=(done/ids.length*100)+"%"; }));
+    if(missing.length){ const again=missing.splice(0); $("armMsg").textContent="Retrying "+again.length+" file(s)…"; for(const id of again){ try{ const b=await loadSound(id); if(!b) missing.push(id);}catch(e){ missing.push(id);} } }
     startLayers(); for(const L of show.layers) liveLevels[L.id]=0;
     loadDropTakes();
     $("armDot").classList.add("on"); $("armTxt").textContent="Loaded";
