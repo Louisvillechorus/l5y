@@ -101,6 +101,10 @@
   "sounds/tex_strings_4.mp3"
  ],
  "fx_theremin": [
+  "sounds/fx_theremin_s1.mp3",
+  "sounds/fx_theremin_s2.mp3",
+  "sounds/fx_theremin_s3.mp3",
+  "sounds/fx_theremin_s4.mp3",
   "sounds/fx_theremin_1.mp3",
   "sounds/fx_theremin_2.mp3",
   "sounds/fx_theremin_3.mp3",
@@ -109,7 +113,8 @@
  "fx_punct": [
   "sounds/fx_punct_1.mp3",
   "sounds/fx_punct_2.mp3",
-  "sounds/fx_punct_3.mp3"
+  "sounds/fx_punct_3.mp3",
+  "sounds/fx_punct_4.mp3"
  ],
  "fx_alley": [
   "sounds/fx_alley_1.mp3",
@@ -242,6 +247,16 @@
    "Landline 2",
    "Landline 3",
    "Landline 4"
+  ],
+  "fx_theremin": [
+   "Low-key 1",
+   "Low-key 2",
+   "Low-key 3",
+   "Low-key 4",
+   "Bigger 1",
+   "Bigger 2",
+   "Bigger 3",
+   "Bigger 4"
   ],
   "ann_welcome": [
    "Take 1",

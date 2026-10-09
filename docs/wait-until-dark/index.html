@@ -785,6 +785,7 @@ function fire(){
   if(c.scene) goScene(c.scene, c.fade);
   for(const e of (c.play||[]).map(entry)) play(e.id, {delay:e.delay, gain:e.gain});
   lastFired = sb; sb = Math.min(sb+1, show.cues.length);
+  try{ localStorage.setItem("wud-pos", JSON.stringify({sb, t:Date.now()})); }catch(e){}
   log(`GO  cue ${lastFired+1}  ${c.when}`);
   if(isNumPage(c.page)) setPage(+c.page, "cues");
   renderCues(); renderStandby();
@@ -1182,6 +1183,7 @@ async function arm(){
     const lat = Math.round(((ctx.baseLatency||0)+(ctx.outputLatency||0))*1000);
     $("latencyTxt").textContent = lat ? `output latency ${lat} ms` : ""; $("latencyLine").textContent = lat ? `Measured output latency on this laptop: ${lat} ms from key press to sound.` : "";
     scheduleDrops(true);
+    try{ const pos=JSON.parse(localStorage.getItem("wud-pos")||"null"); if(pos && pos.sb>0 && pos.sb<show.cues.length && Date.now()-pos.t < 3*3600e3){ sb=pos.sb; lastFired=sb-1; setTimeout(()=>{ rehearseFrom(); toast(`Resumed where you were: standby cue ${sb+1}. Reset to top if this is a new performance.`); }, 300); } }catch(e){}
     showTab("show"); renderAll();
     toast(missing.length ? `${missing.length} sound(s) missing: check the Sounds tab` : "All sounds loaded");
     log("Sounds loaded");
@@ -1193,7 +1195,7 @@ $("armBtn").addEventListener("click", arm);
 $("goBtn").addEventListener("click", fire);
 $("backBtn").addEventListener("click", ()=>moveSb(-1));
 $("skipBtn").addEventListener("click", ()=>moveSb(1));
-$("resetBtn").addEventListener("click", ()=>{ sb=0; lastFired=-1; renderCues(); renderStandby(); toast("Standby on cue 1"); log("Reset to top"); });
+$("resetBtn").addEventListener("click", ()=>{ sb=0; lastFired=-1; try{localStorage.removeItem("wud-pos")}catch(e){} renderCues(); renderStandby(); toast("Standby on cue 1"); log("Reset to top"); });
 $("rehearseBtn").addEventListener("click", rehearseFrom);
 $("panicBtn").addEventListener("click", panic);
 $("editCuesBtn").addEventListener("click", ()=>showTab("cues"));
