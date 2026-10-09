@@ -17,12 +17,26 @@
   "sounds/fx_fridge_3.mp3",
   "sounds/fx_fridge_4.mp3"
  ],
- "mus_preshow": [
-  "sounds/mus_preshow_1.mp3",
-  "sounds/mus_preshow_2.mp3",
-  "sounds/mus_preshow_3.mp3",
-  "sounds/mus_preshow_4.mp3",
-  "sounds/mus_preshow_5.mp3"
+ "mus_house": [
+  "sounds/mus_house_1.mp3",
+  "sounds/mus_house_2.mp3",
+  "sounds/mus_house_3.mp3",
+  "sounds/mus_house_4.mp3",
+  "sounds/mus_house_5.mp3",
+  "sounds/mus_house_6.mp3",
+  "sounds/mus_house_7.mp3",
+  "sounds/mus_house_8.mp3",
+  "sounds/mus_house_9.mp3"
+ ],
+ "tex_tension": [
+  "sounds/tex_tension_1.mp3",
+  "sounds/tex_tension_2.mp3",
+  "sounds/tex_tension_3.mp3",
+  "sounds/tex_tension_4.mp3",
+  "sounds/tex_tension_5.mp3",
+  "sounds/tex_tension_6.mp3",
+  "sounds/tex_tension_7.mp3",
+  "sounds/tex_tension_8.mp3"
  ],
  "fx_fridge_off": [
   "sounds/fx_fridge_off_1.mp3",
@@ -55,34 +69,47 @@
   "sounds/fx_pipe_4.mp3"
  ],
  "fx_phone": [
+  "sounds/fx_phone_m1.mp3",
+  "sounds/fx_phone_m2.mp3",
+  "sounds/fx_phone_m3.mp3",
+  "sounds/fx_phone_m4.mp3",
   "sounds/fx_phone_1.mp3",
   "sounds/fx_phone_2.mp3",
   "sounds/fx_phone_3.mp3",
   "sounds/fx_phone_4.mp3"
  ],
  "fx_two_rings": [
+  "sounds/fx_two_rings_m1.mp3",
+  "sounds/fx_two_rings_m2.mp3",
+  "sounds/fx_two_rings_m3.mp3",
+  "sounds/fx_two_rings_m4.mp3",
   "sounds/fx_two_rings_1.mp3",
   "sounds/fx_two_rings_2.mp3",
   "sounds/fx_two_rings_3.mp3",
   "sounds/fx_two_rings_4.mp3"
  ],
- "tex_tension": [
-  "sounds/tex_tension_1.mp3",
-  "sounds/tex_tension_2.mp3",
-  "sounds/tex_tension_3.mp3",
-  "sounds/tex_tension_4.mp3"
+ "tex_change": [
+  "sounds/tex_change_1.mp3",
+  "sounds/tex_change_2.mp3",
+  "sounds/tex_change_3.mp3",
+  "sounds/tex_change_4.mp3"
  ],
- "mus_change": [
-  "sounds/mus_change_1.mp3",
-  "sounds/mus_change_2.mp3",
-  "sounds/mus_change_3.mp3",
-  "sounds/mus_change_4.mp3"
+ "tex_strings": [
+  "sounds/tex_strings_1.mp3",
+  "sounds/tex_strings_2.mp3",
+  "sounds/tex_strings_3.mp3",
+  "sounds/tex_strings_4.mp3"
  ],
- "mus_bows": [
-  "sounds/mus_bows_1.mp3",
-  "sounds/mus_bows_2.mp3",
-  "sounds/mus_bows_3.mp3",
-  "sounds/mus_bows_4.mp3"
+ "fx_theremin": [
+  "sounds/fx_theremin_1.mp3",
+  "sounds/fx_theremin_2.mp3",
+  "sounds/fx_theremin_3.mp3",
+  "sounds/fx_theremin_4.mp3"
+ ],
+ "fx_punct": [
+  "sounds/fx_punct_1.mp3",
+  "sounds/fx_punct_2.mp3",
+  "sounds/fx_punct_3.mp3"
  ],
  "fx_alley": [
   "sounds/fx_alley_1.mp3",
@@ -175,12 +202,46 @@
   "sounds/drp_siren_4.mp3"
  ],
  "_names": {
-  "mus_preshow": [
-   "Full mix (3 min)",
-   "Alt mix 1",
-   "Alt mix 2",
-   "Alt mix 3",
-   "Alt mix 4"
+  "mus_house": [
+   "Full bed (3.5 min)",
+   "Loop 1",
+   "Loop 2",
+   "Loop 3",
+   "Loop 4",
+   "Loop 5",
+   "Loop 6",
+   "Loop 7",
+   "Loop 8"
+  ],
+  "tex_tension": [
+   "Take 1",
+   "Take 2",
+   "Take 3",
+   "Take 4",
+   "Take 5",
+   "Take 6",
+   "Take 7",
+   "Take 8"
+  ],
+  "fx_phone": [
+   "Smartphone 1",
+   "Smartphone 2",
+   "Smartphone 3",
+   "Smartphone 4",
+   "Landline 1",
+   "Landline 2",
+   "Landline 3",
+   "Landline 4"
+  ],
+  "fx_two_rings": [
+   "Smartphone 1",
+   "Smartphone 2",
+   "Smartphone 3",
+   "Smartphone 4",
+   "Landline 1",
+   "Landline 2",
+   "Landline 3",
+   "Landline 4"
   ],
   "ann_welcome": [
    "Take 1",

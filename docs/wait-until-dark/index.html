@@ -296,7 +296,7 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
 
 <section id="view-scenes" class="page" hidden>
   <h2>Scenes</h2>
-  <p>A scene is a saved mix of the background layers (0 to 100). Cues switch scenes and the board glides between them over the fade time. Street life (the random cars, dogs and horns) is not part of a scene: it is one slider on the Show tab that stays where you put it and only plays while the street or rain is up.</p>
+  <p>A scene is a saved mix of the background layers (0 to 100). Cues switch scenes and the board glides between them over the fade time. Tension is a throttle the operator rides with = and -; a scene only moves it if you type a number in its Tension column (blank means leave it where it is). Street life (the random cars, dogs and horns) is not part of a scene: it is one slider on the Show tab that stays where you put it and only plays while the street or rain is up.</p>
   <div class="scroll"><table class="sc" id="sceneTable"></table></div>
   <div class="row" style="margin-top:10px"><button class="btn amber" id="addSceneBtn">Add scene (copies the current mix)</button></div>
 </section>
@@ -358,7 +358,8 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
     </ol></div>
     <div class="panel"><h3>During the show</h3><ul>
       <li><b>Space</b> or the GO button fires the cue in Standby. The standby card shows exactly what will happen.</li>
-      <li><b>1 to 0</b> fire the buttons. Phone and Tension keep going until you press again.</li>
+      <li><b>1 to 0</b> fire the buttons. Phone keeps ringing until you press again.</li>
+      <li><b>= and -</b> are the tension throttle: each press nudges the Tension bed up or down. It is yours to ride; cues never touch it. <b>0</b> (Punctuation) hits the metal and cuts the tension dead.</li>
       <li><b>[ and ]</b> flip the script page. Buttons called on that page light amber. GO moves the page to the cue you just fired.</li>
       <li><b>↑ / ↓</b> move Standby without playing anything.</li>
       <li><b>Esc</b> fades everything out over 2 seconds.</li>
@@ -399,16 +400,20 @@ const BASE = {
     {name:"Act II · Scene 2", from:64, to:68},
     {name:"Act II · Scene 3", from:69, to:80}
   ],
+  /* manual:true = a throttle the operator rides; scenes leave it alone unless they name a value */
   layers: [
-    {id:"music",  label:"Music",  sound:"mus_preshow"},
+    {id:"music",  label:"House music", sound:"mus_house"},
     {id:"street", label:"Street", sound:"amb_street"},
     {id:"rain",   label:"Rain",   sound:"amb_rain"},
-    {id:"fridge", label:"Fridge", sound:"fx_fridge"}
+    {id:"fridge", label:"Fridge", sound:"fx_fridge"},
+    {id:"tension",label:"Tension", sound:"tex_tension", manual:true}
   ],
   sounds: {
-    mus_preshow:  {label:"Pre-show jazz (loop)",      group:"Music and voice", pan:0,     gain:0,  space:"dry",  duck:0},
-    mus_change:   {label:"Scene-change jazz",          group:"Music and voice", pan:0,     gain:0,  space:"dry",  duck:4},
-    mus_bows:     {label:"Curtain call jazz",          group:"Music and voice", pan:0,     gain:0,  space:"dry",  duck:4},
+    mus_house:    {label:"House music (loop)",        group:"Music and voice", pan:0,     gain:0,  space:"dry",  duck:0},
+    tex_change:   {label:"Scene-change texture",       group:"Score",           pan:0,     gain:0,  space:"dry",  duck:4},
+    tex_strings:  {label:"Scraped strings",            group:"Score",           pan:0.2,   gain:-2, space:"room", duck:2, vary:true},
+    fx_theremin:  {label:"Theremin",                   group:"Score",           pan:-0.2,  gain:-3, space:"room", duck:2, vary:true},
+    fx_punct:     {label:"Punctuation (metal hit)",    group:"Score",           pan:0,     gain:0,  space:"room", duck:6, vary:true},
     ann_welcome:  {label:"Pre-show announcement",      group:"Music and voice", pan:0,     gain:0,  space:"dry",  duck:9},
     ann_two:      {label:"Intermission: two minutes",   group:"Music and voice", pan:0,     gain:0,  space:"dry",  duck:9},
     mus_doll:     {label:"Doll's tune, full",          group:"Music and voice", pan:0.1,   gain:0,  space:"room", duck:2},
@@ -417,11 +422,11 @@ const BASE = {
     amb_rain:     {label:"Rain on the window (loop)",  group:"Atmosphere",      pan:0.45,  gain:0,  space:"dry",  duck:0},
     fx_fridge:    {label:"Fridge hum (loop)",          group:"Atmosphere",      pan:0.7,   gain:0,  space:"dry",  duck:0},
     fx_fridge_off:{label:"Fridge clunks off",          group:"Atmosphere",      pan:0.7,   gain:0,  space:"dry",  duck:0},
-    tex_tension:  {label:"Tension swell",              group:"Atmosphere",      pan:0,     gain:0,  space:"dry",  duck:0},
+    tex_tension:  {label:"Tension bed (throttle)",     group:"Score",           pan:0,     gain:0,  space:"dry",  duck:0},
     fx_thunder:   {label:"Distant thunder",            group:"Atmosphere",      pan:0.3,   gain:-4, space:"dry",  duck:0},
     fx_doorbell:  {label:"Doorbell",                   group:"Effects",         pan:-0.6,  gain:0,  space:"room", duck:2, vary:true},
-    fx_phone:     {label:"Phone ringing",              group:"Effects",         pan:0.2,   gain:0,  space:"dry",  duck:2, loop:true},
-    fx_two_rings: {label:"Phone, exactly two rings",   group:"Effects",         pan:0.2,   gain:0,  space:"dry",  duck:2},
+    fx_phone:     {label:"Phone ringing (smartphone)", group:"Effects",         pan:0.2,   gain:-2, space:"dry",  duck:2, loop:true},
+    fx_two_rings: {label:"Phone, exactly two rings",   group:"Effects",         pan:0.2,   gain:-2, space:"dry",  duck:2},
     fx_slam:      {label:"Slam box (street door)",     group:"Effects",         pan:-0.75, gain:0,  space:"hall", duck:2, vary:true},
     fx_door:      {label:"Door closes down the hall",  group:"Effects",         pan:-0.7,  gain:-3, space:"hall", duck:0, vary:true},
     fx_cane:      {label:"Susy's cane in the hall",    group:"Effects",         pan:-0.6,  gain:0,  space:"hall", duck:0, vary:true},
@@ -450,17 +455,18 @@ const BASE = {
     {id:"fridge", name:"Act I Sc 1 fridge", fade:0.1, levels:{music:0,  street:22, rain:0,  fridge:88}},
     {id:"s11b",   name:"Act I Sc 1 quiet",  fade:0.05, levels:{music:0,  street:22, rain:0,  fridge:0}},
     {id:"rain",   name:"Act I rain",        fade:6, levels:{music:0,  street:0,  rain:55, fridge:0}},
-    {id:"inter",  name:"Intermission",      fade:4, levels:{music:58, street:0,  rain:30, fridge:0}},
-    {id:"s21",    name:"Act II heavy rain", fade:8, levels:{music:0,  street:0,  rain:70, fridge:0}},
+    {id:"inter",  name:"Intermission",      fade:4, levels:{music:58, street:0,  rain:30, fridge:0, tension:14}},
+    {id:"s21",    name:"Act II heavy rain", fade:8, levels:{music:0,  street:0,  rain:70, fridge:0, tension:0}},
     {id:"drizzle",name:"Drizzle",           fade:8, levels:{music:0,  street:0,  rain:32, fridge:0}},
     {id:"silent", name:"Silence",           fade:10, levels:{music:0,  street:0,  rain:0,  fridge:0}},
     {id:"roar",   name:"Fridge roars",      fade:0.08, levels:{music:0,  street:0,  rain:0,  fridge:100}},
     {id:"cut",    name:"Cord pulled",       fade:0.02, levels:{music:0,  street:0,  rain:0,  fridge:0}},
-    {id:"exit",   name:"Exit music",        fade:4, levels:{music:62, street:30, rain:0,  fridge:0}}
+    {id:"bows",   name:"Bows",              fade:1.5, levels:{music:70, street:0,  rain:0,  fridge:0, tension:0}},
+    {id:"exit",   name:"Exit music",        fade:4, levels:{music:62, street:30, rain:0,  fridge:0, tension:0}}
   ],
   /* play/stop entries: a sound id, or {id, delay (s), gain (dB)}. lx:true means the SM calls it with a lighting cue. */
   cues: [
-    {id:"c01", page:"Pre", when:"House opens", what:"Faint jazz from upstairs over a quiet night street.", scene:"pre"},
+    {id:"c01", page:"Pre", when:"House opens", what:"Warm, comfortable house music over a quiet night street. Nothing is wrong.", scene:"pre"},
     {id:"c02", page:"Pre", when:"House to half", what:"Music fades out. Street stays, barely there.", scene:"s11"},
     {id:"c03", page:"Pre", when:"Two minutes to curtain (SM calls it)", what:"The announcement, over the street.", play:["ann_welcome"]},
     {id:"c04", page:"5",   when:"Blackout, top of show", what:"Fridge hum, loud, alone in the dark.", scene:"fridge", lx:true},
@@ -468,13 +474,13 @@ const BASE = {
     {id:"c06", page:"18",  when:"Roat: “Quiet!” They listen", what:"Susy's cane tapping down the hall toward the door. Suggested, cut if the actor's stick carries.", play:["fx_cane"]},
     {id:"c07", page:"18",  when:"Mike: “…tomorrow night.”", what:"Street door slams, off left.", play:["fx_slam"]},
     {id:"c08", page:"19",  when:"Susy exits, slamming the door", what:"Her cane fades along the hall, then the street door slams.", play:[{id:"fx_cane", gain:-6}, {id:"fx_slam", delay:4.5}]},
-    {id:"c09", page:"19",  when:"“Two plus five, Mr. Talman.” Blackout", what:"Scene-change jazz. Street out, rain in.", scene:"rain", play:["mus_change"]},
-    {id:"c10", page:"32",  when:"“Oh, yes! Thank you.” Blackout", what:"Scene-change jazz. Rain stays.", play:["mus_change"]},
-    {id:"c11", page:"41",  when:"“They're watching this house.” Blackout", what:"Intermission jazz over the rain.", scene:"inter"},
+    {id:"c09", page:"19",  when:"“Two plus five, Mr. Talman.” Blackout", what:"Scratchy scene-change texture. Street out, rain in.", scene:"rain", play:["tex_change"]},
+    {id:"c10", page:"32",  when:"“Oh, yes! Thank you.” Blackout", what:"Scene-change texture. Rain stays.", play:["tex_change"]},
+    {id:"c11", page:"41",  when:"“They're watching this house.” Blackout", what:"Intermission: the house music comes back over the rain with a thread of the tension bed under it. Not quite comfortable anymore.", scene:"inter"},
     {id:"c11b",page:"42",  when:"Two minutes to Act II (SM calls it)", what:"The two-minute call, over the intermission music.", play:["ann_two"]},
     {id:"c12", page:"42",  when:"House to half, top of Act II", what:"Music out. Rain comes back heavier.", scene:"s21"},
     {id:"c13", page:"42",  when:"Lights up, Act II", what:"A roll of distant thunder under the rain. Suggested.", play:[{id:"fx_thunder", delay:2}]},
-    {id:"c14", page:"64",  when:"Susy closes the washer. Blackout", what:"Scene-change jazz. Rain thins to a drizzle.", scene:"drizzle", play:["mus_change"]},
+    {id:"c14", page:"64",  when:"Susy closes the washer. Blackout", what:"Scene-change texture. Rain thins to a drizzle.", scene:"drizzle", play:["tex_change"]},
     {id:"c15", page:"66",  when:"Susy: “…But that won't be enough…”", what:"Alley: engine revs, a shout, trash can, the car tears off.", play:["fx_alley"]},
     {id:"c16", page:"68",  when:"Roat: “…we can talk.”", what:"Drizzle fades to silence. Nothing from here but the actors.", scene:"silent"},
     {id:"c17", page:"71",  when:"Susy smashes the lamp", what:"Glass. Same instant as the lights.", play:["fx_glass"], lx:true},
@@ -482,8 +488,8 @@ const BASE = {
     {id:"c19", page:"74",  when:"Roat slits the doll open", what:"The doll's whole tune, tinny and small.", play:["mus_doll"]},
     {id:"c20", page:"76",  when:"Susy yanks the cord", what:"Hum cuts dead. Total silence.", scene:"cut", stop:["mus_doll"], lx:true},
     {id:"c21", page:"76",  when:"After the held silence", what:"Running feet, pounding, the door forced open.", play:["fx_breakin"]},
-    {id:"c22", page:"Bows", when:"Curtain call", what:"Bows jazz.", play:["mus_bows"]},
-    {id:"c23", page:"Exit", when:"House lights up", what:"Exit music and street.", scene:"exit", stop:["mus_bows"]}
+    {id:"c22", page:"Bows", when:"Curtain call", what:"The house music, back and bright. The comfortable thing from before the show.", scene:"bows"},
+    {id:"c23", page:"Exit", when:"House lights up", what:"House music and the street.", scene:"exit"}
   ],
   buttons: [
     {key:"1", sound:"fx_doorbell",   label:"Doorbell",  note:"Hall door",                 pages:[5,24,31,31,31,35,50,51,51,51,52]},
@@ -494,8 +500,8 @@ const BASE = {
     {key:"6", sound:"fx_glass",      label:"Glass",     note:"Lamp or bulb (p. 71 is a cue)", pages:[42,63,63]},
     {key:"7", sound:"mus_doll_short",label:"Doll",      note:"First notes only",          pages:[50]},
     {key:"8", sound:"fx_pipe",       label:"Pipe",      note:"Gloria's three knocks",     pages:[60]},
-    {key:"9", sound:"fx_thunder",    label:"Thunder",   note:"Act II, when the rain is up",pages:[]},
-    {key:"0", sound:"tex_tension",   label:"Tension",   note:"Optional, fades itself",    pages:[56,61,66], toggle:true}
+    {key:"9", sound:"fx_theremin",   label:"Theremin",  note:"Sinister. Use sparingly",   pages:[]},
+    {key:"0", sound:"fx_punct",      label:"Punctuation",note:"Metal hit. Cuts the tension dead", pages:[16], punct:true}
   ]
 };
 
@@ -643,7 +649,7 @@ function setLayer(id, v, fade){
 function goScene(sceneId, fadeOverride){
   const s = sceneOf(sceneId); if(!s) return;
   const f = (fadeOverride!==undefined && fadeOverride!==null && fadeOverride!=="") ? +fadeOverride : s.fade;
-  for(const L of show.layers) setLayer(L.id, s.levels[L.id]||0, f);
+  for(const L of show.layers){ if(L.manual && s.levels[L.id]===undefined) continue; setLayer(L.id, s.levels[L.id]||0, f); }
   currentScene = s.id; sceneDirty=false; scheduleDrops(true); renderMixer();
 }
 
@@ -699,7 +705,7 @@ const breath = {};
 setInterval(()=>{
   if(!ctx || show.settings.breathe===false) return;
   for(const L of show.layers){
-    if(L.id==="music" || L.id==="fridge") continue;
+    if(L.id==="music" || L.id==="fridge" || L.manual) continue;
     const v = liveLevels[L.id]||0, n = layerNodes[L.id]; if(!v || !n) continue;
     const b = breath[L.id] = (breath[L.id]||0)*0.8 + (Math.random()-0.5)*0.12;
     const target = layerGainTarget(L.id, v) * (1 + Math.max(-0.12, Math.min(0.12, b)));
@@ -843,7 +849,7 @@ function renderMixer(){
   for(const L of show.layers){
     const v = Math.round(liveLevels[L.id]||0);
     const d = document.createElement("div"); d.className="fader";
-    d.innerHTML = `<label for="f-${L.id}">${esc(L.label)}<span class="where">${posWord(show.sounds[L.sound].pan)}</span></label>
+    d.innerHTML = `<label for="f-${L.id}">${esc(L.label)}<span class="where">${L.manual?"throttle: = and -":posWord(show.sounds[L.sound].pan)}</span></label>
       <input type="range" id="f-${L.id}" min="0" max="100" value="${v}"><output class="num" id="o-${L.id}">${v}</output>
       <button class="mute" id="m-${L.id}" title="Cut this layer">Cut</button>`;
     box.appendChild(d);
@@ -875,8 +881,14 @@ function renderPad(){
 }
 function hit(b){
   if(!ctx){ toast("Press Load sounds first"); return; }
-  if(b.toggle && isPlaying(b.sound)){ stopSound(b.sound, b.sound==="tex_tension"?2.5:0.05); log(`stop ${b.label}`); return; }
+  if(b.toggle && isPlaying(b.sound)){ stopSound(b.sound, 0.05); log(`stop ${b.label}`); return; }
   play(b.sound); log(`button ${b.label}`);
+  if(b.punct){ throttle(null, 0.04); }
+}
+/* the tension throttle: nudge by d, or cut to 0 with d=null; cues never touch it */
+function throttle(d, fade=1.5){
+  const cur = liveLevels.tension||0; const nv = d===null ? 0 : Math.max(0, Math.min(100, cur+d));
+  setLayer("tension", nv, fade); const f=$("f-tension"), o=$("o-tension"); if(f){ f.value=nv; o.textContent=Math.round(nv); }
 }
 function renderLive(){
   const box = $("liveList"); const rows = [];
@@ -990,12 +1002,12 @@ $("addBtnBtn").addEventListener("click",()=>{ const used=show.buttons.map(b=>b.k
 function renderScenes(){
   const t = $("sceneTable");
   t.innerHTML = `<thead><tr><th>Scene</th>${show.layers.map(l=>`<th class="c">${esc(l.label)}</th>`).join("")}<th class="c">Fade s</th><th>Used by</th><th></th></tr></thead><tbody>` +
-    show.scenes.map((s,i)=>`<tr data-i="${i}"><td><input type="text" value="${esc(s.name)}" data-f="name"></td>${show.layers.map(l=>`<td class="c"><input type="number" min="0" max="100" value="${s.levels[l.id]||0}" data-lv="${l.id}"></td>`).join("")}<td class="c"><input type="number" step="0.5" min="0" value="${s.fade}" data-f="fade"></td><td class="num" style="color:var(--dim);font-size:12px">${show.cues.map((c,j)=>c.scene===s.id?"Q"+(j+1):null).filter(Boolean).join(", ")||"none"}</td><td><div class="row" style="flex-wrap:nowrap"><button class="btn sm" data-load="${s.id}">Load</button>${show.cues.some(c=>c.scene===s.id)?"":`<button class="btn sm danger" data-del="${i}">×</button>`}</div></td></tr>`).join("") + `</tbody>`;
+    show.scenes.map((s,i)=>`<tr data-i="${i}"><td><input type="text" value="${esc(s.name)}" data-f="name"></td>${show.layers.map(l=>`<td class="c"><input type="number" min="0" max="100" value="${s.levels[l.id]===undefined?"":s.levels[l.id]}" placeholder="${l.manual?"ride":"0"}" data-lv="${l.id}"></td>`).join("")}<td class="c"><input type="number" step="0.5" min="0" value="${s.fade}" data-f="fade"></td><td class="num" style="color:var(--dim);font-size:12px">${show.cues.map((c,j)=>c.scene===s.id?"Q"+(j+1):null).filter(Boolean).join(", ")||"none"}</td><td><div class="row" style="flex-wrap:nowrap"><button class="btn sm" data-load="${s.id}">Load</button>${show.cues.some(c=>c.scene===s.id)?"":`<button class="btn sm danger" data-del="${i}">×</button>`}</div></td></tr>`).join("") + `</tbody>`;
   t.querySelectorAll("[data-load]").forEach(b=>b.addEventListener("click",()=>{ if(!ctx){toast("Press Load sounds first");return;} goScene(b.dataset.load, 2); toast("Loaded "+sceneOf(b.dataset.load).name); }));
   t.querySelectorAll("[data-del]").forEach(b=>b.addEventListener("click",()=>{ show.scenes.splice(+b.dataset.del,1); save(); renderScenes(); }));
   t.querySelectorAll("tr[data-i]").forEach(tr=>{
     const s = show.scenes[+tr.dataset.i];
-    tr.querySelectorAll("[data-lv]").forEach(inp=>inp.addEventListener("change",()=>{ s.levels[inp.dataset.lv]=Math.max(0,Math.min(100,+inp.value||0)); save(); if(ctx && currentScene===s.id) goScene(s.id, 0.5); }));
+    tr.querySelectorAll("[data-lv]").forEach(inp=>inp.addEventListener("change",()=>{ if(inp.value==="") delete s.levels[inp.dataset.lv]; else s.levels[inp.dataset.lv]=Math.max(0,Math.min(100,+inp.value||0)); save(); if(ctx && currentScene===s.id) goScene(s.id, 0.5); }));
     tr.querySelectorAll("[data-f]").forEach(inp=>inp.addEventListener("change",()=>{ const f=inp.dataset.f; s[f] = f==="name" ? inp.value.trim()||s.name : Math.max(0,+inp.value||0); save(); renderScenes(); renderMixer(); }));
   });
 }
@@ -1189,7 +1201,7 @@ $("f-life").addEventListener("input", e=>{ show.settings.life=+e.target.value; $
 $("m-life").addEventListener("click", ()=>{ show.settings.life=0; $("f-life").value=0; $("o-life").textContent=0; save(); for(const [k,p] of playing) if(p.drop) stopKey(k,1); });
 $("saveSceneBtn").addEventListener("click", ()=>{
   const s = sceneOf(currentScene); if(!s){ toast("No scene loaded. Fire a cue or load a scene first."); return; }
-  for(const L of show.layers) s.levels[L.id] = Math.round(liveLevels[L.id]||0);
+  for(const L of show.layers){ if(L.manual && s.levels[L.id]===undefined) continue; s.levels[L.id] = Math.round(liveLevels[L.id]||0); }
   sceneDirty=false; save(); renderMixer(); toast("Saved to "+s.name);
 });
 $("audStop").addEventListener("click", ()=>{ if(audKey) stopKey(audKey,0.2); });
@@ -1205,6 +1217,8 @@ document.addEventListener("keydown", e=>{
   if(e.key==="Escape"){ panic(); return; }
   if(e.key==="ArrowUp"){ e.preventDefault(); moveSb(-1); return; }
   if(e.key==="ArrowDown"){ e.preventDefault(); moveSb(1); return; }
+  if(e.key==="=" || e.key==="+"){ e.preventDefault(); throttle(+8); return; }
+  if(e.key==="-" || e.key==="_"){ e.preventDefault(); throttle(-8); return; }
   if(e.key==="[" || e.key==="PageUp"){ e.preventDefault(); setPage(page-1); return; }
   if(e.key==="]" || e.key==="PageDown"){ e.preventDefault(); setPage(page+1); return; }
   const b = show.buttons.find(x=>x.key===e.key); if(b){ e.preventDefault(); hit(b); }
