@@ -1,0 +1,210 @@
+{
+ "amb_rain": [
+  "sounds/amb_rain_1.mp3",
+  "sounds/amb_rain_2.mp3",
+  "sounds/amb_rain_3.mp3",
+  "sounds/amb_rain_4.mp3"
+ ],
+ "amb_street": [
+  "sounds/amb_street_1.mp3",
+  "sounds/amb_street_2.mp3",
+  "sounds/amb_street_3.mp3",
+  "sounds/amb_street_4.mp3"
+ ],
+ "fx_fridge": [
+  "sounds/fx_fridge_1.mp3",
+  "sounds/fx_fridge_2.mp3",
+  "sounds/fx_fridge_3.mp3",
+  "sounds/fx_fridge_4.mp3"
+ ],
+ "mus_preshow": [
+  "sounds/mus_preshow_1.mp3",
+  "sounds/mus_preshow_2.mp3",
+  "sounds/mus_preshow_3.mp3",
+  "sounds/mus_preshow_4.mp3",
+  "sounds/mus_preshow_5.mp3"
+ ],
+ "fx_fridge_off": [
+  "sounds/fx_fridge_off_1.mp3",
+  "sounds/fx_fridge_off_2.mp3",
+  "sounds/fx_fridge_off_3.mp3",
+  "sounds/fx_fridge_off_4.mp3"
+ ],
+ "fx_doorbell": [
+  "sounds/fx_doorbell_1.mp3",
+  "sounds/fx_doorbell_2.mp3",
+  "sounds/fx_doorbell_3.mp3",
+  "sounds/fx_doorbell_4.mp3"
+ ],
+ "fx_door": [
+  "sounds/fx_door_1.mp3",
+  "sounds/fx_door_2.mp3",
+  "sounds/fx_door_3.mp3",
+  "sounds/fx_door_4.mp3"
+ ],
+ "fx_glass": [
+  "sounds/fx_glass_1.mp3",
+  "sounds/fx_glass_2.mp3",
+  "sounds/fx_glass_3.mp3",
+  "sounds/fx_glass_4.mp3"
+ ],
+ "fx_pipe": [
+  "sounds/fx_pipe_1.mp3",
+  "sounds/fx_pipe_2.mp3",
+  "sounds/fx_pipe_3.mp3",
+  "sounds/fx_pipe_4.mp3"
+ ],
+ "fx_phone": [
+  "sounds/fx_phone_1.mp3",
+  "sounds/fx_phone_2.mp3",
+  "sounds/fx_phone_3.mp3",
+  "sounds/fx_phone_4.mp3"
+ ],
+ "fx_two_rings": [
+  "sounds/fx_two_rings_1.mp3",
+  "sounds/fx_two_rings_2.mp3",
+  "sounds/fx_two_rings_3.mp3",
+  "sounds/fx_two_rings_4.mp3"
+ ],
+ "tex_tension": [
+  "sounds/tex_tension_1.mp3",
+  "sounds/tex_tension_2.mp3",
+  "sounds/tex_tension_3.mp3",
+  "sounds/tex_tension_4.mp3"
+ ],
+ "mus_change": [
+  "sounds/mus_change_1.mp3",
+  "sounds/mus_change_2.mp3",
+  "sounds/mus_change_3.mp3",
+  "sounds/mus_change_4.mp3"
+ ],
+ "mus_bows": [
+  "sounds/mus_bows_1.mp3",
+  "sounds/mus_bows_2.mp3",
+  "sounds/mus_bows_3.mp3",
+  "sounds/mus_bows_4.mp3"
+ ],
+ "fx_alley": [
+  "sounds/fx_alley_1.mp3",
+  "sounds/fx_alley_2.mp3",
+  "sounds/fx_alley_3.mp3",
+  "sounds/fx_alley_4.mp3"
+ ],
+ "fx_breakin": [
+  "sounds/fx_breakin_1.mp3",
+  "sounds/fx_breakin_2.mp3",
+  "sounds/fx_breakin_3.mp3",
+  "sounds/fx_breakin_4.mp3"
+ ],
+ "mus_doll": [
+  "sounds/mus_doll_1.mp3"
+ ],
+ "mus_doll_short": [
+  "sounds/mus_doll_short_1.mp3"
+ ],
+ "ann_welcome": [
+  "sounds/ann_matt_2.mp3",
+  "sounds/ann_matt_1.mp3",
+  "sounds/ann_matt_3.mp3",
+  "sounds/ann_matt_4.mp3",
+  "sounds/ann_sterling_1.mp3",
+  "sounds/ann_sterling_2.mp3",
+  "sounds/ann_sterling_3.mp3",
+  "sounds/ann_sterling_4.mp3",
+  "sounds/ann_christopher_1.mp3",
+  "sounds/ann_christopher_2.mp3",
+  "sounds/ann_christopher_3.mp3",
+  "sounds/ann_christopher_4.mp3",
+  "sounds/ann_joseph_1.mp3",
+  "sounds/ann_joseph_2.mp3",
+  "sounds/ann_joseph_3.mp3",
+  "sounds/ann_joseph_4.mp3"
+ ],
+ "ann_two": [
+  "sounds/ann_two_1.mp3",
+  "sounds/ann_two_2.mp3",
+  "sounds/ann_two_3.mp3",
+  "sounds/ann_two_4.mp3"
+ ],
+ "fx_slam": [
+  "sounds/fx_slam_1.mp3",
+  "sounds/fx_slam_2.mp3",
+  "sounds/fx_slam_3.mp3",
+  "sounds/fx_slam_4.mp3"
+ ],
+ "fx_thunder": [
+  "sounds/fx_thunder_1.mp3",
+  "sounds/fx_thunder_2.mp3",
+  "sounds/fx_thunder_3.mp3",
+  "sounds/fx_thunder_4.mp3"
+ ],
+ "fx_cane": [
+  "sounds/fx_cane_1.mp3",
+  "sounds/fx_cane_2.mp3",
+  "sounds/fx_cane_3.mp3",
+  "sounds/fx_cane_4.mp3"
+ ],
+ "drp_car": [
+  "sounds/drp_car_1.mp3",
+  "sounds/drp_car_2.mp3",
+  "sounds/drp_car_3.mp3",
+  "sounds/drp_car_4.mp3"
+ ],
+ "drp_horn": [
+  "sounds/drp_horn_1.mp3",
+  "sounds/drp_horn_2.mp3",
+  "sounds/drp_horn_3.mp3",
+  "sounds/drp_horn_4.mp3"
+ ],
+ "drp_dog": [
+  "sounds/drp_dog_1.mp3",
+  "sounds/drp_dog_2.mp3",
+  "sounds/drp_dog_3.mp3",
+  "sounds/drp_dog_4.mp3"
+ ],
+ "drp_bus": [
+  "sounds/drp_bus_1.mp3",
+  "sounds/drp_bus_2.mp3",
+  "sounds/drp_bus_3.mp3",
+  "sounds/drp_bus_4.mp3"
+ ],
+ "drp_siren": [
+  "sounds/drp_siren_1.mp3",
+  "sounds/drp_siren_2.mp3",
+  "sounds/drp_siren_3.mp3",
+  "sounds/drp_siren_4.mp3"
+ ],
+ "_names": {
+  "mus_preshow": [
+   "3 min arrangement of take 1",
+   "Original take 1",
+   "Original take 2",
+   "Original take 3",
+   "Original take 4"
+  ],
+  "ann_welcome": [
+   "Matt 2",
+   "Matt 1",
+   "Matt 3",
+   "Matt 4",
+   "Sterling 1",
+   "Sterling 2",
+   "Sterling 3",
+   "Sterling 4",
+   "Christopher 1",
+   "Christopher 2",
+   "Christopher 3",
+   "Christopher 4",
+   "Joseph 1",
+   "Joseph 2",
+   "Joseph 3",
+   "Joseph 4"
+  ],
+  "ann_two": [
+   "Matt 1",
+   "Matt 2",
+   "Matt 3",
+   "Matt 4"
+  ]
+ }
+}
