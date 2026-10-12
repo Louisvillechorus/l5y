@@ -281,6 +281,16 @@
    "Take 2",
    "Take 3",
    "Take 4"
+  ],
+  "fx_heart": [
+   "Take 1",
+   "Take 2",
+   "Take 3"
   ]
- }
+ },
+ "fx_heart": [
+  "sounds/fx_heart_1.mp3",
+  "sounds/fx_heart_2.mp3",
+  "sounds/fx_heart_3.mp3"
+ ]
 }
