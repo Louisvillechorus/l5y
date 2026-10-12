@@ -142,6 +142,7 @@ main.show{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:1
 .pgwhat .sec{display:block;font-family:var(--display);letter-spacing:.08em;text-transform:uppercase;font-size:12px;color:var(--fg)}
 @media (max-width:520px){.pager{grid-template-columns:auto auto auto}.pgwhat{grid-column:1/-1}}
 .pad{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.pad .hot.wide{grid-column:1/-1}
 @media (max-width:1200px){.pad{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media (max-width:520px){.pad{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .hot{position:relative;min-height:74px;border-radius:9px;border:1px solid var(--line);background:var(--panel-2);text-align:left;padding:9px 9px 8px;display:flex;flex-direction:column;justify-content:space-between;gap:4px}
@@ -365,7 +366,8 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
       <li><b>Space</b> or the GO button fires the cue in Standby. The standby card shows exactly what will happen.</li>
       <li><b>1 to 0</b> fire the buttons. Phone keeps ringing until you press again.</li>
       <li><b>= and -</b> are the tension throttle: each press nudges the Tension bed up or down. It is yours to ride; cues never touch it. <b>0</b> (Punctuation) hits the metal and cuts the tension dead.</li>
-      <li><b>H</b> starts and stops the heartbeat. <b>,</b> and <b>.</b> slow it down and speed it up (the Heartbeat slider does the same); it gets a little louder as it races. <b>0</b> (Punctuation) cuts it dead along with the tension. Built for the final fight: start it on the light shift, slow it with the slow motion, race it toward the knife, cut it.</li>
+      <li><b>H</b> starts and stops the heartbeat. <b>,</b> and <b>.</b> slow it down and speed it up (the Heartbeat slider does the same); it gets a little louder as it races. <b>0</b> (Punctuation) cuts it dead along with the tension. Built for the final fight: start it on the light shift, slow it with the slow motion (under 60 it sinks lower, like the world slowing down), race it toward the knife, then <b>K</b>.</li>
+      <li><b>K</b> is the stab: one sound used nowhere else in the show. It cuts the heartbeat and the tension dead in the same instant.</li>
       <li><b>[ and ]</b> flip the script page. Buttons called on that page light amber. GO moves the page to the cue you just fired.</li>
       <li><b>↑ / ↓</b> move Standby without playing anything.</li>
       <li><b>Esc</b> fades everything out over 2 seconds.</li>
@@ -381,7 +383,7 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
     </ul></div>
     <div class="panel"><h3>Where sounds sit</h3><p>Every sound has a position left to right as the audience sees the stage: the hall door and the street door on the left, the phone a little right of center, the windows and the fridge on the right. Music and the announcement sit in the middle. Offstage sounds carry a little stairwell echo; room sounds a little room. Change any of it on the Sounds tab.</p></div>
     <div class="panel"><h3>Street life</h3><p>The random cars, dogs, horns, buses and far sirens are one slider in Atmosphere. It is not a cue: set it once in tech and leave it. They only play while the street or rain bed is up, so they stop on their own in the silent scenes. Every drop has four recordings and never plays the same one twice in a row, at a slightly different speed, level and spot each time, and never two within twenty seconds.</p></div>
-    <div class="panel"><h3>Heartbeat</h3><p>One beat per file, three takes, played on a tempo the operator rides from 30 to 180 beats a minute. It is not a cue and no scene touches it: H starts it, the slider or , and . set the pace, H fades it out over a second, and the Punctuation hit cuts it dead in the same instant it cuts the tension. Slow is quiet; fast is a few decibels louder. Every beat is a slightly different take at a slightly different pitch, so it never sounds like a loop.</p></div>
+    <div class="panel"><h3>Heartbeat</h3><p>One beat per file, three takes, played on a tempo the operator rides from 30 to 180 beats a minute. It is not a cue and no scene touches it: H starts it, the slider or , and . set the pace, H fades it out over a second, and the Punctuation hit cuts it dead in the same instant it cuts the tension. Slow is quiet and, under 60, lower and heavier, as if time were slowing; fast is a few decibels louder. K (the stab) cuts it dead. Every beat is a slightly different take at a slightly different pitch, so it never sounds like a loop.</p></div>
     <div class="panel"><h3>Changing the show in tech</h3><p>Move the Atmosphere sliders until the director is happy, then Save to scene. Add, reorder or rewrite cues on the Cues tab. Change takes, levels and positions on the Sounds tab. Then copy the show file from Setup as a backup.</p></div>
   </div>
 </section>
@@ -397,6 +399,7 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
    ============================================================ */
 const BASE = {
   version: 2,
+  rev: 3,
   settings: {master:0, duck:3, breathe:true, midi:{}, life:40, heart:72},
   sections: [
     {name:"Pre-show", from:0, to:4},
@@ -431,6 +434,7 @@ const BASE = {
     fx_fridge_off:{label:"Fridge clunks off",          group:"Atmosphere",      pan:0.7,   gain:0,  space:"dry",  duck:0},
     tex_tension:  {label:"Tension bed (throttle)",     group:"Score",           pan:0,     gain:0,  space:"dry",  duck:0},
     fx_heart:     {label:"Heartbeat (one beat; the board sets the tempo)", group:"Score", pan:0, gain:0, space:"dry", duck:0, vary:true},
+    fx_stab:      {label:"The stab",                   group:"Score",           pan:0,     gain:0,  space:"room", duck:8},
     fx_thunder:   {label:"Distant thunder",            group:"Atmosphere",      pan:0.3,   gain:-4, space:"dry",  duck:0},
     fx_doorbell:  {label:"Doorbell",                   group:"Effects",         pan:-0.6,  gain:0,  space:"room", duck:2, vary:true},
     fx_phone:     {label:"Phone ringing (smartphone)", group:"Effects",         pan:0.2,   gain:-2, space:"dry",  duck:2, loop:true},
@@ -509,7 +513,8 @@ const BASE = {
     {key:"7", sound:"mus_doll_short",label:"Doll",      note:"First notes only",          pages:[50]},
     {key:"8", sound:"fx_pipe",       label:"Pipe",      note:"Gloria's three knocks",     pages:[60]},
     {key:"9", sound:"fx_theremin",   label:"Theremin",  note:"Sinister. Use sparingly",   pages:[]},
-    {key:"0", sound:"fx_punct",      label:"Punctuation",note:"Metal hit. Cuts the tension dead", pages:[16], punct:true}
+    {key:"0", sound:"fx_punct",      label:"Punctuation",note:"Metal hit. Cuts the tension dead", pages:[16], punct:true},
+    {key:"K", sound:"fx_stab",       label:"The stab",  note:"Final fight. Cuts the heartbeat and tension dead", pages:[], punct:true, wide:true}
   ]
 };
 
@@ -530,7 +535,7 @@ const LS_KEY = "wud-sound-show-v2";
 let show = deep(BASE);
 let choice = {};          // soundId -> take index or "custom"
 function save(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(exportObj())); }catch(e){} }
-function exportObj(){ return {version:2, saved:new Date().toISOString(), settings:show.settings, sections:show.sections, sounds:show.sounds, scenes:show.scenes, cues:show.cues, buttons:show.buttons, drops:show.drops, choice}; }
+function exportObj(){ return {version:2, rev:BASE.rev, saved:new Date().toISOString(), settings:show.settings, sections:show.sections, sounds:show.sounds, scenes:show.scenes, cues:show.cues, buttons:show.buttons, drops:show.drops, choice}; }
 function applyShowFile(obj, persist=true){
   if(!obj || !obj.version) throw new Error("Not a show file");
   if(obj.version===2){
@@ -544,6 +549,7 @@ function applyShowFile(obj, persist=true){
       drops: Array.isArray(obj.drops)?obj.drops:fresh.drops
     });
     if(obj.sounds) for(const k in obj.sounds) show.sounds[k] = Object.assign(show.sounds[k]||{label:k,group:"Effects"}, obj.sounds[k]);
+    migrate(+obj.rev||2);
   } else {  /* version 1 files from the first build: keep what still applies */
     if(Array.isArray(obj.scenes)) obj.scenes.forEach(s=>{ const t=sceneOf(s.id); if(t){ t.levels=s.levels; t.fade=s.fade; } });
     if(obj.gains) for(const k in obj.gains) if(show.sounds[k]) show.sounds[k].gain=+obj.gains[k]||0;
@@ -551,6 +557,16 @@ function applyShowFile(obj, persist=true){
   }
   if(obj.choice) choice = obj.choice;
   if(persist) save();
+}
+/* bring a show saved by an older build up to date, touching only what the operator never changed */
+function migrate(from){
+  if(from < 3){
+    const a=show.sounds.ann_welcome; if(a && a.duck===9) a.duck=4;                       // street stays under the curtain speech
+    const was={s11:26, fridge:22, s11b:22};
+    for(const id in was){ const sc=sceneOf(id), base=BASE.scenes.find(x=>x.id===id); if(sc && sc.levels.street===was[id]) sc.levels.street=base.levels.street; }
+    for(const id of ["c02","c03"]){ const c=show.cues.find(x=>x.id===id), b=BASE.cues.find(x=>x.id===id); if(c && b && c.scene===b.scene){ c.what=b.what; } }
+    if(!show.buttons.some(b=>b.sound==="fx_stab")) show.buttons.push(deep(BASE.buttons.find(b=>b.sound==="fx_stab")));
+  }
 }
 function loadSaved(){
   try{ const raw = localStorage.getItem(LS_KEY); if(raw){ applyShowFile(JSON.parse(raw), false); return; } }catch(e){}
@@ -767,6 +783,14 @@ function dropTick(){
     }
   }
 }
+/* moving the slider should be heard: land one drop in 2 to 5 s if a bed that carries drops is up */
+function lifeNudge(){
+  if(!ctx || !lifeMult()) return;
+  const ready = show.drops.filter(d=>d.with.some(l=>(liveLevels[l]||0)>=(d.min||8)) && buffers[d.sound]);
+  if(!ready.length){ toast("Street life plays when the street or rain is up"); return; }
+  scheduleDrops(true);
+  const d = ready[Math.floor(Math.random()*ready.length)]; lastDropAt = 0; dropNext[d.sound] = now() + rnd([2,5])*1000;
+}
 setInterval(dropTick, 1000);
 
 /* ============================================================
@@ -882,7 +906,7 @@ function renderPad(){
   if(pad.dataset.sig !== JSON.stringify(show.buttons)){
     pad.innerHTML=""; pad.dataset.sig = JSON.stringify(show.buttons);
     show.buttons.forEach((b,i)=>{
-      const el = document.createElement("button"); el.className="hot"; el.dataset.i=i;
+      const el = document.createElement("button"); el.className="hot"+(b.wide?" wide":""); el.dataset.i=i;
       el.innerHTML = `<span class="k">${esc(b.key)}</span><span class="cnt"></span><b>${esc(b.label)}</b><span class="note">${esc(b.note||"")}</span>`;
       el.addEventListener("click", ()=>hit(b));
       pad.appendChild(el);
@@ -930,7 +954,7 @@ function heartPump(){
   const ahead = ctx.currentTime + 0.25;
   while(heartNext < ahead){
     const takes = dropTakes.fx_heart||[]; const buf = takes.length>1 ? pickTake("fx_heart") : buffers.fx_heart;
-    const src = ctx.createBufferSource(); src.buffer = buf; src.playbackRate.value = 1+(Math.random()-0.5)*0.05;
+    const src = ctx.createBufferSource(); src.buffer = buf; const bpm=heartBpm(); src.playbackRate.value = (bpm<60 ? 0.8+0.2*(bpm-30)/30 : 1) * (1+(Math.random()-0.5)*0.05);   /* below 60 it sinks into slow motion */
     const g = ctx.createGain(); g.gain.value = dbToGain((show.sounds.fx_heart?.gain||0) + heartGain() + (Math.random()-0.5)*1.5);
     src.connect(g); g.connect(heartBus); src.start(heartNext); src.onended = ()=>{ try{src.disconnect(); g.disconnect();}catch(e){} };
     heartNext += 60/heartBpm();
@@ -1253,6 +1277,7 @@ $("rehearseBtn").addEventListener("click", rehearseFrom);
 $("panicBtn").addEventListener("click", panic);
 $("editCuesBtn").addEventListener("click", ()=>showTab("cues"));
 $("f-life").addEventListener("input", e=>{ show.settings.life=+e.target.value; $("o-life").textContent=e.target.value; save(); });
+$("f-life").addEventListener("change", ()=>lifeNudge());
 $("m-life").addEventListener("click", ()=>{ show.settings.life=0; $("f-life").value=0; $("o-life").textContent=0; save(); for(const [k,p] of playing) if(p.drop) stopKey(k,1); });
 $("f-heart").addEventListener("input", e=>heartSet(+e.target.value));
 $("heartBtn").addEventListener("click", heartToggle);
@@ -1281,7 +1306,7 @@ document.addEventListener("keydown", e=>{
   if(e.key==="." || e.key===">"){ e.preventDefault(); heartSet(heartBpm()+6); return; }
   if(e.key==="[" || e.key==="PageUp"){ e.preventDefault(); setPage(page-1); return; }
   if(e.key==="]" || e.key==="PageDown"){ e.preventDefault(); setPage(page+1); return; }
-  const b = show.buttons.find(x=>x.key===e.key); if(b){ e.preventDefault(); hit(b); }
+  const b = show.buttons.find(x=>String(x.key).toLowerCase()===e.key.toLowerCase()); if(b){ e.preventDefault(); hit(b); }
 });
 
 (async function(){

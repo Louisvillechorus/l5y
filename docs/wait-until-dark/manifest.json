@@ -286,11 +286,27 @@
    "Take 1",
    "Take 2",
    "Take 3"
+  ],
+  "fx_stab": [
+   "Inhale, thud, time stops 1",
+   "Inhale, thud, time stops 2",
+   "Inhale, thud, time stops 3",
+   "Glass shriek, falling 1",
+   "Glass shriek, falling 2",
+   "Glass shriek, falling 3"
   ]
  },
  "fx_heart": [
   "sounds/fx_heart_1.mp3",
   "sounds/fx_heart_2.mp3",
   "sounds/fx_heart_3.mp3"
+ ],
+ "fx_stab": [
+  "sounds/fx_stab_1.mp3",
+  "sounds/fx_stab_2.mp3",
+  "sounds/fx_stab_3.mp3",
+  "sounds/fx_stab_4.mp3",
+  "sounds/fx_stab_5.mp3",
+  "sounds/fx_stab_6.mp3"
  ]
 }
