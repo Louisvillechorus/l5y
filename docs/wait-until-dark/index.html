@@ -42,6 +42,10 @@ header.top{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding-b
 .dot{width:8px;height:8px;border-radius:50%;background:var(--faint)}
 .dot.on{background:var(--live);box-shadow:0 0 8px var(--live)}
 .clock{font-family:var(--mono);font-size:12px;color:var(--dim)}
+.saved{font-size:12px;color:var(--dim)} .saved.bad{color:var(--warn,#e0a040);font-weight:600}
+.hist{display:flex;flex-direction:column;gap:4px;margin-top:8px;max-height:260px;overflow:auto}
+.hist .row{font-size:12px;gap:8px;align-items:center} .hist .when{font-family:var(--mono);color:var(--dim);min-width:118px}
+.newer{border:1px solid var(--live);border-radius:8px;padding:10px 12px;margin:10px 0;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 
 /* arm screen */
 .arm{margin:24px auto;max-width:600px;text-align:center;padding:28px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
@@ -216,6 +220,7 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
   <span class="pill" id="armPill"><span class="dot" id="armDot"></span><b id="armTxt">Not loaded</b></span>
   <button class="pill ok" id="outPill" title="Stereo or mono output"><span>Out</span><b id="outTxt">Stereo</b></button>
   <button class="pill" id="masterPill" title="Master level (Setup tab)"><span>Master</span><b id="masterTxt">0 dB</b></button>
+  <span class="saved" id="savedTxt" title="Every change is saved on this computer as you make it">Saved on this computer</span>
   <span class="clock" id="clock"></span>
   <nav class="tabs" role="tablist">
     <button class="tab" role="tab" aria-selected="true" data-tab="show" id="tab-show">Show</button>
@@ -328,11 +333,17 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
     </div>
     <div class="panel"><h3>Show file</h3>
       <p>Everything you have changed (cues, scenes, buttons, levels, takes) in one block of text. Copy it after tech and paste it somewhere safe. Load it on the booth laptop to move the whole show.</p>
-      <div class="row"><button class="btn" id="exportBtn">Copy show file</button><button class="btn" id="importBtn">Load show file</button><button class="btn danger" id="factoryBtn">Reset to David's original</button></div>
+      <div class="row"><button class="btn amber" id="downloadBtn">Download show file</button><button class="btn" id="openFileBtn">Open show file…</button><input type="file" id="openFile" accept=".json,application/json" hidden></div>
+      <div class="row" style="margin-top:6px"><button class="btn" id="exportBtn">Copy show file</button><button class="btn" id="importBtn">Paste show file</button><button class="btn danger" id="factoryBtn">Reset to David's original</button></div>
+      <p style="margin-top:8px">To move the show to the other iMac: Download show file here, carry it over (AirDrop or a thumb drive), then Open show file there. Sounds you added from your own files stay on the computer you added them on.</p>
       <div id="ioBox" hidden style="margin-top:10px">
         <textarea class="io" id="ioText" aria-label="Show file"></textarea>
         <div class="row" style="margin-top:6px"><button class="btn amber" id="ioApply">Apply this show file</button><button class="btn" id="ioClose">Close</button></div>
       </div>
+    </div>
+    <div class="panel"><h3>Earlier versions</h3>
+      <p>This computer keeps a copy of the show every minute while you edit, and always before a reset or a loaded file. Restore puts that version back; the version you are leaving is kept here too.</p>
+      <div class="hist" id="histBox"></div>
     </div>
     <div class="panel"><h3>Show log</h3>
       <p>Every GO is time-stamped. After a performance, copy this to see act lengths and where cues landed.</p>
@@ -384,7 +395,8 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
     <div class="panel"><h3>Where sounds sit</h3><p>Every sound has a position left to right as the audience sees the stage: the hall door and the street door on the left, the phone a little right of center, the windows and the fridge on the right. Music and the announcement sit in the middle. Offstage sounds carry a little stairwell echo; room sounds a little room. Change any of it on the Sounds tab.</p></div>
     <div class="panel"><h3>Street life</h3><p>The random cars, dogs, horns, buses and far sirens are one slider in Atmosphere. It is not a cue: set it once in tech and leave it. They only play while the street or rain bed is up, so they stop on their own in the silent scenes. Every drop has four recordings and never plays the same one twice in a row, at a slightly different speed, level and spot each time, and never two within twenty seconds.</p></div>
     <div class="panel"><h3>Heartbeat</h3><p>One beat per file, three takes, played on a tempo the operator rides from 30 to 180 beats a minute. It is not a cue and no scene touches it: H starts it, the slider or , and . set the pace, H fades it out over a second, and the Punctuation hit cuts it dead in the same instant it cuts the tension. Slow is quiet and, under 60, lower and heavier, as if time were slowing; fast is a few decibels louder. K (the stab) cuts it dead. Every beat is a slightly different take at a slightly different pitch, so it never sounds like a loop.</p></div>
-    <div class="panel"><h3>Changing the show in tech</h3><p>Move the Atmosphere sliders until the director is happy, then Save to scene. Add, reorder or rewrite cues on the Cues tab. Change takes, levels and positions on the Sounds tab. Then copy the show file from Setup as a backup.</p></div>
+    <div class="panel"><h3>Changing the show in tech</h3><p>Move the Atmosphere sliders until the director is happy, then Save to scene. Add, reorder or rewrite cues on the Cues tab. Change takes, levels and positions on the Sounds tab. Then Download show file from Setup as a backup.</p></div>
+    <div class="panel"><h3>Saving</h3><p>Every change saves on this computer the moment you make it; the top bar shows the time of the last save. Reloading the page, closing Chrome or restarting the iMac keeps everything. The one exception is the Atmosphere sliders: moving them changes the sound right now, and Save to scene is what keeps it. Use the same computer and Chrome every night. To put tonight's version on the other iMac, Download show file on this one and Open show file on that one. If something gets deleted by mistake, Setup, Earlier versions puts it back.</p></div>
   </div>
 </section>
 
@@ -400,6 +412,7 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
 const BASE = {
   version: 2,
   rev: 3,
+  stamp: "2026-10-13",
   settings: {master:0, duck:3, breathe:true, midi:{}, life:40, heart:72},
   sections: [
     {name:"Pre-show", from:0, to:4},
@@ -534,8 +547,27 @@ function sectionFor(p){ if(!isNumPage(p)) return null; const n=+p; return show.s
 const LS_KEY = "wud-sound-show-v2";
 let show = deep(BASE);
 let choice = {};          // soundId -> take index or "custom"
-function save(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(exportObj())); }catch(e){} }
-function exportObj(){ return {version:2, rev:BASE.rev, saved:new Date().toISOString(), settings:show.settings, sections:show.sections, sounds:show.sounds, scenes:show.scenes, cues:show.cues, buttons:show.buttons, drops:show.drops, choice}; }
+let baseStamp = BASE.stamp;      // which published show this computer's copy started from
+const HIST_KEY = "wud-history", HIST_MAX = 25, HIST_GAP = 60000;
+let lastSnap = 0;
+function histRead(){ try{ return JSON.parse(localStorage.getItem(HIST_KEY)||"[]"); }catch(e){ return []; } }
+function histWrite(h){ for(;;){ try{ localStorage.setItem(HIST_KEY, JSON.stringify(h)); return true; }catch(e){ if(h.length<=1) return false; h.shift(); } } }
+/* keep a restorable copy: always before something destructive, otherwise at most every two minutes of editing */
+function snapshot(label, force){
+  const t=Date.now(); if(!force && t-lastSnap < HIST_GAP) return; lastSnap=t;
+  const h=histRead(), data=exportObj(), last=h[h.length-1];
+  const strip = o => JSON.stringify({...o, saved:0, base:0});
+  const same = last && strip(last.data) === strip(data);
+  if(same) return;                                   // nothing changed since the last copy
+  h.push({t, label, data}); while(h.length>HIST_MAX) h.shift(); histWrite(h);
+  if(!$("view-setup")?.hidden) renderHistory();
+}
+function save(){
+  let ok=true; try{ localStorage.setItem(LS_KEY, JSON.stringify(exportObj())); }catch(e){ ok=false; }
+  const el=$("savedTxt"); if(el){ el.classList.toggle("bad",!ok); el.textContent = ok ? "Saved "+new Date().toLocaleTimeString([], {hour:"numeric",minute:"2-digit"}) : "NOT SAVED: this browser is blocking storage"; }
+  if(ok) snapshot("Edits");
+}
+function exportObj(){ return {version:2, rev:BASE.rev, base:baseStamp, saved:new Date().toISOString(), settings:show.settings, sections:show.sections, sounds:show.sounds, scenes:show.scenes, cues:show.cues, buttons:show.buttons, drops:show.drops, choice}; }
 function applyShowFile(obj, persist=true){
   if(!obj || !obj.version) throw new Error("Not a show file");
   if(obj.version===2){
@@ -556,6 +588,7 @@ function applyShowFile(obj, persist=true){
     if(obj.pans) for(const k in obj.pans) if(show.sounds[k]) show.sounds[k].pan=+obj.pans[k]||0;
   }
   if(obj.choice) choice = obj.choice;
+  baseStamp = obj.base || BASE.stamp;
   if(persist) save();
 }
 /* bring a show saved by an older build up to date, touching only what the operator never changed */
@@ -1218,11 +1251,35 @@ $("exportBtn").addEventListener("click", async ()=>{
 });
 $("importBtn").addEventListener("click", ()=>{ $("ioBox").hidden=false; $("ioText").value=""; $("ioText").focus(); });
 $("ioClose").addEventListener("click", ()=>{ $("ioBox").hidden=true; });
-$("ioApply").addEventListener("click", ()=>{ try{ applyShowFile(JSON.parse($("ioText").value)); afterShowChange(); toast("Show file applied"); $("ioBox").hidden=true; }catch(e){ toast("That text is not a show file"); } });
+$("ioApply").addEventListener("click", ()=>{ try{ snapshot("Before loading a show file", true); applyShowFile(JSON.parse($("ioText").value)); afterShowChange(); toast("Show file applied"); $("ioBox").hidden=true; }catch(e){ toast("That text is not a show file"); } });
+$("downloadBtn").addEventListener("click", ()=>{
+  const txt=JSON.stringify(exportObj(), null, 1), d=new Date();
+  const name=`Wait-Until-Dark-show-${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}-${String(d.getHours()).padStart(2,"0")}${String(d.getMinutes()).padStart(2,"0")}.json`;
+  const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([txt],{type:"application/json"})); a.download=name; document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  toast("Downloaded "+name); log("Show file downloaded");
+});
+$("openFileBtn").addEventListener("click", ()=>$("openFile").click());
+$("openFile").addEventListener("change", async e=>{
+  const f=e.target.files[0]; e.target.value=""; if(!f) return;
+  try{ const obj=JSON.parse(await f.text()); snapshot("Before opening "+f.name, true); applyShowFile(obj); afterShowChange(); toast("Opened "+f.name); log("Show file opened: "+f.name); }
+  catch(x){ toast("That file is not a Wait Until Dark show file"); }
+});
+function renderHistory(){
+  const box=$("histBox"); if(!box) return; const h=histRead();
+  if(!h.length){ box.innerHTML='<div class="empty">No earlier versions yet. They appear as you make changes.</div>'; return; }
+  box.innerHTML=h.map((v,i)=>({v,i})).reverse().map(({v,i})=>{ const d=new Date(v.t);
+    return `<div class="row"><span class="when">${d.toLocaleDateString([], {month:"short",day:"numeric"})} ${d.toLocaleTimeString([], {hour:"numeric",minute:"2-digit"})}</span><span style="flex:1;min-width:0">${esc(v.label)} · ${v.data.scenes.length} scenes, ${v.data.cues.length} cues</span><button class="btn sm" data-restore="${i}">Restore</button></div>`; }).join("");
+  box.querySelectorAll("[data-restore]").forEach(b=>b.addEventListener("click",()=>{
+    if(b.dataset.armed!=="1"){ b.dataset.armed="1"; b.textContent="Click again to restore"; setTimeout(()=>{ b.dataset.armed=""; b.textContent="Restore"; },4000); return; }
+    const v=histRead()[+b.dataset.restore]; if(!v) return;
+    snapshot("Before restoring an earlier version", true); applyShowFile(v.data); afterShowChange(); renderHistory();
+    toast("Restored the version from "+new Date(v.t).toLocaleTimeString([], {hour:"numeric",minute:"2-digit"})); log("Restored an earlier version");
+  }));
+}
 let factoryArmed=false;
 $("factoryBtn").addEventListener("click", e=>{
   if(!factoryArmed){ factoryArmed=true; e.target.textContent="Click again to erase all changes"; setTimeout(()=>{factoryArmed=false;e.target.textContent="Reset to David's original";},4000); return; }
-  show = deep(BASE); choice={}; try{localStorage.removeItem(LS_KEY); localStorage.removeItem("wud-sound-show-v1");}catch(x){} afterShowChange(); toast("Back to the original show"); factoryArmed=false; e.target.textContent="Reset to David's original";
+  snapshot("Before reset to David's original", true); show = deep(BASE); choice={}; baseStamp=BASE.stamp; try{localStorage.removeItem(LS_KEY); localStorage.removeItem("wud-sound-show-v1");}catch(x){} afterShowChange(); toast("Back to the original show"); factoryArmed=false; e.target.textContent="Reset to David's original";
 });
 function afterShowChange(){
   setMaster(show.settings.master||0); $("duckRange").value=show.settings.duck??3; $("duckOut").textContent=(show.settings.duck??3)+" dB";
@@ -1241,7 +1298,7 @@ function showTab(name){
   if(name==="scenes") renderScenes();
   if(name==="sounds") renderSounds();
   if(name==="cues") renderCueEditor();
-  if(name==="setup"){ renderLog(); renderSections(); renderMidi(); $("breatheChk").checked = show.settings.breathe!==false; }
+  if(name==="setup"){ renderLog(); renderSections(); renderMidi(); renderHistory(); $("breatheChk").checked = show.settings.breathe!==false; }
   try{ localStorage.setItem("wud-tab", name); }catch(e){}
 }
 document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>showTab(t.dataset.tab)));
@@ -1311,6 +1368,15 @@ document.addEventListener("keydown", e=>{
 
 (async function(){
   loadSaved();
+  try{ if(navigator.storage && navigator.storage.persist) navigator.storage.persist(); }catch(e){}
+  snapshot("When this page was opened", true);
+  if(baseStamp !== BASE.stamp){
+    const n=document.createElement("div"); n.className="newer"; n.id="newerBar";
+    n.innerHTML=`<span style="flex:1;min-width:0">David published a newer version of the show. This computer is still on its own edited copy.</span><button class="btn amber" id="takeNewer">Use David's new version</button><button class="btn" id="keepMine">Keep this computer's version</button>`;
+    document.querySelector("header.top").after(n);
+    $("takeNewer").addEventListener("click",()=>{ snapshot("Before taking David's new version", true); show=deep(BASE); choice={}; baseStamp=BASE.stamp; save(); afterShowChange(); n.remove(); toast("Now on David's new version. Your old copy is under Setup, Earlier versions."); });
+    $("keepMine").addEventListener("click",()=>{ baseStamp=BASE.stamp; save(); n.remove(); toast("Kept this computer's version"); });
+  }
   await DB.open();
   try{ MANIFEST = await (await fetch("manifest.json")).json(); }catch(e){ $("armMsg").textContent="manifest.json is missing next to this page."; }
   setMaster(show.settings.master||0); $("duckRange").value=show.settings.duck??3; $("duckOut").textContent=(show.settings.duck??3)+" dB";
