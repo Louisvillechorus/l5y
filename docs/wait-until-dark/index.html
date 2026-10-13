@@ -45,6 +45,8 @@ header.top{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding-b
 .saved{font-size:12px;color:var(--dim)} .saved.bad{color:var(--warn,#e0a040);font-weight:600}
 .hist{display:flex;flex-direction:column;gap:4px;margin-top:8px;max-height:260px;overflow:auto}
 .hist .row{font-size:12px;gap:8px;align-items:center} .hist .when{font-family:var(--mono);color:var(--dim);min-width:118px}
+.syncform{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 10px;align-items:center;font-size:13px}
+.saved.ok{color:var(--live)}
 .newer{border:1px solid var(--live);border-radius:8px;padding:10px 12px;margin:10px 0;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 
 /* arm screen */
@@ -341,6 +343,13 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
         <div class="row" style="margin-top:6px"><button class="btn amber" id="ioApply">Apply this show file</button><button class="btn" id="ioClose">Close</button></div>
       </div>
     </div>
+    <div class="panel" id="syncPanel"><h3>Shared show</h3>
+      <p>Connect every booth computer to the same shared show. A change saves on this computer first, then reaches everyone else's board within about 15 seconds. If the internet drops, the board keeps running on this computer's copy and catches up when it is back. During a performance, other people's changes wait until the operator chooses to load them.</p>
+      <div class="syncform"><label for="syncName">Your name</label><input id="syncName" type="text" autocomplete="off" placeholder="Catherine">
+        <label for="syncKey">Sharing key</label><input id="syncKey" type="password" autocomplete="off" placeholder="paste the key David gave you"></div>
+      <div class="row" style="margin-top:8px"><button class="btn amber" id="syncConnect">Connect</button><button class="btn" id="syncNow">Check now</button><button class="btn" id="syncOff">Disconnect this computer</button></div>
+      <p id="syncStatus" style="margin-top:8px">Not connected. This computer keeps its own copy.</p>
+    </div>
     <div class="panel"><h3>Earlier versions</h3>
       <p>This computer keeps a copy of the show every minute while you edit, and always before a reset or a loaded file. Restore puts that version back; the version you are leaving is kept here too.</p>
       <div class="hist" id="histBox"></div>
@@ -396,7 +405,7 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
     <div class="panel"><h3>Street life</h3><p>The random cars, dogs, horns, buses and far sirens are one slider in Atmosphere. It is not a cue: set it once in tech and leave it. They only play while the street or rain bed is up, so they stop on their own in the silent scenes. Every drop has four recordings and never plays the same one twice in a row, at a slightly different speed, level and spot each time, and never two within twenty seconds.</p></div>
     <div class="panel"><h3>Heartbeat</h3><p>One beat per file, three takes, played on a tempo the operator rides from 30 to 180 beats a minute. It is not a cue and no scene touches it: H starts it, the slider or , and . set the pace, H fades it out over a second, and the Punctuation hit cuts it dead in the same instant it cuts the tension. Slow is quiet and, under 60, lower and heavier, as if time were slowing; fast is a few decibels louder. K (the stab) cuts it dead. Every beat is a slightly different take at a slightly different pitch, so it never sounds like a loop.</p></div>
     <div class="panel"><h3>Changing the show in tech</h3><p>Move the Atmosphere sliders until the director is happy, then Save to scene. Add, reorder or rewrite cues on the Cues tab. Change takes, levels and positions on the Sounds tab. Then Download show file from Setup as a backup.</p></div>
-    <div class="panel"><h3>Saving</h3><p>Every change saves on this computer the moment you make it; the top bar shows the time of the last save. Reloading the page, closing Chrome or restarting the iMac keeps everything. The one exception is the Atmosphere sliders: moving them changes the sound right now, and Save to scene is what keeps it. Use the same computer and Chrome every night. To put tonight's version on the other iMac, Download show file on this one and Open show file on that one. If something gets deleted by mistake, Setup, Earlier versions puts it back.</p></div>
+    <div class="panel"><h3>Saving</h3><p>Every change saves on this computer the moment you make it; the top bar shows the time of the last save. Reloading the page, closing Chrome or restarting the iMac keeps everything. The one exception is the Atmosphere sliders: moving them changes the sound right now, and Save to scene is what keeps it. Use the same computer and Chrome every night. When the booth computers are connected to the shared show (Setup, Shared show), a change on one reaches the others within about 15 seconds, and nothing changes on a board mid-performance unless its operator loads it. Without that connection, Download show file on one computer and Open show file on the other. If something gets deleted by mistake, Setup, Earlier versions puts it back.</p></div>
   </div>
 </section>
 
@@ -564,8 +573,10 @@ function snapshot(label, force){
 }
 function save(){
   let ok=true; try{ localStorage.setItem(LS_KEY, JSON.stringify(exportObj())); }catch(e){ ok=false; }
-  const el=$("savedTxt"); if(el){ el.classList.toggle("bad",!ok); el.textContent = ok ? "Saved "+new Date().toLocaleTimeString([], {hour:"numeric",minute:"2-digit"}) : "NOT SAVED: this browser is blocking storage"; }
+  let shared=false; try{ shared=syncOn(); }catch(e){}
+  const el=$("savedTxt"); if(el && !shared){ el.classList.toggle("bad",!ok); el.textContent = ok ? "Saved "+new Date().toLocaleTimeString([], {hour:"numeric",minute:"2-digit"}) : "NOT SAVED: this browser is blocking storage"; }
   if(ok) snapshot("Edits");
+  try{ if(syncOn() && !applyingRemote){ sync.dirty=true; editSeq++; syncStore(); schedulePush(); setSync("saving"); } }catch(e){}   // sync engine not started yet
 }
 function exportObj(){ return {version:2, rev:BASE.rev, base:baseStamp, saved:new Date().toISOString(), settings:show.settings, sections:show.sections, sounds:show.sounds, scenes:show.scenes, cues:show.cues, buttons:show.buttons, drops:show.drops, choice}; }
 function applyShowFile(obj, persist=true){
@@ -1366,10 +1377,113 @@ document.addEventListener("keydown", e=>{
   const b = show.buttons.find(x=>String(x.key).toLowerCase()===e.key.toLowerCase()); if(b){ e.preventDefault(); hit(b); }
 });
 
+/* ============================================================
+   Shared show: one show.json in a private GitHub repo. Every save is a commit,
+   GitHub refuses a save built on an out-of-date copy (so nobody overwrites anyone silently),
+   and the board always runs from this computer's own copy, online or not.
+   ============================================================ */
+const SYNC = { repo:"Louisvillechorus/wud-show", path:"show.json", branch:"main" };
+function syncApi(){ try{ return localStorage.getItem("wud-sync-api")||"https://api.github.com"; }catch(e){ return "https://api.github.com"; } }
+let sync = { token:"", name:"", sha:"", dirty:false };          // per computer, never part of the show
+try{ Object.assign(sync, JSON.parse(localStorage.getItem("wud-sync")||"{}")); }catch(e){}
+function syncStore(){ try{ localStorage.setItem("wud-sync", JSON.stringify(sync)); }catch(e){} }
+let applyingRemote=false, pushTimer=null, pushing=false, editSeq=0, syncBlocked=false, lastShared=null, dismissedSha="", syncPoll=15000;
+function syncOn(){ return !!sync.token; }
+function performing(){ return !!ctx && lastFired>=0 && sb<show.cues.length; }
+function b64e(str){ const b=new TextEncoder().encode(str); let s=""; for(let i=0;i<b.length;i+=0x8000) s+=String.fromCharCode.apply(null,b.subarray(i,i+0x8000)); return btoa(s); }
+function b64d(b64){ const s=atob(String(b64).replace(/\s/g,"")); const b=new Uint8Array(s.length); for(let i=0;i<s.length;i++) b[i]=s.charCodeAt(i); return new TextDecoder().decode(b); }
+function sameShow(a,b){ const k=o=>JSON.stringify({...o, saved:0, base:0, by:0, rev:0}); return k(a)===k(b); }
+function hhmm(t){ try{ return new Date(t).toLocaleTimeString([], {hour:"numeric",minute:"2-digit"}); }catch(e){ return ""; } }
+async function gh(method, body){
+  const url=`${syncApi()}/repos/${SYNC.repo}/contents/${SYNC.path}`+(method==="GET"?`?ref=${SYNC.branch}`:"");
+  const h={Authorization:"Bearer "+sync.token, Accept:"application/vnd.github+json"}; if(body) h["Content-Type"]="application/json";
+  const r=await fetch(url,{method, cache:"no-store", headers:h, body: body?JSON.stringify(body):undefined});
+  let j=null; try{ j=await r.json(); }catch(e){}
+  return {status:r.status, j};
+}
+function setSync(state, extra){
+  const el=$("savedTxt"), st=$("syncStatus"); if(!el) return;
+  const who = lastShared && lastShared.by ? ` by ${lastShared.by}` : "";
+  const map={
+    off:    ["", "Saved on this computer", "Not connected. This computer keeps its own copy."],
+    saving: ["", "Sharing…", "Sharing your change…"],
+    ok:     ["ok", "Shared "+hhmm(lastShared&&lastShared.saved||Date.now()), `Connected. Every board has the same show. Last change ${hhmm(lastShared&&lastShared.saved||Date.now())}${who}.`],
+    offline:["bad","Offline: saved here", "Can't reach GitHub right now. Your changes are saved on this computer and will be shared when the connection is back."],
+    badkey: ["bad","Sharing key not accepted", "GitHub did not accept this sharing key. Check it was pasted in full, or ask David for a new one."],
+    norepo: ["bad","Shared show not found", "The key works, but it cannot open the shared show. Ask David to check the key has access to the wud-show repo."],
+    wait:   ["bad","Choose a version", "Two versions of the show need sorting out. Use the bar at the top of the page."]
+  };
+  const [cls, pill, long]=map[state]||map.off;
+  el.className="saved"+(cls?" "+cls:""); el.textContent=pill; el.title=long; if(st) st.textContent=extra||long;
+}
+function schedulePush(){ clearTimeout(pushTimer); pushTimer=setTimeout(push, 2000); }
+async function push(){
+  if(!syncOn()||pushing||syncBlocked) return; pushing=true; const seq=editSeq;
+  const data=exportObj(); data.by=sync.name||"An operator";
+  const body={message:`Show saved by ${data.by}`, content:b64e(JSON.stringify(data,null,1)), branch:SYNC.branch}; if(sync.sha) body.sha=sync.sha;
+  let res; try{ res=await gh("PUT", body); }catch(e){ pushing=false; setSync("offline"); return; }
+  pushing=false;
+  if(res.status===200||res.status===201){ sync.sha=res.j.content.sha; if(seq===editSeq) sync.dirty=false; syncStore(); lastShared={by:data.by, saved:data.saved}; setSync("ok"); log("Shared the show"); if(sync.dirty) schedulePush(); return; }
+  if(res.status===409||res.status===422) return pull("conflict");          // someone saved first
+  if(res.status===401) return setSync("badkey");
+  if(res.status===403||res.status===404) return setSync("norepo");
+  setSync("offline");
+}
+async function pull(reason){
+  if(!syncOn()||pushing) return;
+  let res; try{ res=await gh("GET"); }catch(e){ setSync("offline"); return; }
+  if(res.status===401) return setSync("badkey");
+  if(res.status===404){ sync.sha=""; syncStore(); syncBlocked=false; return push(); }   // no shared show yet: this computer's becomes it
+  if(res.status===403) return setSync("norepo");
+  if(res.status!==200||!res.j||!res.j.content){ setSync("offline"); return; }
+  let remote; try{ remote=JSON.parse(b64d(res.j.content)); }catch(e){ setSync("offline","The shared show file could not be read. Ask David to check it."); return; }
+  lastShared={by:remote.by||"", saved:remote.saved||""};
+  if(res.j.sha===sync.sha){ syncBlocked=false; setSync("ok"); if(sync.dirty) schedulePush(); return; }
+  if(sameShow(remote, exportObj())){ sync.sha=res.j.sha; sync.dirty=false; syncStore(); syncBlocked=false; setSync("ok"); return; }
+  if(sync.dirty){ showSyncBar("conflict", remote, res.j.sha); return; }
+  if(performing()){ if(dismissedSha!==res.j.sha) showSyncBar("pending", remote, res.j.sha); return; }
+  applyRemote(remote, res.j.sha, reason!=="start");
+}
+function applyRemote(remote, sha, announce){
+  snapshot("Before taking "+(remote.by||"another operator")+"'s changes", true);
+  applyingRemote=true; try{ applyShowFile(remote, true); } finally { applyingRemote=false; }
+  afterShowChange(); sync.sha=sha; sync.dirty=false; syncStore(); syncBlocked=false; hideSyncBar();
+  lastShared={by:remote.by||"", saved:remote.saved||""}; setSync("ok");
+  if(announce) toast(`Show updated with ${remote.by||"another operator"}'s changes`); log(`Loaded shared show from ${remote.by||"another operator"}`);
+}
+function hideSyncBar(){ $("syncBar")?.remove(); }
+function showSyncBar(kind, remote, sha){
+  hideSyncBar(); const n=document.createElement("div"); n.className="newer"; n.id="syncBar"; const who=esc(remote.by||"Another operator"), at=hhmm(remote.saved);
+  if(kind==="conflict"){
+    syncBlocked=true; setSync("wait");
+    n.innerHTML=`<span style="flex:1;min-width:0">${who} saved a change to the show at ${at} while this computer had changes of its own.</span><button class="btn amber" id="sbTheirs">Use ${who}'s version</button><button class="btn" id="sbMine">Keep mine and share it</button>`;
+    document.querySelector("header.top").after(n);
+    $("sbTheirs").addEventListener("click",()=>applyRemote(remote, sha, true));
+    $("sbMine").addEventListener("click",()=>{ sync.sha=sha; syncStore(); syncBlocked=false; hideSyncBar(); push(); });
+  } else {
+    n.innerHTML=`<span style="flex:1;min-width:0">${who} changed the show at ${at}. It will not change mid-performance unless you load it.</span><button class="btn" id="sbLater">After the show</button><button class="btn amber" id="sbNow">Load it now</button>`;
+    document.querySelector("header.top").after(n);
+    $("sbNow").addEventListener("click",()=>applyRemote(remote, sha, true));
+    $("sbLater").addEventListener("click",()=>{ dismissedSha=sha; hideSyncBar(); });
+  }
+}
+setInterval(()=>{ if(!syncOn()||document.hidden||syncBlocked||pushing) return; if(sync.dirty) push(); else pull("poll"); }, syncPoll);
+document.addEventListener("visibilitychange",()=>{ if(!document.hidden && syncOn() && !syncBlocked) pull("poll"); });
+
 (async function(){
   loadSaved();
   try{ if(navigator.storage && navigator.storage.persist) navigator.storage.persist(); }catch(e){}
   snapshot("When this page was opened", true);
+  $("syncName").value=sync.name||""; $("syncKey").value=sync.token?"••••••••••••":"";
+  $("syncConnect").addEventListener("click",()=>{
+    const k=$("syncKey").value.trim(); if(k && !k.startsWith("•")) sync.token=k; if(!sync.token){ toast("Paste the sharing key first"); return; }
+    sync.name=$("syncName").value.trim()||"An operator"; sync.sha=""; sync.dirty=true; syncStore(); $("syncKey").value="••••••••••••";
+    setSync("saving","Connecting…"); pull("connect");
+  });
+  $("syncNow").addEventListener("click",()=>{ if(!syncOn()){ toast("Connect first"); return; } syncBlocked=false; sync.dirty?push():pull("poll"); });
+  $("syncOff").addEventListener("click",()=>{ sync={token:"", name:sync.name, sha:"", dirty:false}; syncStore(); $("syncKey").value=""; hideSyncBar(); syncBlocked=false; setSync("off"); toast("Disconnected. This computer keeps its own copy."); });
+  $("syncName").addEventListener("change",e=>{ sync.name=e.target.value.trim(); syncStore(); });
+  if(syncOn()){ setSync("saving","Checking the shared show…"); pull("start"); }
   if(baseStamp !== BASE.stamp){
     const n=document.createElement("div"); n.className="newer"; n.id="newerBar";
     n.innerHTML=`<span style="flex:1;min-width:0">David published a newer version of the show. This computer is still on its own edited copy.</span><button class="btn amber" id="takeNewer">Use David's new version</button><button class="btn" id="keepMine">Keep this computer's version</button>`;
