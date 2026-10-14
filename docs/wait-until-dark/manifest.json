@@ -294,6 +294,27 @@
    "Glass shriek, falling 1",
    "Glass shriek, falling 2",
    "Glass shriek, falling 3"
+  ],
+  "amb_hum": [
+   "Low drone 1",
+   "Low drone 2",
+   "Low drone 3",
+   "Low drone 4",
+   "High and thin 1",
+   "High and thin 2",
+   "High and thin 3",
+   "High and thin 4"
+  ],
+  "amb_city": [
+   "Wet night, cars and voices 1",
+   "Wet night, cars and voices 2",
+   "Wet night, cars and voices 3"
+  ],
+  "fx_doll_tease": [
+   "Doll tune, slow and low",
+   "Doll tune, far away",
+   "Music box, dying 1",
+   "Music box, dying 2"
   ]
  },
  "fx_heart": [
@@ -308,5 +329,26 @@
   "sounds/fx_stab_4.mp3",
   "sounds/fx_stab_5.mp3",
   "sounds/fx_stab_6.mp3"
+ ],
+ "amb_hum": [
+  "sounds/amb_hum_1.mp3",
+  "sounds/amb_hum_2.mp3",
+  "sounds/amb_hum_3.mp3",
+  "sounds/amb_hum_4.mp3",
+  "sounds/amb_hum_5.mp3",
+  "sounds/amb_hum_6.mp3",
+  "sounds/amb_hum_7.mp3",
+  "sounds/amb_hum_8.mp3"
+ ],
+ "amb_city": [
+  "sounds/amb_city_1.mp3",
+  "sounds/amb_city_2.mp3",
+  "sounds/amb_city_3.mp3"
+ ],
+ "fx_doll_tease": [
+  "sounds/fx_doll_tease_1.mp3",
+  "sounds/fx_doll_tease_2.mp3",
+  "sounds/fx_doll_tease_3.mp3",
+  "sounds/fx_doll_tease_4.mp3"
  ]
 }

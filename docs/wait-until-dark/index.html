@@ -81,6 +81,7 @@ main.show{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:1
 .chip.scene{border-color:rgba(232,163,61,.5);color:var(--amber)}
 .chip.play{border-color:rgba(191,227,255,.4);color:var(--frost)}
 .chip.stop{border-color:rgba(240,100,90,.5);color:#ffb3ad}
+.chip.prac{border-color:var(--live);color:var(--live);font-weight:600}
 .chip.lx{border-color:var(--warn);color:var(--warn);font-weight:600}
 .go{background:var(--frost);color:var(--frost-ink);border:0;border-radius:10px;font-family:var(--display);font-weight:700;font-size:56px;letter-spacing:.06em;min-height:132px}
 .go:active{transform:translateY(1px)}
@@ -388,6 +389,8 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
       <li><b>= and -</b> are the tension throttle: each press nudges the Tension bed up or down. It is yours to ride; cues never touch it. <b>0</b> (Punctuation) hits the metal and cuts the tension dead.</li>
       <li><b>H</b> starts and stops the heartbeat. <b>,</b> and <b>.</b> slow it down and speed it up (the Heartbeat slider does the same); it gets a little louder as it races. <b>0</b> (Punctuation) cuts it dead along with the tension. Built for the final fight: start it on the light shift, slow it with the slow motion (under 60 it sinks lower, like the world slowing down), race it toward the knife, then <b>K</b>.</li>
       <li><b>K</b> is the stab: one sound used nowhere else in the show. It cuts the heartbeat and the tension dead in the same instant.</li>
+      <li><b>D</b> plays a few notes of the doll's tune over the Scene 1 under, for each time the doll comes up on pages 10 to 14.</li>
+      <li>A cue marked <b>practical</b> is one sound tied to one thing an actor does. Fire it on the action, as it happens. Nothing on this board is chained or on a timer: if two things happen on stage, they are two GOs.</li>
       <li><b>[ and ]</b> flip the script page. Buttons called on that page light amber. GO moves the page to the cue you just fired.</li>
       <li><b>↑ / ↓</b> move Standby without playing anything.</li>
       <li><b>Esc</b> fades everything out over 2 seconds.</li>
@@ -420,8 +423,8 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
    ============================================================ */
 const BASE = {
   version: 2,
-  rev: 3,
-  stamp: "2026-10-13",
+  rev: 4,
+  stamp: "2026-10-14",
   settings: {master:0, duck:3, breathe:true, midi:{}, life:40, heart:72},
   sections: [
     {name:"Pre-show", from:0, to:4},
@@ -437,6 +440,8 @@ const BASE = {
     {id:"music",  label:"House music", sound:"mus_house"},
     {id:"street", label:"Street", sound:"amb_street"},
     {id:"rain",   label:"Rain",   sound:"amb_rain"},
+    {id:"city",   label:"City (Act II)", sound:"amb_city"},
+    {id:"under",  label:"Scene 1 under", sound:"amb_hum"},
     {id:"fridge", label:"Fridge", sound:"fx_fridge"},
     {id:"tension",label:"Tension", sound:"tex_tension", manual:true}
   ],
@@ -453,6 +458,9 @@ const BASE = {
     amb_street:   {label:"Night street (loop)",        group:"Atmosphere",      pan:0.45,  gain:0,  space:"dry",  duck:0},
     amb_rain:     {label:"Rain on the window (loop)",  group:"Atmosphere",      pan:0.45,  gain:0,  space:"dry",  duck:0},
     fx_fridge:    {label:"Fridge hum (loop)",          group:"Atmosphere",      pan:0.7,   gain:0,  space:"dry",  duck:0},
+    amb_hum:      {label:"Scene 1 under (loop)",       group:"Atmosphere",      pan:0,     gain:-4, space:"dry",  duck:0},
+    amb_city:     {label:"City, wet night (loop)",     group:"Atmosphere",      pan:0.45,  gain:0,  space:"dry",  duck:0},
+    fx_doll_tease:{label:"Doll notes (over the under)", group:"Score",          pan:0.1,   gain:-2, space:"hall", duck:2, vary:true},
     fx_fridge_off:{label:"Fridge clunks off",          group:"Atmosphere",      pan:0.7,   gain:0,  space:"dry",  duck:0},
     tex_tension:  {label:"Tension bed (throttle)",     group:"Score",           pan:0,     gain:0,  space:"dry",  duck:0},
     fx_heart:     {label:"Heartbeat (one beat; the board sets the tempo)", group:"Score", pan:0, gain:0, space:"dry", duck:0, vary:true},
@@ -476,54 +484,61 @@ const BASE = {
   },
   /* with: the bed layers that must be up for this drop to play; gap: seconds between plays at the slider's middle */
   drops: [
-    {sound:"drp_car",   with:["street","rain"], gap:[40,110]},
-    {sound:"drp_horn",  with:["street"],        gap:[150,420]},
-    {sound:"drp_dog",   with:["street"],        gap:[240,600]},
-    {sound:"drp_bus",   with:["street"],        gap:[300,720]},
-    {sound:"drp_siren", with:["street","rain"], gap:[420,900]},
-    {sound:"fx_thunder",with:["rain"],          gap:[180,420], min:40}
+    {sound:"drp_car",   with:["street","rain","city"], gap:[40,110],  min:20},
+    {sound:"drp_horn",  with:["street","city"],        gap:[150,420], min:20},
+    {sound:"drp_dog",   with:["street"],               gap:[240,600], min:20},
+    {sound:"drp_bus",   with:["street","city"],        gap:[300,720], min:20},
+    {sound:"drp_siren", with:["street","rain","city"], gap:[420,900], min:20},
+    {sound:"fx_thunder",with:["rain"],                 gap:[180,420], min:40}
   ],
   scenes: [
-    {id:"pre",    name:"Pre-show",          fade:5, levels:{music:62, street:40, rain:0,  fridge:0}},
-    {id:"s11",    name:"Act I Sc 1 street", fade:8, levels:{music:0,  street:44, rain:0,  fridge:0}},
-    {id:"fridge", name:"Act I Sc 1 fridge", fade:0.1, levels:{music:0,  street:30, rain:0,  fridge:88}},
-    {id:"s11b",   name:"Act I Sc 1 quiet",  fade:0.05, levels:{music:0,  street:26, rain:0,  fridge:0}},
-    {id:"rain",   name:"Act I rain",        fade:6, levels:{music:0,  street:0,  rain:55, fridge:0}},
-    {id:"inter",  name:"Intermission",      fade:4, levels:{music:58, street:0,  rain:30, fridge:0, tension:14}},
-    {id:"s21",    name:"Act II heavy rain", fade:8, levels:{music:0,  street:0,  rain:70, fridge:0, tension:0}},
-    {id:"drizzle",name:"Drizzle",           fade:8, levels:{music:0,  street:0,  rain:32, fridge:0}},
-    {id:"silent", name:"Silence",           fade:10, levels:{music:0,  street:0,  rain:0,  fridge:0}},
-    {id:"roar",   name:"Fridge roars",      fade:0.08, levels:{music:0,  street:0,  rain:0,  fridge:100}},
-    {id:"cut",    name:"Cord pulled",       fade:0.02, levels:{music:0,  street:0,  rain:0,  fridge:0}},
-    {id:"bows",   name:"Bows",              fade:1.5, levels:{music:70, street:0,  rain:0,  fridge:0, tension:0}},
-    {id:"exit",   name:"Exit music",        fade:4, levels:{music:62, street:30, rain:0,  fridge:0, tension:0}}
+    {id:"pre",    name:"Pre-show",          fade:5,    levels:{music:62, street:40, rain:0,  city:0,  under:0,  fridge:0}},
+    {id:"s11",    name:"Act I Sc 1 street", fade:8,    levels:{music:0,  street:44, rain:0,  city:0,  under:0,  fridge:0}},
+    {id:"fridge", name:"Act I Sc 1 open",   fade:0.1,  levels:{music:0,  street:30, rain:0,  city:0,  under:55, fridge:88}},
+    {id:"s11b",   name:"Act I Sc 1 under",  fade:0.05, levels:{music:0,  street:26, rain:0,  city:0,  under:55, fridge:0}},
+    {id:"rain",   name:"Act I rain",        fade:6,    levels:{music:0,  street:0,  rain:55, city:0,  under:0,  fridge:0}},
+    {id:"inter",  name:"Intermission",      fade:4,    levels:{music:58, street:0,  rain:30, city:0,  under:0,  fridge:0, tension:14}},
+    {id:"s21",    name:"Act II rain",       fade:8,    levels:{music:0,  street:0,  rain:45, city:0,  under:0,  fridge:0, tension:0}},
+    {id:"montage",name:"Act II Sc 2 city",  fade:6,    levels:{music:0,  street:0,  rain:15, city:60, under:0,  fridge:0}},
+    {id:"drizzle",name:"Drizzle, closing in",fade:8,   levels:{music:0,  street:0,  rain:18, city:0,  under:0,  fridge:0}},
+    {id:"silent", name:"Silence",           fade:10,   levels:{music:0,  street:0,  rain:0,  city:0,  under:0,  fridge:0}},
+    {id:"roar",   name:"Fridge roars",      fade:0.08, levels:{music:0,  street:0,  rain:0,  city:0,  under:0,  fridge:100}},
+    {id:"cut",    name:"Cord pulled",       fade:0.02, levels:{music:0,  street:0,  rain:0,  city:0,  under:0,  fridge:0}},
+    {id:"bows",   name:"Bows",              fade:1.5,  levels:{music:70, street:0,  rain:0,  city:0,  under:0,  fridge:0, tension:0}},
+    {id:"exit",   name:"Exit music",        fade:4,    levels:{music:62, street:30, rain:0,  city:0,  under:0,  fridge:0, tension:0}}
   ],
   /* play/stop entries: a sound id, or {id, delay (s), gain (dB)}. lx:true means the SM calls it with a lighting cue. */
+  /* play/stop entries: a sound id, or {id, gain (dB)}. lx:true means the SM calls it with a lighting cue.
+     prac:true is a practical: one sound, fired on the action as it happens on stage, never chained to anything else. */
   cues: [
     {id:"c01", page:"Pre", when:"House opens", what:"Warm, comfortable house music over a quiet night street. Nothing is wrong.", scene:"pre"},
     {id:"c02", page:"Pre", when:"House to half", what:"Music fades out and the night street comes up to take its place. We are outside now, on the way to the house.", scene:"s11"},
-    {id:"c03", page:"Pre", when:"Two minutes to curtain (SM calls it)", what:"The announcement, with the street kept under it the whole way: the walk to the house continues under the voice.", play:["ann_welcome"]},
-    {id:"c04", page:"5",   when:"Blackout, top of show", what:"Fridge hum, loud, alone in the dark.", scene:"fridge", lx:true},
-    {id:"c05", page:"5",   when:"Mike reaches the bottom of the stairs", what:"Fridge clunks off. Hum stops dead.", scene:"s11b", play:["fx_fridge_off"]},
-    {id:"c06", page:"18",  when:"Roat: “Quiet!” They listen", what:"Susy's cane tapping down the hall toward the door. Suggested, cut if the actor's stick carries.", play:["fx_cane"]},
-    {id:"c07", page:"18",  when:"Mike: “…tomorrow night.”", what:"Street door slams, off left.", play:["fx_slam"]},
-    {id:"c08", page:"19",  when:"Susy exits, slamming the door", what:"Her cane fades along the hall, then the street door slams.", play:[{id:"fx_cane", gain:-6}, {id:"fx_slam", delay:4.5}]},
-    {id:"c09", page:"19",  when:"“Two plus five, Mr. Talman.” Blackout", what:"Scratchy scene-change texture. Street out, rain in.", scene:"rain", play:["tex_change"]},
-    {id:"c10", page:"32",  when:"“Oh, yes! Thank you.” Blackout", what:"Scene-change texture. Rain stays.", play:["tex_change"]},
-    {id:"c11", page:"41",  when:"“They're watching this house.” Blackout", what:"Intermission: the house music comes back over the rain with a thread of the tension bed under it. Not quite comfortable anymore.", scene:"inter"},
-    {id:"c11b",page:"42",  when:"Two minutes to Act II (SM calls it)", what:"The two-minute call, over the intermission music.", play:["ann_two"]},
-    {id:"c12", page:"42",  when:"House to half, top of Act II", what:"Music out. Rain comes back heavier.", scene:"s21"},
-    {id:"c13", page:"42",  when:"Lights up, Act II", what:"A roll of distant thunder under the rain. Suggested.", play:[{id:"fx_thunder", delay:2}]},
-    {id:"c14", page:"64",  when:"Susy closes the washer. Blackout", what:"Scene-change texture. Rain thins to a drizzle.", scene:"drizzle", play:["tex_change"]},
-    {id:"c15", page:"66",  when:"Susy: “…But that won't be enough…”", what:"Alley: engine revs, a shout, trash can, the car tears off.", play:["fx_alley"]},
-    {id:"c16", page:"68",  when:"Roat: “…we can talk.”", what:"Drizzle fades to silence. Nothing from here but the actors.", scene:"silent"},
-    {id:"c17", page:"71",  when:"Susy smashes the lamp", what:"Glass. Same instant as the lights.", play:["fx_glass"], lx:true},
-    {id:"c18", page:"73",  when:"Roat opens the fridge", what:"Fridge roars on at full and stays.", scene:"roar", lx:true},
-    {id:"c19", page:"74",  when:"Roat slits the doll open", what:"The doll's whole tune, tinny and small.", play:["mus_doll"]},
-    {id:"c20", page:"76",  when:"Susy yanks the cord", what:"Hum cuts dead. Total silence.", scene:"cut", stop:["mus_doll"], lx:true},
-    {id:"c21", page:"76",  when:"After the held silence", what:"Running feet, pounding, the door forced open.", play:["fx_breakin"]},
-    {id:"c22", page:"Bows", when:"Curtain call", what:"The house music, back and bright. The comfortable thing from before the show.", scene:"bows"},
-    {id:"c23", page:"Exit", when:"House lights up", what:"House music and the street.", scene:"exit"}
+    {id:"c03", page:"Pre", when:"Two minutes to curtain (SM calls it)", what:"The announcement, with the street kept under it the whole way.", play:["ann_welcome"]},
+    {id:"c04", page:"5",   when:"Blackout, top of show", what:"The fridge hum, and under it the Scene 1 under: a low, unplaceable drone that runs the whole scene.", scene:"fridge", lx:true},
+    {id:"c05", page:"5",   when:"Mike unplugs the fridge", what:"Fridge clunks off and its hum stops dead. The under keeps going.", scene:"s11b", play:["fx_fridge_off"], prac:true},
+    {id:"c06", page:"10",  when:"Roat: “A musical doll”", what:"A few notes of the doll's tune over the under. The D button does the same for later mentions.", play:["fx_doll_tease"], prac:true},
+    {id:"c07", page:"18",  when:"Roat: “Quiet!” They listen", what:"Susy's cane tapping down the hall toward the door.", play:["fx_cane"], prac:true},
+    {id:"c08", page:"18",  when:"Mike: “…tomorrow night.”", what:"Street door slams, off left.", play:["fx_slam"], prac:true},
+    {id:"c09", page:"19",  when:"Susy exits, slamming the door", what:"Her cane fades along the hall.", play:[{id:"fx_cane", gain:-6}], prac:true},
+    {id:"c10", page:"19",  when:"…then the street door", what:"Street door slams. Fire it when she gets there, not on a timer.", play:["fx_slam"], prac:true},
+    {id:"c11", page:"19",  when:"“Two plus five, Mr. Talman.” Blackout", what:"Scratchy scene-change texture. Under and street out, rain in.", scene:"rain", play:["tex_change"]},
+    {id:"c12", page:"32",  when:"“Oh, yes! Thank you.” Blackout", what:"Scene-change texture. Rain stays.", play:["tex_change"]},
+    {id:"c13", page:"41",  when:"“They're watching this house.” Blackout", what:"Intermission: the house music comes back over the rain with a thread of the tension bed under it.", scene:"inter", lx:true},
+    {id:"c14", page:"42",  when:"Two minutes to Act II (SM calls it)", what:"The two-minute call, over the intermission music.", play:["ann_two"]},
+    {id:"c15", page:"42",  when:"House to half, top of Act II", what:"Music out. Rain back, but less of the outside from here on: the room is closing in.", scene:"s21"},
+    {id:"c16", page:"42",  when:"Lights up, Act II", what:"One roll of distant thunder. Its own GO.", play:["fx_thunder"], prac:true},
+    {id:"c17", page:"64",  when:"Act II Sc 2. Susy alone, waiting and listening", what:"The city montage: the wet street comes up outside the window, cars, voices, a kitchen somewhere. Scene-change texture into it.", scene:"montage", play:["tex_change"]},
+    {id:"c18", page:"64",  when:"Mike gets the door open", what:"The city drains away to a drizzle. Fire as the door opens.", scene:"drizzle", prac:true},
+    {id:"c19", page:"66",  when:"Susy: “…But that won't be enough…”", what:"Alley: engine revs, a shout, trash can, the car tears off.", play:["fx_alley"], prac:true},
+    {id:"c20", page:"68",  when:"Roat: “…we can talk.”", what:"Drizzle fades to silence. Nothing from here but the actors.", scene:"silent"},
+    {id:"c21", page:"71",  when:"Susy smashes the lamp", what:"Glass. Same instant as the lights.", play:["fx_glass"], lx:true, prac:true},
+    {id:"c22", page:"73",  when:"Roat opens the fridge", what:"Fridge roars on at full and stays.", scene:"roar", lx:true, prac:true},
+    {id:"c23", page:"74",  when:"Roat slits the doll open", what:"The doll's whole tune, tinny and small.", play:["mus_doll"], prac:true},
+    {id:"c24", page:"76",  when:"Susy yanks the cord", what:"Hum cuts dead.", scene:"cut", lx:true, prac:true},
+    {id:"c25", page:"76",  when:"The doll is silenced", what:"Doll stops. Its own GO, when it happens on stage.", stop:["mus_doll"], prac:true},
+    {id:"c26", page:"76",  when:"After the held silence", what:"Running feet, pounding, the door forced open.", play:["fx_breakin"], prac:true},
+    {id:"c27", page:"Bows", when:"Curtain call", what:"The house music, back and bright. The comfortable thing from before the show.", scene:"bows"},
+    {id:"c28", page:"Exit", when:"House lights up", what:"House music and the street.", scene:"exit"}
   ],
   buttons: [
     {key:"1", sound:"fx_doorbell",   label:"Doorbell",  note:"Hall door",                 pages:[5,24,31,31,31,35,50,51,51,51,52]},
@@ -536,6 +551,7 @@ const BASE = {
     {key:"8", sound:"fx_pipe",       label:"Pipe",      note:"Gloria's three knocks",     pages:[60]},
     {key:"9", sound:"fx_theremin",   label:"Theremin",  note:"Sinister. Use sparingly",   pages:[]},
     {key:"0", sound:"fx_punct",      label:"Punctuation",note:"Metal hit. Cuts the tension dead", pages:[16], punct:true},
+    {key:"D", sound:"fx_doll_tease", label:"Doll notes",note:"Over the Scene 1 under, on each mention", pages:[10,11,12,13,14]},
     {key:"K", sound:"fx_stab",       label:"The stab",  note:"Final fight. Cuts the heartbeat and tension dead", pages:[], punct:true, wide:true}
   ]
 };
@@ -604,6 +620,14 @@ function applyShowFile(obj, persist=true){
 }
 /* bring a show saved by an older build up to date, touching only what the operator never changed */
 function migrate(from){
+  if(from < 4){
+    const keepLife = show.settings.life, keepHeart = show.settings.heart;
+    show.layers = deep(BASE.layers); show.scenes = deep(BASE.scenes); show.cues = deep(BASE.cues); show.drops = deep(BASE.drops); show.sections = deep(BASE.sections);
+    for(const b of BASE.buttons) if(!show.buttons.some(x=>x.sound===b.sound)) show.buttons.push(deep(b));
+    show.buttons = BASE.buttons.map(b => show.buttons.find(x=>x.sound===b.sound) || deep(b));
+    for(const id of ["amb_hum","amb_city","fx_doll_tease"]) if(!show.sounds[id]) show.sounds[id] = deep(BASE.sounds[id]);
+    show.settings.life = keepLife; show.settings.heart = keepHeart;
+  }
   if(from < 3){
     const a=show.sounds.ann_welcome; if(a && a.duck===9) a.duck=4;                       // street stays under the curtain speech
     const was={s11:26, fridge:22, s11b:22};
@@ -852,6 +876,7 @@ function cueDoes(c){
   for(const e of (c.play||[]).map(entry)) out.push({k:"play", t:lbl(e.id)+(e.delay?` +${e.delay}s`:"")+(e.gain?` ${e.gain>0?"+":""}${e.gain} dB`:"")});
   for(const e of (c.stop||[]).map(entry)) out.push({k:"stop", t:"stop "+lbl(e.id)});
   if(c.lx) out.push({k:"lx", t:"with lights"});
+  if(c.prac) out.push({k:"prac", t:"practical: fire on the action"});
   return out;
 }
 function chips(c, small){ return `<div class="does">${cueDoes(c).map(d=>`<span class="chip ${d.k}">${esc(d.t)}</span>`).join("")}</div>`; }
