@@ -423,8 +423,8 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
    ============================================================ */
 const BASE = {
   version: 2,
-  rev: 5,
-  stamp: "2026-10-14b",
+  rev: 6,
+  stamp: "2026-10-14c",
   settings: {master:0, duck:3, breathe:true, midi:{}, life:40, heart:72},
   sections: [
     {name:"Pre-show", from:0, to:4},
@@ -523,11 +523,12 @@ const BASE = {
     {id:"q010", page:"5",  when:"Blackout, top of show", what:"The fridge hum, and under it the Scene 1 under: a low, unplaceable drone that runs the whole scene.", scene:"fridge", lx:true},
     {id:"q011", page:"5",  when:"\"…we hear the back door open and close quietly, off right\"", what:"The street door, quiet, before Mike's two knocks.", play:["fx_door"], prac:true},
     {id:"q012", page:"5",  when:"Mike unplugs the fridge", what:"Fridge clunks off and its hum stops dead. The under keeps going.", scene:"s11b", play:["fx_fridge_off"], prac:true},
+    {id:"q012a", page:"5", when:"\"…we hear the back door open and close, but with more noise this time\" (Carlino)", what:"The street door again, louder. Mike is in the bedroom.", play:["fx_door"], prac:true},
     {id:"q013", page:"5",  when:"\"Then the hall doorbell rings\" (Carlino)", what:"Doorbell.", play:["fx_doorbell"], prac:true},
     {id:"q020", page:"12", when:"Roat: \"A musical doll\"", what:"A few notes of the doll's tune over the under. D does the same for the other mentions, pp 10 to 14.", play:["fx_doll_tease"], prac:true},
-    {id:"q030", page:"18", when:"Roat: \"Quiet!\" They listen", what:"Susy's cane tapping down the hall toward the door.", play:["fx_cane"], prac:true},
-    {id:"q031", page:"18", when:"Mike: \"…tomorrow night.\" (street door slams, off)", what:"Street door slam.", play:["fx_slam"], prac:true},
-    {id:"q032", page:"19", when:"Susy exits, slamming the door", what:"Her cane fades along the hall.", play:[{id:"fx_cane", gain:-6}], prac:true},
+    {id:"q030", page:"18", when:"Mike: \"…tomorrow night.\" (street door slams, off)", what:"Street door slam. Susy is home.", play:["fx_slam"], prac:true},
+    {id:"q031", page:"18", when:"Roat: \"Quiet!\" They listen", what:"Susy's cane tapping down the hall toward the door.", play:["fx_cane"], prac:true},
+    {id:"q032", page:"19", when:"Susy exits, slamming the door: \"her stick trailing along the other side of the back wall\"", what:"Her cane fades along the hall, behind the wall.", play:[{id:"fx_cane", gain:-6}], prac:true},
     {id:"q033", page:"19", when:"\"…door opens and slams\"", what:"Street door slam. When she gets there, not on a timer.", play:["fx_slam"], prac:true},
     {id:"q034", page:"19", when:"\"Two plus five, Mr. Talman.\" Blackout", what:"Scratchy scene-change texture. Under and street out, rain in.", scene:"rain", play:["tex_change"]},
 
@@ -538,11 +539,11 @@ const BASE = {
     {id:"q044", page:"32", when:"\"Oh, yes! Thank you.\" Blackout", what:"Scene-change texture. Rain stays.", play:["tex_change"]},
 
     {id:"q050", page:"33", when:"\"The phone rings\" (Carlino: \"You're entirely welcome.\")", what:"Phone starts ringing and keeps ringing.", play:["fx_phone"], prac:true},
-    {id:"q051", page:"33", when:"Mike picks up", what:"Phone stops.", stop:["fx_phone"], prac:true},
+    {id:"q051", page:"34", when:"Susy picks it up", what:"Phone stops.", stop:["fx_phone"], prac:true},
     {id:"q052", page:"35", when:"\"…hall and street door slam\"", what:"Street door slam.", play:["fx_slam"], prac:true},
     {id:"q053", page:"35", when:"\"The doorbell rings. Susy starts towards it\"", what:"Doorbell.", play:["fx_doorbell"], prac:true},
     {id:"q054", page:"39", when:"\"…phone rings. Mike starts towards it\"", what:"Phone starts ringing.", play:["fx_phone"], prac:true},
-    {id:"q055", page:"39", when:"Roat picks up", what:"Phone stops.", stop:["fx_phone"], prac:true},
+    {id:"q055", page:"39", when:"Mike picks it up", what:"Phone stops.", stop:["fx_phone"], prac:true},
     {id:"q056", page:"40", when:"Susy in the bedroom, \"knocking over some bottles\"", what:"Bottles go over, offstage left.", play:["fx_bottles"], prac:true},
     {id:"q057", page:"41", when:"\"They're watching this house.\" Blackout", what:"Intermission: the house music comes back over the rain with a thread of the tension bed under it.", scene:"inter", lx:true},
 
@@ -556,15 +557,16 @@ const BASE = {
     {id:"q067", page:"50", when:"\"A pause, then street doorbell rings\"", what:"Doorbell.", play:["fx_doorbell"], prac:true},
     {id:"q068", page:"51", when:"\"…doorbell rings again\"", what:"Doorbell.", play:["fx_doorbell"], prac:true},
     {id:"q069", page:"51", when:"Gloria: \"I took it.\" (Street doorbell rings)", what:"Doorbell.", play:["fx_doorbell"], prac:true},
+    {id:"q069a", page:"52", when:"\"…we can hear Carlino enter by the back door\"", what:"Street door, before the bell.", play:["fx_door"], prac:true},
     {id:"q070", page:"52", when:"\"…doorbell rings, Susy puts out her hands\"", what:"Doorbell.", play:["fx_doorbell"], prac:true},
     {id:"q071", page:"55", when:"\"…the phone starts to ring… she lets it ring exactly twice\"", what:"Two rings, then it stops by itself.", play:["fx_two_rings"], prac:true},
     {id:"q072", page:"55", when:"Carlino exits: \"We hear it open and slam\"", what:"Street door slam.", play:["fx_slam"], prac:true},
-    {id:"q073", page:"55", when:"\"The door closes quietly\" (Carlino, listening)", what:"Door, quiet close.", play:["fx_door"], prac:true},
-    {id:"q074", page:"55", when:"\"…the phone starts to ring again\" (Susy answers at the end of the first ring)", what:"Phone starts ringing.", play:["fx_phone"], prac:true},
-    {id:"q075", page:"56", when:"Susy answers", what:"Phone stops.", stop:["fx_phone"], prac:true},
+    {id:"q073", page:"55", when:"\"…we hear the street door close\" (Carlino going out, Susy off right)", what:"Street door, quiet close, down the hall.", play:["fx_door"], prac:true},
+    {id:"q074", page:"55", when:"\"…the phone starts to ring again\" (Susy comes down at the end of the first ring)", what:"Two rings, then it stops by itself. She never reaches it.", play:["fx_two_rings"], prac:true},
+    {id:"q075", page:"56", when:"\"…we hear someone running outside, R., and entering the back door\" (Mike)", what:"Street door. Then he tries the hall door and knocks (live).", play:["fx_door"], prac:true},
     {id:"q076", page:"60", when:"\"…three muffled knocks on the pipe from Gloria\"", what:"Gloria's three knocks, from above.", play:["fx_pipe"], prac:true},
-    {id:"q077", page:"63", when:"Gloria smashes the first bulb in the hall", what:"Glass, off.", play:["fx_glass"], prac:true},
-    {id:"q078", page:"63", when:"…the second bulb", what:"Glass, off.", play:["fx_glass"], prac:true},
+    {id:"q077", page:"63", when:"\"Then there is a bang and the light goes out\" (Gloria, after three swings at it)", what:"Glass, off.", play:["fx_glass"], prac:true},
+    {id:"q078", page:"63", when:"\"Another bang and the hall is dark\"", what:"Glass, off.", play:["fx_glass"], prac:true},
     {id:"q079", page:"63", when:"\"We hear the back door open and slam and Gloria run\"", what:"Street door slam.", play:["fx_slam"], prac:true},
 
     {id:"q080", page:"64", when:"Act II Sc 2. Susy alone, waiting and listening", what:"The city montage: the wet street comes up outside the window, cars, voices, a kitchen somewhere. Scene-change texture into it.", scene:"montage", play:["tex_change"]},
@@ -573,9 +575,9 @@ const BASE = {
     {id:"q083", page:"68", when:"Roat: \"…we can talk.\"", what:"Drizzle fades to silence. Nothing from here but the actors.", scene:"silent"},
     {id:"q084", page:"71", when:"Susy smashes the lamp", what:"Glass. Same instant as the lights.", play:["fx_glass"], lx:true, prac:true},
     {id:"q085", page:"73", when:"Roat opens the fridge", what:"Fridge roars on at full and stays.", scene:"roar", lx:true, prac:true},
-    {id:"q086", page:"74", when:"Roat slits the doll open", what:"The doll's whole tune, tinny and small.", play:["mus_doll"], prac:true},
+    {id:"q086", page:"74", when:"\"As he does this the musical doll starts to play\" (Roat stuffing the bags)", what:"The doll's whole tune, tinny and small.", play:["mus_doll"], prac:true},
     {id:"q087", page:"76", when:"Susy yanks the cord", what:"Hum cuts dead.", scene:"cut", lx:true, prac:true},
-    {id:"q088", page:"76", when:"The doll is silenced", what:"Doll stops.", stop:["mus_doll"], prac:true},
+    {id:"q088", page:"76", when:"\"…and silence in the room\" (with the blackout)", what:"Doll stops.", stop:["mus_doll"], prac:true},
     {id:"q089", page:"76", when:"\"…banging on the hall door and then it breaks open with a splintering crash\"", what:"Running feet, pounding, the door forced open.", play:["fx_breakin"], prac:true},
     {id:"q090", page:"Bows", when:"Curtain call", what:"The house music, back and bright. The comfortable thing from before the show.", scene:"bows"},
     {id:"q091", page:"Exit", when:"House lights up", what:"House music and the street.", scene:"exit"}
@@ -583,10 +585,10 @@ const BASE = {
   /* The pad fires the same sounds out of order, without moving standby: an extra doorbell, a phone that rings early. */
   buttons: [
     {key:"1", sound:"fx_doorbell",   label:"Doorbell",  note:"Hall door",                 pages:[5,24,31,31,31,35,50,51,51,52]},
-    {key:"2", sound:"fx_phone",      label:"Phone",     note:"Rings until pressed again", pages:[33,39,42,55], toggle:true},
-    {key:"3", sound:"fx_two_rings",  label:"Two rings", note:"Then it stops by itself",   pages:[55]},
+    {key:"2", sound:"fx_phone",      label:"Phone",     note:"Rings until pressed again", pages:[33,39,42], toggle:true},
+    {key:"3", sound:"fx_two_rings",  label:"Two rings", note:"Then it stops by itself",   pages:[55,55]},
     {key:"4", sound:"fx_slam",       label:"Slam box",  note:"Street door, off left",     pages:[18,19,35,48,55,63]},
-    {key:"5", sound:"fx_door",       label:"Door",      note:"Quiet close, down the hall",pages:[5,55]},
+    {key:"5", sound:"fx_door",       label:"Door",      note:"Quiet close, down the hall",pages:[5,5,52,55,56]},
     {key:"6", sound:"fx_glass",      label:"Glass",     note:"Lamp or bulb",              pages:[42,63,63,71]},
     {key:"7", sound:"mus_doll_short",label:"Doll",      note:"First notes only",          pages:[50]},
     {key:"8", sound:"fx_pipe",       label:"Pipe",      note:"Gloria's three knocks",     pages:[60]},
@@ -661,7 +663,7 @@ function applyShowFile(obj, persist=true){
 }
 /* bring a show saved by an older build up to date, touching only what the operator never changed */
 function migrate(from){
-  if(from < 5){
+  if(from < 6){
     const keepLife = show.settings.life, keepHeart = show.settings.heart;
     show.layers = deep(BASE.layers); show.scenes = deep(BASE.scenes); show.cues = deep(BASE.cues); show.drops = deep(BASE.drops); show.sections = deep(BASE.sections);
     for(const b of BASE.buttons) if(!show.buttons.some(x=>x.sound===b.sound)) show.buttons.push(deep(b));
