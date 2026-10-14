@@ -315,6 +315,10 @@
    "Doll tune, far away",
    "Music box, dying 1",
    "Music box, dying 2"
+  ],
+  "fx_bottles": [
+   "Take 1",
+   "Take 2"
   ]
  },
  "fx_heart": [
@@ -350,5 +354,9 @@
   "sounds/fx_doll_tease_2.mp3",
   "sounds/fx_doll_tease_3.mp3",
   "sounds/fx_doll_tease_4.mp3"
+ ],
+ "fx_bottles": [
+  "sounds/fx_bottles_1.mp3",
+  "sounds/fx_bottles_2.mp3"
  ]
 }
