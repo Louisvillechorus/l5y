@@ -319,6 +319,102 @@
   "fx_bottles": [
    "Take 1",
    "Take 2"
+  ],
+  "fx_fl_metal": [
+   "Scrape 1",
+   "Scrape 2",
+   "Scrape 3",
+   "Scrape 4"
+  ],
+  "fx_fl_rattle": [
+   "Rattle 1",
+   "Rattle 2",
+   "Rattle 3",
+   "Rattle 4"
+  ],
+  "fx_fl_piano": [
+   "Sour keys 1",
+   "Sour keys 2",
+   "Sour keys 3 (quieter attack)",
+   "Sour keys 4"
+  ],
+  "fx_fl_cluster": [
+   "Cluster 1",
+   "Cluster 2",
+   "Cluster 3",
+   "Cluster 4"
+  ],
+  "fx_fl_soft": [
+   "Soft 1",
+   "Soft 2"
+  ],
+  "fx_fl_violin": [
+   "Violin stab 1",
+   "Violin stab 2",
+   "Violin stab 3"
+  ],
+  "fx_hit": [
+   "Hit 1",
+   "Hit 2",
+   "Hit 3",
+   "Hit 4 (lowest)"
+  ],
+  "fx_flourish": [
+   "Violin stab",
+   "Sour keys",
+   "Metal scrape",
+   "Rattle",
+   "Sour keys, softer"
+  ],
+  "fx_buzzer": [
+   "Buzzer 1",
+   "Buzzer 2",
+   "Buzzer 3"
+  ],
+  "fx_bulb_in": [
+   "Bulb 1",
+   "Bulb 2",
+   "Bulb 3"
+  ],
+  "fx_truck": [
+   "Truck 1",
+   "Truck 2",
+   "Truck 3"
+  ],
+  "fx_run_door": [
+   "Running 1",
+   "Running 2",
+   "Running 3"
+  ],
+  "fx_siren": [
+   "Siren passes",
+   "Siren arrives, stays",
+   "Siren arrives"
+  ],
+  "und_piano": [
+   "Piano 1",
+   "Piano 2",
+   "Piano 3",
+   "Piano 4"
+  ],
+  "und_strings": [
+   "Strings 1",
+   "Strings 2",
+   "Strings 3",
+   "Strings 4"
+  ],
+  "und_pulse": [
+   "Pulse 1",
+   "Pulse 2",
+   "Pulse 3"
+  ],
+  "mus_roat": [
+   "Underscore A (4:20)",
+   "Underscore B (3:28)"
+  ],
+  "mus_inter": [
+   "Dread A (3:20)",
+   "Dread B (2:30)"
   ]
  },
  "fx_heart": [
@@ -358,5 +454,101 @@
  "fx_bottles": [
   "sounds/fx_bottles_1.mp3",
   "sounds/fx_bottles_2.mp3"
+ ],
+ "fx_fl_metal": [
+  "sounds/fx_fl_metal_1.mp3",
+  "sounds/fx_fl_metal_2.mp3",
+  "sounds/fx_fl_metal_3.mp3",
+  "sounds/fx_fl_metal_4.mp3"
+ ],
+ "fx_fl_rattle": [
+  "sounds/fx_fl_rattle_1.mp3",
+  "sounds/fx_fl_rattle_2.mp3",
+  "sounds/fx_fl_rattle_3.mp3",
+  "sounds/fx_fl_rattle_4.mp3"
+ ],
+ "fx_fl_piano": [
+  "sounds/fx_fl_piano_1.mp3",
+  "sounds/fx_fl_piano_2.mp3",
+  "sounds/fx_fl_piano_3.mp3",
+  "sounds/fx_fl_piano_4.mp3"
+ ],
+ "fx_fl_cluster": [
+  "sounds/fx_fl_cluster_1.mp3",
+  "sounds/fx_fl_cluster_2.mp3",
+  "sounds/fx_fl_cluster_3.mp3",
+  "sounds/fx_fl_cluster_4.mp3"
+ ],
+ "fx_fl_soft": [
+  "sounds/fx_fl_soft_1.mp3",
+  "sounds/fx_fl_soft_2.mp3"
+ ],
+ "fx_fl_violin": [
+  "sounds/fx_fl_violin_1.mp3",
+  "sounds/fx_fl_violin_2.mp3",
+  "sounds/fx_fl_violin_3.mp3"
+ ],
+ "fx_hit": [
+  "sounds/fx_hit_1.mp3",
+  "sounds/fx_hit_2.mp3",
+  "sounds/fx_hit_3.mp3",
+  "sounds/fx_hit_4.mp3"
+ ],
+ "fx_buzzer": [
+  "sounds/fx_buzzer_1.mp3",
+  "sounds/fx_buzzer_2.mp3",
+  "sounds/fx_buzzer_3.mp3"
+ ],
+ "fx_bulb_in": [
+  "sounds/fx_bulb_in_1.mp3",
+  "sounds/fx_bulb_in_2.mp3",
+  "sounds/fx_bulb_in_3.mp3"
+ ],
+ "fx_truck": [
+  "sounds/fx_truck_1.mp3",
+  "sounds/fx_truck_2.mp3",
+  "sounds/fx_truck_3.mp3"
+ ],
+ "fx_run_door": [
+  "sounds/fx_run_door_1.mp3",
+  "sounds/fx_run_door_2.mp3",
+  "sounds/fx_run_door_3.mp3"
+ ],
+ "fx_siren": [
+  "sounds/fx_siren_1.mp3",
+  "sounds/fx_siren_2.mp3",
+  "sounds/fx_siren_3.mp3"
+ ],
+ "und_piano": [
+  "sounds/und_piano_1.mp3",
+  "sounds/und_piano_2.mp3",
+  "sounds/und_piano_3.mp3",
+  "sounds/und_piano_4.mp3"
+ ],
+ "und_strings": [
+  "sounds/und_strings_1.mp3",
+  "sounds/und_strings_2.mp3",
+  "sounds/und_strings_3.mp3",
+  "sounds/und_strings_4.mp3"
+ ],
+ "mus_roat": [
+  "sounds/mus_roat_1.mp3",
+  "sounds/mus_roat_2.mp3"
+ ],
+ "mus_inter": [
+  "sounds/mus_inter_1.mp3",
+  "sounds/mus_inter_2.mp3"
+ ],
+ "fx_flourish": [
+  "sounds/fx_flourish_1.mp3",
+  "sounds/fx_flourish_2.mp3",
+  "sounds/fx_flourish_3.mp3",
+  "sounds/fx_flourish_4.mp3",
+  "sounds/fx_flourish_5.mp3"
+ ],
+ "und_pulse": [
+  "sounds/und_pulse_2.mp3",
+  "sounds/und_pulse_3.mp3",
+  "sounds/und_pulse_4.mp3"
  ]
 }

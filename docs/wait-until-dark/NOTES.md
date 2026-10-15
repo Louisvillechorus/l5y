@@ -3,7 +3,7 @@
 Redline Performing Arts, Oct 24 to 30, 2026. Sound design by David Borman. Director Tyler, producer Alonzo. Operators Catherine and Laura on Redline's two iMacs, Chrome.
 
 ## Script
-The Frederick Knott original (the acting edition with Susy, Mike entering first). Page numbers on the board are that edition's. The Jeffrey Hatcher adaptation PDF that went around on Oct 13 is not the one in rehearsal; Tyler's notes line up with the Knott pages.
+The Jeffrey Hatcher adaptation (Dramatists Play Service; Susan, Mike, Sam, Carlino, Roat, Gloria; two acts, Act Two in one scene, 59 pages). Page numbers on the board are that edition's. Settled Oct 15: the Act One page numbers happened to line up with the Knott original too, so for a day the board was mapped to Knott; Tyler's Act Two notes only exist in Hatcher and he calls her Susan. The production plays it in the present day.
 
 ## Where things live
 - Board: docs/wait-until-dark/index.html, manifest.json, sounds/. Public at louisvillechorus.github.io/l5y/wait-until-dark/
@@ -15,6 +15,8 @@ The Frederick Knott original (the acting edition with Susy, Mike entering first)
 - Oct 12 demo: street under the curtain speech; heartbeat on a throttle for the final stab; a unique stab sound. Catherine runs the board with Laura. Floor mics at the front of the stage, tape over mic pack LEDs.
 - Oct 14 email: Scene 1 gets a continuous underscore (the "hum"), not a replacement for the fridge. A few notes of the doll tune over it on the doll mentions (pp 10 to 14). The game on pp 22 to 25 is a practical, nothing from sound. Act II: less street as the play goes on, for isolation, except the city montage at the top of Act II Sc 2 (p64) before Mike re-enters.
 - David: every practical is its own GO, fired on the action. Nothing chained or on a timer.
+- Oct 15 (Tyler's eleven notes): Act Two wants more underscoring, indiscernible until the last scene. p37 strings under the window talk with a flourish on "watching the house" and another on "really a policeman"; a family of flourishes (metal scrape, rattle, sour piano keys, violin stab, cluster, soft). p42 "someone's looking through the window": flourish plus an under-sounding until Carlino is in. p46 Mike back: twelve-tone piano under, out after the window moment on p48, which gets a hit. p51: the Village montage before Mike gets in, then a low pulse and strings under the whole Mike and Susan scene. p52 "You'll have to hurt me": a gentle ominous flourish. p53 Roat in: a piano cluster, then an underscore that runs to the end (ride Tension on top). Intermission music carries dread; the top-of-show music stays. The heartbeat into the stab stays as it is.
+- David: traditional horror underscoring where it fits, piano twelve-tone, Misery and The Shining as the reference.
 
 ## Operator keys
-Space GO. 1 to 0 buttons. D doll notes. K the stab (cuts heartbeat and tension). H heartbeat, with , and . for pace. = and - tension. [ ] script page. Esc fade everything.
+Space GO. 1 to 0 buttons (9 flourish, 0 hit). P punctuation. D doll notes. K the stab (cuts heartbeat and tension). H heartbeat, with , and . for pace. = and - tension. [ ] script page. Esc fade everything.
