@@ -424,8 +424,8 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
    ============================================================ */
 const BASE = {
   version: 2,
-  rev: 7,
-  stamp: "2026-10-15",
+  rev: 8,
+  stamp: "2026-10-15b",
   settings: {master:0, duck:3, breathe:true, midi:{}, life:40, heart:72},
   sections: [
     {name:"Pre-show", from:0, to:6},
@@ -496,7 +496,7 @@ const BASE = {
     und_piano:    {label:"Under: twelve-tone piano (loop)", group:"Score",      pan:0,     gain:0,  space:"dry",  duck:0},
     und_strings:  {label:"Under: string cluster (loop)", group:"Score",         pan:0,     gain:-2, space:"dry",  duck:0},
     und_pulse:    {label:"Under: low pulse (loop)",    group:"Score",           pan:0,     gain:-4, space:"dry",  duck:0},
-    mus_roat:     {label:"Roat underscore (loop, ebbs and flows)", group:"Score", pan:0,   gain:0,  space:"dry",  duck:0},
+    mus_roat:     {label:"Roat underscore (quiet drone, an occasional drum)", group:"Score", pan:0,   gain:0,  space:"dry",  duck:0},
     mus_inter:    {label:"Intermission music, dread (loop)", group:"Music and voice", pan:0, gain:0, space:"dry", duck:0},
     drp_car:      {label:"Car passes (drop)",          group:"Street drops",    pan:0.45,  gain:-8, space:"dry",  duck:0, drop:true},
     drp_horn:     {label:"Distant horn (drop)",        group:"Street drops",    pan:0.5,   gain:-10,space:"dry",  duck:0, drop:true},
@@ -530,9 +530,9 @@ const BASE = {
     {id:"s21c",    name:"After the window, under out", fade:8, levels:{rain:25}},
     {id:"montage", name:"Village, Saturday night", fade:6, levels:{rain:15, city:60}},
     {id:"tense51", name:"Mike and Susan, tense", fade:5,   levels:{rain:12, upulse:40, ustrings:30}},
-    {id:"roat",    name:"Roat: underscore in",  fade:3,    levels:{roat:55}},
-    {id:"roatdark",name:"Roat: the dark",       fade:4,    levels:{roat:40}},
-    {id:"roar",    name:"Icebox roars",         fade:0.08, levels:{fridge:100, roat:38}},
+    {id:"roat",    name:"Roat: underscore in",  fade:3,    levels:{roat:45}},
+    {id:"roatdark",name:"Roat: the dark",       fade:4,    levels:{roat:32}},
+    {id:"roar",    name:"Icebox roars",         fade:0.08, levels:{fridge:100, roat:30}},
     {id:"cut",     name:"Plug pulled",          fade:0.02, levels:{}},
     {id:"end",     name:"Street comes in",      fade:3,    levels:{street:35}},
     {id:"bows",    name:"Bows",                 fade:1.5,  levels:{music:70, tension:0}},
@@ -610,7 +610,7 @@ const BASE = {
     {id:"q068", page:"52", when:"Susan: \"You'll have to hurt me. More than you imagine.\" She looks at Mike", what:"Flourish: gentle and ominous, one low piano note with a string behind it.", play:["fx_fl_soft"], prac:true},
     {id:"q069", page:"52", when:"\"Sound: A sudden and violent revving-up of a truck engine outside. We hear a shout and a crash.\"", what:"The truck in the alley: revs, a shout, the crash, it roars off.", play:["fx_truck"], prac:true},
     {id:"q070", page:"53", when:"Mike falls dead on the steps. Roat enters and locks the hall door", what:"The hit: a piano cluster, hard, long ring.", play:["fx_fl_cluster"], prac:true},
-    {id:"q071", page:"53", when:"Roat: \"All the children have gone to bed now, Susan. Now we can talk.\"", what:"The underscore comes in and stays to the end. It ebbs and flows on its own; ride Tension (= and -) on top of it.", scene:"roat"},
+    {id:"q071", page:"53", when:"Roat: \"All the children have gone to bed now, Susan. Now we can talk.\"", what:"The underscore comes in and stays to the end: a quiet, eerie drone with an occasional drum beat that picks up the pace mid-way. Ride Tension (= and -) on top of it for the pushes.", scene:"roat"},
     {id:"q072", page:"55", when:"\"Susan smashes the lamp against the wall. Complete darkness\"", what:"Glass.", play:["fx_glass"], prac:true},
     {id:"q073", page:"55", when:"…and with the blackout", what:"The underscore drops back for the dark. Keep riding Tension.", scene:"roatdark", lx:true},
     {id:"q074", page:"56", when:"\"Roat opens the icebox… The icebox immediately starts its loud hum\"", what:"Icebox roars. The underscore stays under it.", scene:"roar", prac:true},
@@ -704,7 +704,7 @@ function applyShowFile(obj, persist=true){
 }
 /* bring a show saved by an older build up to date, touching only what the operator never changed */
 function migrate(from){
-  if(from < 7){
+  if(from < 8){
     const keepLife = show.settings.life, keepHeart = show.settings.heart;
     show.layers = deep(BASE.layers); show.scenes = deep(BASE.scenes); show.cues = deep(BASE.cues); show.drops = deep(BASE.drops); show.sections = deep(BASE.sections);
     for(const b of BASE.buttons) if(!show.buttons.some(x=>x.sound===b.sound)) show.buttons.push(deep(b));
