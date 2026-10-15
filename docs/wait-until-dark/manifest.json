@@ -413,8 +413,10 @@
    "Quiet, drums pick up mid-way, B (2:47)"
   ],
   "mus_inter": [
-   "Dread A (3:20)",
-   "Dread B (2:30)"
+   "Dark piano, the key keeps slipping (2:45)",
+   "Dark piano, the key keeps slipping, B (2:45)",
+   "Dread drone A (3:20)",
+   "Dread drone B (2:30)"
   ]
  },
  "fx_heart": [
@@ -537,7 +539,9 @@
  ],
  "mus_inter": [
   "sounds/mus_inter_1.mp3",
-  "sounds/mus_inter_2.mp3"
+  "sounds/mus_inter_2.mp3",
+  "sounds/mus_inter_3.mp3",
+  "sounds/mus_inter_4.mp3"
  ],
  "fx_flourish": [
   "sounds/fx_flourish_1.mp3",
