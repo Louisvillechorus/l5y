@@ -424,8 +424,8 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
    ============================================================ */
 const BASE = {
   version: 2,
-  rev: 8,
-  stamp: "2026-10-15b",
+  rev: 9,
+  stamp: "2026-10-17",
   settings: {master:0, duck:3, breathe:true, midi:{}, life:40, heart:72},
   sections: [
     {name:"Pre-show", from:0, to:6},
@@ -463,7 +463,7 @@ const BASE = {
     fx_fridge:    {label:"Icebox hum (loop)",          group:"Atmosphere",      pan:0.7,   gain:0,  space:"dry",  duck:0},
     amb_hum:      {label:"Scene 1 under (loop)",       group:"Atmosphere",      pan:0,     gain:-4, space:"dry",  duck:0},
     amb_city:     {label:"City, wet night (loop)",     group:"Atmosphere",      pan:0.45,  gain:0,  space:"dry",  duck:0},
-    fx_doll_tease:{label:"Doll notes (over the under)", group:"Score",          pan:0.1,   gain:-2, space:"hall", duck:2, vary:true},
+    fx_doll_tease:{label:"Doll notes (over the under)", group:"Score",          pan:0.1,   gain:-9, space:"room", duck:1, vary:true},
     fx_bottles:   {label:"Bottles knocked over (bedroom)", group:"Effects",     pan:-0.6,  gain:-4, space:"room", duck:0, vary:true},
     fx_fridge_off:{label:"Icebox clunks off",          group:"Atmosphere",      pan:0.7,   gain:0,  space:"dry",  duck:0},
     tex_tension:  {label:"Tension bed (throttle)",     group:"Score",           pan:0,     gain:0,  space:"dry",  duck:0},
@@ -518,9 +518,14 @@ const BASE = {
     {id:"s11",     name:"House to half",        fade:8,    levels:{street:44}},
     {id:"fridge",  name:"Sc 1 at rise: icebox", fade:0.1,  levels:{street:30, under:55, fridge:88}},
     {id:"s11b",    name:"Sc 1 settles",         fade:3,    levels:{street:26, under:55, fridge:40}},
+    {id:"s11c",    name:"Sc 1: just the street", fade:4,    levels:{street:30}},
     {id:"black",   name:"Blackout",             fade:1.2,  levels:{}},
     {id:"s12",     name:"Sc 2 darkroom",        fade:3,    levels:{rain:26}},
-    {id:"s12b",    name:"Sc 2 curtains open",   fade:4,    levels:{rain:55, street:8}},
+    {id:"s12b",    name:"Sc 2 curtains open",   fade:4,    levels:{rain:48, street:60}},
+    {id:"s12c",    name:"Sc 2: rain gone",      fade:30,   levels:{street:60}},
+    {id:"s12d",    name:"Sc 2: street out",     fade:6,    levels:{}},
+    {id:"tense24", name:"Roat Senior: tension", fade:3,    levels:{tension:35}},
+    {id:"tense24x",name:"Door locked: tension out", fade:3, levels:{tension:0}},
     {id:"inter",   name:"Intermission",         fade:4,    levels:{intermusic:60, rain:12, tension:0}},
     {id:"s21",     name:"Act Two at rise",      fade:8,    levels:{rain:40, tension:0}},
     {id:"window1", name:"Window: strings under",fade:5,    levels:{rain:34, ustrings:45}},
@@ -546,7 +551,7 @@ const BASE = {
      Nothing is chained or on a timer. If the script has two sounds, there are two rows.
      The button pad fires the same sounds out of order (an extra doorbell, a skipped phone) without moving standby. */
   cues: [
-    {id:"q001", page:"Pre", when:"House opens", what:"Warm, comfortable house music over a quiet night street. Nothing is wrong.", scene:"pre"},
+    {id:"q001", page:"Pre", when:"House opens", what:"Warm, comfortable house music over a quiet night street. Nothing is wrong. The street drops slider can come up here.", scene:"pre"},
     {id:"q002", page:"Pre", when:"House to half", what:"Music fades out and the night street comes up to take its place. We are outside now, on the way to the house.", scene:"s11"},
     {id:"q003", page:"Pre", when:"Two minutes to curtain (SM calls it)", what:"The announcement, with the street kept under it the whole way.", play:["ann_welcome"]},
     {id:"q010", page:"7",  when:"Lights up, Act One Scene 1 (the icebox is humming)", what:"The icebox hum, loud, and under it the Scene 1 under: a low, unplaceable drone that runs the whole scene.", scene:"fridge", lx:true},
@@ -554,29 +559,34 @@ const BASE = {
     {id:"q012", page:"8",  when:"\"Sound: The offstage street door opens and closes\" (Roat)", what:"The street door again.", play:["fx_door"], prac:true},
     {id:"q013", page:"8",  when:"\"Sound: Lightbulb screwing in\"", what:"A bulb threaded into the hall socket, off. The hall light comes back with it.", play:["fx_bulb_in"], prac:true},
     {id:"q014", page:"8",  when:"Roat: \"I wouldn't touch that.\"", what:"The icebox settles under the dialogue. The under stays.", scene:"s11b"},
-    {id:"q015", page:"10", when:"Roat: \"A doll. Child's doll. Plays a little tune.\"", what:"A few notes of the doll's tune over the under. D plays more on the later mentions, pages 10 to 14.", play:["fx_doll_tease"], prac:true},
+    {id:"q015", page:"10", when:"Roat: \"A doll. Child's doll. Plays a little tune.\"", what:"A few notes of the doll's tune, soft, over the under. D plays more on the later mentions, pages 10 to 14.", play:["fx_doll_tease"], prac:true},
     {id:"q016", page:"14", when:"\"Sound: The offstage street door opens and shuts\" (Susan is home)", what:"The street door.", play:["fx_door"], prac:true},
     {id:"q017", page:"14", when:"\"Sound: We hear an offstage tapping, getting closer\"", what:"Her cane, down the hall toward the door.", play:["fx_cane"], prac:true},
+    {id:"q017b", page:"14", when:"Susan is in (the hall door opens)", what:"The under and the icebox go. Just the street for the rest of the scene.", scene:"s11c"},
     {id:"q018", page:"14", when:"Susan exits: \"We hear the cane trail along the other side of the wall\"", what:"Her cane fades along the hall, behind the wall.", play:[{id:"fx_cane", gain:-6}], prac:true},
     {id:"q019", page:"14", when:"\"The offstage street door opens and shuts\" (Susan gone)", what:"The street door.", play:["fx_door"], prac:true},
     {id:"q020", page:"14", when:"Roat: \"See?\" Blackout, end of Scene 1", what:"Everything out with the lights. A scene-change texture covers the shift.", scene:"black", play:["tex_change"], lx:true},
     {id:"q021", page:"15", when:"Lights up, Scene 2 (the darkroom, curtains closed)", what:"Rain, faint, behind the blackout curtains. No icebox: Sam has had it defrosted.", scene:"s12", lx:true},
     {id:"q022", page:"15", when:"\"Susan pulls open the blackout curtains. It's gray and rainy outside\"", what:"The rain comes up with the curtains, and a little street.", scene:"s12b", prac:true},
-    {id:"q023", page:"17", when:"Sam exits: \"We hear the street door open and close\"", what:"The street door. He walks past the windows.", play:["fx_door"], prac:true},
+    {id:"q023", page:"17", when:"Sam exits, after \"Call Gloria.\": \"We hear the street door open and close\"", what:"The street door, after his last line. He walks past the windows.", play:["fx_door"], prac:true},
     {id:"q024", page:"18", when:"\"Sound: Door buzzer\" (Mike, Susan on the phone to the fire department)", what:"Hall door buzzer.", play:["fx_buzzer"], prac:true},
     {id:"q025", page:"18", when:"\"Sound: Door buzzer\" again", what:"Buzzer.", play:["fx_buzzer"], prac:true},
+    {id:"q025b", page:"18", when:"Mike: \"All clear. Fire's out.\"", what:"The rain thins over thirty seconds until it is gone. The street stays.", scene:"s12c"},
     {id:"q026", page:"20", when:"\"Sound: Door buzzer\" (Carlino)", what:"Buzzer.", play:["fx_buzzer"], prac:true},
+    {id:"q026b", page:"20", when:"Carlino enters (Mike opens the hall door)", what:"The street fades out completely. The apartment is quiet.", scene:"s12d"},
     {id:"q027", page:"22", when:"\"We hear the street door open and close\" (Mike leaves)", what:"The street door.", play:["fx_door"], prac:true},
-    {id:"q028", page:"24", when:"\"Sound: Door buzzer\" (Roat Senior, first)", what:"Buzzer.", play:["fx_buzzer"], prac:true},
-    {id:"q029", page:"24", when:"\"Sound: Door buzzer\" (second)", what:"Buzzer.", play:["fx_buzzer"], prac:true},
-    {id:"q030", page:"24", when:"\"Sound: Doorbell rings again\" (third, as Gloria runs up)", what:"Buzzer.", play:["fx_buzzer"], prac:true},
+    {id:"q028", page:"24", when:"\"Sound: Door buzzer\" (Roat Senior, first)", what:"Buzzer, short.", play:[{id:"fx_buzzer", dur:0.6}], prac:true},
+    {id:"q029", page:"24", when:"\"Sound: Door buzzer\" (second)", what:"Buzzer, longer.", play:[{id:"fx_buzzer", dur:1.1}], prac:true},
+    {id:"q030", page:"24", when:"\"Sound: Doorbell rings again\" (third, as Gloria runs up)", what:"Buzzer, held. Each one more urgent than the last.", play:[{id:"fx_buzzer", dur:1.8}], prac:true},
+    {id:"q030b", page:"24", when:"Roat Senior pushes past Gloria", what:"Tension comes in under the intrusion and stays through the bedroom.", scene:"tense24"},
+    {id:"q030c", page:"25", when:"Mike: \"Lock your door\" (the door gets locked)", what:"Tension out over three seconds.", scene:"tense24x"},
     {id:"q031", page:"26", when:"\"Sound: Door buzzer\" (Carlino is back)", what:"Buzzer. Susan gives a little start.", play:["fx_buzzer"], prac:true},
-    {id:"q032", page:"27", when:"\"The phone rings. Susan picks it up.\"", what:"Phone starts ringing.", play:["fx_phone"], prac:true},
-    {id:"q033", page:"27", when:"Susan picks it up", what:"Phone stops.", stop:["fx_phone"], prac:true},
+    {id:"q032", page:"27", when:"\"The phone rings. Susan picks it up.\"", what:"The phone rings for two seconds and she has it. One cue.", play:[{id:"fx_phone", dur:2}], prac:true},
     {id:"q034", page:"29", when:"Carlino exits: \"We hear the street door open and close\"", what:"The street door.", play:["fx_door"], prac:true},
     {id:"q035", page:"29", when:"\"Sound: Door buzzer\" (Roat Junior)", what:"Buzzer.", play:["fx_buzzer"], prac:true},
     {id:"q036", page:"32", when:"\"The phone rings. Rings again.\"", what:"Phone starts ringing.", play:["fx_phone"], prac:true},
     {id:"q037", page:"32", when:"Mike picks up the phone", what:"Phone stops.", stop:["fx_phone"], prac:true},
+    {id:"q037b", page:"32", when:"Roat drops the phone, runs up the steps and out", what:"The street door closes behind him. He runs past the window.", play:["fx_door"], prac:true},
     {id:"q038", page:"33", when:"Susan rushes into the bedroom: \"We hear her knock over some bottles\"", what:"Bottles, off, in the bedroom.", play:["fx_bottles"], prac:true},
     {id:"q039", page:"34", when:"Mike pulls the blinds once, \"shunk\". End of Act One", what:"Intermission music: a slow dark piano that settles into a key and then loses it, over and over, rain faint under. Out with the lights.", scene:"inter", play:["tex_change"], lx:true},
     {id:"q040", page:"35", when:"Two minutes to Act Two (SM calls it)", what:"The intermission announcement, over the music.", play:["ann_two"]},
@@ -646,7 +656,7 @@ const $ = id => document.getElementById(id);
 function esc(s){return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
 function deep(o){return JSON.parse(JSON.stringify(o))}
 function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("on"); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("on"),2000); }
-function entry(e){ return typeof e==="string" ? {id:e, delay:0, gain:0} : {id:e.id, delay:+e.delay||0, gain:+e.gain||0}; }
+function entry(e){ return typeof e==="string" ? {id:e, delay:0, gain:0, dur:0} : {id:e.id, delay:+e.delay||0, gain:+e.gain||0, dur:+e.dur||0}; }
 function lbl(id){ return show.sounds[id]?.label || id; }
 function sceneOf(id){ return show.scenes.find(s=>s.id===id); }
 function isNumPage(p){ return /^\d+$/.test(String(p||"").trim()); }
@@ -704,7 +714,7 @@ function applyShowFile(obj, persist=true){
 }
 /* bring a show saved by an older build up to date, touching only what the operator never changed */
 function migrate(from){
-  if(from < 8){
+  if(from < 9){
     const keepLife = show.settings.life, keepHeart = show.settings.heart;
     show.layers = deep(BASE.layers); show.scenes = deep(BASE.scenes); show.cues = deep(BASE.cues); show.drops = deep(BASE.drops); show.sections = deep(BASE.sections);
     for(const b of BASE.buttons) if(!show.buttons.some(x=>x.sound===b.sound)) show.buttons.push(deep(b));
@@ -861,10 +871,15 @@ function play(id, opts={}){
   src.onended = () => { playing.delete(key); renderLive(); renderPad(); };
   const at = ctx.currentTime + (opts.delay||0);
   src.start(at);
+  let len = buf.duration;
+  if(opts.dur && opts.dur < buf.duration){            /* a cue may cut a one-shot short: the buzzer held for 0.6 s, the phone for 2 s */
+    len = opts.dur; const gg = g.gain, fo = 0.12;
+    gg.setValueAtTime(gg.value, at+len-fo); gg.linearRampToValueAtTime(0, at+len); try{ src.stop(at+len+0.02); }catch(e){}
+  }
   const d = snd.duck!==undefined ? snd.duck : show.settings.duck;
-  if(d>0 && !snd.drop && !snd.loop) duck(d, (opts.delay||0) + buf.duration);
+  if(d>0 && !snd.drop && !snd.loop) duck(d, (opts.delay||0) + len);
   else if(d>0 && snd.loop) duck(d, 3600);
-  playing.set(key, {src, gain:g, sound:id, start:at, dur:buf.duration, drop:!!snd.drop});
+  playing.set(key, {src, gain:g, sound:id, start:at, dur:len, drop:!!snd.drop});
   renderLive(); renderPad();
   return key;
 }
@@ -977,7 +992,7 @@ function fire(){
   const c = show.cues[sb];
   for(const e of (c.stop||[]).map(entry)) stopSound(e.id, 0.05);
   if(c.scene) goScene(c.scene, c.fade);
-  for(const e of (c.play||[]).map(entry)) play(e.id, {delay:e.delay, gain:e.gain});
+  for(const e of (c.play||[]).map(entry)) play(e.id, {delay:e.delay, gain:e.gain, dur:e.dur});
   if(c.cut){ throttle(null, 0.04); heartStop(0.04); }
   lastFired = sb; sb = Math.min(sb+1, show.cues.length);
   try{ localStorage.setItem("wud-pos", JSON.stringify({sb, t:Date.now()})); }catch(e){}

@@ -311,10 +311,9 @@
    "Wet night, cars and voices 3"
   ],
   "fx_doll_tease": [
-   "Doll tune, slow and low",
-   "Doll tune, far away",
-   "Music box, dying 1",
-   "Music box, dying 2"
+   "Doll tune, one phrase 1",
+   "Doll tune, one phrase 2",
+   "Doll tune, one phrase 3"
   ],
   "fx_bottles": [
    "Take 1",
@@ -448,10 +447,9 @@
   "sounds/amb_city_3.mp3"
  ],
  "fx_doll_tease": [
-  "sounds/fx_doll_tease_1.mp3",
-  "sounds/fx_doll_tease_2.mp3",
-  "sounds/fx_doll_tease_3.mp3",
-  "sounds/fx_doll_tease_4.mp3"
+  "sounds/fx_doll_one_1.mp3",
+  "sounds/fx_doll_one_2.mp3",
+  "sounds/fx_doll_one_3.mp3"
  ],
  "fx_bottles": [
   "sounds/fx_bottles_1.mp3",
