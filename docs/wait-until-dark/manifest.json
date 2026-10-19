@@ -332,10 +332,10 @@
    "Rattle 4"
   ],
   "fx_fl_piano": [
-   "Sour keys 1",
-   "Sour keys 2",
-   "Sour keys 3 (quieter attack)",
-   "Sour keys 4"
+   "Short key, long key 1",
+   "Short key, long key 2",
+   "Short key, long key 3",
+   "Short key, long key 4"
   ],
   "fx_fl_cluster": [
    "Cluster 1",
@@ -483,10 +483,10 @@
   "sounds/fx_fl_rattle_4.mp3"
  ],
  "fx_fl_piano": [
-  "sounds/fx_fl_piano_1.mp3",
-  "sounds/fx_fl_piano_2.mp3",
-  "sounds/fx_fl_piano_3.mp3",
-  "sounds/fx_fl_piano_4.mp3"
+  "sounds/fx_fl_piano_sus_1.mp3",
+  "sounds/fx_fl_piano_sus_2.mp3",
+  "sounds/fx_fl_piano_sus_3.mp3",
+  "sounds/fx_fl_piano_sus_4.mp3"
  ],
  "fx_fl_cluster": [
   "sounds/fx_fl_cluster_1.mp3",

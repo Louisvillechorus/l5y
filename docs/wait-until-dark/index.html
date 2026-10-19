@@ -424,8 +424,8 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
    ============================================================ */
 const BASE = {
   version: 2,
-  rev: 10,
-  stamp: "2026-10-19",
+  rev: 11,
+  stamp: "2026-10-19b",
   settings: {master:0, duck:3, breathe:true, midi:{}, life:40, heart:72},
   sections: [
     {name:"Pre-show", from:0, to:6},
@@ -489,7 +489,7 @@ const BASE = {
     fx_run_door:  {label:"Running, then the street door", group:"Effects",     pan:-0.7,  gain:-2, space:"hall", duck:0, vary:true},
     fx_siren:     {label:"Police siren arrives",       group:"Effects",         pan:0.4,   gain:-3, space:"dry",  duck:0, vary:true},
     fx_fl_violin: {label:"Flourish: violin stab",      group:"Score",           pan:0,     gain:-1, space:"room", duck:3, vary:true},
-    fx_fl_piano:  {label:"Flourish: two sour piano keys", group:"Score",        pan:0.1,   gain:-8, space:"hall", duck:2, vary:true},
+    fx_fl_piano:  {label:"Flourish: short key, held key", group:"Score",        pan:0.1,   gain:-8, space:"hall", duck:2, vary:true},
     fx_fl_metal:  {label:"Flourish: metal scrape",     group:"Score",           pan:-0.2,  gain:-2, space:"room", duck:3, vary:true},
     fx_fl_rattle: {label:"Flourish: rattlesnake",      group:"Score",           pan:0.2,   gain:-2, space:"room", duck:3, vary:true},
     fx_fl_cluster:{label:"Flourish: piano cluster (the hit)", group:"Score",    pan:0,     gain:0,  space:"room", duck:4, vary:true},
@@ -600,7 +600,7 @@ const BASE = {
     {id:"q042", page:"35", when:"Mike: \"Come on, ring.\" (The phone rings.)", what:"Phone starts ringing. The street is back under this, with its drop-ins; it thins again scene by scene.", play:["fx_phone"], prac:true},
     {id:"q043", page:"35", when:"Mike grabs it up", what:"Phone stops.", stop:["fx_phone"], prac:true},
     {id:"q044", page:"37", when:"Susan: \"Look out the window.\"", what:"A quiet string cluster comes in under the scene. Mysterious, not loud.", scene:"window1"},
-    {id:"q046", page:"37", when:"Susan: \"What if Roat is really a policeman?\"", what:"Flourish: two sour piano keys, slow, quiet, left to ring.", play:[{id:"fx_fl_piano", rate:0.7}], prac:true},
+    {id:"q046", page:"37", when:"Susan: \"What if Roat is really a policeman?\"", what:"Flourish: two sour piano keys. The first is short, the second is held and rings out for about fifteen seconds.", play:[{id:"fx_fl_piano", rate:0.7}], prac:true},
     {id:"q047", page:"37", when:"Susan: \"I sound like I'm insane, don't I?\"", what:"The strings go out.", scene:"s21"},
     {id:"q048", page:"40", when:"Mike exits: \"A beat later we hear the street door close and lock\"", what:"The street door. Gloria's key in the hall door is live.", play:["fx_door"], prac:true},
     {id:"q049", page:"42", when:"Gloria: \"Susan, someone's looking through the window!\"", what:"Flourish: metal scrape.", play:["fx_fl_metal"], prac:true},
@@ -719,13 +719,13 @@ function applyShowFile(obj, persist=true){
 }
 /* bring a show saved by an older build up to date, touching only what the operator never changed */
 function migrate(from){
-  if(from < 10){
+  if(from < 11){
     const keepLife = show.settings.life, keepHeart = show.settings.heart;
     show.layers = deep(BASE.layers); show.scenes = deep(BASE.scenes); show.cues = deep(BASE.cues); show.drops = deep(BASE.drops); show.sections = deep(BASE.sections);
     for(const b of BASE.buttons) if(!show.buttons.some(x=>x.sound===b.sound)) show.buttons.push(deep(b));
     show.buttons = BASE.buttons.map(b => show.buttons.find(x=>x.sound===b.sound) || deep(b));
     for(const id in BASE.sounds) if(!show.sounds[id]) show.sounds[id] = deep(BASE.sounds[id]);
-    for(const id of ["fx_cane","fx_fridge","fx_fridge_off","fx_alley"]) if(show.sounds[id] && BASE.sounds[id]) show.sounds[id].label = BASE.sounds[id].label;
+    for(const id of ["fx_cane","fx_fridge","fx_fridge_off","fx_alley","fx_fl_piano"]) if(show.sounds[id] && BASE.sounds[id]) show.sounds[id].label = BASE.sounds[id].label;
     show.settings.life = keepLife; show.settings.heart = keepHeart;
   }
   if(from < 3){
