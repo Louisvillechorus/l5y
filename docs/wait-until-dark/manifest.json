@@ -177,34 +177,34 @@
   "sounds/fx_cane_4.mp3"
  ],
  "drp_car": [
-  "sounds/drp_car_1.mp3",
-  "sounds/drp_car_2.mp3",
-  "sounds/drp_car_3.mp3",
-  "sounds/drp_car_4.mp3"
+  "sounds/drp_car_muf_1.mp3",
+  "sounds/drp_car_muf_2.mp3",
+  "sounds/drp_car_muf_3.mp3",
+  "sounds/drp_car_muf_4.mp3"
  ],
  "drp_horn": [
-  "sounds/drp_horn_1.mp3",
-  "sounds/drp_horn_2.mp3",
-  "sounds/drp_horn_3.mp3",
-  "sounds/drp_horn_4.mp3"
+  "sounds/drp_horn_muf_1.mp3",
+  "sounds/drp_horn_muf_2.mp3",
+  "sounds/drp_horn_muf_3.mp3",
+  "sounds/drp_horn_muf_4.mp3"
  ],
  "drp_dog": [
-  "sounds/drp_dog_1.mp3",
-  "sounds/drp_dog_2.mp3",
-  "sounds/drp_dog_3.mp3",
-  "sounds/drp_dog_4.mp3"
+  "sounds/drp_dog_muf_1.mp3",
+  "sounds/drp_dog_muf_2.mp3",
+  "sounds/drp_dog_muf_3.mp3",
+  "sounds/drp_dog_muf_4.mp3"
  ],
  "drp_bus": [
-  "sounds/drp_bus_1.mp3",
-  "sounds/drp_bus_2.mp3",
-  "sounds/drp_bus_3.mp3",
-  "sounds/drp_bus_4.mp3"
+  "sounds/drp_bus_muf_1.mp3",
+  "sounds/drp_bus_muf_2.mp3",
+  "sounds/drp_bus_muf_3.mp3",
+  "sounds/drp_bus_muf_4.mp3"
  ],
  "drp_siren": [
-  "sounds/drp_siren_1.mp3",
-  "sounds/drp_siren_2.mp3",
-  "sounds/drp_siren_3.mp3",
-  "sounds/drp_siren_4.mp3"
+  "sounds/drp_siren_muf_1.mp3",
+  "sounds/drp_siren_muf_2.mp3",
+  "sounds/drp_siren_muf_3.mp3",
+  "sounds/drp_siren_muf_4.mp3"
  ],
  "_names": {
   "mus_house": [
@@ -431,6 +431,12 @@
    "Morning birds 2",
    "Morning birds 3",
    "Morning birds 4"
+  ],
+  "fx_breaker": [
+   "Breaker 1",
+   "Breaker 2",
+   "Breaker 3",
+   "Breaker 4"
   ]
  },
  "fx_heart": [
@@ -576,5 +582,11 @@
   "sounds/amb_birds_2.mp3",
   "sounds/amb_birds_3.mp3",
   "sounds/amb_birds_4.mp3"
+ ],
+ "fx_breaker": [
+  "sounds/fx_breaker_1.mp3",
+  "sounds/fx_breaker_2.mp3",
+  "sounds/fx_breaker_3.mp3",
+  "sounds/fx_breaker_4.mp3"
  ]
 }

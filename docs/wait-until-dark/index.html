@@ -424,8 +424,8 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
    ============================================================ */
 const BASE = {
   version: 2,
-  rev: 12,
-  stamp: "2026-10-19c",
+  rev: 13,
+  stamp: "2026-10-19d",
   settings: {master:0, duck:3, breathe:true, midi:{}, life:40, heart:72},
   sections: [
     {name:"Pre-show", from:0, to:6},
@@ -490,7 +490,8 @@ const BASE = {
     fx_siren:     {label:"Police siren arrives",       group:"Effects",         pan:0.4,   gain:-3, space:"dry",  duck:0, vary:true},
     fx_fl_violin: {label:"Flourish: violin stab",      group:"Score",           pan:0,     gain:-1, space:"room", duck:3, vary:true},
     fx_fl_piano:  {label:"Flourish: short key, held key", group:"Score",        pan:0.1,   gain:-8, space:"hall", duck:2, vary:true},
-    fx_fl_metal:  {label:"Flourish: metal scrape",     group:"Score",           pan:-0.2,  gain:-2, space:"room", duck:3, vary:true},
+    fx_breaker:   {label:"Breaker flips off",           group:"Effects",         pan:0.15,  gain:-4, space:"room", duck:0, vary:true},
+    fx_fl_metal:  {label:"Flourish: metal scrape",     group:"Score",           pan:-0.2,  gain:-2, space:"hall", duck:3, vary:true},
     fx_fl_rattle: {label:"Flourish: rattlesnake",      group:"Score",           pan:0.2,   gain:-2, space:"room", duck:3, vary:true},
     fx_fl_cluster:{label:"Flourish: piano cluster (the hit)", group:"Score",    pan:0,     gain:0,  space:"room", duck:4, vary:true},
     fx_fl_soft:   {label:"Flourish: gentle, ominous",  group:"Score",           pan:0,     gain:-6, space:"hall", duck:1, vary:true},
@@ -501,11 +502,11 @@ const BASE = {
     und_pulse:    {label:"Under: low pulse (loop)",    group:"Score",           pan:0,     gain:-4, space:"dry",  duck:0},
     mus_roat:     {label:"Roat underscore (quiet drone, an occasional drum)", group:"Score", pan:0,   gain:0,  space:"dry",  duck:0},
     mus_inter:    {label:"Intermission: dark piano, disorienting (loop)", group:"Music and voice", pan:0, gain:0, space:"dry", duck:0},
-    drp_car:      {label:"Car passes (drop)",          group:"Street drops",    pan:0.45,  gain:-8, space:"dry",  duck:0, drop:true},
-    drp_horn:     {label:"Distant horn (drop)",        group:"Street drops",    pan:0.5,   gain:-10,space:"dry",  duck:0, drop:true},
-    drp_dog:      {label:"Dog a few houses down (drop)",group:"Street drops",   pan:0.6,   gain:-10,space:"dry",  duck:0, drop:true},
-    drp_bus:      {label:"Bus pulls away (drop)",      group:"Street drops",    pan:0.45,  gain:-9, space:"dry",  duck:0, drop:true},
-    drp_siren:    {label:"Far-off siren (drop)",       group:"Street drops",    pan:0.35,  gain:-12,space:"dry",  duck:0, drop:true}
+    drp_car:      {label:"Car passes outside (drop)",          group:"Street drops",    pan:0.45,  gain:-11, space:"dry",  duck:0, drop:true},
+    drp_horn:     {label:"Distant horn (drop)",        group:"Street drops",    pan:0.5,   gain:-13,space:"dry",  duck:0, drop:true},
+    drp_dog:      {label:"Dog a few houses down (drop)",group:"Street drops",   pan:0.6,   gain:-13,space:"dry",  duck:0, drop:true},
+    drp_bus:      {label:"Bus pulls away (drop)",      group:"Street drops",    pan:0.45,  gain:-12, space:"dry",  duck:0, drop:true},
+    drp_siren:    {label:"Far-off siren (drop)",       group:"Street drops",    pan:0.35,  gain:-15,space:"dry",  duck:0, drop:true}
   },
   /* with: the bed layers that must be up for this drop to play; gap: seconds between plays at the slider's middle */
   drops: [
@@ -518,34 +519,34 @@ const BASE = {
   ],
   scenes: [
     {id:"pre",     name:"Pre-show",             fade:5,    levels:{music:62, street:40}},
-    {id:"s11",     name:"House to half",        fade:8,    levels:{street:44}},
-    {id:"fridge",  name:"Sc 1 at rise: icebox", fade:0.1,  levels:{street:30, under:55, fridge:88}},
-    {id:"s11b",    name:"Sc 1 settles",         fade:3,    levels:{street:26, under:55, fridge:40}},
-    {id:"s11c",    name:"Sc 1: just the street", fade:4,    levels:{street:30}},
+    {id:"s11",     name:"House to half",        fade:8,    levels:{street:40}},
+    {id:"fridge",  name:"Sc 1 at rise: icebox", fade:0.1,  levels:{street:40, under:55, fridge:88}},
+    {id:"s11b",    name:"Sc 1 settles",         fade:3,    levels:{street:40, under:55, fridge:40}},
+    {id:"s11c",    name:"Sc 1: just the street", fade:4,    levels:{street:40}},
     {id:"black",   name:"Blackout",             fade:1.2,  levels:{}},
     {id:"s12",     name:"Sc 2 darkroom",        fade:3,    levels:{rain:26}},
-    {id:"s12b",    name:"Sc 2 curtains open",   fade:4,    levels:{rain:48, street:60}},
-    {id:"s12c",    name:"Sc 2: rain gone",      fade:30,   levels:{street:60}},
+    {id:"s12b",    name:"Sc 2 curtains open",   fade:4,    levels:{rain:48, street:40}},
+    {id:"s12c",    name:"Sc 2: rain gone",      fade:30,   levels:{street:40}},
     {id:"s12d",    name:"Sc 2: street out",     fade:60,   levels:{}},
     {id:"tense24", name:"Roat Senior: tension", fade:3,    levels:{tension:35}},
     {id:"tense24x",name:"Door locked: tension out", fade:3, levels:{tension:0}},
     {id:"inter",   name:"Intermission",         fade:4,    levels:{intermusic:60, rain:12, tension:0}},
-    {id:"s21",     name:"Act Two at rise",      fade:8,    levels:{rain:40, street:36, tension:0}},
-    {id:"s21r",    name:"Act Two: rain out",    fade:20,   levels:{street:36}},
-    {id:"window1", name:"Window: strings under",fade:5,    levels:{rain:34, street:30, ustrings:45}},
-    {id:"window2", name:"Window: someone looking", fade:3, levels:{street:26, ustrings:40, upulse:35}},
-    {id:"s21b",    name:"Carlino in, under out",fade:6,    levels:{street:24}},
-    {id:"mike2",   name:"Mike is back: piano under", fade:6, levels:{street:18, upiano:45}},
-    {id:"s21c",    name:"After the window, under out", fade:8, levels:{street:12}},
+    {id:"s21",     name:"Act Two at rise",      fade:8,    levels:{rain:40, street:40, tension:0}},
+    {id:"s21r",    name:"Act Two: rain out",    fade:20,   levels:{street:40}},
+    {id:"window1", name:"Window: strings under",fade:5,    levels:{rain:34, street:40, ustrings:45}},
+    {id:"window2", name:"Window: someone looking", fade:3, levels:{street:40, ustrings:60, upulse:55}},
+    {id:"s21b",    name:"Carlino in, under out",fade:6,    levels:{street:40}},
+    {id:"mike2",   name:"Mike is back: piano under", fade:6, levels:{street:40, upiano:45, tension:80}, fades:{tension:30}},
+    {id:"s21c",    name:"After the window, under out", fade:8, levels:{street:40}},
     {id:"montage", name:"Village, Saturday night", fade:6, levels:{city:60}},
     {id:"tense51", name:"Mike and Susan, tense", fade:5,   levels:{upulse:40, ustrings:30}},
     {id:"roat",    name:"Roat: underscore in",  fade:3,    levels:{roat:45}},
     {id:"roatdark",name:"Roat: the dark",       fade:4,    levels:{roat:32}},
     {id:"roar",    name:"Icebox roars",         fade:0.08, levels:{fridge:100, roat:30}},
     {id:"cut",     name:"Plug pulled",          fade:0.02, levels:{}},
-    {id:"end",     name:"Street comes in",      fade:3,    levels:{street:35}},
+    {id:"end",     name:"Street comes in",      fade:3,    levels:{street:40}},
     {id:"bows",    name:"Bows",                 fade:1.5,  levels:{birds:62, tension:0}},
-    {id:"exit",    name:"Exit music",           fade:4,    levels:{music:62, street:30, birds:20, tension:0}}
+    {id:"exit",    name:"Exit music",           fade:4,    levels:{music:62, street:40, birds:20, tension:0}}
   ],
   /* play/stop entries: a sound id, or {id, delay (s), gain (dB)}. lx:true means the SM calls it with a lighting cue. */
   /* play/stop entries: a sound id, or {id, gain (dB)}. lx:true means the SM calls it with a lighting cue.
@@ -605,8 +606,7 @@ const BASE = {
     {id:"q047", page:"37", when:"Susan: \"I sound like I'm insane, don't I?\"", what:"The strings go out.", scene:"s21"},
     {id:"q047b", page:"38", when:"Susan: \"Mike! Sam isn't the same man you knew in Italy.\"", what:"The rain fades out over twenty seconds and stays out for the rest of the play. The street stays.", scene:"s21r"},
     {id:"q048", page:"40", when:"Mike exits: \"A beat later we hear the street door close and lock\"", what:"The street door. Gloria's key in the hall door is live.", play:["fx_door"], prac:true},
-    {id:"q049", page:"42", when:"Gloria: \"Susan, someone's looking through the window!\"", what:"Flourish: metal scrape.", play:["fx_fl_metal"], prac:true},
-    {id:"q050", page:"42", when:"…and right behind it, as Susan goes to the sink", what:"The under-sounding: strings and a low pulse, held until Carlino is in the room.", scene:"window2"},
+    {id:"q049", page:"42", when:"Gloria: \"Susan, someone's looking through the window!\"", what:"Flourish: metal scrape with a long tail, and the under-sounding comes in with it: strings and a low pulse, held until Carlino is in the room.", play:["fx_fl_metal"], scene:"window2", prac:true},
     {id:"q051", page:"42", when:"The doll \"plays its little tune for a few seconds before Gloria snatches it up\"", what:"The doll's first notes.", play:["mus_doll_short"], prac:true},
     {id:"q052", page:"42", when:"\"Sound: Street doorbell rings\"", what:"Street doorbell.", play:["fx_doorbell"], prac:true},
     {id:"q053", page:"42", when:"\"Sound: Street doorbell rings\" (second)", what:"Street doorbell.", play:["fx_doorbell"], prac:true},
@@ -616,10 +616,14 @@ const BASE = {
     {id:"q057", page:"45", when:"Carlino exits: \"We hear the street door open and close\"", what:"The street door.", play:["fx_door"], prac:true},
     {id:"q058", page:"45", when:"\"The phone rings… The phone rings a second time… the phone has stopped ringing\"", what:"Two rings, then it stops by itself. Gloria's signal.", play:["fx_two_rings"], prac:true},
     {id:"q059", page:"45", when:"\"…we hear someone running outside. The street door opens.\"", what:"Running on wet pavement, then the street door. Him trying the hall door is live.", play:["fx_run_door"], prac:true},
-    {id:"q060", page:"46", when:"Mike: \"Well?\" (Carlino and Roat follow him in)", what:"Sparse twelve-tone piano comes in under them, low.", scene:"mike2"},
-    {id:"q061", page:"48", when:"\"…three muffled knocks on the pipe from above\" (Gloria)", what:"Pipe knocks, from upstairs.", play:["fx_pipe"], prac:true},
+    {id:"q060", page:"46", when:"Mike: \"Well?\" (Carlino and Roat follow him in)", what:"Sparse twelve-tone piano comes in under them, low. The tension climbs slowly over thirty seconds to 80 and holds there from here on.", scene:"mike2"},
     {id:"q062", page:"48", when:"Gloria: \"Susan, it's the sergeant, he's outside the window.\"", what:"A hit.", play:["fx_hit"], prac:true},
     {id:"q063", page:"48", when:"Susan: \"Okay. Okay… Gloria. I need you to be very brave.\"", what:"The piano goes out. Just a thin street.", scene:"s21c"},
+    {id:"q063b1", page:"49", when:"Gloria (offstage): \"Bedroom out!\"", what:"Breaker flips off.", play:["fx_breaker"], prac:true},
+    {id:"q063b2", page:"49", when:"\"Bathroom out!\"", what:"Breaker flips off.", play:["fx_breaker"], prac:true},
+    {id:"q063b3", page:"49", when:"\"Ceiling out!\"", what:"Breaker flips off.", play:["fx_breaker"], prac:true},
+    {id:"q063b4", page:"49", when:"\"Lamp out!\"", what:"Breaker flips off.", play:["fx_breaker"], prac:true},
+    {id:"q063b5", page:"49", when:"\"Wall lights out.\"", what:"Breaker flips off.", play:["fx_breaker"], prac:true},
     {id:"q064", page:"50", when:"\"Then there's a bang and the light goes out\" (Gloria, after three swings at it)", what:"Glass, off in the hall.", play:["fx_glass"], prac:true},
     {id:"q065", page:"50", when:"\"Another bang and the hall is completely dark\"", what:"Glass, off.", play:["fx_glass"], prac:true},
     {id:"q066", page:"51", when:"Gloria has gone. Susan lights a cigarette and sits on the sofa", what:"The Village on a Saturday night: cars, puddles, a door, a restaurant kitchen. The one place the street comes back in.", scene:"montage"},
@@ -721,13 +725,14 @@ function applyShowFile(obj, persist=true){
 }
 /* bring a show saved by an older build up to date, touching only what the operator never changed */
 function migrate(from){
-  if(from < 12){
+  if(from < 13){
     const keepLife = show.settings.life, keepHeart = show.settings.heart;
     show.layers = deep(BASE.layers); show.scenes = deep(BASE.scenes); show.cues = deep(BASE.cues); show.drops = deep(BASE.drops); show.sections = deep(BASE.sections);
     for(const b of BASE.buttons) if(!show.buttons.some(x=>x.sound===b.sound)) show.buttons.push(deep(b));
     show.buttons = BASE.buttons.map(b => show.buttons.find(x=>x.sound===b.sound) || deep(b));
     for(const id in BASE.sounds) if(!show.sounds[id]) show.sounds[id] = deep(BASE.sounds[id]);
-    for(const id of ["fx_cane","fx_fridge","fx_fridge_off","fx_alley","fx_fl_piano"]) if(show.sounds[id] && BASE.sounds[id]) show.sounds[id].label = BASE.sounds[id].label;
+    for(const id of ["fx_cane","fx_fridge","fx_fridge_off","fx_alley","fx_fl_piano","fx_fl_metal","drp_car","drp_horn","drp_dog","drp_bus","drp_siren"]) if(show.sounds[id] && BASE.sounds[id]) show.sounds[id].label = BASE.sounds[id].label;
+    for(const id of ["fx_fl_metal","drp_car","drp_horn","drp_dog","drp_bus","drp_siren"]) if(show.sounds[id] && BASE.sounds[id]){ show.sounds[id].gain = BASE.sounds[id].gain; show.sounds[id].space = BASE.sounds[id].space; }
     show.settings.life = keepLife; show.settings.heart = keepHeart;
   }
   if(from < 3){
@@ -849,7 +854,7 @@ function setLayer(id, v, fade){
 function goScene(sceneId, fadeOverride){
   const s = sceneOf(sceneId); if(!s) return;
   const f = (fadeOverride!==undefined && fadeOverride!==null && fadeOverride!=="") ? +fadeOverride : s.fade;
-  for(const L of show.layers){ if(L.manual && s.levels[L.id]===undefined) continue; setLayer(L.id, s.levels[L.id]||0, f); }
+  for(const L of show.layers){ if(L.manual && s.levels[L.id]===undefined) continue; const lf=(s.fades && s.fades[L.id]!==undefined && (fadeOverride===undefined||fadeOverride===null||fadeOverride==="")) ? +s.fades[L.id] : f; setLayer(L.id, s.levels[L.id]||0, lf); }
   currentScene = s.id; sceneDirty=false; scheduleDrops(true); renderMixer();
 }
 
