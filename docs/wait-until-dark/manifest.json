@@ -437,6 +437,36 @@
    "Breaker 2",
    "Breaker 3",
    "Breaker 4"
+  ],
+  "und_fpiano": [
+   "Dark piano 1",
+   "Dark piano 2",
+   "Dark piano 3",
+   "Dark piano 4"
+  ],
+  "amb_village": [
+   "Village busy 1",
+   "Village busy 2",
+   "Village busy 3",
+   "Village busy 4"
+  ],
+  "und_move": [
+   "Moving strings 1",
+   "Moving strings 2",
+   "Moving strings 3",
+   "Moving strings 4"
+  ],
+  "mus_hell": [
+   "Hell 1",
+   "Hell 2",
+   "Hell 3",
+   "Hell 4"
+  ],
+  "mus_chaos": [
+   "Chaos 1",
+   "Chaos 2",
+   "Chaos 3",
+   "Chaos 4"
   ]
  },
  "fx_heart": [
@@ -588,5 +618,35 @@
   "sounds/fx_breaker_2.mp3",
   "sounds/fx_breaker_3.mp3",
   "sounds/fx_breaker_4.mp3"
+ ],
+ "und_fpiano": [
+  "sounds/und_fpiano_1.mp3",
+  "sounds/und_fpiano_2.mp3",
+  "sounds/und_fpiano_3.mp3",
+  "sounds/und_fpiano_4.mp3"
+ ],
+ "amb_village": [
+  "sounds/amb_village_1.mp3",
+  "sounds/amb_village_2.mp3",
+  "sounds/amb_village_3.mp3",
+  "sounds/amb_village_4.mp3"
+ ],
+ "und_move": [
+  "sounds/und_move_1.mp3",
+  "sounds/und_move_2.mp3",
+  "sounds/und_move_3.mp3",
+  "sounds/und_move_4.mp3"
+ ],
+ "mus_hell": [
+  "sounds/mus_hell_1.mp3",
+  "sounds/mus_hell_2.mp3",
+  "sounds/mus_hell_3.mp3",
+  "sounds/mus_hell_4.mp3"
+ ],
+ "mus_chaos": [
+  "sounds/mus_chaos_1.mp3",
+  "sounds/mus_chaos_2.mp3",
+  "sounds/mus_chaos_3.mp3",
+  "sounds/mus_chaos_4.mp3"
  ]
 }

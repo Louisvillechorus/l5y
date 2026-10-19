@@ -424,8 +424,8 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
    ============================================================ */
 const BASE = {
   version: 2,
-  rev: 13,
-  stamp: "2026-10-19d",
+  rev: 15,
+  stamp: "2026-10-19f",
   settings: {master:0, duck:3, breathe:true, midi:{}, life:40, heart:72},
   sections: [
     {name:"Pre-show", from:0, to:6},
@@ -447,6 +447,11 @@ const BASE = {
     {id:"ustrings",label:"Under: strings",sound:"und_strings"},
     {id:"upulse",  label:"Under: pulse",  sound:"und_pulse"},
     {id:"roat",    label:"Roat underscore", sound:"mus_roat"},
+    {id:"village", label:"Village, busy", sound:"amb_village"},
+    {id:"fpiano",  label:"Under: dark piano", sound:"und_fpiano"},
+    {id:"umove",   label:"Under: moving strings", sound:"und_move"},
+    {id:"hell",    label:"Roat: hell",    sound:"mus_hell"},
+    {id:"chaos",   label:"Roat: chaos",   sound:"mus_chaos"},
     {id:"tension", label:"Tension",       sound:"tex_tension", manual:true}
   ],
   sounds: {
@@ -500,6 +505,11 @@ const BASE = {
     und_piano:    {label:"Under: twelve-tone piano (loop)", group:"Score",      pan:0,     gain:0,  space:"dry",  duck:0},
     und_strings:  {label:"Under: string cluster (loop)", group:"Score",         pan:0,     gain:-2, space:"dry",  duck:0},
     und_pulse:    {label:"Under: low pulse (loop)",    group:"Score",           pan:0,     gain:-4, space:"dry",  duck:0},
+    amb_village:  {label:"Village, busy Saturday night (loop)", group:"Atmosphere", pan:0.45, gain:0, space:"dry", duck:0},
+    und_fpiano:   {label:"Under: foreboding piano (loop)", group:"Score",       pan:0,     gain:0,  space:"room", duck:0},
+    und_move:     {label:"Under: restless strings (loop)", group:"Score",       pan:0,     gain:0,  space:"room", duck:0},
+    mus_hell:     {label:"Roat: hell (loop)",          group:"Score",           pan:0,     gain:0,  space:"room", duck:0},
+    mus_chaos:    {label:"Roat: chaos after the flash (loop)", group:"Score",   pan:0,     gain:0,  space:"room", duck:0},
     mus_roat:     {label:"Roat underscore (quiet drone, an occasional drum)", group:"Score", pan:0,   gain:0,  space:"dry",  duck:0},
     mus_inter:    {label:"Intermission: dark piano, disorienting (loop)", group:"Music and voice", pan:0, gain:0, space:"dry", duck:0},
     drp_car:      {label:"Car passes outside (drop)",          group:"Street drops",    pan:0.45,  gain:-11, space:"dry",  duck:0, drop:true},
@@ -538,11 +548,14 @@ const BASE = {
     {id:"s21b",    name:"Carlino in, under out",fade:6,    levels:{street:40}},
     {id:"mike2",   name:"Mike is back: piano under", fade:6, levels:{street:40, upiano:45, tension:80}, fades:{tension:30}},
     {id:"s21c",    name:"After the window, under out", fade:8, levels:{street:40}},
-    {id:"montage", name:"Village, Saturday night", fade:6, levels:{city:60}},
-    {id:"tense51", name:"Mike and Susan, tense", fade:5,   levels:{upulse:40, ustrings:30}},
+    {id:"montage", name:"Village, Saturday night", fade:6, levels:{city:60, village:70, street:40, fpiano:50}},
+    {id:"tense51", name:"Mike and Susan, tense", fade:5,   levels:{upulse:40, umove:55}},
     {id:"roat",    name:"Roat: underscore in",  fade:3,    levels:{roat:45}},
-    {id:"roatdark",name:"Roat: the dark",       fade:4,    levels:{roat:32}},
-    {id:"roar",    name:"Icebox roars",         fade:0.08, levels:{fridge:100, roat:30}},
+    {id:"hell",    name:"Roat walks in: hell",  fade:0.1,  levels:{hell:75, roat:45, upulse:50}},
+    {id:"hell2",   name:"After the flash: chaos", fade:0.3, levels:{hell:85, chaos:70, roat:40, upulse:50}},
+    {id:"roatdark",name:"Roat: the dark",       fade:4,    levels:{hell:70, chaos:55, roat:32}},
+    {id:"roatlow", name:"Roat: it dies down",   fade:8,    levels:{roat:45, upulse:40}},
+    {id:"roar",    name:"Icebox roars",         fade:0.08, levels:{fridge:100, roat:30, upulse:30}},
     {id:"cut",     name:"Plug pulled",          fade:0.02, levels:{}},
     {id:"end",     name:"Street comes in",      fade:3,    levels:{street:40}},
     {id:"bows",    name:"Bows",                 fade:1.5,  levels:{birds:62, tension:0}},
@@ -626,14 +639,14 @@ const BASE = {
     {id:"q063b5", page:"49", when:"\"Wall lights out.\"", what:"Breaker flips off.", play:["fx_breaker"], prac:true},
     {id:"q064", page:"50", when:"\"Then there's a bang and the light goes out\" (Gloria, after three swings at it)", what:"Glass, off in the hall.", play:["fx_glass"], prac:true},
     {id:"q065", page:"50", when:"\"Another bang and the hall is completely dark\"", what:"Glass, off.", play:["fx_glass"], prac:true},
-    {id:"q066", page:"51", when:"Gloria has gone. Susan lights a cigarette and sits on the sofa", what:"The Village on a Saturday night: cars, puddles, a door, a restaurant kitchen. The one place the street comes back in.", scene:"montage"},
-    {id:"q067", page:"51", when:"\"The door opens. Mike enters.\"", what:"The street drains away. A low pulse and strings underneath the whole scene between them.", scene:"tense51"},
+    {id:"q066", page:"51", when:"Gloria has gone. Susan lights a cigarette and sits on the sofa", what:"The Village on a Saturday night, busy: traffic, puddles, people passing, a bar band, a restaurant kitchen. A dark, slow piano underneath.", scene:"montage"},
+    {id:"q067", page:"51", when:"\"The door opens. Mike enters.\"", what:"The street and the piano drain away. A low pulse and restless, moving strings underneath the whole scene between them.", scene:"tense51"},
     {id:"q068", page:"52", when:"Susan: \"You'll have to hurt me. More than you imagine.\" She looks at Mike", what:"Flourish: gentle and ominous, one low piano note with a string behind it.", play:["fx_fl_soft"], prac:true},
     {id:"q069", page:"52", when:"\"Sound: A sudden and violent revving-up of a truck engine outside. We hear a shout and a crash.\"", what:"The truck in the alley: revs, a shout, the crash, it roars off.", play:["fx_truck"], prac:true},
-    {id:"q070", page:"53", when:"Mike falls dead on the steps. Roat enters and locks the hall door", what:"The hit: a piano cluster, hard, long ring.", play:["fx_fl_cluster"], prac:true},
-    {id:"q071", page:"53", when:"Roat: \"All the children have gone to bed now, Susan. Now we can talk.\"", what:"The underscore comes in and stays to the end: a quiet, eerie drone with an occasional drum beat that picks up the pace mid-way. Ride Tension (= and -) on top of it for the pushes.", scene:"roat"},
-    {id:"q072", page:"55", when:"\"Susan smashes the lamp against the wall. Complete darkness\"", what:"Glass.", play:["fx_glass"], prac:true},
-    {id:"q073", page:"55", when:"…and with the blackout", what:"The underscore drops back for the dark. Keep riding Tension.", scene:"roatdark", lx:true},
+    {id:"q070", page:"53", when:"Mike falls dead on the steps. Roat enters and locks the hall door", what:"The hit, and straight into hell: no build. Pounding drums, screeching strings, snarling brass, all at once, from the moment he is in.", play:["fx_fl_cluster"], scene:"hell", prac:true},
+    {id:"q071b", page:"54", when:"\"Susan squeezes. The lamp pops to an incredibly bright light\"", what:"With the flash: crazier. Swarming, skittering, hammered, everything at once on top of the hell.", scene:"hell2", prac:true},
+    {id:"q073", page:"55", when:"The blackout: complete darkness", what:"The chaos pulls back a little for the dark, still busy. Keep riding Tension.", scene:"roatdark", lx:true},
+    {id:"q073b", page:"55", when:"Susan: \"Throw the matches on the floor, or I'll set you on fire.\"", what:"The chaos dies down over eight seconds to the old underscore: the quiet drone and the low pulse.", scene:"roatlow"},
     {id:"q074", page:"56", when:"\"Roat opens the icebox… The icebox immediately starts its loud hum\"", what:"Icebox roars. The underscore stays under it.", scene:"roar", prac:true},
     {id:"q075", page:"57", when:"\"As he does this the music starts to play\" (Roat pouring the diamonds)", what:"The doll's whole tune, tinny and small.", play:["mus_doll"], prac:true},
     {id:"q076", page:"58", when:"\"…she stabs at him once, twice, three times\"", what:"The stab. Cuts the heartbeat and Tension dead. (H and , . for the heartbeat before it.)", play:["fx_stab"], prac:true, cut:true},
@@ -725,7 +738,7 @@ function applyShowFile(obj, persist=true){
 }
 /* bring a show saved by an older build up to date, touching only what the operator never changed */
 function migrate(from){
-  if(from < 13){
+  if(from < 15){
     const keepLife = show.settings.life, keepHeart = show.settings.heart;
     show.layers = deep(BASE.layers); show.scenes = deep(BASE.scenes); show.cues = deep(BASE.cues); show.drops = deep(BASE.drops); show.sections = deep(BASE.sections);
     for(const b of BASE.buttons) if(!show.buttons.some(x=>x.sound===b.sound)) show.buttons.push(deep(b));
