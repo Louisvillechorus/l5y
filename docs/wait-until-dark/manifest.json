@@ -1,9 +1,9 @@
 {
  "amb_rain": [
-  "sounds/amb_rain_1.mp3",
-  "sounds/amb_rain_2.mp3",
-  "sounds/amb_rain_3.mp3",
-  "sounds/amb_rain_4.mp3"
+  "sounds/amb_rain_out_1.mp3",
+  "sounds/amb_rain_out_2.mp3",
+  "sounds/amb_rain_out_3.mp3",
+  "sounds/amb_rain_out_4.mp3"
  ],
  "amb_street": [
   "sounds/amb_street_1.mp3",
@@ -416,6 +416,21 @@
    "Dark piano, the key keeps slipping, B (2:45)",
    "Dread drone A (3:20)",
    "Dread drone B (2:30)"
+  ],
+  "amb_rain": [
+   "Rain outside 1",
+   "Rain outside 2",
+   "Rain outside 3",
+   "Rain outside 4"
+  ],
+  "fx_sos": [
+   "Emergency alert, three rising beeps"
+  ],
+  "amb_birds": [
+   "Morning birds 1",
+   "Morning birds 2",
+   "Morning birds 3",
+   "Morning birds 4"
   ]
  },
  "fx_heart": [
@@ -552,5 +567,14 @@
   "sounds/und_pulse_2.mp3",
   "sounds/und_pulse_3.mp3",
   "sounds/und_pulse_4.mp3"
+ ],
+ "fx_sos": [
+  "sounds/fx_sos_1.mp3"
+ ],
+ "amb_birds": [
+  "sounds/amb_birds_1.mp3",
+  "sounds/amb_birds_2.mp3",
+  "sounds/amb_birds_3.mp3",
+  "sounds/amb_birds_4.mp3"
  ]
 }
