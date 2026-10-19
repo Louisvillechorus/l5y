@@ -424,8 +424,8 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
    ============================================================ */
 const BASE = {
   version: 2,
-  rev: 11,
-  stamp: "2026-10-19b",
+  rev: 12,
+  stamp: "2026-10-19c",
   settings: {master:0, duck:3, breathe:true, midi:{}, life:40, heart:72},
   sections: [
     {name:"Pre-show", from:0, to:6},
@@ -531,13 +531,14 @@ const BASE = {
     {id:"tense24x",name:"Door locked: tension out", fade:3, levels:{tension:0}},
     {id:"inter",   name:"Intermission",         fade:4,    levels:{intermusic:60, rain:12, tension:0}},
     {id:"s21",     name:"Act Two at rise",      fade:8,    levels:{rain:40, street:36, tension:0}},
+    {id:"s21r",    name:"Act Two: rain out",    fade:20,   levels:{street:36}},
     {id:"window1", name:"Window: strings under",fade:5,    levels:{rain:34, street:30, ustrings:45}},
-    {id:"window2", name:"Window: someone looking", fade:3, levels:{rain:30, street:26, ustrings:40, upulse:35}},
-    {id:"s21b",    name:"Carlino in, under out",fade:6,    levels:{rain:35, street:24}},
-    {id:"mike2",   name:"Mike is back: piano under", fade:6, levels:{rain:30, street:18, upiano:45}},
-    {id:"s21c",    name:"After the window, under out", fade:8, levels:{rain:25, street:12}},
-    {id:"montage", name:"Village, Saturday night", fade:6, levels:{rain:15, city:60}},
-    {id:"tense51", name:"Mike and Susan, tense", fade:5,   levels:{rain:12, upulse:40, ustrings:30}},
+    {id:"window2", name:"Window: someone looking", fade:3, levels:{street:26, ustrings:40, upulse:35}},
+    {id:"s21b",    name:"Carlino in, under out",fade:6,    levels:{street:24}},
+    {id:"mike2",   name:"Mike is back: piano under", fade:6, levels:{street:18, upiano:45}},
+    {id:"s21c",    name:"After the window, under out", fade:8, levels:{street:12}},
+    {id:"montage", name:"Village, Saturday night", fade:6, levels:{city:60}},
+    {id:"tense51", name:"Mike and Susan, tense", fade:5,   levels:{upulse:40, ustrings:30}},
     {id:"roat",    name:"Roat: underscore in",  fade:3,    levels:{roat:45}},
     {id:"roatdark",name:"Roat: the dark",       fade:4,    levels:{roat:32}},
     {id:"roar",    name:"Icebox roars",         fade:0.08, levels:{fridge:100, roat:30}},
@@ -602,6 +603,7 @@ const BASE = {
     {id:"q044", page:"37", when:"Susan: \"Look out the window.\"", what:"A quiet string cluster comes in under the scene. Mysterious, not loud.", scene:"window1"},
     {id:"q046", page:"37", when:"Susan: \"What if Roat is really a policeman?\"", what:"Flourish: two sour piano keys. The first is short, the second is held and rings out for about fifteen seconds.", play:[{id:"fx_fl_piano", rate:0.7}], prac:true},
     {id:"q047", page:"37", when:"Susan: \"I sound like I'm insane, don't I?\"", what:"The strings go out.", scene:"s21"},
+    {id:"q047b", page:"38", when:"Susan: \"Mike! Sam isn't the same man you knew in Italy.\"", what:"The rain fades out over twenty seconds and stays out for the rest of the play. The street stays.", scene:"s21r"},
     {id:"q048", page:"40", when:"Mike exits: \"A beat later we hear the street door close and lock\"", what:"The street door. Gloria's key in the hall door is live.", play:["fx_door"], prac:true},
     {id:"q049", page:"42", when:"Gloria: \"Susan, someone's looking through the window!\"", what:"Flourish: metal scrape.", play:["fx_fl_metal"], prac:true},
     {id:"q050", page:"42", when:"…and right behind it, as Susan goes to the sink", what:"The under-sounding: strings and a low pulse, held until Carlino is in the room.", scene:"window2"},
@@ -617,7 +619,7 @@ const BASE = {
     {id:"q060", page:"46", when:"Mike: \"Well?\" (Carlino and Roat follow him in)", what:"Sparse twelve-tone piano comes in under them, low.", scene:"mike2"},
     {id:"q061", page:"48", when:"\"…three muffled knocks on the pipe from above\" (Gloria)", what:"Pipe knocks, from upstairs.", play:["fx_pipe"], prac:true},
     {id:"q062", page:"48", when:"Gloria: \"Susan, it's the sergeant, he's outside the window.\"", what:"A hit.", play:["fx_hit"], prac:true},
-    {id:"q063", page:"48", when:"Susan: \"Okay. Okay… Gloria. I need you to be very brave.\"", what:"The piano goes out. Rain, lower than before.", scene:"s21c"},
+    {id:"q063", page:"48", when:"Susan: \"Okay. Okay… Gloria. I need you to be very brave.\"", what:"The piano goes out. Just a thin street.", scene:"s21c"},
     {id:"q064", page:"50", when:"\"Then there's a bang and the light goes out\" (Gloria, after three swings at it)", what:"Glass, off in the hall.", play:["fx_glass"], prac:true},
     {id:"q065", page:"50", when:"\"Another bang and the hall is completely dark\"", what:"Glass, off.", play:["fx_glass"], prac:true},
     {id:"q066", page:"51", when:"Gloria has gone. Susan lights a cigarette and sits on the sofa", what:"The Village on a Saturday night: cars, puddles, a door, a restaurant kitchen. The one place the street comes back in.", scene:"montage"},
@@ -719,7 +721,7 @@ function applyShowFile(obj, persist=true){
 }
 /* bring a show saved by an older build up to date, touching only what the operator never changed */
 function migrate(from){
-  if(from < 11){
+  if(from < 12){
     const keepLife = show.settings.life, keepHeart = show.settings.heart;
     show.layers = deep(BASE.layers); show.scenes = deep(BASE.scenes); show.cues = deep(BASE.cues); show.drops = deep(BASE.drops); show.sections = deep(BASE.sections);
     for(const b of BASE.buttons) if(!show.buttons.some(x=>x.sound===b.sound)) show.buttons.push(deep(b));
