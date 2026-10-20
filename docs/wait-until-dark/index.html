@@ -424,8 +424,8 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
    ============================================================ */
 const BASE = {
   version: 2,
-  rev: 20,
-  stamp: "2026-10-19k",
+  rev: 21,
+  stamp: "2026-10-19l",
   settings: {master:0, duck:3, breathe:true, midi:{}, life:40, heart:72},
   sections: [
     {name:"Pre-show", from:0, to:6},
@@ -540,7 +540,7 @@ const BASE = {
     {id:"s12b",    name:"Sc 2 curtains open",   fade:4,    levels:{rain:48, street:40}},
     {id:"s12c",    name:"Sc 2: rain gone",      fade:30,   levels:{street:40}},
     {id:"s12d",    name:"Sc 2: street out",     fade:60,   levels:{}},
-    {id:"tense24", name:"Roat Senior: tension", fade:3,    levels:{tension:35}},
+    {id:"tense24", name:"Roat Senior: tension", fade:3,    levels:{tension:100}},
     {id:"tense24x",name:"Door locked: tension out", fade:3, levels:{tension:0}},
     {id:"inter",   name:"Intermission",         fade:4,    levels:{intermusic:60, rain:12, tension:0}},
     {id:"s21",     name:"Act Two at rise",      fade:8,    levels:{rain:40, street:40, tension:0}},
@@ -600,7 +600,7 @@ const BASE = {
     {id:"q028", page:"24", when:"\"Sound: Door buzzer\" (Roat Senior, first)", what:"Buzzer, short.", play:[{id:"fx_buzzer", dur:0.6}], prac:true},
     {id:"q029", page:"24", when:"\"Sound: Door buzzer\" (second)", what:"Buzzer, longer.", play:[{id:"fx_buzzer", dur:1.1}], prac:true},
     {id:"q030", page:"24", when:"\"Sound: Doorbell rings again\" (third, as Gloria runs up)", what:"Buzzer, held. Each one more urgent than the last.", play:[{id:"fx_buzzer", dur:1.8}], prac:true},
-    {id:"q030b", page:"24", when:"Roat Senior pushes past Gloria", what:"Tension comes in under the intrusion and stays through the bedroom.", scene:"tense24"},
+    {id:"q030b", page:"24", when:"Roat Senior pushes past Gloria", what:"Tension comes all the way up, to 100, under the intrusion and stays through the bedroom.", scene:"tense24"},
     {id:"q030c", page:"25", when:"Mike: \"Lock your door\" (the door gets locked)", what:"Tension out over three seconds.", scene:"tense24x"},
     {id:"q031", page:"26", when:"\"Sound: Door buzzer\" (Carlino is back)", what:"Buzzer. Susan gives a little start.", play:["fx_buzzer"], prac:true},
     {id:"q032", page:"27", when:"\"The phone rings. Susan picks it up.\"", what:"Phone starts ringing.", play:["fx_phone"], prac:true},
@@ -742,7 +742,7 @@ function applyShowFile(obj, persist=true){
 }
 /* bring a show saved by an older build up to date, touching only what the operator never changed */
 function migrate(from){
-  if(from < 20){
+  if(from < 21){
     const keepLife = show.settings.life, keepHeart = show.settings.heart;
     show.layers = deep(BASE.layers); show.scenes = deep(BASE.scenes); show.cues = deep(BASE.cues); show.drops = deep(BASE.drops); show.sections = deep(BASE.sections);
     for(const b of BASE.buttons) if(!show.buttons.some(x=>x.sound===b.sound)) show.buttons.push(deep(b));

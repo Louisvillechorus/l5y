@@ -26,6 +26,7 @@ The Jeffrey Hatcher adaptation (Dramatists Play Service; Susan, Mike, Sam, Carli
 - Oct 19 late: the doll notes (cue on p10, and the D button for the later mentions) are half the level again and washed in a long, far-off reverb, mostly tail, top softened: a memory, not a toy in the room.
 - Oct 19 late: the heartbeat at the end is a cue now, not held by hand. It starts on Roat's "All the children have gone to bed now, Susan" (p53) at 72 bpm and runs on its own until the stab (p58) cuts it with the tension. , and . still change the pace.
 - Oct 19 late, Act One: the end-of-Scene-1 scene change runs at half speed, twice as long. Scene 2 opens with the rain at 17 and the street already in; nothing comes up when the curtains open (that cue is cut). Every phone sound sits back in the room (lower, through the room reverb). The emergency alert on p18 is David's iOS Emergency SOS recording, trimmed to fire on the first tone, a little hotter than the rings.
+- Oct 19 late: Roat Senior pushing past Gloria (p24) takes the tension all the way to 100; it still goes out over three seconds when the door is locked.
 
 ## Operator keys
 Space GO. 1 to 0 buttons (9 flourish, 0 hit). P punctuation. D doll notes. K the stab (cuts heartbeat and tension). H heartbeat, with , and . for pace. = and - tension. [ ] script page. Esc fade everything.
