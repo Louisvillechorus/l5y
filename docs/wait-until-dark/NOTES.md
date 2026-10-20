@@ -24,6 +24,7 @@ The Jeffrey Hatcher adaptation (Dramatists Play Service; Susan, Mike, Sam, Carli
 - Oct 19 late: the icebox never goes above 65 (its entrance at rise and the roar on p56). The roar carries a hit: the violin stab with scraped strings right behind it, mixed as one sound so it lands with the roar.
 - Oct 19 late: Susan's "Help!" lines and Roat's reply on p58/59 are cut. Pulling the plug kills the doll and underscore at once while the icebox winds down over three seconds; the break-in is the very next GO. Sam at the top of the stairs brings in music (the dark piano and restless strings, low), and the police siren and street come in on his "Susan!", with the music staying under.
 - Oct 19 late: the doll notes (cue on p10, and the D button for the later mentions) are half the level again and washed in a long, far-off reverb, mostly tail, top softened: a memory, not a toy in the room.
+- Oct 19 late: the heartbeat at the end is a cue now, not held by hand. It starts on Roat's "All the children have gone to bed now, Susan" (p53) at 72 bpm and runs on its own until the stab (p58) cuts it with the tension. , and . still change the pace.
 
 ## Operator keys
 Space GO. 1 to 0 buttons (9 flourish, 0 hit). P punctuation. D doll notes. K the stab (cuts heartbeat and tension). H heartbeat, with , and . for pace. = and - tension. [ ] script page. Esc fade everything.

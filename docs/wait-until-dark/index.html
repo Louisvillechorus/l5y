@@ -424,8 +424,8 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
    ============================================================ */
 const BASE = {
   version: 2,
-  rev: 18,
-  stamp: "2026-10-19i",
+  rev: 19,
+  stamp: "2026-10-19j",
   settings: {master:0, duck:3, breathe:true, midi:{}, life:40, heart:72},
   sections: [
     {name:"Pre-show", from:0, to:6},
@@ -647,12 +647,13 @@ const BASE = {
     {id:"q068", page:"52", when:"Susan: \"You'll have to hurt me. More than you imagine.\" She looks at Mike", what:"Flourish: gentle and ominous, one low piano note with a string behind it.", play:["fx_fl_soft"], prac:true},
     {id:"q069", page:"52", when:"\"Sound: A sudden and violent revving-up of a truck engine outside. We hear a shout and a crash.\"", what:"The truck in the alley: revs, a shout, the crash, it roars off.", play:["fx_truck"], prac:true},
     {id:"q070", page:"53", when:"Mike falls dead on the steps. Roat enters and locks the hall door", what:"The hit, and straight into hell: no build. Pounding drums, screeching strings, snarling brass, all at once, from the moment he is in.", play:["fx_fl_cluster"], scene:"hell", prac:true},
+    {id:"q071a", page:"53", when:"Roat: \"All the children have gone to bed now, Susan.\"", what:"The heartbeat starts and runs on its own until the stab cuts it. , and . still change the pace if you need it.", heart:true, bpm:72},
     {id:"q071b", page:"54", when:"\"Susan squeezes. The lamp pops to an incredibly bright light\"", what:"With the flash: crazier. Swarming, skittering, hammered, everything at once on top of the hell.", scene:"hell2", prac:true},
     {id:"q073", page:"55", when:"The blackout: complete darkness", what:"The chaos pulls back a little for the dark, still busy. Keep riding Tension.", scene:"roatdark", lx:true},
     {id:"q073b", page:"55", when:"Susan: \"Throw the matches on the floor, or I'll set you on fire.\"", what:"The chaos dies down over eight seconds to the old underscore: the quiet drone and the low pulse.", scene:"roatlow"},
     {id:"q074", page:"56", when:"\"Roat opens the icebox… The icebox immediately starts its loud hum\"", what:"Icebox roars, with a violin stab and scraped strings right behind it. The underscore stays under it.", scene:"roar", play:["fx_ice_hit"], prac:true},
     {id:"q075", page:"57", when:"\"As he does this the music starts to play\" (Roat pouring the diamonds)", what:"The doll's whole tune, tinny and small.", play:["mus_doll"], prac:true},
-    {id:"q076", page:"58", when:"\"…she stabs at him once, twice, three times\"", what:"The stab. Cuts the heartbeat and Tension dead. (H and , . for the heartbeat before it.)", play:["fx_stab"], prac:true, cut:true},
+    {id:"q076", page:"58", when:"\"…she stabs at him once, twice, three times\"", what:"The stab. Cuts the heartbeat and Tension dead.", play:["fx_stab"], prac:true, cut:true},
     {id:"q077", page:"59", when:"Susan finds the plug and pulls it. Blackout", what:"The doll and the underscore die at once; the icebox winds down over three seconds. Next GO straight away.", scene:"cut", play:["fx_fridge_wind"], stop:["mus_doll"], lx:true, cut:true},
     {id:"q078", page:"59", when:"\"There's a banging on the hall door, then it breaks open with a splintering crash\"", what:"Break-in. Straight after the plug.", play:["fx_breakin"], prac:true},
     {id:"q078b", page:"59", when:"Sam stands at the top of the stairs, backlit", what:"Music under the ending: the dark piano and the restless strings, low.", scene:"samin"},
@@ -742,7 +743,7 @@ function applyShowFile(obj, persist=true){
 }
 /* bring a show saved by an older build up to date, touching only what the operator never changed */
 function migrate(from){
-  if(from < 18){
+  if(from < 19){
     const keepLife = show.settings.life, keepHeart = show.settings.heart;
     show.layers = deep(BASE.layers); show.scenes = deep(BASE.scenes); show.cues = deep(BASE.cues); show.drops = deep(BASE.drops); show.sections = deep(BASE.sections);
     for(const b of BASE.buttons) if(!show.buttons.some(x=>x.sound===b.sound)) show.buttons.push(deep(b));
@@ -1007,6 +1008,7 @@ function cueDoes(c){
   for(const e of (c.stop||[]).map(entry)) out.push({k:"stop", t:"stop "+lbl(e.id)});
   if(c.lx) out.push({k:"lx", t:"with lights"});
   if(c.prac) out.push({k:"prac", t:"practical: fire on the action"});
+  if(c.heart) out.push({k:"cut", t:"starts the heartbeat"+(c.bpm?` at ${c.bpm} bpm`:"")});
   if(c.cut) out.push({k:"cut", t:"cuts heartbeat and tension"});
   return out;
 }
@@ -1022,6 +1024,7 @@ function fire(){
   for(const e of (c.stop||[]).map(entry)) stopSound(e.id, 0.05);
   if(c.scene) goScene(c.scene, c.fade);
   for(const e of (c.play||[]).map(entry)) play(e.id, {delay:e.delay, gain:e.gain, dur:e.dur, rate:e.rate||undefined});
+  if(c.heart){ if(c.bpm) heartSet(c.bpm); if(!heartOn) heartStart(); }
   if(c.cut){ throttle(null, 0.04); heartStop(0.04); }
   lastFired = sb; sb = Math.min(sb+1, show.cues.length);
   try{ localStorage.setItem("wud-pos", JSON.stringify({sb, t:Date.now()})); }catch(e){}
