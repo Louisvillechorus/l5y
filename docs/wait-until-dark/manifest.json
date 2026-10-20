@@ -424,7 +424,7 @@
    "Rain outside 4"
   ],
   "fx_sos": [
-   "Emergency alert, three rising beeps"
+   "iOS emergency alert"
   ],
   "amb_birds": [
    "Morning birds 1",
@@ -617,7 +617,7 @@
   "sounds/und_pulse_4.mp3"
  ],
  "fx_sos": [
-  "sounds/fx_sos_1.mp3"
+  "sounds/fx_sos_ios_1.mp3"
  ],
  "amb_birds": [
   "sounds/amb_birds_1.mp3",
