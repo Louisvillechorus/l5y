@@ -473,6 +473,12 @@
    "Violin stab and scrape 2",
    "Violin stab and scrape 3",
    "Violin stab and scrape 4"
+  ],
+  "fx_fridge_wind": [
+   "Icebox winds down 1",
+   "Icebox winds down 2",
+   "Icebox winds down 3",
+   "Icebox winds down 4"
   ]
  },
  "fx_heart": [
@@ -660,5 +666,11 @@
   "sounds/fx_ice_hit_2.mp3",
   "sounds/fx_ice_hit_3.mp3",
   "sounds/fx_ice_hit_4.mp3"
+ ],
+ "fx_fridge_wind": [
+  "sounds/fx_fridge_wind_1.mp3",
+  "sounds/fx_fridge_wind_2.mp3",
+  "sounds/fx_fridge_wind_3.mp3",
+  "sounds/fx_fridge_wind_4.mp3"
  ]
 }

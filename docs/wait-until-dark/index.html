@@ -424,8 +424,8 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
    ============================================================ */
 const BASE = {
   version: 2,
-  rev: 16,
-  stamp: "2026-10-19g",
+  rev: 17,
+  stamp: "2026-10-19h",
   settings: {master:0, duck:3, breathe:true, midi:{}, life:40, heart:72},
   sections: [
     {name:"Pre-show", from:0, to:6},
@@ -473,6 +473,7 @@ const BASE = {
     amb_city:     {label:"City, wet night (loop)",     group:"Atmosphere",      pan:0.45,  gain:0,  space:"dry",  duck:0},
     fx_doll_tease:{label:"Doll notes (over the under)", group:"Score",          pan:0.1,   gain:-12, space:"hall", duck:1, vary:true},
     fx_bottles:   {label:"Bottles knocked over (bedroom)", group:"Effects",     pan:-0.6,  gain:-4, space:"room", duck:0, vary:true},
+    fx_fridge_wind:{label:"Icebox winds down (plug pulled)", group:"Atmosphere", pan:0.7,   gain:-7.5, space:"dry", duck:0},
     fx_fridge_off:{label:"Icebox clunks off",          group:"Atmosphere",      pan:0.7,   gain:0,  space:"dry",  duck:0},
     tex_tension:  {label:"Tension bed (throttle)",     group:"Score",           pan:0,     gain:0,  space:"dry",  duck:0},
     fx_heart:     {label:"Heartbeat (one beat; the board sets the tempo)", group:"Score", pan:0, gain:0, space:"dry", duck:0, vary:true},
@@ -558,7 +559,8 @@ const BASE = {
     {id:"roatlow", name:"Roat: it dies down",   fade:8,    levels:{roat:45, upulse:40}},
     {id:"roar",    name:"Icebox roars",         fade:0.08, levels:{fridge:65, roat:30, upulse:30}},
     {id:"cut",     name:"Plug pulled",          fade:0.02, levels:{}},
-    {id:"end",     name:"Street comes in",      fade:3,    levels:{street:40}},
+    {id:"samin",   name:"Sam in: music",        fade:4,    levels:{fpiano:55, umove:40}},
+    {id:"end",     name:"Street comes in",      fade:3,    levels:{street:40, fpiano:55, umove:40}},
     {id:"bows",    name:"Bows",                 fade:1.5,  levels:{birds:62, tension:0}},
     {id:"exit",    name:"Exit music",           fade:4,    levels:{music:62, street:40, birds:20, tension:0}}
   ],
@@ -651,9 +653,10 @@ const BASE = {
     {id:"q074", page:"56", when:"\"Roat opens the icebox… The icebox immediately starts its loud hum\"", what:"Icebox roars, with a violin stab and scraped strings right behind it. The underscore stays under it.", scene:"roar", play:["fx_ice_hit"], prac:true},
     {id:"q075", page:"57", when:"\"As he does this the music starts to play\" (Roat pouring the diamonds)", what:"The doll's whole tune, tinny and small.", play:["mus_doll"], prac:true},
     {id:"q076", page:"58", when:"\"…she stabs at him once, twice, three times\"", what:"The stab. Cuts the heartbeat and Tension dead. (H and , . for the heartbeat before it.)", play:["fx_stab"], prac:true, cut:true},
-    {id:"q077", page:"59", when:"\"Finds it, pulls. AHHHH!\" Blackout. Complete darkness and silence", what:"Everything dead at once: icebox, doll, underscore.", scene:"cut", stop:["mus_doll"], lx:true, cut:true},
-    {id:"q078", page:"59", when:"\"There's a banging on the hall door, then it breaks open with a splintering crash\"", what:"Break-in.", play:["fx_breakin"], prac:true},
-    {id:"q079", page:"59", when:"Sam pulls open the blackout curtain: \"an approaching police beacon, accompanied by its siren\"", what:"The street comes in with the light, and the siren arrives.", scene:"end", play:["fx_siren"], prac:true},
+    {id:"q077", page:"59", when:"Susan finds the plug and pulls it. Blackout", what:"The doll and the underscore die at once; the icebox winds down over three seconds. Next GO straight away.", scene:"cut", play:["fx_fridge_wind"], stop:["mus_doll"], lx:true, cut:true},
+    {id:"q078", page:"59", when:"\"There's a banging on the hall door, then it breaks open with a splintering crash\"", what:"Break-in. Straight after the plug.", play:["fx_breakin"], prac:true},
+    {id:"q078b", page:"59", when:"Sam stands at the top of the stairs, backlit", what:"Music under the ending: the dark piano and the restless strings, low.", scene:"samin"},
+    {id:"q079", page:"59", when:"Sam: \"Susan!\" (he pulls open the blackout curtain)", what:"The street comes in with the light, and the siren arrives. The music stays under.", scene:"end", play:["fx_siren"], prac:true},
     {id:"q090", page:"Bows", when:"Curtain call", what:"No music. Birds, morning, as the lights come up on the bows.", scene:"bows"},
     {id:"q091", page:"Exit", when:"House lights up", what:"Exit music with the street under it; the birds stay faint.", scene:"exit"}
   ],
@@ -739,7 +742,7 @@ function applyShowFile(obj, persist=true){
 }
 /* bring a show saved by an older build up to date, touching only what the operator never changed */
 function migrate(from){
-  if(from < 16){
+  if(from < 17){
     const keepLife = show.settings.life, keepHeart = show.settings.heart;
     show.layers = deep(BASE.layers); show.scenes = deep(BASE.scenes); show.cues = deep(BASE.cues); show.drops = deep(BASE.drops); show.sections = deep(BASE.sections);
     for(const b of BASE.buttons) if(!show.buttons.some(x=>x.sound===b.sound)) show.buttons.push(deep(b));
