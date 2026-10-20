@@ -424,8 +424,8 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
    ============================================================ */
 const BASE = {
   version: 2,
-  rev: 17,
-  stamp: "2026-10-19h",
+  rev: 18,
+  stamp: "2026-10-19i",
   settings: {master:0, duck:3, breathe:true, midi:{}, life:40, heart:72},
   sections: [
     {name:"Pre-show", from:0, to:6},
@@ -471,7 +471,7 @@ const BASE = {
     fx_fridge:    {label:"Icebox hum (loop)",          group:"Atmosphere",      pan:0.7,   gain:0,  space:"dry",  duck:0},
     amb_hum:      {label:"Scene 1 under (loop)",       group:"Atmosphere",      pan:0,     gain:-4, space:"dry",  duck:0},
     amb_city:     {label:"City, wet night (loop)",     group:"Atmosphere",      pan:0.45,  gain:0,  space:"dry",  duck:0},
-    fx_doll_tease:{label:"Doll notes (over the under)", group:"Score",          pan:0.1,   gain:-12, space:"hall", duck:1, vary:true},
+    fx_doll_tease:{label:"Doll notes, a distant memory (over the under)", group:"Score", pan:0.1, gain:-18, space:"dry", duck:1, vary:true},
     fx_bottles:   {label:"Bottles knocked over (bedroom)", group:"Effects",     pan:-0.6,  gain:-4, space:"room", duck:0, vary:true},
     fx_fridge_wind:{label:"Icebox winds down (plug pulled)", group:"Atmosphere", pan:0.7,   gain:-7.5, space:"dry", duck:0},
     fx_fridge_off:{label:"Icebox clunks off",          group:"Atmosphere",      pan:0.7,   gain:0,  space:"dry",  duck:0},
@@ -580,7 +580,7 @@ const BASE = {
     {id:"q012", page:"8",  when:"Carlino puts the meatloaf back in the icebox (Roat at the street door)", what:"The street door, GO on the meatloaf going back.", play:["fx_door"], prac:true},
     {id:"q013", page:"8",  when:"\"Sound: Lightbulb screwing in\"", what:"A bulb threaded into the hall socket, off. The hall light comes back with it.", play:["fx_bulb_in"], prac:true},
     {id:"q014", page:"8",  when:"Roat: \"I wouldn't touch that.\"", what:"The icebox settles under the dialogue. The under stays.", scene:"s11b"},
-    {id:"q015", page:"10", when:"Roat: \"A doll. Child's doll. Plays a little tune.\"", what:"A few notes of the doll's tune, quiet and far away, over the under. D plays more on the later mentions, pages 10 to 14.", play:["fx_doll_tease"], prac:true},
+    {id:"q015", page:"10", when:"Roat: \"A doll. Child's doll. Plays a little tune.\"", what:"A few notes of the doll's tune, very quiet and washed in reverb, like a memory, over the under. D plays more on the later mentions, pages 10 to 14.", play:["fx_doll_tease"], prac:true},
     {id:"q016", page:"14", when:"\"Sound: The offstage street door opens and shuts\" (Susan is home)", what:"The street door.", play:["fx_door"], prac:true},
     {id:"q017", page:"14", when:"\"Sound: We hear an offstage tapping, getting closer\"", what:"Her cane, down the hall toward the door.", play:["fx_cane"], prac:true},
     {id:"q017b", page:"14", when:"Susan is in (the hall door opens)", what:"The under and the icebox go. Just the street for the rest of the scene.", scene:"s11c"},
@@ -742,14 +742,14 @@ function applyShowFile(obj, persist=true){
 }
 /* bring a show saved by an older build up to date, touching only what the operator never changed */
 function migrate(from){
-  if(from < 17){
+  if(from < 18){
     const keepLife = show.settings.life, keepHeart = show.settings.heart;
     show.layers = deep(BASE.layers); show.scenes = deep(BASE.scenes); show.cues = deep(BASE.cues); show.drops = deep(BASE.drops); show.sections = deep(BASE.sections);
     for(const b of BASE.buttons) if(!show.buttons.some(x=>x.sound===b.sound)) show.buttons.push(deep(b));
     show.buttons = BASE.buttons.map(b => show.buttons.find(x=>x.sound===b.sound) || deep(b));
     for(const id in BASE.sounds) if(!show.sounds[id]) show.sounds[id] = deep(BASE.sounds[id]);
-    for(const id of ["fx_cane","fx_fridge","fx_fridge_off","fx_alley","fx_fl_piano","fx_fl_metal","drp_car","drp_horn","drp_dog","drp_bus","drp_siren"]) if(show.sounds[id] && BASE.sounds[id]) show.sounds[id].label = BASE.sounds[id].label;
-    for(const id of ["fx_fl_metal","drp_car","drp_horn","drp_dog","drp_bus","drp_siren"]) if(show.sounds[id] && BASE.sounds[id]){ show.sounds[id].gain = BASE.sounds[id].gain; show.sounds[id].space = BASE.sounds[id].space; }
+    for(const id of ["fx_cane","fx_fridge","fx_fridge_off","fx_alley","fx_fl_piano","fx_doll_tease","fx_fl_metal","drp_car","drp_horn","drp_dog","drp_bus","drp_siren"]) if(show.sounds[id] && BASE.sounds[id]) show.sounds[id].label = BASE.sounds[id].label;
+    for(const id of ["fx_fl_metal","fx_doll_tease","drp_car","drp_horn","drp_dog","drp_bus","drp_siren"]) if(show.sounds[id] && BASE.sounds[id]){ show.sounds[id].gain = BASE.sounds[id].gain; show.sounds[id].space = BASE.sounds[id].space; }
     show.settings.life = keepLife; show.settings.heart = keepHeart;
   }
   if(from < 3){
