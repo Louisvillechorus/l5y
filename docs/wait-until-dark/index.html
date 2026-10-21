@@ -424,8 +424,8 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
    ============================================================ */
 const BASE = {
   version: 2,
-  rev: 24,
-  stamp: "2026-10-21b",
+  rev: 25,
+  stamp: "2026-10-21c",
   settings: {master:0, duck:3, breathe:true, midi:{}, life:40, heart:72},
   sections: [
     {name:"Pre-show", from:0, to:6},
@@ -452,6 +452,8 @@ const BASE = {
     {id:"umove",   label:"Under: moving strings", sound:"und_move"},
     {id:"hell",    label:"Roat: hell",    sound:"mus_hell"},
     {id:"chaos",   label:"Roat: chaos",   sound:"mus_chaos"},
+    {id:"scream",  label:"Roat: screaming strings", sound:"mus_scream"},
+    {id:"drums",   label:"Roat: drums (the flash lever)", sound:"mus_drums"},
     {id:"tension", label:"Tension",       sound:"tex_tension", manual:true}
   ],
   sounds: {
@@ -514,6 +516,8 @@ const BASE = {
     und_move:     {label:"Under: restless strings (loop)", group:"Score",       pan:0,     gain:0,  space:"room", duck:0},
     mus_hell:     {label:"Roat: hell (loop)",          group:"Score",           pan:0,     gain:0,  space:"room", duck:0},
     mus_chaos:    {label:"Roat: chaos after the flash (loop)", group:"Score",   pan:0,     gain:0,  space:"room", duck:0},
+    mus_scream:   {label:"Roat: screaming strings (loop)", group:"Score",     pan:0,     gain:0,  space:"room", duck:0},
+    mus_drums:    {label:"Roat: drums (loop)",         group:"Score",           pan:0,     gain:0,  space:"room", duck:0},
     mus_roat:     {label:"Roat underscore (quiet drone, an occasional drum)", group:"Score", pan:0,   gain:0,  space:"dry",  duck:0},
     mus_inter:    {label:"Intermission: dark piano, disorienting (loop)", group:"Music and voice", pan:0, gain:0, space:"dry", duck:0},
     drp_car:      {label:"Car passes outside (drop)",          group:"Street drops",    pan:0.45,  gain:-11, space:"dry",  duck:0, drop:true},
@@ -556,9 +560,9 @@ const BASE = {
     {id:"montage", name:"Village, Saturday night", fade:6, levels:{city:60, village:70, street:40, fpiano:50}},
     {id:"tense51", name:"Mike and Susan, tense", fade:5,   levels:{upulse:40, umove:55}},
     {id:"roat",    name:"Roat: underscore in",  fade:3,    levels:{roat:45}},
-    {id:"hell",    name:"Roat walks in: hell",  fade:0.1,  levels:{hell:95, chaos:60, roat:45, upulse:55}},
-    {id:"hell2",   name:"After the flash: chaos", fade:0.3, levels:{hell:85, chaos:70, roat:40, upulse:50}},
-    {id:"roatdark",name:"Roat: the dark",       fade:4,    levels:{roat:32, upulse:30}},
+    {id:"hell",    name:"Roat walks in: hell",  fade:0.1,  levels:{scream:95, hell:70, chaos:40, roat:45, upulse:55}},
+    {id:"flash",   name:"The flash: drums",     fade:0.2,  levels:{drums:90, scream:55, hell:50, roat:40, upulse:50}},
+    {id:"roatdark",name:"Roat: the dark",       fade:4,    levels:{drums:60, scream:30, roat:32, upulse:30}},
     {id:"roatlow", name:"Roat: it dies down",   fade:8,    levels:{roat:45, upulse:40}},
     {id:"roar",    name:"Icebox roars",         fade:0.08, levels:{fridge:65, roat:30, upulse:30}},
     {id:"cut",     name:"Plug pulled",          fade:0.02, levels:{}},
@@ -652,9 +656,11 @@ const BASE = {
     {id:"q067", page:"51", when:"\"The door opens. Mike enters.\"", what:"The street and the piano drain away. A low pulse and restless, moving strings underneath the whole scene between them.", scene:"tense51"},
     {id:"q068", page:"52", when:"Susan: \"You'll have to hurt me. More than you imagine.\" She looks at Mike", what:"Flourish: gentle and ominous, one low piano note with a string behind it.", play:["fx_fl_soft"], prac:true},
     {id:"q069", page:"52", when:"\"Sound: A sudden and violent revving-up of a truck engine outside. We hear a shout and a crash.\"", what:"The truck in the alley: revs, a shout, the crash, it roars off.", play:["fx_truck"], prac:true},
-    {id:"q070", page:"53", when:"The hall door opens on Roat (Mike has just fallen)", what:"The hit, and straight into hell the moment the door opens: no build. Pounding drums, screeching strings, snarling brass, chaos on top, all at once. The loudest the show gets.", play:["fx_fl_cluster"], scene:"hell", prac:true},
+    {id:"q070", page:"53", when:"The hall door opens on Roat (Mike has just fallen)", what:"The hit, and straight into hell the moment the door opens: no build. Screaming strings in front, drums and brass behind, chaos on top. The loudest the show gets.", play:["fx_fl_cluster"], scene:"hell", prac:true},
         {id:"q071c", page:"54", when:"Roat flings the scarf at her: \"It lands on the floor\"", what:"The music fades down over twelve seconds to what is already under it: the drone, the pulse and the tension bed.", scene:"roatlow", fade:12},
-    {id:"q073", page:"55", when:"The blackout: complete darkness", what:"The underscore drops back a little for the dark. Keep riding Tension.", scene:"roatdark", lx:true},
+    {id:"q071b", page:"54", when:"\"Susan squeezes. The lamp pops to an incredibly bright light\"", what:"With the flash: the drums come up hard, strings behind them. The Roat: drums fader on the Show tab is the lever if Tyler wants more or less on a given night.", scene:"flash", prac:true},
+    {id:"q073", page:"55", when:"The blackout: complete darkness", what:"The drums and strings pull back for the dark, still there. Keep riding Tension.", scene:"roatdark", lx:true},
+    {id:"q073b", page:"55", when:"Susan: \"Throw the matches on the floor, or I'll set you on fire.\"", what:"The drums and strings die down over eight seconds to the drone and the pulse.", scene:"roatlow"},
     {id:"q074", page:"56", when:"\"Roat opens the icebox… The icebox immediately starts its loud hum\"", what:"Icebox roars, with a violin stab and scraped strings right behind it. The underscore stays under it.", scene:"roar", play:["fx_ice_hit"], prac:true},
     {id:"q074b", page:"57", when:"Roat: \"Fuck the doll.\" He goes to the sink", what:"The faucet runs while he washes the gasoline off. It stays on until the next GO.", play:["fx_wash"], prac:true},
     {id:"q074c", page:"57", when:"Roat dries himself and puts his gloves back on", what:"The faucet off.", stop:["fx_wash"], prac:true},
@@ -749,7 +755,7 @@ function applyShowFile(obj, persist=true){
 }
 /* bring a show saved by an older build up to date, touching only what the operator never changed */
 function migrate(from){
-  if(from < 24){
+  if(from < 25){
     const keepLife = show.settings.life, keepHeart = show.settings.heart;
     show.layers = deep(BASE.layers); show.scenes = deep(BASE.scenes); show.cues = deep(BASE.cues); show.drops = deep(BASE.drops); show.sections = deep(BASE.sections);
     for(const b of BASE.buttons) if(!show.buttons.some(x=>x.sound===b.sound)) show.buttons.push(deep(b));

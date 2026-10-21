@@ -490,6 +490,18 @@
    "Washing at the sink 1",
    "Washing at the sink 3",
    "Washing at the sink 4"
+  ],
+  "mus_scream": [
+   "scream 1",
+   "scream 2",
+   "scream 3",
+   "scream 4"
+  ],
+  "mus_drums": [
+   "drums 1",
+   "drums 2",
+   "drums 3",
+   "drums 4"
   ]
  },
  "fx_heart": [
@@ -694,5 +706,17 @@
   "sounds/fx_wash_1.mp3",
   "sounds/fx_wash_3.mp3",
   "sounds/fx_wash_4.mp3"
+ ],
+ "mus_scream": [
+  "sounds/mus_scream_1.mp3",
+  "sounds/mus_scream_2.mp3",
+  "sounds/mus_scream_3.mp3",
+  "sounds/mus_scream_4.mp3"
+ ],
+ "mus_drums": [
+  "sounds/mus_drums_1.mp3",
+  "sounds/mus_drums_2.mp3",
+  "sounds/mus_drums_3.mp3",
+  "sounds/mus_drums_4.mp3"
  ]
 }
