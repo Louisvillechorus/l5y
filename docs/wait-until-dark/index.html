@@ -424,8 +424,8 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
    ============================================================ */
 const BASE = {
   version: 2,
-  rev: 25,
-  stamp: "2026-10-21c",
+  rev: 26,
+  stamp: "2026-10-21d",
   settings: {master:0, duck:3, breathe:true, midi:{}, life:40, heart:72},
   sections: [
     {name:"Pre-show", from:0, to:6},
@@ -597,9 +597,9 @@ const BASE = {
     {id:"q021", page:"15", when:"Lights up, Scene 2 (the darkroom, curtains closed)", what:"Rain, faint, behind the blackout curtains, and the street. Nothing comes up when the curtains open. No icebox: Sam has had it defrosted.", scene:"s12", lx:true},
     {id:"q023", page:"17", when:"Sam exits, after \"Call Gloria.\": \"We hear the street door open and close\"", what:"The street door, after his last line. He walks past the windows.", play:["fx_door"], prac:true},
     {id:"q023b", page:"18", when:"Susan picks up the phone and dials zero", what:"The phone's emergency alert, three tones, out of the handset.", play:["fx_sos"], prac:true},
-    {id:"q023c", page:"18", when:"Mike dumps the ashtray in the sink and turns on the faucet", what:"The faucet, two seconds, off.", play:["fx_tap"], prac:true},
     {id:"q024", page:"18", when:"\"Sound: Door buzzer\" (Mike, Susan on the phone to the fire department)", what:"Hall door buzzer.", play:["fx_buzzer"], prac:true},
     {id:"q025", page:"18", when:"\"Sound: Door buzzer\" again", what:"Buzzer.", play:["fx_buzzer"], prac:true},
+    {id:"q023c", page:"18", when:"Mike dumps the ashtray in the sink and turns on the faucet (after the two buzzers, once he is in)", what:"The faucet, two seconds, off.", play:["fx_tap"], prac:true},
     {id:"q025b", page:"18", when:"Mike: \"All clear. Fire's out.\"", what:"The rain thins over thirty seconds until it is gone. The street stays.", scene:"s12c"},
     {id:"q026", page:"20", when:"\"Sound: Door buzzer\" (Carlino)", what:"Buzzer.", play:["fx_buzzer"], prac:true},
     {id:"q026b", page:"20", when:"Carlino enters (Mike opens the hall door)", what:"The street fades out over a full minute, slow enough that nobody notices it go.", scene:"s12d"},
@@ -755,7 +755,7 @@ function applyShowFile(obj, persist=true){
 }
 /* bring a show saved by an older build up to date, touching only what the operator never changed */
 function migrate(from){
-  if(from < 25){
+  if(from < 26){
     const keepLife = show.settings.life, keepHeart = show.settings.heart;
     show.layers = deep(BASE.layers); show.scenes = deep(BASE.scenes); show.cues = deep(BASE.cues); show.drops = deep(BASE.drops); show.sections = deep(BASE.sections);
     for(const b of BASE.buttons) if(!show.buttons.some(x=>x.sound===b.sound)) show.buttons.push(deep(b));
