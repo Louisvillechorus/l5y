@@ -424,8 +424,8 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
    ============================================================ */
 const BASE = {
   version: 2,
-  rev: 23,
-  stamp: "2026-10-21",
+  rev: 24,
+  stamp: "2026-10-21b",
   settings: {master:0, duck:3, breathe:true, midi:{}, life:40, heart:72},
   sections: [
     {name:"Pre-show", from:0, to:6},
@@ -629,9 +629,9 @@ const BASE = {
     {id:"q048", page:"40", when:"Mike exits: \"A beat later we hear the street door close and lock\"", what:"The street door. Gloria's key in the hall door is live.", play:["fx_door"], prac:true},
     {id:"q049", page:"42", when:"Gloria: \"Susan, someone's looking through the window!\"", what:"Flourish: metal scrape with a long tail, and the under-sounding comes in with it: strings and a low pulse, held until Carlino is in the room.", play:["fx_fl_metal"], scene:"window2", prac:true},
     {id:"q051", page:"42", when:"The doll \"plays its little tune for a few seconds before Gloria snatches it up\"", what:"The doll's first notes.", play:["mus_doll_short"], prac:true},
-    {id:"q052", page:"42", when:"\"Sound: Street doorbell rings\" (someone at the street door)", what:"The buzzer. One buzzer for both doors, by direction.", play:["fx_buzzer"], prac:true},
-    {id:"q053", page:"42", when:"\"Sound: Street doorbell rings\" (second)", what:"The buzzer again.", play:["fx_buzzer"], prac:true},
-    {id:"q054", page:"43", when:"\"Sound: Hall door buzzer rings\" (Gloria jumps back)", what:"Buzzer. His knock and the rattle of the handle are live on the set door.", play:["fx_buzzer"], prac:true},
+    {id:"q052", page:"42", when:"Buzz 1 of 3 (SM calls it): Susan and Gloria scramble, Carlino gets to the door", what:"The buzzer. One buzzer for both doors, by direction. Three buzzes here, each on the SM's call, not on a line.", play:["fx_buzzer"], prac:true},
+    {id:"q053", page:"42", when:"Buzz 2 of 3 (SM calls it): his impatience", what:"The buzzer again.", play:["fx_buzzer"], prac:true},
+    {id:"q054", page:"43", when:"Buzz 3 of 3 (SM calls it): Carlino moves on to his lines", what:"Buzzer. Him trying the handle is live on the set door.", play:["fx_buzzer"], prac:true},
     {id:"q055", page:"43", when:"Susan unlocks the door. Carlino enters", what:"The under-sounding goes out.", scene:"s21b"},
     {id:"q056", page:"45", when:"\"The phone rings… lets it ring a second time, then picks up\"", what:"Two rings, then it stops by itself. She picks up on the second.", play:["fx_two_rings"], prac:true},
     {id:"q057", page:"45", when:"Carlino exits: \"We hear the street door open and close\"", what:"The street door.", play:["fx_door"], prac:true},
@@ -749,7 +749,7 @@ function applyShowFile(obj, persist=true){
 }
 /* bring a show saved by an older build up to date, touching only what the operator never changed */
 function migrate(from){
-  if(from < 23){
+  if(from < 24){
     const keepLife = show.settings.life, keepHeart = show.settings.heart;
     show.layers = deep(BASE.layers); show.scenes = deep(BASE.scenes); show.cues = deep(BASE.cues); show.drops = deep(BASE.drops); show.sections = deep(BASE.sections);
     for(const b of BASE.buttons) if(!show.buttons.some(x=>x.sound===b.sound)) show.buttons.push(deep(b));
