@@ -45,22 +45,22 @@
   "sounds/fx_fridge_off_4.mp3"
  ],
  "fx_doorbell": [
-  "sounds/fx_doorbell_1.mp3",
-  "sounds/fx_doorbell_2.mp3",
-  "sounds/fx_doorbell_3.mp3",
-  "sounds/fx_doorbell_4.mp3"
+  "sounds/fx_doorbell_wall_1.mp3",
+  "sounds/fx_doorbell_wall_2.mp3",
+  "sounds/fx_doorbell_wall_3.mp3",
+  "sounds/fx_doorbell_wall_4.mp3"
  ],
  "fx_door": [
-  "sounds/fx_door_1.mp3",
-  "sounds/fx_door_2.mp3",
-  "sounds/fx_door_3.mp3",
-  "sounds/fx_door_4.mp3"
+  "sounds/fx_door_wall_1.mp3",
+  "sounds/fx_door_wall_2.mp3",
+  "sounds/fx_door_wall_3.mp3",
+  "sounds/fx_door_wall_4.mp3"
  ],
  "fx_glass": [
-  "sounds/fx_glass_1.mp3",
-  "sounds/fx_glass_2.mp3",
-  "sounds/fx_glass_3.mp3",
-  "sounds/fx_glass_4.mp3"
+  "sounds/fx_glass_wall_1.mp3",
+  "sounds/fx_glass_wall_2.mp3",
+  "sounds/fx_glass_wall_3.mp3",
+  "sounds/fx_glass_wall_4.mp3"
  ],
  "fx_pipe": [
   "sounds/fx_pipe_1.mp3",
@@ -171,10 +171,10 @@
   "sounds/fx_thunder_4.mp3"
  ],
  "fx_cane": [
-  "sounds/fx_cane_1.mp3",
-  "sounds/fx_cane_2.mp3",
-  "sounds/fx_cane_3.mp3",
-  "sounds/fx_cane_4.mp3"
+  "sounds/fx_cane_wall_1.mp3",
+  "sounds/fx_cane_wall_2.mp3",
+  "sounds/fx_cane_wall_3.mp3",
+  "sounds/fx_cane_wall_4.mp3"
  ],
  "drp_car": [
   "sounds/drp_car_muf_1.mp3",
@@ -479,6 +479,17 @@
    "Icebox winds down 2",
    "Icebox winds down 3",
    "Icebox winds down 4"
+  ],
+  "fx_tap": [
+   "Faucet on, off 1",
+   "Faucet on, off 2",
+   "Faucet on, off 3",
+   "Faucet on, off 4"
+  ],
+  "fx_wash": [
+   "Washing at the sink 1",
+   "Washing at the sink 3",
+   "Washing at the sink 4"
   ]
  },
  "fx_heart": [
@@ -563,9 +574,9 @@
   "sounds/fx_buzzer_3.mp3"
  ],
  "fx_bulb_in": [
-  "sounds/fx_bulb_in_1.mp3",
-  "sounds/fx_bulb_in_2.mp3",
-  "sounds/fx_bulb_in_3.mp3"
+  "sounds/fx_bulb_in_wall_1.mp3",
+  "sounds/fx_bulb_in_wall_2.mp3",
+  "sounds/fx_bulb_in_wall_3.mp3"
  ],
  "fx_truck": [
   "sounds/fx_truck_1.mp3",
@@ -573,9 +584,9 @@
   "sounds/fx_truck_3.mp3"
  ],
  "fx_run_door": [
-  "sounds/fx_run_door_1.mp3",
-  "sounds/fx_run_door_2.mp3",
-  "sounds/fx_run_door_3.mp3"
+  "sounds/fx_run_door_wall_1.mp3",
+  "sounds/fx_run_door_wall_2.mp3",
+  "sounds/fx_run_door_wall_3.mp3"
  ],
  "fx_siren": [
   "sounds/fx_siren_1.mp3",
@@ -672,5 +683,16 @@
   "sounds/fx_fridge_wind_2.mp3",
   "sounds/fx_fridge_wind_3.mp3",
   "sounds/fx_fridge_wind_4.mp3"
+ ],
+ "fx_tap": [
+  "sounds/fx_tap_1.mp3",
+  "sounds/fx_tap_2.mp3",
+  "sounds/fx_tap_3.mp3",
+  "sounds/fx_tap_4.mp3"
+ ],
+ "fx_wash": [
+  "sounds/fx_wash_1.mp3",
+  "sounds/fx_wash_3.mp3",
+  "sounds/fx_wash_4.mp3"
  ]
 }
