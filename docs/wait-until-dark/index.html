@@ -424,8 +424,8 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
    ============================================================ */
 const BASE = {
   version: 2,
-  rev: 22,
-  stamp: "2026-10-20",
+  rev: 23,
+  stamp: "2026-10-21",
   settings: {master:0, duck:3, breathe:true, midi:{}, life:40, heart:72},
   sections: [
     {name:"Pre-show", from:0, to:6},
@@ -629,8 +629,8 @@ const BASE = {
     {id:"q048", page:"40", when:"Mike exits: \"A beat later we hear the street door close and lock\"", what:"The street door. Gloria's key in the hall door is live.", play:["fx_door"], prac:true},
     {id:"q049", page:"42", when:"Gloria: \"Susan, someone's looking through the window!\"", what:"Flourish: metal scrape with a long tail, and the under-sounding comes in with it: strings and a low pulse, held until Carlino is in the room.", play:["fx_fl_metal"], scene:"window2", prac:true},
     {id:"q051", page:"42", when:"The doll \"plays its little tune for a few seconds before Gloria snatches it up\"", what:"The doll's first notes.", play:["mus_doll_short"], prac:true},
-    {id:"q052", page:"42", when:"\"Sound: Street doorbell rings\"", what:"Street doorbell.", play:["fx_doorbell"], prac:true},
-    {id:"q053", page:"42", when:"\"Sound: Street doorbell rings\" (second)", what:"Street doorbell.", play:["fx_doorbell"], prac:true},
+    {id:"q052", page:"42", when:"\"Sound: Street doorbell rings\" (someone at the street door)", what:"The buzzer. One buzzer for both doors, by direction.", play:["fx_buzzer"], prac:true},
+    {id:"q053", page:"42", when:"\"Sound: Street doorbell rings\" (second)", what:"The buzzer again.", play:["fx_buzzer"], prac:true},
     {id:"q054", page:"43", when:"\"Sound: Hall door buzzer rings\" (Gloria jumps back)", what:"Buzzer. His knock and the rattle of the handle are live on the set door.", play:["fx_buzzer"], prac:true},
     {id:"q055", page:"43", when:"Susan unlocks the door. Carlino enters", what:"The under-sounding goes out.", scene:"s21b"},
     {id:"q056", page:"45", when:"\"The phone rings… lets it ring a second time, then picks up\"", what:"Two rings, then it stops by itself. She picks up on the second.", play:["fx_two_rings"], prac:true},
@@ -670,10 +670,9 @@ const BASE = {
   ],
   /* The pad fires the same sounds out of order, without moving standby: an extra doorbell, a phone that rings early. */
   buttons: [
-    {key:"1", sound:"fx_doorbell",   label:"Doorbell",  note:"Street door",               pages:[42,42]},
     {key:"2", sound:"fx_phone",      label:"Phone",     note:"Rings until pressed again", pages:[27,32,35], toggle:true},
     {key:"3", sound:"fx_two_rings",  label:"Two rings", note:"Then it stops by itself",   pages:[45,45]},
-    {key:"4", sound:"fx_buzzer",     label:"Buzzer",    note:"Hall door",                 pages:[18,18,20,24,24,24,26,29,43]},
+    {key:"4", sound:"fx_buzzer",     label:"Buzzer",    note:"Both doors (one buzzer, by direction)", pages:[18,18,20,24,24,24,26,29,42,42,43]},
     {key:"5", sound:"fx_door",       label:"Door",      note:"Street door, down the hall",pages:[8,14,14,17,21,22,29,32,40,45]},
     {key:"6", sound:"fx_glass",      label:"Glass",     note:"Bulbs and the lamp",        pages:[50,50,55]},
     {key:"7", sound:"mus_doll_short",label:"Doll",      note:"First notes only",          pages:[42]},
@@ -750,7 +749,7 @@ function applyShowFile(obj, persist=true){
 }
 /* bring a show saved by an older build up to date, touching only what the operator never changed */
 function migrate(from){
-  if(from < 22){
+  if(from < 23){
     const keepLife = show.settings.life, keepHeart = show.settings.heart;
     show.layers = deep(BASE.layers); show.scenes = deep(BASE.scenes); show.cues = deep(BASE.cues); show.drops = deep(BASE.drops); show.sections = deep(BASE.sections);
     for(const b of BASE.buttons) if(!show.buttons.some(x=>x.sound===b.sound)) show.buttons.push(deep(b));
@@ -1603,6 +1602,7 @@ async function push(){
   if(res.status===403||res.status===404) return setSync("norepo");
   setSync("offline");
 }
+let snoozedForShow=false;
 async function pull(reason){
   if(!syncOn()||pushing) return;
   let res; try{ res=await gh("GET"); }catch(e){ setSync("offline"); return; }
@@ -1615,7 +1615,8 @@ async function pull(reason){
   if(res.j.sha===sync.sha){ syncBlocked=false; setSync("ok"); if(sync.dirty) schedulePush(); return; }
   if(sameShow(remote, exportObj())){ sync.sha=res.j.sha; sync.dirty=false; syncStore(); syncBlocked=false; setSync("ok"); return; }
   if(sync.dirty){ showSyncBar("conflict", remote, res.j.sha); return; }
-  if(performing()){ if(dismissedSha!==res.j.sha) showSyncBar("pending", remote, res.j.sha); return; }
+  if(performing()){ if(!snoozedForShow && dismissedSha!==res.j.sha) showSyncBar("pending", remote, res.j.sha); return; }
+  snoozedForShow=false;   // the show is over: the next change may ask again
   applyRemote(remote, res.j.sha, reason!=="start");
 }
 function applyRemote(remote, sha, announce){
@@ -1638,7 +1639,7 @@ function showSyncBar(kind, remote, sha){
     n.innerHTML=`<span style="flex:1;min-width:0">${who} changed the show at ${at}. It will not change mid-performance unless you load it.</span><button class="btn" id="sbLater">After the show</button><button class="btn amber" id="sbNow">Load it now</button>`;
     document.querySelector("header.top").after(n);
     $("sbNow").addEventListener("click",()=>applyRemote(remote, sha, true));
-    $("sbLater").addEventListener("click",()=>{ dismissedSha=sha; hideSyncBar(); });
+    $("sbLater").addEventListener("click",()=>{ dismissedSha=sha; snoozedForShow=true; hideSyncBar(); });   // "After the show" means after the show, however many more saves land
   }
 }
 setInterval(()=>{ if(!syncOn()||document.hidden||syncBlocked||pushing) return; if(sync.dirty) push(); else pull("poll"); }, syncPoll);
