@@ -424,8 +424,8 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
    ============================================================ */
 const BASE = {
   version: 2,
-  rev: 27,
-  stamp: "2026-10-21e",
+  rev: 28,
+  stamp: "2026-10-21f",
   settings: {master:0, duck:3, breathe:true, midi:{}, life:40, heart:72},
   sections: [
     {name:"Pre-show", from:0, to:6},
@@ -518,6 +518,7 @@ const BASE = {
     mus_chaos:    {label:"Roat: chaos after the flash (loop)", group:"Score",   pan:0,     gain:0,  space:"room", duck:0},
     mus_scream:   {label:"Roat: screaming strings (loop)", group:"Score",     pan:0,     gain:0,  space:"room", duck:0},
     mus_drums:    {label:"Roat: drums (loop)",         group:"Score",           pan:0,     gain:0,  space:"room", duck:0},
+    mus_money:    {label:"Money minute song",         group:"Score",           pan:0,     gain:-3, space:"dry",  duck:0},
     mus_roat:     {label:"Roat underscore (quiet drone, an occasional drum)", group:"Score", pan:0,   gain:0,  space:"dry",  duck:0},
     mus_inter:    {label:"Intermission: dark piano, disorienting (loop)", group:"Music and voice", pan:0, gain:0, space:"dry", duck:0},
     drp_car:      {label:"Car passes outside (drop)",          group:"Street drops",    pan:0.45,  gain:-11, space:"dry",  duck:0, drop:true},
@@ -550,6 +551,7 @@ const BASE = {
     {id:"tense24x",name:"Door locked: tension out", fade:12, levels:{tension:0}},
     {id:"inter",   name:"Intermission",         fade:4,    levels:{intermusic:60, rain:12, tension:0}},
     {id:"money",   name:"Money minute: music under", fade:2, levels:{intermusic:14, rain:12, tension:0}},
+    {id:"silent",  name:"Nothing but the song",  fade:1.5,  levels:{tension:0}},
     {id:"s21",     name:"Act Two at rise",      fade:8,    levels:{rain:40, street:40, tension:0}},
     {id:"s21r",    name:"Act Two: rain out",    fade:15,   levels:{street:40}},
     {id:"window1", name:"Window: strings under",fade:5,    levels:{rain:34, street:40, ustrings:45}},
@@ -620,10 +622,11 @@ const BASE = {
     {id:"q037b", page:"32", when:"Roat drops the phone, runs up the steps and out", what:"The street door closes behind him. He runs past the window.", play:["fx_door"], prac:true},
     {id:"q038", page:"33", when:"Susan rushes into the bedroom and knocks over bottles (visual: SM calls it)", what:"Bottles, off, in the bedroom.", play:["fx_bottles"], prac:true},
     {id:"q039", page:"34", when:"Mike pulls the blinds once, \"shunk\". End of Act One", what:"Intermission music: a slow dark piano that settles into a key and then loses it, over and over, rain faint under. Out with the lights.", scene:"inter", play:["tex_change"], lx:true},
-    {id:"q039m", page:"35", when:"The Money Minute: the speaker picks up the mic (SM calls it)", what:"The intermission music dips right down under the speaker.", scene:"money"},
-    {id:"q039n", page:"35", when:"The ask is over, the speaker is off", what:"The music comes back up.", scene:"inter"},
     {id:"q040", page:"35", when:"Two minutes to Act Two (SM calls it)", what:"The intermission announcement, over the music.", play:["ann_two"]},
-    {id:"q041", page:"35", when:"House to half, lights up on Mike alone", what:"The music goes, the rain is all that is left. It stays light; the street thins out through the act.", scene:"s21"},
+    {id:"q040m", page:"35", when:"The Money Minute: the speaker picks up the mic (SM calls it)", what:"The intermission music dips right down under the speaker.", scene:"money"},
+    {id:"q040s", page:"35", when:"The speaker cues the song", what:"The song, on its own: the intermission music and the rain go out as it starts.", scene:"silent", play:["mus_money"]},
+    {id:"q040x", page:"35", when:"The song is over for us (SM calls it)", what:"The song fades out over six seconds. Silence until Act Two.", stop:[{id:"mus_money", fade:6}]},
+    {id:"q041", page:"35", when:"House to half, lights up on Mike alone", what:"Out of the silence: the rain and the street come up for the top of the act.", scene:"s21"},
     {id:"q042", page:"35", when:"Mike: \"Come on, ring.\" (The phone rings.)", what:"Phone starts ringing. The street is back under this, with its drop-ins; it thins again scene by scene.", play:["fx_phone"], prac:true},
     {id:"q043", page:"35", when:"Mike grabs it up", what:"Phone stops.", stop:["fx_phone"], prac:true},
     {id:"q044", page:"37", when:"Susan: \"Look out the window.\"", what:"A quiet string cluster comes in under the scene. Mysterious, not loud.", scene:"window1"},
@@ -697,7 +700,7 @@ const $ = id => document.getElementById(id);
 function esc(s){return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
 function deep(o){return JSON.parse(JSON.stringify(o))}
 function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("on"); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("on"),2000); }
-function entry(e){ return typeof e==="string" ? {id:e, delay:0, gain:0, dur:0, rate:0} : {id:e.id, delay:+e.delay||0, gain:+e.gain||0, dur:+e.dur||0, rate:+e.rate||0}; }
+function entry(e){ return typeof e==="string" ? {id:e, delay:0, gain:0, dur:0, rate:0, fade:0} : {id:e.id, delay:+e.delay||0, gain:+e.gain||0, dur:+e.dur||0, rate:+e.rate||0, fade:+e.fade||0}; }
 function lbl(id){ return show.sounds[id]?.label || id; }
 function sceneOf(id){ return show.scenes.find(s=>s.id===id); }
 function isNumPage(p){ return /^\d+$/.test(String(p||"").trim()); }
@@ -755,7 +758,7 @@ function applyShowFile(obj, persist=true){
 }
 /* bring a show saved by an older build up to date, touching only what the operator never changed */
 function migrate(from){
-  if(from < 27){
+  if(from < 28){
     const keepLife = show.settings.life, keepHeart = show.settings.heart;
     show.layers = deep(BASE.layers); show.scenes = deep(BASE.scenes); show.cues = deep(BASE.cues); show.drops = deep(BASE.drops); show.sections = deep(BASE.sections);
     for(const b of BASE.buttons) if(!show.buttons.some(x=>x.sound===b.sound)) show.buttons.push(deep(b));
@@ -1017,7 +1020,7 @@ function cueDoes(c){
   const out = [];
   if(c.scene){ const s=sceneOf(c.scene); out.push({k:"scene", t:(s?s.name:c.scene)+(c.fade!==undefined&&c.fade!==""&&c.fade!==null?` · ${c.fade}s`:"")}); }
   for(const e of (c.play||[]).map(entry)) out.push({k:"play", t:lbl(e.id)+(e.delay?` +${e.delay}s`:"")+(e.gain?` ${e.gain>0?"+":""}${e.gain} dB`:"")});
-  for(const e of (c.stop||[]).map(entry)) out.push({k:"stop", t:"stop "+lbl(e.id)});
+  for(const e of (c.stop||[]).map(entry)) out.push({k:"stop", t:"stop "+lbl(e.id)+(e.fade?` · ${e.fade}s fade`:"")});
   if(c.lx) out.push({k:"lx", t:"with lights"});
   if(c.prac) out.push({k:"prac", t:"practical: fire on the action"});
   if(c.heart) out.push({k:"cut", t:"starts the heartbeat"+(c.bpm?` at ${c.bpm} bpm`:"")});
@@ -1033,7 +1036,7 @@ function fire(){
   lastGoAt = now; lastGoWall = Date.now();
   const gb=$("goBtn"); gb.classList.remove("flash"); void gb.offsetWidth; gb.classList.add("flash");
   const c = show.cues[sb];
-  for(const e of (c.stop||[]).map(entry)) stopSound(e.id, 0.05);
+  for(const e of (c.stop||[]).map(entry)) stopSound(e.id, e.fade||0.05);
   if(c.scene) goScene(c.scene, c.fade);
   for(const e of (c.play||[]).map(entry)) play(e.id, {delay:e.delay, gain:e.gain, dur:e.dur, rate:e.rate||undefined});
   if(c.heart){ if(c.bpm) heartSet(c.bpm); if(!heartOn) heartStart(); }

@@ -502,6 +502,9 @@
    "drums 2",
    "drums 3",
    "drums 4"
+  ],
+  "mus_money": [
+   "For the Love of Money"
   ]
  },
  "fx_heart": [
@@ -718,5 +721,8 @@
   "sounds/mus_drums_2.mp3",
   "sounds/mus_drums_3.mp3",
   "sounds/mus_drums_4.mp3"
+ ],
+ "mus_money": [
+  "sounds/mus_money_1.mp3"
  ]
 }

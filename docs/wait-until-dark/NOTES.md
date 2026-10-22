@@ -31,6 +31,7 @@ The Jeffrey Hatcher adaptation (Dramatists Play Service; Susan, Mike, Sam, Carli
 - Oct 21 (Tyler): one buzzer for both doors. The two street doorbells on p42 are the hall buzzer now, and the Doorbell button is gone (the Buzzer button, 4, serves both). On the board, "After the show" on a mid-show change now stays quiet for the rest of the performance, however many more saves land.
 - Oct 21 (SJ): the three buzzes on pp42 to 43 are called by the SM, not taken on lines: the first sends Susan and Gloria scrambling with Carlino at the door, the next two are his impatience and move him on to his lines.
 - Oct 21 (Tyler): Roat's entrance leads with screaming strings (a new strings-only bed in front of the hell). The flashbulb on p54 brings in a drums bed, hard; the Roat: drums fader on the Show tab is the lever for more or less on the night. The dark keeps some of it; the matches line on p55 takes it down to the drone and pulse.
+- Oct 21 (David): the top of Act Two is intermission music, the two-minute warning, the Money Minute dip, then the song on its own (intermission music and rain out), the song fading over six seconds, then Act Two at rise out of silence. A stop entry may carry a fade. The "Lock your door" tension fade on p25 is twelve seconds.
 
 ## Operator keys
 Space GO. 1 to 0 buttons (9 flourish, 0 hit). P punctuation. D doll notes. K the stab (cuts heartbeat and tension). H heartbeat, with , and . for pace. = and - tension. [ ] script page. Esc fade everything.
