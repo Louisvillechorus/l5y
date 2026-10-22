@@ -18,15 +18,15 @@
   "sounds/fx_fridge_4.mp3"
  ],
  "mus_house": [
-  "sounds/mus_house_1.mp3",
-  "sounds/mus_house_2.mp3",
-  "sounds/mus_house_3.mp3",
-  "sounds/mus_house_4.mp3",
-  "sounds/mus_house_5.mp3",
-  "sounds/mus_house_6.mp3",
-  "sounds/mus_house_7.mp3",
-  "sounds/mus_house_8.mp3",
-  "sounds/mus_house_9.mp3"
+  "sounds/mus_house_1_m.mp3",
+  "sounds/mus_house_2_m.mp3",
+  "sounds/mus_house_3_m.mp3",
+  "sounds/mus_house_4_m.mp3",
+  "sounds/mus_house_5_m.mp3",
+  "sounds/mus_house_6_m.mp3",
+  "sounds/mus_house_7_m.mp3",
+  "sounds/mus_house_8_m.mp3",
+  "sounds/mus_house_9_m.mp3"
  ],
  "tex_tension": [
   "sounds/tex_tension_1.mp3",
@@ -135,28 +135,28 @@
   "sounds/mus_doll_short_1.mp3"
  ],
  "ann_welcome": [
-  "sounds/ann_matt_2.mp3",
-  "sounds/ann_matt_1.mp3",
-  "sounds/ann_matt_3.mp3",
-  "sounds/ann_matt_4.mp3",
-  "sounds/ann_sterling_1.mp3",
-  "sounds/ann_sterling_2.mp3",
-  "sounds/ann_sterling_3.mp3",
-  "sounds/ann_sterling_4.mp3",
-  "sounds/ann_christopher_1.mp3",
-  "sounds/ann_christopher_2.mp3",
-  "sounds/ann_christopher_3.mp3",
-  "sounds/ann_christopher_4.mp3",
-  "sounds/ann_joseph_1.mp3",
-  "sounds/ann_joseph_2.mp3",
-  "sounds/ann_joseph_3.mp3",
-  "sounds/ann_joseph_4.mp3"
+  "sounds/ann_matt_2_m.mp3",
+  "sounds/ann_matt_1_m.mp3",
+  "sounds/ann_matt_3_m.mp3",
+  "sounds/ann_matt_4_m.mp3",
+  "sounds/ann_sterling_1_m.mp3",
+  "sounds/ann_sterling_2_m.mp3",
+  "sounds/ann_sterling_3_m.mp3",
+  "sounds/ann_sterling_4_m.mp3",
+  "sounds/ann_christopher_1_m.mp3",
+  "sounds/ann_christopher_2_m.mp3",
+  "sounds/ann_christopher_3_m.mp3",
+  "sounds/ann_christopher_4_m.mp3",
+  "sounds/ann_joseph_1_m.mp3",
+  "sounds/ann_joseph_2_m.mp3",
+  "sounds/ann_joseph_3_m.mp3",
+  "sounds/ann_joseph_4_m.mp3"
  ],
  "ann_two": [
-  "sounds/ann_two_1.mp3",
-  "sounds/ann_two_2.mp3",
-  "sounds/ann_two_3.mp3",
-  "sounds/ann_two_4.mp3"
+  "sounds/ann_two_1_m.mp3",
+  "sounds/ann_two_2_m.mp3",
+  "sounds/ann_two_3_m.mp3",
+  "sounds/ann_two_4_m.mp3"
  ],
  "fx_slam": [
   "sounds/fx_slam_1.mp3",
@@ -630,14 +630,14 @@
   "sounds/und_strings_4.mp3"
  ],
  "mus_roat": [
-  "sounds/mus_roat_1.mp3",
-  "sounds/mus_roat_2.mp3"
+  "sounds/mus_roat_1_m.mp3",
+  "sounds/mus_roat_2_m.mp3"
  ],
  "mus_inter": [
-  "sounds/mus_inter_1.mp3",
-  "sounds/mus_inter_2.mp3",
-  "sounds/mus_inter_3.mp3",
-  "sounds/mus_inter_4.mp3"
+  "sounds/mus_inter_1_m.mp3",
+  "sounds/mus_inter_2_m.mp3",
+  "sounds/mus_inter_3_m.mp3",
+  "sounds/mus_inter_4_m.mp3"
  ],
  "fx_flourish": [
   "sounds/fx_flourish_1.mp3",
@@ -732,7 +732,7 @@
   "sounds/mus_drums_4.mp3"
  ],
  "mus_money": [
-  "sounds/mus_money_1.mp3"
+  "sounds/mus_money_150.mp3"
  ],
  "mus_stab": [
   "sounds/mus_stab_2.mp3"

@@ -424,8 +424,8 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
    ============================================================ */
 const BASE = {
   version: 2,
-  rev: 31,
-  stamp: "2026-10-21i",
+  rev: 32,
+  stamp: "2026-10-22",
   settings: {master:0, duck:3, breathe:true, midi:{}, life:40, heart:72},
   sections: [
     {name:"Pre-show", from:0, to:6},
@@ -764,7 +764,7 @@ function applyShowFile(obj, persist=true){
 }
 /* bring a show saved by an older build up to date, touching only what the operator never changed */
 function migrate(from){
-  if(from < 31){
+  if(from < 32){
     const keepLife = show.settings.life, keepHeart = show.settings.heart;
     show.layers = deep(BASE.layers); show.scenes = deep(BASE.scenes); show.cues = deep(BASE.cues); show.drops = deep(BASE.drops); show.sections = deep(BASE.sections);
     for(const b of BASE.buttons) if(!show.buttons.some(x=>x.sound===b.sound)) show.buttons.push(deep(b));
@@ -825,8 +825,18 @@ function makeIR(seconds, lowpass, early){
   }
   return buf;
 }
+function audioStateChanged(){
+  if(!ctx) return;
+  const st=ctx.state; log("Audio engine: "+st);
+  const pill=$("armTxt"); if(pill && $("armDot").classList.contains("on")) pill.textContent = st==="running" ? "Loaded" : "AUDIO PAUSED, press any key";
+  if(st!=="running"){ toast("The browser paused the audio. Press any key or click to wake it."); ctx.resume().catch(()=>{}); }
+}
+document.addEventListener("keydown", ()=>{ if(ctx && ctx.state!=="running") ctx.resume().catch(()=>{}); }, true);
+document.addEventListener("pointerdown", ()=>{ if(ctx && ctx.state!=="running") ctx.resume().catch(()=>{}); }, true);
+setInterval(()=>{ if(ctx && ctx.state==="interrupted") ctx.resume().catch(()=>{}); }, 2000);
 function buildGraph(){
-  ctx = new (window.AudioContext||window.webkitAudioContext)({latencyHint:"interactive"});
+  try{ ctx = new (window.AudioContext||window.webkitAudioContext)({latencyHint:"interactive", sampleRate:32000}); }catch(e){ ctx = new (window.AudioContext||window.webkitAudioContext)({latencyHint:"interactive"}); }
+  ctx.onstatechange = audioStateChanged;
   limiter = ctx.createDynamicsCompressor();
   limiter.threshold.value=-3; limiter.knee.value=0; limiter.ratio.value=20; limiter.attack.value=0.002; limiter.release.value=0.12;
   master = ctx.createGain(); master.channelCountMode="explicit"; master.channelInterpretation="speakers";
@@ -1042,11 +1052,13 @@ function fire(){
   lastGoAt = now; lastGoWall = Date.now();
   const gb=$("goBtn"); gb.classList.remove("flash"); void gb.offsetWidth; gb.classList.add("flash");
   const c = show.cues[sb];
-  for(const e of (c.stop||[]).map(entry)) stopSound(e.id, e.fade||0.05);
-  if(c.scene) goScene(c.scene, c.fade);
-  for(const e of (c.play||[]).map(entry)) play(e.id, {delay:e.delay, gain:e.gain, dur:e.dur, rate:e.rate||undefined});
-  if(c.heart){ if(c.bpm) heartSet(c.bpm); if(!heartOn) heartStart(); }
-  if(c.cut){ throttle(null, 0.04); heartStop(0.04); }
+  if(ctx.state!=="running"){ ctx.resume().catch(()=>{}); }
+  const safe=(f)=>{ try{ f(); }catch(e){ log("Cue "+(sb+1)+" error: "+(e&&e.message||e)); } };
+  for(const e of (c.stop||[]).map(entry)) safe(()=>stopSound(e.id, e.fade||0.05));
+  if(c.scene) safe(()=>goScene(c.scene, c.fade));
+  for(const e of (c.play||[]).map(entry)) safe(()=>play(e.id, {delay:e.delay, gain:e.gain, dur:e.dur, rate:e.rate||undefined}));
+  if(c.heart) safe(()=>{ if(c.bpm) heartSet(c.bpm); if(!heartOn) heartStart(); });
+  if(c.cut) safe(()=>{ throttle(null, 0.04); heartStop(0.04); });
   lastFired = sb; sb = Math.min(sb+1, show.cues.length);
   try{ localStorage.setItem("wud-pos", JSON.stringify({sb, t:Date.now()})); }catch(e){}
   log(`GO  cue ${lastFired+1}  ${c.when}`);
@@ -1506,7 +1518,7 @@ async function arm(){
   try{
     buildGraph(); await ctx.resume();
     const ids = Object.keys(show.sounds); let done=0, missing=[];
-    await Promise.all(ids.map(async id=>{ try{ const b=await loadSound(id); if(!b) missing.push(id);}catch(e){ missing.push(id);} done++; $("armBar").style.width=(done/ids.length*100)+"%"; }));
+    for(let i=0;i<ids.length;i+=4){ await Promise.all(ids.slice(i,i+4).map(async id=>{ try{ const b=await loadSound(id); if(!b){ missing.push(id); log("Could not load "+id); } }catch(e){ missing.push(id); log("Could not load "+id+": "+(e&&e.message||e)); } done++; $("armBar").style.width=(done/ids.length*100)+"%"; })); }
     if(missing.length){ const again=missing.splice(0); $("armMsg").textContent="Retrying "+again.length+" file(s)…"; for(const id of again){ try{ const b=await loadSound(id); if(!b) missing.push(id);}catch(e){ missing.push(id);} } }
     startLayers(); for(const L of show.layers) liveLevels[L.id]=0;
     loadDropTakes();
