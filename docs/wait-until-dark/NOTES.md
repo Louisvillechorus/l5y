@@ -32,6 +32,7 @@ The Jeffrey Hatcher adaptation (Dramatists Play Service; Susan, Mike, Sam, Carli
 - Oct 21 (SJ): the three buzzes on pp42 to 43 are called by the SM, not taken on lines: the first sends Susan and Gloria scrambling with Carlino at the door, the next two are his impatience and move him on to his lines.
 - Oct 21 (Tyler): Roat's entrance leads with screaming strings (a new strings-only bed in front of the hell). The flashbulb on p54 brings in a drums bed, hard; the Roat: drums fader on the Show tab is the lever for more or less on the night. The dark keeps some of it; the matches line on p55 takes it down to the drone and pulse.
 - Oct 21 (David): the top of Act Two is intermission music, the two-minute warning, the Money Minute dip, then the song on its own (intermission music and rain out), the song fading over six seconds, then Act Two at rise out of silence. A stop entry may carry a fade. The "Lock your door" tension fade on p25 is twelve seconds.
+- Oct 21 (David, after the run): every interior sound is 60% down (8 dB): the phone rings and the two-ring signals, the emergency alert, all three doll sounds, both faucets, the bottles and the breakers. The buzzer and the icebox stay where they are. The truck crash is much louder (denser files plus 3 dB, ducking the beds hard).
 
 ## Operator keys
 Space GO. 1 to 0 buttons (9 flourish, 0 hit). P punctuation. D doll notes. K the stab (cuts heartbeat and tension). H heartbeat, with , and . for pace. = and - tension. [ ] script page. Esc fade everything.
