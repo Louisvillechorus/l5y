@@ -424,8 +424,8 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
    ============================================================ */
 const BASE = {
   version: 2,
-  rev: 30,
-  stamp: "2026-10-21h",
+  rev: 31,
+  stamp: "2026-10-21i",
   settings: {master:0, duck:3, breathe:true, midi:{}, life:40, heart:72},
   sections: [
     {name:"Pre-show", from:0, to:6},
@@ -454,6 +454,7 @@ const BASE = {
     {id:"chaos",   label:"Roat: chaos",   sound:"mus_chaos"},
     {id:"scream",  label:"Roat: screaming strings", sound:"mus_scream"},
     {id:"drums",   label:"Roat: drums (the flash lever)", sound:"mus_drums"},
+    {id:"stab",    label:"The stabbing: drive", sound:"mus_stab"},
     {id:"tension", label:"Tension",       sound:"tex_tension", manual:true}
   ],
   sounds: {
@@ -519,6 +520,8 @@ const BASE = {
     mus_scream:   {label:"Roat: screaming strings (loop)", group:"Score",     pan:0,     gain:0,  space:"room", duck:0},
     mus_drums:    {label:"Roat: drums (loop)",         group:"Score",           pan:0,     gain:0,  space:"room", duck:0},
     mus_money:    {label:"Money minute song",         group:"Score",           pan:0,     gain:-3, space:"dry",  duck:0},
+    mus_stab:     {label:"The stabbing: rhythmic drive (loop)", group:"Score",    pan:0,     gain:0,  space:"room", duck:0},
+    fx_swell:     {label:"The swell (fake-out arm)",    group:"Score",           pan:0,     gain:0,  space:"room", duck:0, vary:true},
     mus_roat:     {label:"Roat underscore (quiet drone, an occasional drum)", group:"Score", pan:0,   gain:0,  space:"dry",  duck:0},
     mus_inter:    {label:"Intermission: dark piano, disorienting (loop)", group:"Music and voice", pan:0, gain:0, space:"dry", duck:0},
     drp_car:      {label:"Car passes outside (drop)",          group:"Street drops",    pan:0.45,  gain:-11, space:"dry",  duck:0, drop:true},
@@ -567,6 +570,7 @@ const BASE = {
     {id:"roatdark",name:"Roat: the dark",       fade:4,    levels:{drums:60, scream:30, roat:32, upulse:30}},
     {id:"roatlow", name:"Roat: it dies down",   fade:8,    levels:{roat:45, upulse:40}},
     {id:"roar",    name:"Icebox roars",         fade:0.08, levels:{fridge:65, roat:30, upulse:30}},
+    {id:"stabbing",name:"The stabbing: drive in",fade:1.5,  levels:{fridge:65, roat:30, upulse:30, stab:75}},
     {id:"cut",     name:"Plug pulled",          fade:0.02, levels:{}},
     {id:"samin",   name:"Sam in: music",        fade:4,    levels:{fpiano:55, umove:40}},
     {id:"end",     name:"Street comes in",      fade:3,    levels:{street:40, fpiano:55, umove:40}},
@@ -669,8 +673,10 @@ const BASE = {
     {id:"q074c", page:"57", when:"Roat dries himself and puts his gloves back on", what:"The faucet off.", stop:["fx_wash"], prac:true},
     {id:"q075", page:"57", when:"\"As he does this the music starts to play\" (Roat pouring the diamonds)", what:"The doll's whole tune, tinny and small.", play:["mus_doll"], prac:true},
     {id:"q075b", page:"58", when:"Roat: \"Now get in the bedroom.\"", what:"The heartbeat starts and runs on its own until the stab cuts it. , and . still change the pace if you need it.", heart:true, bpm:72},
-    {id:"q076", page:"58", when:"\"…she stabs at him once, twice, three times\"", what:"The stab. Cuts the heartbeat and Tension dead.", play:["fx_stab"], prac:true, cut:true},
-    {id:"q077", page:"59", when:"Susan finds the plug and pulls it. Blackout", what:"The doll and the underscore die at once; the icebox winds down over three seconds. Next GO straight away.", scene:"cut", play:["fx_fridge_wind"], stop:["mus_doll"], lx:true, cut:true},
+    {id:"q075c", page:"58", when:"About four seconds into the heartbeat (count it)", what:"The drive comes in over the heartbeat: drums on eighths, string hits, a drone under. It runs until the plug.", scene:"stabbing"},
+    {id:"q075d", page:"58", when:"Susan's fake-out: her right arm comes up", what:"The swell, on top of the music, rising to the stab.", play:["fx_swell"], prac:true},
+    {id:"q076", page:"58", when:"\"…she stabs at him once, twice, three times\"", what:"The stab. Cuts the heartbeat and Tension dead; the drive keeps going until the plug.", play:["fx_stab"], prac:true, cut:true},
+    {id:"q077", page:"59", when:"Susan finds the plug and pulls it. Blackout", what:"The doll, the drive and the underscore die at once; the icebox winds down over three seconds. Next GO straight away.", scene:"cut", play:["fx_fridge_wind"], stop:["mus_doll"], lx:true, cut:true},
     {id:"q078", page:"59", when:"\"There's a banging on the hall door, then it breaks open with a splintering crash\"", what:"Break-in. Straight after the plug.", play:["fx_breakin"], prac:true},
     {id:"q078b", page:"59", when:"Sam stands at the top of the stairs, backlit", what:"Music under the ending: the dark piano and the restless strings, low.", scene:"samin"},
     {id:"q079", page:"59", when:"Sam: \"Susan!\" (he pulls open the blackout curtain)", what:"The street comes in with the light, and the siren arrives. The music stays under.", scene:"end", play:["fx_siren"], prac:true},
@@ -758,7 +764,7 @@ function applyShowFile(obj, persist=true){
 }
 /* bring a show saved by an older build up to date, touching only what the operator never changed */
 function migrate(from){
-  if(from < 30){
+  if(from < 31){
     const keepLife = show.settings.life, keepHeart = show.settings.heart;
     show.layers = deep(BASE.layers); show.scenes = deep(BASE.scenes); show.cues = deep(BASE.cues); show.drops = deep(BASE.drops); show.sections = deep(BASE.sections);
     for(const b of BASE.buttons) if(!show.buttons.some(x=>x.sound===b.sound)) show.buttons.push(deep(b));
