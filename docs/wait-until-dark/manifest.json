@@ -376,9 +376,9 @@
    "Bulb 3"
   ],
   "fx_truck": [
-   "Truck 1",
-   "Truck 2",
-   "Truck 3"
+   "Truck, loud 1",
+   "Truck, loud 2",
+   "Truck, loud 3"
   ],
   "fx_run_door": [
    "Running 1",
@@ -594,9 +594,9 @@
   "sounds/fx_bulb_in_wall_3.mp3"
  ],
  "fx_truck": [
-  "sounds/fx_truck_1.mp3",
-  "sounds/fx_truck_2.mp3",
-  "sounds/fx_truck_3.mp3"
+  "sounds/fx_truck_loud_1.mp3",
+  "sounds/fx_truck_loud_2.mp3",
+  "sounds/fx_truck_loud_3.mp3"
  ],
  "fx_run_door": [
   "sounds/fx_run_door_wall_1.mp3",

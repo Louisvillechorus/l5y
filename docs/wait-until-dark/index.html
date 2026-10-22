@@ -424,8 +424,8 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
    ============================================================ */
 const BASE = {
   version: 2,
-  rev: 28,
-  stamp: "2026-10-21f",
+  rev: 29,
+  stamp: "2026-10-21g",
   settings: {master:0, duck:3, breathe:true, midi:{}, life:40, heart:72},
   sections: [
     {name:"Pre-show", from:0, to:6},
@@ -495,7 +495,7 @@ const BASE = {
     fx_breakin:   {label:"Break-in",                   group:"Effects",         pan:-0.6,  gain:0,  space:"hall", duck:3},
     fx_buzzer:    {label:"Hall door buzzer",           group:"Effects",         pan:-0.6,  gain:-2, space:"room", duck:2, vary:true},
     fx_bulb_in:   {label:"Light bulb screwed in (hall)", group:"Effects",       pan:-0.6,  gain:-6, space:"hall", duck:0, vary:true},
-    fx_truck:     {label:"Truck in the alley",         group:"Effects",         pan:0.5,   gain:0,  space:"dry",  duck:3, vary:true},
+    fx_truck:     {label:"Truck in the alley",         group:"Effects",         pan:0.5,   gain:+3, space:"dry",  duck:8, vary:true},
     fx_run_door:  {label:"Running, then the street door", group:"Effects",     pan:-0.7,  gain:-2, space:"hall", duck:0, vary:true},
     fx_siren:     {label:"Police siren arrives",       group:"Effects",         pan:0.4,   gain:-3, space:"dry",  duck:0, vary:true},
     fx_ice_hit:   {label:"Icebox hit: violin stab and scraped strings", group:"Score", pan:0, gain:-1, space:"room", duck:3, vary:true},
@@ -758,14 +758,14 @@ function applyShowFile(obj, persist=true){
 }
 /* bring a show saved by an older build up to date, touching only what the operator never changed */
 function migrate(from){
-  if(from < 28){
+  if(from < 29){
     const keepLife = show.settings.life, keepHeart = show.settings.heart;
     show.layers = deep(BASE.layers); show.scenes = deep(BASE.scenes); show.cues = deep(BASE.cues); show.drops = deep(BASE.drops); show.sections = deep(BASE.sections);
     for(const b of BASE.buttons) if(!show.buttons.some(x=>x.sound===b.sound)) show.buttons.push(deep(b));
     show.buttons = BASE.buttons.map(b => show.buttons.find(x=>x.sound===b.sound) || deep(b));
     for(const id in BASE.sounds) if(!show.sounds[id]) show.sounds[id] = deep(BASE.sounds[id]);
     for(const id of ["fx_cane","fx_fridge","fx_fridge_off","fx_alley","fx_fl_piano","fx_doll_tease","fx_fl_metal","drp_car","drp_horn","drp_dog","drp_bus","drp_siren"]) if(show.sounds[id] && BASE.sounds[id]) show.sounds[id].label = BASE.sounds[id].label;
-    for(const id of ["fx_fl_metal","fx_doll_tease","fx_sos","fx_phone","fx_two_rings","drp_car","drp_horn","drp_dog","drp_bus","drp_siren"]) if(show.sounds[id] && BASE.sounds[id]){ show.sounds[id].gain = BASE.sounds[id].gain; show.sounds[id].space = BASE.sounds[id].space; }
+    for(const id of ["fx_fl_metal","fx_doll_tease","fx_sos","fx_phone","fx_two_rings","fx_truck","drp_car","drp_horn","drp_dog","drp_bus","drp_siren"]) if(show.sounds[id] && BASE.sounds[id]){ show.sounds[id].gain = BASE.sounds[id].gain; show.sounds[id].space = BASE.sounds[id].space; }
     show.settings.life = keepLife; show.settings.heart = keepHeart;
   }
   if(from < 3){
