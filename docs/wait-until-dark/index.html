@@ -424,8 +424,8 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
    ============================================================ */
 const BASE = {
   version: 2,
-  rev: 35,
-  stamp: "2026-10-23c",
+  rev: 36,
+  stamp: "2026-10-23d",
   settings: {master:0, duck:3, breathe:true, midi:{}, life:40, heart:72},
   sections: [
     {name:"Pre-show", from:0, to:6},
@@ -464,8 +464,8 @@ const BASE = {
     fx_punct:     {label:"Punctuation (metal hit)",    group:"Score",           pan:0,     gain:0,  space:"room", duck:6, vary:true},
     ann_welcome:  {label:"Pre-show announcement",      group:"Music and voice", pan:0,     gain:0,  space:"dry",  duck:4},
     ann_two:      {label:"Intermission: two minutes",   group:"Music and voice", pan:0,     gain:0,  space:"dry",  duck:9},
-    mus_doll:     {label:"Doll's tune, full",          group:"Music and voice", pan:0.1,   gain:-18,  space:"room", duck:2},
-    mus_doll_short:{label:"Doll's tune, first notes",  group:"Music and voice", pan:0.1,   gain:-18,  space:"room", duck:0},
+    mus_doll:     {label:"Doll's tune, full",          group:"Music and voice", pan:-0.75, gain:-22,  space:"room", duck:2},
+    mus_doll_short:{label:"Doll's tune, first notes",  group:"Music and voice", pan:-0.75, gain:-18,  space:"room", duck:0},
     amb_street:   {label:"Night street (loop)",        group:"Atmosphere",      pan:0.45,  gain:0,  space:"dry",  duck:0},
     amb_rain:     {label:"Rain outside the window (loop)",  group:"Atmosphere",  pan:0.45,  gain:0,  space:"dry",  duck:0},
     amb_birds:    {label:"Birds, morning (loop)",   group:"Atmosphere",      pan:0.2,   gain:0,  space:"dry",  duck:0},
@@ -757,7 +757,7 @@ function applyShowFile(obj, persist=true){
 }
 /* bring a show saved by an older build up to date, touching only what the operator never changed */
 function migrate(from){
-  if(from < 35){
+  if(from < 36){
     const keepLife = show.settings.life, keepHeart = show.settings.heart;
     show.layers = deep(BASE.layers); show.scenes = deep(BASE.scenes); show.cues = deep(BASE.cues); show.drops = deep(BASE.drops); show.sections = deep(BASE.sections);
     for(const b of BASE.buttons) if(!show.buttons.some(x=>x.sound===b.sound)) show.buttons.push(deep(b));
@@ -765,6 +765,7 @@ function migrate(from){
     for(const id in BASE.sounds) if(!show.sounds[id]) show.sounds[id] = deep(BASE.sounds[id]);
     for(const id of ["fx_cane","fx_fridge","fx_fridge_off","fx_alley","fx_fl_piano","fx_doll_tease","fx_fl_metal","drp_car","drp_horn","drp_dog","drp_bus","drp_siren"]) if(show.sounds[id] && BASE.sounds[id]) show.sounds[id].label = BASE.sounds[id].label;
     for(const id of ["fx_fl_metal","fx_doll_tease","fx_sos","fx_phone","fx_two_rings","fx_truck","mus_doll_short","mus_doll","fx_tap","fx_wash","fx_bottles","fx_breaker","drp_car","drp_horn","drp_dog","drp_bus","drp_siren","mus_v1","mus_v2"]) if(show.sounds[id] && BASE.sounds[id]){ show.sounds[id].gain = BASE.sounds[id].gain; show.sounds[id].space = BASE.sounds[id].space; show.sounds[id].loop = BASE.sounds[id].loop; show.sounds[id].loopStart = BASE.sounds[id].loopStart; }
+    for(const id of ["mus_doll","mus_doll_short"]) if(show.sounds[id] && BASE.sounds[id]) show.sounds[id].pan = BASE.sounds[id].pan;
     delete show.sounds.mus_stab; delete show.sounds.fx_breakin; delete show.sounds.fx_siren;
     show.settings.life = keepLife; show.settings.heart = keepHeart;
   }
