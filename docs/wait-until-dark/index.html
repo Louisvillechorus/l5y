@@ -424,8 +424,8 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
    ============================================================ */
 const BASE = {
   version: 2,
-  rev: 33,
-  stamp: "2026-10-23",
+  rev: 34,
+  stamp: "2026-10-23b",
   settings: {master:0, duck:3, breathe:true, midi:{}, life:40, heart:72},
   sections: [
     {name:"Pre-show", from:0, to:6},
@@ -464,16 +464,16 @@ const BASE = {
     fx_punct:     {label:"Punctuation (metal hit)",    group:"Score",           pan:0,     gain:0,  space:"room", duck:6, vary:true},
     ann_welcome:  {label:"Pre-show announcement",      group:"Music and voice", pan:0,     gain:0,  space:"dry",  duck:4},
     ann_two:      {label:"Intermission: two minutes",   group:"Music and voice", pan:0,     gain:0,  space:"dry",  duck:9},
-    mus_doll:     {label:"Doll's tune, full",          group:"Music and voice", pan:0.1,   gain:-8,  space:"room", duck:2},
-    mus_doll_short:{label:"Doll's tune, first notes",  group:"Music and voice", pan:0.1,   gain:-8,  space:"room", duck:0},
+    mus_doll:     {label:"Doll's tune, full",          group:"Music and voice", pan:0.1,   gain:-18,  space:"room", duck:2},
+    mus_doll_short:{label:"Doll's tune, first notes",  group:"Music and voice", pan:0.1,   gain:-18,  space:"room", duck:0},
     amb_street:   {label:"Night street (loop)",        group:"Atmosphere",      pan:0.45,  gain:0,  space:"dry",  duck:0},
     amb_rain:     {label:"Rain outside the window (loop)",  group:"Atmosphere",  pan:0.45,  gain:0,  space:"dry",  duck:0},
     amb_birds:    {label:"Birds, morning (loop)",   group:"Atmosphere",      pan:0.2,   gain:0,  space:"dry",  duck:0},
-    fx_sos:       {label:"Phone: emergency alert",  group:"Effects",         pan:0.1,   gain:-13, space:"room", duck:1},
+    fx_sos:       {label:"Phone: emergency alert",  group:"Effects",         pan:0.1,   gain:-23, space:"room", duck:1},
     fx_fridge:    {label:"Icebox hum (loop)",          group:"Atmosphere",      pan:0.7,   gain:0,  space:"dry",  duck:0},
     amb_hum:      {label:"Scene 1 under (loop)",       group:"Atmosphere",      pan:0,     gain:-4, space:"dry",  duck:0},
     amb_city:     {label:"City, wet night (loop)",     group:"Atmosphere",      pan:0.45,  gain:0,  space:"dry",  duck:0},
-    fx_doll_tease:{label:"Doll notes, a distant memory (over the under)", group:"Score", pan:0.1, gain:-26, space:"dry", duck:1, vary:true},
+    fx_doll_tease:{label:"Doll notes, a distant memory (over the under)", group:"Score", pan:0.1, gain:-36, space:"dry", duck:1, vary:true},
     fx_tap:       {label:"Faucet on and off (sink)",   group:"Effects",         pan:0.55,  gain:-14, space:"room", duck:0, vary:true},
     fx_wash:      {label:"Faucet running, washing (loop)", group:"Effects",    pan:0.55,  gain:-16, space:"room", duck:0, loop:true},
     fx_bottles:   {label:"Bottles knocked over (bedroom)", group:"Effects",     pan:-0.6,  gain:-12, space:"room", duck:0, vary:true},
@@ -484,8 +484,8 @@ const BASE = {
     fx_stab:      {label:"The stab",                   group:"Score",           pan:0,     gain:0,  space:"room", duck:8},
     fx_thunder:   {label:"Distant thunder",            group:"Atmosphere",      pan:0.3,   gain:-4, space:"dry",  duck:0},
     fx_doorbell:  {label:"Doorbell",                   group:"Effects",         pan:-0.6,  gain:0,  space:"room", duck:2, vary:true},
-    fx_phone:     {label:"Phone ringing (smartphone)", group:"Effects",         pan:0.2,   gain:-16, space:"room", duck:2, loop:true},
-    fx_two_rings: {label:"Phone, exactly two rings",   group:"Effects",         pan:0.2,   gain:-16, space:"room", duck:2},
+    fx_phone:     {label:"Phone ringing (smartphone)", group:"Effects",         pan:0.2,   gain:-26, space:"room", duck:2, loop:true},
+    fx_two_rings: {label:"Phone, exactly two rings",   group:"Effects",         pan:0.2,   gain:-26, space:"room", duck:2},
     fx_slam:      {label:"Slam box (street door)",     group:"Effects",         pan:-0.75, gain:0,  space:"hall", duck:2, vary:true},
     fx_door:      {label:"Door closes down the hall",  group:"Effects",         pan:-0.7,  gain:-3, space:"hall", duck:0, vary:true},
     fx_cane:      {label:"Susan's cane in the hall",    group:"Effects",         pan:-0.6,  gain:0,  space:"hall", duck:0, vary:true},
@@ -764,7 +764,7 @@ function applyShowFile(obj, persist=true){
 }
 /* bring a show saved by an older build up to date, touching only what the operator never changed */
 function migrate(from){
-  if(from < 33){
+  if(from < 34){
     const keepLife = show.settings.life, keepHeart = show.settings.heart;
     show.layers = deep(BASE.layers); show.scenes = deep(BASE.scenes); show.cues = deep(BASE.cues); show.drops = deep(BASE.drops); show.sections = deep(BASE.sections);
     for(const b of BASE.buttons) if(!show.buttons.some(x=>x.sound===b.sound)) show.buttons.push(deep(b));
