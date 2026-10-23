@@ -424,8 +424,8 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
    ============================================================ */
 const BASE = {
   version: 2,
-  rev: 32,
-  stamp: "2026-10-22",
+  rev: 33,
+  stamp: "2026-10-23",
   settings: {master:0, duck:3, breathe:true, midi:{}, life:40, heart:72},
   sections: [
     {name:"Pre-show", from:0, to:6},
@@ -454,7 +454,6 @@ const BASE = {
     {id:"chaos",   label:"Roat: chaos",   sound:"mus_chaos"},
     {id:"scream",  label:"Roat: screaming strings", sound:"mus_scream"},
     {id:"drums",   label:"Roat: drums (the flash lever)", sound:"mus_drums"},
-    {id:"stab",    label:"The stabbing: drive", sound:"mus_stab"},
     {id:"tension", label:"Tension",       sound:"tex_tension", manual:true}
   ],
   sounds: {
@@ -520,7 +519,8 @@ const BASE = {
     mus_scream:   {label:"Roat: screaming strings (loop)", group:"Score",     pan:0,     gain:0,  space:"room", duck:0},
     mus_drums:    {label:"Roat: drums (loop)",         group:"Score",           pan:0,     gain:0,  space:"room", duck:0},
     mus_money:    {label:"Money minute song",         group:"Score",           pan:0,     gain:-3, space:"dry",  duck:0},
-    mus_stab:     {label:"The stabbing: rhythmic drive (loop)", group:"Score",    pan:0,     gain:0,  space:"room", duck:0},
+    mus_v1:       {label:"Roat underscore, the fight (loop)", group:"Score",   pan:0,     gain:-6, space:"dry",  duck:0, loop:true, loopStart:27.4508},
+    mus_v2:       {label:"The fight, to the plug (1:27)",   group:"Score",     pan:0,     gain:3,  space:"dry",  duck:0},
     fx_swell:     {label:"The swell (fake-out arm)",    group:"Score",           pan:0,     gain:0,  space:"room", duck:0, vary:true},
     mus_roat:     {label:"Roat underscore (quiet drone, an occasional drum)", group:"Score", pan:0,   gain:0,  space:"dry",  duck:0},
     mus_inter:    {label:"Intermission: dark piano, disorienting (loop)", group:"Music and voice", pan:0, gain:0, space:"dry", duck:0},
@@ -570,7 +570,6 @@ const BASE = {
     {id:"roatdark",name:"Roat: the dark",       fade:4,    levels:{drums:60, scream:30, roat:32, upulse:30}},
     {id:"roatlow", name:"Roat: it dies down",   fade:8,    levels:{roat:45, upulse:40}},
     {id:"roar",    name:"Icebox roars",         fade:0.08, levels:{fridge:65, roat:30, upulse:30}},
-    {id:"stabbing",name:"The stabbing: drive in",fade:1.5,  levels:{fridge:65, roat:30, upulse:30, stab:75}},
     {id:"cut",     name:"Plug pulled",          fade:0.02, levels:{}},
     {id:"samin",   name:"Sam in: music",        fade:4,    levels:{fpiano:55, umove:40}},
     {id:"end",     name:"Street comes in",      fade:3,    levels:{street:40, fpiano:55, umove:40}},
@@ -664,7 +663,7 @@ const BASE = {
     {id:"q068", page:"52", when:"Susan: \"You'll have to hurt me. More than you imagine.\" She looks at Mike", what:"Flourish: gentle and ominous, one low piano note with a string behind it.", play:["fx_fl_soft"], prac:true},
     {id:"q069", page:"52", when:"\"Sound: A sudden and violent revving-up of a truck engine outside. We hear a shout and a crash.\"", what:"The truck in the alley: revs, a shout, the crash, it roars off.", play:["fx_truck"], prac:true},
     {id:"q070", page:"53", when:"The hall door opens on Roat (Mike has just fallen)", what:"The hit, and straight into hell the moment the door opens: no build. Screaming strings in front, drums and brass behind, chaos on top. The loudest the show gets.", play:["fx_fl_cluster"], scene:"hell", prac:true},
-        {id:"q071c", page:"54", when:"Roat flings the scarf at her: \"It lands on the floor\"", what:"The music fades down over twelve seconds to what is already under it: the drone, the pulse and the tension bed.", scene:"roatlow", fade:12},
+        {id:"q071c", page:"54", when:"Roat flings the scarf at her: \"It lands on the floor\"", what:"The screaming strings fade down over twelve seconds to the drone, the pulse and the tension bed. Under them, on the same GO, the Roat underscore rises over ten seconds and runs under everything that follows, through the flash, the dark and the icebox, until he is on his knees.", scene:"roatlow", fade:12, play:[{id:"mus_v1", fadein:10}]},
     {id:"q071b", page:"54", when:"\"Susan squeezes. The lamp pops to an incredibly bright light\"", what:"With the flash: the drums come up hard, strings behind them. The Roat: drums fader on the Show tab is the lever if Tyler wants more or less on a given night.", scene:"flash", prac:true},
     {id:"q073", page:"55", when:"The blackout: complete darkness", what:"The drums and strings pull back for the dark, still there. Keep riding Tension.", scene:"roatdark", lx:true},
     {id:"q073b", page:"55", when:"Susan: \"Throw the matches on the floor, or I'll set you on fire.\"", what:"The drums and strings die down over eight seconds to the drone and the pulse.", scene:"roatlow"},
@@ -673,10 +672,11 @@ const BASE = {
     {id:"q074c", page:"57", when:"Roat dries himself and puts his gloves back on", what:"The faucet off.", stop:["fx_wash"], prac:true},
     {id:"q075", page:"57", when:"\"As he does this the music starts to play\" (Roat pouring the diamonds)", what:"The doll's whole tune, tinny and small.", play:["mus_doll"], prac:true},
     {id:"q075b", page:"58", when:"Roat: \"Now get in the bedroom.\"", what:"The heartbeat starts and runs on its own until the stab cuts it. , and . still change the pace if you need it.", heart:true, bpm:72},
-    {id:"q075c", page:"58", when:"About four seconds into the heartbeat (count it)", what:"The drive comes in over the heartbeat: drums on eighths, string hits, a drone under. It runs until the plug.", scene:"stabbing"},
+    {id:"q075c", page:"58", when:"Susan reaches the bedroom doorway (she turns and grabs his coat)", what:"The fight music, in hard on the first hit, over the heartbeat and the underscore. It builds for a minute and a half to its last chord and ends by itself at the plug; if the plug comes first, the plug cuts it.", play:["mus_v2"], prac:true},
     {id:"q075d", page:"58", when:"Susan's fake-out: her right arm comes up", what:"The swell, on top of the music, rising to the stab.", play:["fx_swell"], prac:true},
-    {id:"q076", page:"58", when:"\"…she stabs at him once, twice, three times\"", what:"The stab. Cuts the heartbeat and Tension dead; the drive keeps going until the plug.", play:["fx_stab"], prac:true, cut:true},
-    {id:"q077", page:"59", when:"Susan finds the plug and pulls it. Blackout", what:"The doll, the drive and the underscore die at once; the icebox winds down over three seconds. Next GO straight away.", scene:"cut", play:["fx_fridge_wind"], stop:["mus_doll"], lx:true, cut:true},
+    {id:"q076", page:"58", when:"\"…she stabs at him once, twice, three times\"", what:"The stab. Cuts the heartbeat and Tension dead; the fight music and the underscore keep going.", play:["fx_stab"], prac:true, cut:true},
+    {id:"q076b", page:"58", when:"Roat lunges in from the bedroom and goes down on his knees, dragging himself toward her", what:"The Roat underscore fades out over eight seconds. Only the fight music is left, building to the plug.", stop:[{id:"mus_v1", fade:8}], prac:true},
+    {id:"q077", page:"59", when:"Susan finds the plug and pulls it. Blackout", what:"The fight music, the doll and the underscore die at once; the icebox winds down over three seconds into silence. Next GO straight away.", scene:"cut", play:["fx_fridge_wind"], stop:["mus_doll","mus_v2","mus_v1"], lx:true, cut:true},
     {id:"q078", page:"59", when:"\"There's a banging on the hall door, then it breaks open with a splintering crash\"", what:"Break-in. Straight after the plug.", play:["fx_breakin"], prac:true},
     {id:"q078b", page:"59", when:"Sam stands at the top of the stairs, backlit", what:"Music under the ending: the dark piano and the restless strings, low.", scene:"samin"},
     {id:"q079", page:"59", when:"Sam: \"Susan!\" (he pulls open the blackout curtain)", what:"The street comes in with the light, and the siren arrives. The music stays under.", scene:"end", play:["fx_siren"], prac:true},
@@ -706,7 +706,7 @@ const $ = id => document.getElementById(id);
 function esc(s){return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
 function deep(o){return JSON.parse(JSON.stringify(o))}
 function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("on"); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("on"),2000); }
-function entry(e){ return typeof e==="string" ? {id:e, delay:0, gain:0, dur:0, rate:0, fade:0} : {id:e.id, delay:+e.delay||0, gain:+e.gain||0, dur:+e.dur||0, rate:+e.rate||0, fade:+e.fade||0}; }
+function entry(e){ return typeof e==="string" ? {id:e, delay:0, gain:0, dur:0, rate:0, fade:0, fadein:0} : {id:e.id, delay:+e.delay||0, gain:+e.gain||0, dur:+e.dur||0, rate:+e.rate||0, fade:+e.fade||0, fadein:+e.fadein||0}; }
 function lbl(id){ return show.sounds[id]?.label || id; }
 function sceneOf(id){ return show.scenes.find(s=>s.id===id); }
 function isNumPage(p){ return /^\d+$/.test(String(p||"").trim()); }
@@ -764,14 +764,15 @@ function applyShowFile(obj, persist=true){
 }
 /* bring a show saved by an older build up to date, touching only what the operator never changed */
 function migrate(from){
-  if(from < 32){
+  if(from < 33){
     const keepLife = show.settings.life, keepHeart = show.settings.heart;
     show.layers = deep(BASE.layers); show.scenes = deep(BASE.scenes); show.cues = deep(BASE.cues); show.drops = deep(BASE.drops); show.sections = deep(BASE.sections);
     for(const b of BASE.buttons) if(!show.buttons.some(x=>x.sound===b.sound)) show.buttons.push(deep(b));
     show.buttons = BASE.buttons.map(b => show.buttons.find(x=>x.sound===b.sound) || deep(b));
     for(const id in BASE.sounds) if(!show.sounds[id]) show.sounds[id] = deep(BASE.sounds[id]);
     for(const id of ["fx_cane","fx_fridge","fx_fridge_off","fx_alley","fx_fl_piano","fx_doll_tease","fx_fl_metal","drp_car","drp_horn","drp_dog","drp_bus","drp_siren"]) if(show.sounds[id] && BASE.sounds[id]) show.sounds[id].label = BASE.sounds[id].label;
-    for(const id of ["fx_fl_metal","fx_doll_tease","fx_sos","fx_phone","fx_two_rings","fx_truck","mus_doll_short","mus_doll","fx_tap","fx_wash","fx_bottles","fx_breaker","drp_car","drp_horn","drp_dog","drp_bus","drp_siren"]) if(show.sounds[id] && BASE.sounds[id]){ show.sounds[id].gain = BASE.sounds[id].gain; show.sounds[id].space = BASE.sounds[id].space; }
+    for(const id of ["fx_fl_metal","fx_doll_tease","fx_sos","fx_phone","fx_two_rings","fx_truck","mus_doll_short","mus_doll","fx_tap","fx_wash","fx_bottles","fx_breaker","drp_car","drp_horn","drp_dog","drp_bus","drp_siren","mus_v1","mus_v2"]) if(show.sounds[id] && BASE.sounds[id]){ show.sounds[id].gain = BASE.sounds[id].gain; show.sounds[id].space = BASE.sounds[id].space; show.sounds[id].loop = BASE.sounds[id].loop; show.sounds[id].loopStart = BASE.sounds[id].loopStart; }
+    delete show.sounds.mus_stab;
     show.settings.life = keepLife; show.settings.heart = keepHeart;
   }
   if(from < 3){
@@ -923,6 +924,7 @@ function play(id, opts={}){
   const buf = opts.buffer || buffers[id]; if(!buf){ toast("No file loaded for "+lbl(id)); return null; }
   const snd = show.sounds[id];
   const src = ctx.createBufferSource(); src.buffer = buf; src.loop = !!snd.loop;
+  if(snd.loop && snd.loopStart){ src.loopStart = Math.min(snd.loopStart, buf.duration-1); src.loopEnd = buf.duration; }   /* a loop with an intro: play the head once, then cycle the body */
   if(opts.rate) src.playbackRate.value = opts.rate;
   else if(snd.vary) src.playbackRate.value = 1 + (Math.random()-0.5)*0.06;
   const g = chain(Object.assign({}, snd, opts.pan!==undefined?{pan:opts.pan}:{}));
@@ -931,6 +933,7 @@ function play(id, opts={}){
   const key = id + ":" + (++playSeq);
   src.onended = () => { playing.delete(key); renderLive(); renderPad(); };
   const at = ctx.currentTime + (opts.delay||0);
+  if(opts.fadein>0){ const gg=g.gain, target=gg.value; gg.setValueAtTime(0, at); gg.linearRampToValueAtTime(target, at+opts.fadein); }   /* a bed that rises under something already playing */
   src.start(at);
   let len = buf.duration;
   if(opts.dur && opts.dur < buf.duration){            /* a cue may cut a one-shot short: the buzzer held for 0.6 s, the phone for 2 s */
@@ -1035,7 +1038,7 @@ function log(msg){ const t=new Date(); showLog.push(`${t.toTimeString().slice(0,
 function cueDoes(c){
   const out = [];
   if(c.scene){ const s=sceneOf(c.scene); out.push({k:"scene", t:(s?s.name:c.scene)+(c.fade!==undefined&&c.fade!==""&&c.fade!==null?` · ${c.fade}s`:"")}); }
-  for(const e of (c.play||[]).map(entry)) out.push({k:"play", t:lbl(e.id)+(e.delay?` +${e.delay}s`:"")+(e.gain?` ${e.gain>0?"+":""}${e.gain} dB`:"")});
+  for(const e of (c.play||[]).map(entry)) out.push({k:"play", t:lbl(e.id)+(e.delay?` +${e.delay}s`:"")+(e.fadein?` · fades in over ${e.fadein}s`:"")+(e.gain?` ${e.gain>0?"+":""}${e.gain} dB`:"")});
   for(const e of (c.stop||[]).map(entry)) out.push({k:"stop", t:"stop "+lbl(e.id)+(e.fade?` · ${e.fade}s fade`:"")});
   if(c.lx) out.push({k:"lx", t:"with lights"});
   if(c.prac) out.push({k:"prac", t:"practical: fire on the action"});
@@ -1056,7 +1059,7 @@ function fire(){
   const safe=(f)=>{ try{ f(); }catch(e){ log("Cue "+(sb+1)+" error: "+(e&&e.message||e)); } };
   for(const e of (c.stop||[]).map(entry)) safe(()=>stopSound(e.id, e.fade||0.05));
   if(c.scene) safe(()=>goScene(c.scene, c.fade));
-  for(const e of (c.play||[]).map(entry)) safe(()=>play(e.id, {delay:e.delay, gain:e.gain, dur:e.dur, rate:e.rate||undefined}));
+  for(const e of (c.play||[]).map(entry)) safe(()=>play(e.id, {delay:e.delay, gain:e.gain, dur:e.dur, rate:e.rate||undefined, fadein:e.fadein}));
   if(c.heart) safe(()=>{ if(c.bpm) heartSet(c.bpm); if(!heartOn) heartStart(); });
   if(c.cut) safe(()=>{ throttle(null, 0.04); heartStop(0.04); });
   lastFired = sb; sb = Math.min(sb+1, show.cues.length);

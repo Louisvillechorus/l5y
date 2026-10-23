@@ -506,14 +506,17 @@
   "mus_money": [
    "For the Love of Money"
   ],
-  "mus_stab": [
-   "Drive, 110 bpm"
-  ],
   "fx_swell": [
    "Swell 1",
    "Swell 2",
    "Swell 3",
    "Swell 4"
+  ],
+  "mus_v1": [
+   "Roat underscore, the fight"
+  ],
+  "mus_v2": [
+   "The fight, to the plug"
   ]
  },
  "fx_heart": [
@@ -734,13 +737,16 @@
  "mus_money": [
   "sounds/mus_money_150.mp3"
  ],
- "mus_stab": [
-  "sounds/mus_stab_2.mp3"
- ],
  "fx_swell": [
   "sounds/fx_swell_1.mp3",
   "sounds/fx_swell_2.mp3",
   "sounds/fx_swell_3.mp3",
   "sounds/fx_swell_4.mp3"
+ ],
+ "mus_v1": [
+  "sounds/mus_v1_1.wav"
+ ],
+ "mus_v2": [
+  "sounds/mus_v2_1.mp3"
  ]
 }
