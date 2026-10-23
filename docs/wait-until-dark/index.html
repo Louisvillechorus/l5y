@@ -424,8 +424,8 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
    ============================================================ */
 const BASE = {
   version: 2,
-  rev: 34,
-  stamp: "2026-10-23b",
+  rev: 35,
+  stamp: "2026-10-23c",
   settings: {master:0, duck:3, breathe:true, midi:{}, life:40, heart:72},
   sections: [
     {name:"Pre-show", from:0, to:6},
@@ -492,12 +492,10 @@ const BASE = {
     fx_glass:     {label:"Glass breaking",             group:"Effects",         pan:0,     gain:0,  space:"room", duck:2, vary:true},
     fx_pipe:      {label:"Pipe knocks from upstairs",  group:"Effects",         pan:0.5,   gain:0,  space:"room", duck:0, vary:true},
     fx_alley:     {label:"Alley attack (car; the truck is the cued one)",               group:"Effects",         pan:0.5,   gain:0,  space:"dry",  duck:3},
-    fx_breakin:   {label:"Break-in",                   group:"Effects",         pan:-0.6,  gain:0,  space:"hall", duck:3},
     fx_buzzer:    {label:"Hall door buzzer",           group:"Effects",         pan:-0.6,  gain:-2, space:"room", duck:2, vary:true},
     fx_bulb_in:   {label:"Light bulb screwed in (hall)", group:"Effects",       pan:-0.6,  gain:-6, space:"hall", duck:0, vary:true},
     fx_truck:     {label:"Truck in the alley",         group:"Effects",         pan:0.5,   gain:+3, space:"dry",  duck:8, vary:true},
     fx_run_door:  {label:"Running, then the street door", group:"Effects",     pan:-0.7,  gain:-2, space:"hall", duck:0, vary:true},
-    fx_siren:     {label:"Police siren arrives",       group:"Effects",         pan:0.4,   gain:-3, space:"dry",  duck:0, vary:true},
     fx_ice_hit:   {label:"Icebox hit: violin stab and scraped strings", group:"Score", pan:0, gain:-1, space:"room", duck:3, vary:true},
     fx_fl_violin: {label:"Flourish: violin stab",      group:"Score",           pan:0,     gain:-1, space:"room", duck:3, vary:true},
     fx_fl_piano:  {label:"Flourish: short key, held key", group:"Score",        pan:0.1,   gain:-8, space:"hall", duck:2, vary:true},
@@ -571,8 +569,6 @@ const BASE = {
     {id:"roatlow", name:"Roat: it dies down",   fade:8,    levels:{roat:45, upulse:40}},
     {id:"roar",    name:"Icebox roars",         fade:0.08, levels:{fridge:65, roat:30, upulse:30}},
     {id:"cut",     name:"Plug pulled",          fade:0.02, levels:{}},
-    {id:"samin",   name:"Sam in: music",        fade:4,    levels:{fpiano:55, umove:40}},
-    {id:"end",     name:"Street comes in",      fade:3,    levels:{street:40, fpiano:55, umove:40}},
     {id:"bows",    name:"Bows",                 fade:1.5,  levels:{birds:62, tension:0}},
     {id:"exit",    name:"Exit music",           fade:4,    levels:{music:62, street:40, birds:20, tension:0}}
   ],
@@ -676,10 +672,7 @@ const BASE = {
     {id:"q075d", page:"58", when:"Susan's fake-out: her right arm comes up", what:"The swell, on top of the music, rising to the stab.", play:["fx_swell"], prac:true},
     {id:"q076", page:"58", when:"\"…she stabs at him once, twice, three times\"", what:"The stab. Cuts the heartbeat and Tension dead; the fight music and the underscore keep going.", play:["fx_stab"], prac:true, cut:true},
     {id:"q076b", page:"58", when:"Roat lunges in from the bedroom and goes down on his knees, dragging himself toward her", what:"The Roat underscore fades out over eight seconds. Only the fight music is left, building to the plug.", stop:[{id:"mus_v1", fade:8}], prac:true},
-    {id:"q077", page:"59", when:"Susan finds the plug and pulls it. Blackout", what:"The fight music, the doll and the underscore die at once; the icebox winds down over three seconds into silence. Next GO straight away.", scene:"cut", play:["fx_fridge_wind"], stop:["mus_doll","mus_v2","mus_v1"], lx:true, cut:true},
-    {id:"q078", page:"59", when:"\"There's a banging on the hall door, then it breaks open with a splintering crash\"", what:"Break-in. Straight after the plug.", play:["fx_breakin"], prac:true},
-    {id:"q078b", page:"59", when:"Sam stands at the top of the stairs, backlit", what:"Music under the ending: the dark piano and the restless strings, low.", scene:"samin"},
-    {id:"q079", page:"59", when:"Sam: \"Susan!\" (he pulls open the blackout curtain)", what:"The street comes in with the light, and the siren arrives. The music stays under.", scene:"end", play:["fx_siren"], prac:true},
+    {id:"q077", page:"59", when:"Susan finds the plug and pulls it. Blackout", what:"The fight music, the doll and the underscore die at once; the icebox winds down over three seconds into silence. Nothing else until the curtain call: the break-in, Sam and the police are played in silence.", scene:"cut", play:["fx_fridge_wind"], stop:["mus_doll","mus_v2","mus_v1"], lx:true, cut:true},
     {id:"q090", page:"Bows", when:"Curtain call", what:"No music. Birds, morning, as the lights come up on the bows.", scene:"bows"},
     {id:"q091", page:"Exit", when:"House lights up", what:"Exit music with the street under it; the birds stay faint.", scene:"exit"}
   ],
@@ -764,7 +757,7 @@ function applyShowFile(obj, persist=true){
 }
 /* bring a show saved by an older build up to date, touching only what the operator never changed */
 function migrate(from){
-  if(from < 34){
+  if(from < 35){
     const keepLife = show.settings.life, keepHeart = show.settings.heart;
     show.layers = deep(BASE.layers); show.scenes = deep(BASE.scenes); show.cues = deep(BASE.cues); show.drops = deep(BASE.drops); show.sections = deep(BASE.sections);
     for(const b of BASE.buttons) if(!show.buttons.some(x=>x.sound===b.sound)) show.buttons.push(deep(b));
@@ -772,7 +765,7 @@ function migrate(from){
     for(const id in BASE.sounds) if(!show.sounds[id]) show.sounds[id] = deep(BASE.sounds[id]);
     for(const id of ["fx_cane","fx_fridge","fx_fridge_off","fx_alley","fx_fl_piano","fx_doll_tease","fx_fl_metal","drp_car","drp_horn","drp_dog","drp_bus","drp_siren"]) if(show.sounds[id] && BASE.sounds[id]) show.sounds[id].label = BASE.sounds[id].label;
     for(const id of ["fx_fl_metal","fx_doll_tease","fx_sos","fx_phone","fx_two_rings","fx_truck","mus_doll_short","mus_doll","fx_tap","fx_wash","fx_bottles","fx_breaker","drp_car","drp_horn","drp_dog","drp_bus","drp_siren","mus_v1","mus_v2"]) if(show.sounds[id] && BASE.sounds[id]){ show.sounds[id].gain = BASE.sounds[id].gain; show.sounds[id].space = BASE.sounds[id].space; show.sounds[id].loop = BASE.sounds[id].loop; show.sounds[id].loopStart = BASE.sounds[id].loopStart; }
-    delete show.sounds.mus_stab;
+    delete show.sounds.mus_stab; delete show.sounds.fx_breakin; delete show.sounds.fx_siren;
     show.settings.life = keepLife; show.settings.heart = keepHeart;
   }
   if(from < 3){

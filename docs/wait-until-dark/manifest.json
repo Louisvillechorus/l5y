@@ -122,12 +122,6 @@
   "sounds/fx_alley_3.mp3",
   "sounds/fx_alley_4.mp3"
  ],
- "fx_breakin": [
-  "sounds/fx_breakin_1.mp3",
-  "sounds/fx_breakin_2.mp3",
-  "sounds/fx_breakin_3.mp3",
-  "sounds/fx_breakin_4.mp3"
- ],
  "mus_doll": [
   "sounds/mus_doll_1.mp3"
  ],
@@ -385,11 +379,6 @@
    "Running 2",
    "Running 3"
   ],
-  "fx_siren": [
-   "Siren passes",
-   "Siren arrives, stays",
-   "Siren arrives"
-  ],
   "und_piano": [
    "Piano 1",
    "Piano 2",
@@ -614,11 +603,6 @@
   "sounds/fx_run_door_wall_1.mp3",
   "sounds/fx_run_door_wall_2.mp3",
   "sounds/fx_run_door_wall_3.mp3"
- ],
- "fx_siren": [
-  "sounds/fx_siren_1.mp3",
-  "sounds/fx_siren_2.mp3",
-  "sounds/fx_siren_3.mp3"
  ],
  "und_piano": [
   "sounds/und_piano_1.mp3",
