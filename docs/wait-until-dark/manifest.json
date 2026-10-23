@@ -412,9 +412,6 @@
    "Rain outside 3",
    "Rain outside 4"
   ],
-  "fx_sos": [
-   "iOS emergency alert"
-  ],
   "amb_birds": [
    "Morning birds 1",
    "Morning birds 2",
@@ -637,9 +634,6 @@
   "sounds/und_pulse_2.mp3",
   "sounds/und_pulse_3.mp3",
   "sounds/und_pulse_4.mp3"
- ],
- "fx_sos": [
-  "sounds/fx_sos_ios_1.mp3"
  ],
  "amb_birds": [
   "sounds/amb_birds_1.mp3",
