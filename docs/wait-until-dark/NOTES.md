@@ -40,7 +40,8 @@ The Jeffrey Hatcher adaptation (Dramatists Play Service; Susan, Mike, Sam, Carli
 - Oct 23 evening (David): nothing after the plug. The break-in, Sam's music and the police siren with the street (the old 94, 95, 96) are cut, with their two scenes and two sounds; after the icebox winds down the stage is silent until the curtain call (birds). 95 GOs.
 - Oct 23 evening (David): the doll's full tune is -22 dB and the first-notes version -18 dB, both placed 75% into the left speaker (the doll sits stage left).
 - Oct 23 evening (David): the doll notes, the distant memory (cue 9 and the D key), are -20 dB.
-- Oct 23 evening (David): the phone's emergency alert on p18 is cut (cue, sound and file). Susan dials zero in silence; the two rings on "Hang on" are unchanged. 94 GOs.
+- Oct 23 evening (David): the phone's emergency alert on p18 is cut (cue, sound and file). Susan dials zero in silence; the two rings on "Hang on" are unchanged.
+- Oct 23 evening (David): THE SOUND NUMBERS ARE FROZEN. Every cue carries its printed number (`num`); the board, the log, the standby card and the marked script all print that number, never the position in the list. A cut cue keeps its number and shows in the script as a dashed CUT box (18, the alert); a cue added later takes the previous number with a letter (93a). 94 GOs, numbered 1 to 95.
 
 ## Operator keys
 Space GO. 1 to 0 buttons (9 flourish, 0 hit). P punctuation. D doll notes. K the stab (cuts heartbeat and tension). H heartbeat, with , and . for pace. = and - tension. [ ] script page. Esc fade everything.

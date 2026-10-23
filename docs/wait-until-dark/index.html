@@ -579,100 +579,100 @@ const BASE = {
      Nothing is chained or on a timer. If the script has two sounds, there are two rows.
      The button pad fires the same sounds out of order (an extra doorbell, a skipped phone) without moving standby. */
   cues: [
-    {id:"q001", page:"Pre", when:"House opens", what:"Warm, comfortable house music over a quiet night street. Nothing is wrong. The street drops slider can come up here.", scene:"pre"},
-    {id:"q002", page:"Pre", when:"House to half", what:"Music fades out and the night street comes up to take its place. We are outside now, on the way to the house.", scene:"s11"},
-    {id:"q003", page:"Pre", when:"Two minutes to curtain (SM calls it)", what:"The announcement, with the street kept under it the whole way.", play:["ann_welcome"]},
-    {id:"q010", page:"7",  when:"Lights up, Act One Scene 1 (the icebox is humming)", what:"The icebox hum, loud, and under it the Scene 1 under: a low, unplaceable drone that runs the whole scene.", scene:"fridge", lx:true},
-    {id:"q011", page:"7",  when:"\"The sliver of light from under the door goes out\" (Carlino unscrews the hall bulb)", what:"The bulb screwed out of the hall socket. No street door for him; his footstep is live.", play:["fx_bulb_in"], prac:true},
-    {id:"q012", page:"8",  when:"Carlino puts the meatloaf back in the icebox (Roat at the street door)", what:"The street door, GO on the meatloaf going back.", play:["fx_door"], prac:true},
-    {id:"q013", page:"8",  when:"\"Sound: Lightbulb screwing in\"", what:"A bulb threaded into the hall socket, off. The hall light comes back with it.", play:["fx_bulb_in"], prac:true},
-    {id:"q014", page:"8",  when:"Roat: \"I wouldn't touch that.\"", what:"The icebox settles under the dialogue. The under stays.", scene:"s11b"},
-    {id:"q015", page:"10", when:"Roat: \"A doll. Child's doll. Plays a little tune.\"", what:"A few notes of the doll's tune, very quiet and washed in reverb, like a memory, over the under. D plays more on the later mentions, pages 10 to 14.", play:["fx_doll_tease"], prac:true},
-    {id:"q016", page:"14", when:"\"Sound: The offstage street door opens and shuts\" (Susan is home)", what:"The street door.", play:["fx_door"], prac:true},
-    {id:"q017", page:"14", when:"\"Sound: We hear an offstage tapping, getting closer\"", what:"Her cane, down the hall toward the door.", play:["fx_cane"], prac:true},
-    {id:"q017b", page:"14", when:"Susan is in (the hall door opens)", what:"The under and the icebox go. Just the street for the rest of the scene.", scene:"s11c"},
-    {id:"q018", page:"14", when:"Susan exits: \"We hear the cane trail along the other side of the wall\"", what:"Her cane fades along the hall, behind the wall.", play:[{id:"fx_cane", gain:-6}], prac:true},
-    {id:"q019", page:"14", when:"\"The offstage street door opens and shuts\" (Susan gone)", what:"The street door.", play:["fx_door"], prac:true},
-    {id:"q020", page:"14", when:"Roat: \"See?\" Blackout, end of Scene 1", what:"Everything out with the lights. The scene-change texture, slowed to half speed, covers the shift: twice as long.", scene:"black", play:[{id:"tex_change", rate:0.5}], lx:true},
-    {id:"q021", page:"15", when:"Lights up, Scene 2 (the darkroom, curtains closed)", what:"Rain, faint, behind the blackout curtains, and the street. Nothing comes up when the curtains open. No icebox: Sam has had it defrosted.", scene:"s12", lx:true},
-    {id:"q023", page:"17", when:"Sam exits, after \"Call Gloria.\": \"We hear the street door open and close\"", what:"The street door, after his last line. He walks past the windows.", play:["fx_door"], prac:true},
-    {id:"q024", page:"18", when:"\"Sound: Door buzzer\" (Mike, Susan on the phone to the fire department)", what:"Hall door buzzer.", play:["fx_buzzer"], prac:true},
-    {id:"q025", page:"18", when:"\"Sound: Door buzzer\" again", what:"Buzzer.", play:["fx_buzzer"], prac:true},
-    {id:"q023c", page:"18", when:"Mike dumps the ashtray in the sink and turns on the faucet (after the two buzzers, once he is in)", what:"The faucet, two seconds, off.", play:["fx_tap"], prac:true},
-    {id:"q025b", page:"18", when:"Mike: \"All clear. Fire's out.\"", what:"The rain thins over thirty seconds until it is gone. The street stays.", scene:"s12c"},
-    {id:"q026", page:"20", when:"\"Sound: Door buzzer\" (Carlino)", what:"Buzzer.", play:["fx_buzzer"], prac:true},
-    {id:"q026b", page:"20", when:"Carlino enters (Mike opens the hall door)", what:"The street fades out over a full minute, slow enough that nobody notices it go.", scene:"s12d"},
-    {id:"q026c", page:"21", when:"Carlino exits: \"opens the hall door, exits, then closes it\"", what:"The street door closes behind him.", play:["fx_door"], prac:true},
-    {id:"q027", page:"22", when:"\"We hear the street door open and close\" (Mike leaves)", what:"The street door.", play:["fx_door"], prac:true},
-    {id:"q028", page:"24", when:"\"Sound: Door buzzer\" (Roat Senior, first)", what:"Buzzer, short.", play:[{id:"fx_buzzer", dur:0.6}], prac:true},
-    {id:"q029", page:"24", when:"\"Sound: Door buzzer\" (second)", what:"Buzzer, longer.", play:[{id:"fx_buzzer", dur:1.1}], prac:true},
-    {id:"q030", page:"24", when:"\"Sound: Doorbell rings again\" (third, as Gloria runs up)", what:"Buzzer, held. Each one more urgent than the last.", play:[{id:"fx_buzzer", dur:1.8}], prac:true},
-    {id:"q030b", page:"24", when:"Roat Senior pushes past Gloria", what:"Tension comes all the way up, to 100, under the intrusion and stays through the bedroom.", scene:"tense24"},
-    {id:"q030c", page:"25", when:"Mike: \"Lock your door\" (the door gets locked)", what:"Tension fades out slowly, over twelve seconds.", scene:"tense24x"},
-    {id:"q031", page:"26", when:"\"Sound: Door buzzer\" (Carlino is back)", what:"Buzzer. Susan gives a little start.", play:["fx_buzzer"], prac:true},
-    {id:"q032", page:"27", when:"\"The phone rings. Susan picks it up.\"", what:"Phone starts ringing.", play:["fx_phone"], prac:true},
-    {id:"q033", page:"27", when:"Carlino picks it up", what:"Phone stops.", stop:["fx_phone"], prac:true},
-    {id:"q034", page:"29", when:"Carlino exits: \"We hear the street door open and close\"", what:"The street door.", play:["fx_door"], prac:true},
-    {id:"q035", page:"29", when:"\"Sound: Door buzzer\" (Roat Junior)", what:"Buzzer.", play:["fx_buzzer"], prac:true},
-    {id:"q036", page:"32", when:"\"The phone rings. Rings again.\"", what:"Phone starts ringing.", play:["fx_phone"], prac:true},
-    {id:"q037", page:"32", when:"Mike picks up the phone", what:"Phone stops.", stop:["fx_phone"], prac:true},
-    {id:"q037b", page:"32", when:"Roat drops the phone, runs up the steps and out", what:"The street door closes behind him. He runs past the window.", play:["fx_door"], prac:true},
-    {id:"q038", page:"33", when:"Susan rushes into the bedroom and knocks over bottles (visual: SM calls it)", what:"Bottles, off, in the bedroom.", play:["fx_bottles"], prac:true},
-    {id:"q039", page:"34", when:"Mike pulls the blinds once, \"shunk\". End of Act One", what:"Intermission music: a slow dark piano that settles into a key and then loses it, over and over, rain faint under. Out with the lights.", scene:"inter", play:["tex_change"], lx:true},
-    {id:"q040", page:"35", when:"Two minutes to Act Two (SM calls it)", what:"The intermission announcement, over the music.", play:["ann_two"]},
-    {id:"q040m", page:"35", when:"The Money Minute: the speaker picks up the mic (SM calls it)", what:"The intermission music dips right down under the speaker.", scene:"money"},
-    {id:"q040s", page:"35", when:"The speaker cues the song", what:"The song, on its own: the intermission music and the rain go out as it starts.", scene:"silent", play:["mus_money"]},
-    {id:"q040x", page:"35", when:"The song is over for us (SM calls it)", what:"The song fades out over six seconds. Silence until Act Two.", stop:[{id:"mus_money", fade:6}]},
-    {id:"q041", page:"35", when:"House to half, lights up on Mike alone", what:"Out of the silence: the rain and the street come up for the top of the act.", scene:"s21"},
-    {id:"q042", page:"35", when:"Mike: \"Come on, ring.\" (The phone rings.)", what:"Phone starts ringing. The street is back under this, with its drop-ins; it thins again scene by scene.", play:["fx_phone"], prac:true},
-    {id:"q043", page:"35", when:"Mike grabs it up", what:"Phone stops.", stop:["fx_phone"], prac:true},
-    {id:"q044", page:"37", when:"Susan: \"Look out the window.\"", what:"A quiet string cluster comes in under the scene. Mysterious, not loud.", scene:"window1"},
-    {id:"q046", page:"37", when:"Susan: \"What if Roat is really a policeman?\"", what:"Flourish: two sour piano keys. The first is short, the second is held and rings out for about fifteen seconds.", play:[{id:"fx_fl_piano", rate:0.7}], prac:true},
-    {id:"q047", page:"37", when:"Susan: \"I sound like I'm insane, don't I?\"", what:"The strings go out.", scene:"s21"},
-    {id:"q047b", page:"38", when:"Mike: \"I don't believe that.\" (top of p38)", what:"The rain fades out over fifteen seconds and stays out for the rest of the play; it is gone by \"Mike! Sam isn't the same man.\" The street stays.", scene:"s21r"},
-    {id:"q048", page:"40", when:"Mike exits: \"A beat later we hear the street door close and lock\"", what:"The street door. Gloria's key in the hall door is live.", play:["fx_door"], prac:true},
-    {id:"q049", page:"42", when:"Gloria: \"Susan, someone's looking through the window!\"", what:"Flourish: metal scrape with a long tail, and the under-sounding comes in with it: strings and a low pulse, held until Carlino is in the room.", play:["fx_fl_metal"], scene:"window2", prac:true},
-    {id:"q051", page:"42", when:"The doll \"plays its little tune for a few seconds before Gloria snatches it up\"", what:"The doll's first notes.", play:["mus_doll_short"], prac:true},
-    {id:"q052", page:"42", when:"Buzz 1 of 3 (SM calls it): Susan and Gloria scramble, Carlino gets to the door", what:"The buzzer. One buzzer for both doors, by direction. Three buzzes here, each on the SM's call, not on a line.", play:["fx_buzzer"], prac:true},
-    {id:"q053", page:"42", when:"Buzz 2 of 3 (SM calls it): his impatience", what:"The buzzer again.", play:["fx_buzzer"], prac:true},
-    {id:"q054", page:"43", when:"Buzz 3 of 3 (SM calls it): Carlino moves on to his lines", what:"Buzzer. Him trying the handle is live on the set door.", play:["fx_buzzer"], prac:true},
-    {id:"q055", page:"43", when:"Susan unlocks the door. Carlino enters", what:"The under-sounding goes out.", scene:"s21b"},
-    {id:"q056", page:"45", when:"\"The phone rings… lets it ring a second time, then picks up\"", what:"Two rings, then it stops by itself. She picks up on the second.", play:["fx_two_rings"], prac:true},
-    {id:"q057", page:"45", when:"Carlino exits: \"We hear the street door open and close\"", what:"The street door.", play:["fx_door"], prac:true},
-    {id:"q058", page:"45", when:"\"The phone rings… The phone rings a second time… the phone has stopped ringing\"", what:"Two rings, then it stops by itself. Gloria's signal.", play:["fx_two_rings"], prac:true},
-    {id:"q059", page:"45", when:"\"…we hear someone running outside. The street door opens.\"", what:"Running on wet pavement, then the street door. Him trying the hall door is live.", play:["fx_run_door"], prac:true},
-    {id:"q060", page:"46", when:"Mike: \"Well?\" (Carlino and Roat follow him in)", what:"Sparse twelve-tone piano comes in under them, low. The tension climbs slowly over thirty seconds to 80 and holds there from here on.", scene:"mike2"},
-    {id:"q061b", page:"48", when:"\"The three men exit. The hall door closes\" (the set door is live)", what:"The street door behind them, so she can hear they have gone.", play:["fx_door"], prac:true},
-    {id:"q062", page:"48", when:"Gloria: \"Susan, it's the sergeant, he's outside the window.\"", what:"A hit.", play:["fx_hit"], prac:true},
-    {id:"q063", page:"48", when:"Susan: \"Okay. Okay… Gloria. I need you to be very brave.\"", what:"The piano goes out. Just a thin street.", scene:"s21c"},
-    {id:"q063b1", page:"49", when:"Gloria (offstage): \"Bedroom out!\"", what:"Breaker flips off.", play:["fx_breaker"], prac:true},
-    {id:"q063b2", page:"49", when:"\"Bathroom out!\"", what:"Breaker flips off.", play:["fx_breaker"], prac:true},
-    {id:"q063b3", page:"49", when:"\"Ceiling out!\"", what:"Breaker flips off.", play:["fx_breaker"], prac:true},
-    {id:"q063b4", page:"49", when:"\"Lamp out!\"", what:"Breaker flips off.", play:["fx_breaker"], prac:true},
-    {id:"q063b5", page:"49", when:"\"Wall lights out.\"", what:"Breaker flips off.", play:["fx_breaker"], prac:true},
-    {id:"q064", page:"50", when:"\"Then there's a bang and the light goes out\" (Gloria, after three swings at it)", what:"Glass, off in the hall.", play:["fx_glass"], prac:true},
-    {id:"q065", page:"50", when:"\"Another bang and the hall is completely dark\"", what:"Glass, off.", play:["fx_glass"], prac:true},
-    {id:"q066", page:"51", when:"Gloria has gone. Susan lights a cigarette and sits on the sofa", what:"The Village on a Saturday night, busy: traffic, puddles, people passing, a bar band, a restaurant kitchen. A dark, slow piano underneath.", scene:"montage"},
-    {id:"q067", page:"51", when:"\"The door opens. Mike enters.\"", what:"The street and the piano drain away. A low pulse and restless, moving strings underneath the whole scene between them.", scene:"tense51"},
-    {id:"q068", page:"52", when:"Susan: \"You'll have to hurt me. More than you imagine.\" She looks at Mike", what:"Flourish: gentle and ominous, one low piano note with a string behind it.", play:["fx_fl_soft"], prac:true},
-    {id:"q069", page:"52", when:"\"Sound: A sudden and violent revving-up of a truck engine outside. We hear a shout and a crash.\"", what:"The truck in the alley: revs, a shout, the crash, it roars off.", play:["fx_truck"], prac:true},
-    {id:"q070", page:"53", when:"The hall door opens on Roat (Mike has just fallen)", what:"The hit, and straight into hell the moment the door opens: no build. Screaming strings in front, drums and brass behind, chaos on top. The loudest the show gets.", play:["fx_fl_cluster"], scene:"hell", prac:true},
-        {id:"q071c", page:"54", when:"Roat flings the scarf at her: \"It lands on the floor\"", what:"The screaming strings fade down over twelve seconds to the drone, the pulse and the tension bed. Under them, on the same GO, the Roat underscore rises over ten seconds and runs under everything that follows, through the flash, the dark and the icebox, until he is on his knees.", scene:"roatlow", fade:12, play:[{id:"mus_v1", fadein:10}]},
-    {id:"q071b", page:"54", when:"\"Susan squeezes. The lamp pops to an incredibly bright light\"", what:"With the flash: the drums come up hard, strings behind them. The Roat: drums fader on the Show tab is the lever if Tyler wants more or less on a given night.", scene:"flash", prac:true},
-    {id:"q073", page:"55", when:"The blackout: complete darkness", what:"The drums and strings pull back for the dark, still there. Keep riding Tension.", scene:"roatdark", lx:true},
-    {id:"q073b", page:"55", when:"Susan: \"Throw the matches on the floor, or I'll set you on fire.\"", what:"The drums and strings die down over eight seconds to the drone and the pulse.", scene:"roatlow"},
-    {id:"q074", page:"56", when:"\"Roat opens the icebox… The icebox immediately starts its loud hum\"", what:"Icebox roars, with a violin stab and scraped strings right behind it. The underscore stays under it.", scene:"roar", play:["fx_ice_hit"], prac:true},
-    {id:"q074b", page:"57", when:"Roat: \"Fuck the doll.\" He goes to the sink", what:"The faucet runs while he washes the gasoline off. It stays on until the next GO.", play:["fx_wash"], prac:true},
-    {id:"q074c", page:"57", when:"Roat dries himself and puts his gloves back on", what:"The faucet off.", stop:["fx_wash"], prac:true},
-    {id:"q075", page:"57", when:"\"As he does this the music starts to play\" (Roat pouring the diamonds)", what:"The doll's whole tune, tinny and small.", play:["mus_doll"], prac:true},
-    {id:"q075b", page:"58", when:"Roat: \"Now get in the bedroom.\"", what:"The heartbeat starts and runs on its own until the stab cuts it. , and . still change the pace if you need it.", heart:true, bpm:72},
-    {id:"q075c", page:"58", when:"Susan reaches the bedroom doorway (she turns and grabs his coat)", what:"The fight music, in hard on the first hit, over the heartbeat and the underscore. It builds for a minute and a half to its last chord and ends by itself at the plug; if the plug comes first, the plug cuts it.", play:["mus_v2"], prac:true},
-    {id:"q075d", page:"58", when:"Susan's fake-out: her right arm comes up", what:"The swell, on top of the music, rising to the stab.", play:["fx_swell"], prac:true},
-    {id:"q076", page:"58", when:"\"…she stabs at him once, twice, three times\"", what:"The stab. Cuts the heartbeat and Tension dead; the fight music and the underscore keep going.", play:["fx_stab"], prac:true, cut:true},
-    {id:"q076b", page:"58", when:"Roat lunges in from the bedroom and goes down on his knees, dragging himself toward her", what:"The Roat underscore fades out over eight seconds. Only the fight music is left, building to the plug.", stop:[{id:"mus_v1", fade:8}], prac:true},
-    {id:"q077", page:"59", when:"Susan finds the plug and pulls it. Blackout", what:"The fight music, the doll and the underscore die at once; the icebox winds down over three seconds into silence. Nothing else until the curtain call: the break-in, Sam and the police are played in silence.", scene:"cut", play:["fx_fridge_wind"], stop:["mus_doll","mus_v2","mus_v1"], lx:true, cut:true},
-    {id:"q090", page:"Bows", when:"Curtain call", what:"No music. Birds, morning, as the lights come up on the bows.", scene:"bows"},
-    {id:"q091", page:"Exit", when:"House lights up", what:"Exit music with the street under it; the birds stay faint.", scene:"exit"}
+    {id:"q001", num:"1", page:"Pre", when:"House opens", what:"Warm, comfortable house music over a quiet night street. Nothing is wrong. The street drops slider can come up here.", scene:"pre"},
+    {id:"q002", num:"2", page:"Pre", when:"House to half", what:"Music fades out and the night street comes up to take its place. We are outside now, on the way to the house.", scene:"s11"},
+    {id:"q003", num:"3", page:"Pre", when:"Two minutes to curtain (SM calls it)", what:"The announcement, with the street kept under it the whole way.", play:["ann_welcome"]},
+    {id:"q010", num:"4", page:"7",  when:"Lights up, Act One Scene 1 (the icebox is humming)", what:"The icebox hum, loud, and under it the Scene 1 under: a low, unplaceable drone that runs the whole scene.", scene:"fridge", lx:true},
+    {id:"q011", num:"5", page:"7",  when:"\"The sliver of light from under the door goes out\" (Carlino unscrews the hall bulb)", what:"The bulb screwed out of the hall socket. No street door for him; his footstep is live.", play:["fx_bulb_in"], prac:true},
+    {id:"q012", num:"6", page:"8",  when:"Carlino puts the meatloaf back in the icebox (Roat at the street door)", what:"The street door, GO on the meatloaf going back.", play:["fx_door"], prac:true},
+    {id:"q013", num:"7", page:"8",  when:"\"Sound: Lightbulb screwing in\"", what:"A bulb threaded into the hall socket, off. The hall light comes back with it.", play:["fx_bulb_in"], prac:true},
+    {id:"q014", num:"8", page:"8",  when:"Roat: \"I wouldn't touch that.\"", what:"The icebox settles under the dialogue. The under stays.", scene:"s11b"},
+    {id:"q015", num:"9", page:"10", when:"Roat: \"A doll. Child's doll. Plays a little tune.\"", what:"A few notes of the doll's tune, very quiet and washed in reverb, like a memory, over the under. D plays more on the later mentions, pages 10 to 14.", play:["fx_doll_tease"], prac:true},
+    {id:"q016", num:"10", page:"14", when:"\"Sound: The offstage street door opens and shuts\" (Susan is home)", what:"The street door.", play:["fx_door"], prac:true},
+    {id:"q017", num:"11", page:"14", when:"\"Sound: We hear an offstage tapping, getting closer\"", what:"Her cane, down the hall toward the door.", play:["fx_cane"], prac:true},
+    {id:"q017b", num:"12", page:"14", when:"Susan is in (the hall door opens)", what:"The under and the icebox go. Just the street for the rest of the scene.", scene:"s11c"},
+    {id:"q018", num:"13", page:"14", when:"Susan exits: \"We hear the cane trail along the other side of the wall\"", what:"Her cane fades along the hall, behind the wall.", play:[{id:"fx_cane", gain:-6}], prac:true},
+    {id:"q019", num:"14", page:"14", when:"\"The offstage street door opens and shuts\" (Susan gone)", what:"The street door.", play:["fx_door"], prac:true},
+    {id:"q020", num:"15", page:"14", when:"Roat: \"See?\" Blackout, end of Scene 1", what:"Everything out with the lights. The scene-change texture, slowed to half speed, covers the shift: twice as long.", scene:"black", play:[{id:"tex_change", rate:0.5}], lx:true},
+    {id:"q021", num:"16", page:"15", when:"Lights up, Scene 2 (the darkroom, curtains closed)", what:"Rain, faint, behind the blackout curtains, and the street. Nothing comes up when the curtains open. No icebox: Sam has had it defrosted.", scene:"s12", lx:true},
+    {id:"q023", num:"17", page:"17", when:"Sam exits, after \"Call Gloria.\": \"We hear the street door open and close\"", what:"The street door, after his last line. He walks past the windows.", play:["fx_door"], prac:true},
+    {id:"q024", num:"19", page:"18", when:"\"Sound: Door buzzer\" (Mike, Susan on the phone to the fire department)", what:"Hall door buzzer.", play:["fx_buzzer"], prac:true},
+    {id:"q025", num:"20", page:"18", when:"\"Sound: Door buzzer\" again", what:"Buzzer.", play:["fx_buzzer"], prac:true},
+    {id:"q023c", num:"21", page:"18", when:"Mike dumps the ashtray in the sink and turns on the faucet (after the two buzzers, once he is in)", what:"The faucet, two seconds, off.", play:["fx_tap"], prac:true},
+    {id:"q025b", num:"22", page:"18", when:"Mike: \"All clear. Fire's out.\"", what:"The rain thins over thirty seconds until it is gone. The street stays.", scene:"s12c"},
+    {id:"q026", num:"23", page:"20", when:"\"Sound: Door buzzer\" (Carlino)", what:"Buzzer.", play:["fx_buzzer"], prac:true},
+    {id:"q026b", num:"24", page:"20", when:"Carlino enters (Mike opens the hall door)", what:"The street fades out over a full minute, slow enough that nobody notices it go.", scene:"s12d"},
+    {id:"q026c", num:"25", page:"21", when:"Carlino exits: \"opens the hall door, exits, then closes it\"", what:"The street door closes behind him.", play:["fx_door"], prac:true},
+    {id:"q027", num:"26", page:"22", when:"\"We hear the street door open and close\" (Mike leaves)", what:"The street door.", play:["fx_door"], prac:true},
+    {id:"q028", num:"27", page:"24", when:"\"Sound: Door buzzer\" (Roat Senior, first)", what:"Buzzer, short.", play:[{id:"fx_buzzer", dur:0.6}], prac:true},
+    {id:"q029", num:"28", page:"24", when:"\"Sound: Door buzzer\" (second)", what:"Buzzer, longer.", play:[{id:"fx_buzzer", dur:1.1}], prac:true},
+    {id:"q030", num:"29", page:"24", when:"\"Sound: Doorbell rings again\" (third, as Gloria runs up)", what:"Buzzer, held. Each one more urgent than the last.", play:[{id:"fx_buzzer", dur:1.8}], prac:true},
+    {id:"q030b", num:"30", page:"24", when:"Roat Senior pushes past Gloria", what:"Tension comes all the way up, to 100, under the intrusion and stays through the bedroom.", scene:"tense24"},
+    {id:"q030c", num:"31", page:"25", when:"Mike: \"Lock your door\" (the door gets locked)", what:"Tension fades out slowly, over twelve seconds.", scene:"tense24x"},
+    {id:"q031", num:"32", page:"26", when:"\"Sound: Door buzzer\" (Carlino is back)", what:"Buzzer. Susan gives a little start.", play:["fx_buzzer"], prac:true},
+    {id:"q032", num:"33", page:"27", when:"\"The phone rings. Susan picks it up.\"", what:"Phone starts ringing.", play:["fx_phone"], prac:true},
+    {id:"q033", num:"34", page:"27", when:"Carlino picks it up", what:"Phone stops.", stop:["fx_phone"], prac:true},
+    {id:"q034", num:"35", page:"29", when:"Carlino exits: \"We hear the street door open and close\"", what:"The street door.", play:["fx_door"], prac:true},
+    {id:"q035", num:"36", page:"29", when:"\"Sound: Door buzzer\" (Roat Junior)", what:"Buzzer.", play:["fx_buzzer"], prac:true},
+    {id:"q036", num:"37", page:"32", when:"\"The phone rings. Rings again.\"", what:"Phone starts ringing.", play:["fx_phone"], prac:true},
+    {id:"q037", num:"38", page:"32", when:"Mike picks up the phone", what:"Phone stops.", stop:["fx_phone"], prac:true},
+    {id:"q037b", num:"39", page:"32", when:"Roat drops the phone, runs up the steps and out", what:"The street door closes behind him. He runs past the window.", play:["fx_door"], prac:true},
+    {id:"q038", num:"40", page:"33", when:"Susan rushes into the bedroom and knocks over bottles (visual: SM calls it)", what:"Bottles, off, in the bedroom.", play:["fx_bottles"], prac:true},
+    {id:"q039", num:"41", page:"34", when:"Mike pulls the blinds once, \"shunk\". End of Act One", what:"Intermission music: a slow dark piano that settles into a key and then loses it, over and over, rain faint under. Out with the lights.", scene:"inter", play:["tex_change"], lx:true},
+    {id:"q040", num:"42", page:"35", when:"Two minutes to Act Two (SM calls it)", what:"The intermission announcement, over the music.", play:["ann_two"]},
+    {id:"q040m", num:"43", page:"35", when:"The Money Minute: the speaker picks up the mic (SM calls it)", what:"The intermission music dips right down under the speaker.", scene:"money"},
+    {id:"q040s", num:"44", page:"35", when:"The speaker cues the song", what:"The song, on its own: the intermission music and the rain go out as it starts.", scene:"silent", play:["mus_money"]},
+    {id:"q040x", num:"45", page:"35", when:"The song is over for us (SM calls it)", what:"The song fades out over six seconds. Silence until Act Two.", stop:[{id:"mus_money", fade:6}]},
+    {id:"q041", num:"46", page:"35", when:"House to half, lights up on Mike alone", what:"Out of the silence: the rain and the street come up for the top of the act.", scene:"s21"},
+    {id:"q042", num:"47", page:"35", when:"Mike: \"Come on, ring.\" (The phone rings.)", what:"Phone starts ringing. The street is back under this, with its drop-ins; it thins again scene by scene.", play:["fx_phone"], prac:true},
+    {id:"q043", num:"48", page:"35", when:"Mike grabs it up", what:"Phone stops.", stop:["fx_phone"], prac:true},
+    {id:"q044", num:"49", page:"37", when:"Susan: \"Look out the window.\"", what:"A quiet string cluster comes in under the scene. Mysterious, not loud.", scene:"window1"},
+    {id:"q046", num:"50", page:"37", when:"Susan: \"What if Roat is really a policeman?\"", what:"Flourish: two sour piano keys. The first is short, the second is held and rings out for about fifteen seconds.", play:[{id:"fx_fl_piano", rate:0.7}], prac:true},
+    {id:"q047", num:"51", page:"37", when:"Susan: \"I sound like I'm insane, don't I?\"", what:"The strings go out.", scene:"s21"},
+    {id:"q047b", num:"52", page:"38", when:"Mike: \"I don't believe that.\" (top of p38)", what:"The rain fades out over fifteen seconds and stays out for the rest of the play; it is gone by \"Mike! Sam isn't the same man.\" The street stays.", scene:"s21r"},
+    {id:"q048", num:"53", page:"40", when:"Mike exits: \"A beat later we hear the street door close and lock\"", what:"The street door. Gloria's key in the hall door is live.", play:["fx_door"], prac:true},
+    {id:"q049", num:"54", page:"42", when:"Gloria: \"Susan, someone's looking through the window!\"", what:"Flourish: metal scrape with a long tail, and the under-sounding comes in with it: strings and a low pulse, held until Carlino is in the room.", play:["fx_fl_metal"], scene:"window2", prac:true},
+    {id:"q051", num:"55", page:"42", when:"The doll \"plays its little tune for a few seconds before Gloria snatches it up\"", what:"The doll's first notes.", play:["mus_doll_short"], prac:true},
+    {id:"q052", num:"56", page:"42", when:"Buzz 1 of 3 (SM calls it): Susan and Gloria scramble, Carlino gets to the door", what:"The buzzer. One buzzer for both doors, by direction. Three buzzes here, each on the SM's call, not on a line.", play:["fx_buzzer"], prac:true},
+    {id:"q053", num:"57", page:"42", when:"Buzz 2 of 3 (SM calls it): his impatience", what:"The buzzer again.", play:["fx_buzzer"], prac:true},
+    {id:"q054", num:"58", page:"43", when:"Buzz 3 of 3 (SM calls it): Carlino moves on to his lines", what:"Buzzer. Him trying the handle is live on the set door.", play:["fx_buzzer"], prac:true},
+    {id:"q055", num:"59", page:"43", when:"Susan unlocks the door. Carlino enters", what:"The under-sounding goes out.", scene:"s21b"},
+    {id:"q056", num:"60", page:"45", when:"\"The phone rings… lets it ring a second time, then picks up\"", what:"Two rings, then it stops by itself. She picks up on the second.", play:["fx_two_rings"], prac:true},
+    {id:"q057", num:"61", page:"45", when:"Carlino exits: \"We hear the street door open and close\"", what:"The street door.", play:["fx_door"], prac:true},
+    {id:"q058", num:"62", page:"45", when:"\"The phone rings… The phone rings a second time… the phone has stopped ringing\"", what:"Two rings, then it stops by itself. Gloria's signal.", play:["fx_two_rings"], prac:true},
+    {id:"q059", num:"63", page:"45", when:"\"…we hear someone running outside. The street door opens.\"", what:"Running on wet pavement, then the street door. Him trying the hall door is live.", play:["fx_run_door"], prac:true},
+    {id:"q060", num:"64", page:"46", when:"Mike: \"Well?\" (Carlino and Roat follow him in)", what:"Sparse twelve-tone piano comes in under them, low. The tension climbs slowly over thirty seconds to 80 and holds there from here on.", scene:"mike2"},
+    {id:"q061b", num:"65", page:"48", when:"\"The three men exit. The hall door closes\" (the set door is live)", what:"The street door behind them, so she can hear they have gone.", play:["fx_door"], prac:true},
+    {id:"q062", num:"66", page:"48", when:"Gloria: \"Susan, it's the sergeant, he's outside the window.\"", what:"A hit.", play:["fx_hit"], prac:true},
+    {id:"q063", num:"67", page:"48", when:"Susan: \"Okay. Okay… Gloria. I need you to be very brave.\"", what:"The piano goes out. Just a thin street.", scene:"s21c"},
+    {id:"q063b1", num:"68", page:"49", when:"Gloria (offstage): \"Bedroom out!\"", what:"Breaker flips off.", play:["fx_breaker"], prac:true},
+    {id:"q063b2", num:"69", page:"49", when:"\"Bathroom out!\"", what:"Breaker flips off.", play:["fx_breaker"], prac:true},
+    {id:"q063b3", num:"70", page:"49", when:"\"Ceiling out!\"", what:"Breaker flips off.", play:["fx_breaker"], prac:true},
+    {id:"q063b4", num:"71", page:"49", when:"\"Lamp out!\"", what:"Breaker flips off.", play:["fx_breaker"], prac:true},
+    {id:"q063b5", num:"72", page:"49", when:"\"Wall lights out.\"", what:"Breaker flips off.", play:["fx_breaker"], prac:true},
+    {id:"q064", num:"73", page:"50", when:"\"Then there's a bang and the light goes out\" (Gloria, after three swings at it)", what:"Glass, off in the hall.", play:["fx_glass"], prac:true},
+    {id:"q065", num:"74", page:"50", when:"\"Another bang and the hall is completely dark\"", what:"Glass, off.", play:["fx_glass"], prac:true},
+    {id:"q066", num:"75", page:"51", when:"Gloria has gone. Susan lights a cigarette and sits on the sofa", what:"The Village on a Saturday night, busy: traffic, puddles, people passing, a bar band, a restaurant kitchen. A dark, slow piano underneath.", scene:"montage"},
+    {id:"q067", num:"76", page:"51", when:"\"The door opens. Mike enters.\"", what:"The street and the piano drain away. A low pulse and restless, moving strings underneath the whole scene between them.", scene:"tense51"},
+    {id:"q068", num:"77", page:"52", when:"Susan: \"You'll have to hurt me. More than you imagine.\" She looks at Mike", what:"Flourish: gentle and ominous, one low piano note with a string behind it.", play:["fx_fl_soft"], prac:true},
+    {id:"q069", num:"78", page:"52", when:"\"Sound: A sudden and violent revving-up of a truck engine outside. We hear a shout and a crash.\"", what:"The truck in the alley: revs, a shout, the crash, it roars off.", play:["fx_truck"], prac:true},
+    {id:"q070", num:"79", page:"53", when:"The hall door opens on Roat (Mike has just fallen)", what:"The hit, and straight into hell the moment the door opens: no build. Screaming strings in front, drums and brass behind, chaos on top. The loudest the show gets.", play:["fx_fl_cluster"], scene:"hell", prac:true},
+        {id:"q071c", num:"80", page:"54", when:"Roat flings the scarf at her: \"It lands on the floor\"", what:"The screaming strings fade down over twelve seconds to the drone, the pulse and the tension bed. Under them, on the same GO, the Roat underscore rises over ten seconds and runs under everything that follows, through the flash, the dark and the icebox, until he is on his knees.", scene:"roatlow", fade:12, play:[{id:"mus_v1", fadein:10}]},
+    {id:"q071b", num:"81", page:"54", when:"\"Susan squeezes. The lamp pops to an incredibly bright light\"", what:"With the flash: the drums come up hard, strings behind them. The Roat: drums fader on the Show tab is the lever if Tyler wants more or less on a given night.", scene:"flash", prac:true},
+    {id:"q073", num:"82", page:"55", when:"The blackout: complete darkness", what:"The drums and strings pull back for the dark, still there. Keep riding Tension.", scene:"roatdark", lx:true},
+    {id:"q073b", num:"83", page:"55", when:"Susan: \"Throw the matches on the floor, or I'll set you on fire.\"", what:"The drums and strings die down over eight seconds to the drone and the pulse.", scene:"roatlow"},
+    {id:"q074", num:"84", page:"56", when:"\"Roat opens the icebox… The icebox immediately starts its loud hum\"", what:"Icebox roars, with a violin stab and scraped strings right behind it. The underscore stays under it.", scene:"roar", play:["fx_ice_hit"], prac:true},
+    {id:"q074b", num:"85", page:"57", when:"Roat: \"Fuck the doll.\" He goes to the sink", what:"The faucet runs while he washes the gasoline off. It stays on until the next GO.", play:["fx_wash"], prac:true},
+    {id:"q074c", num:"86", page:"57", when:"Roat dries himself and puts his gloves back on", what:"The faucet off.", stop:["fx_wash"], prac:true},
+    {id:"q075", num:"87", page:"57", when:"\"As he does this the music starts to play\" (Roat pouring the diamonds)", what:"The doll's whole tune, tinny and small.", play:["mus_doll"], prac:true},
+    {id:"q075b", num:"88", page:"58", when:"Roat: \"Now get in the bedroom.\"", what:"The heartbeat starts and runs on its own until the stab cuts it. , and . still change the pace if you need it.", heart:true, bpm:72},
+    {id:"q075c", num:"89", page:"58", when:"Susan reaches the bedroom doorway (she turns and grabs his coat)", what:"The fight music, in hard on the first hit, over the heartbeat and the underscore. It builds for a minute and a half to its last chord and ends by itself at the plug; if the plug comes first, the plug cuts it.", play:["mus_v2"], prac:true},
+    {id:"q075d", num:"90", page:"58", when:"Susan's fake-out: her right arm comes up", what:"The swell, on top of the music, rising to the stab.", play:["fx_swell"], prac:true},
+    {id:"q076", num:"91", page:"58", when:"\"…she stabs at him once, twice, three times\"", what:"The stab. Cuts the heartbeat and Tension dead; the fight music and the underscore keep going.", play:["fx_stab"], prac:true, cut:true},
+    {id:"q076b", num:"92", page:"58", when:"Roat lunges in from the bedroom and goes down on his knees, dragging himself toward her", what:"The Roat underscore fades out over eight seconds. Only the fight music is left, building to the plug.", stop:[{id:"mus_v1", fade:8}], prac:true},
+    {id:"q077", num:"93", page:"59", when:"Susan finds the plug and pulls it. Blackout", what:"The fight music, the doll and the underscore die at once; the icebox winds down over three seconds into silence. Nothing else until the curtain call: the break-in, Sam and the police are played in silence.", scene:"cut", play:["fx_fridge_wind"], stop:["mus_doll","mus_v2","mus_v1"], lx:true, cut:true},
+    {id:"q090", num:"94", page:"Bows", when:"Curtain call", what:"No music. Birds, morning, as the lights come up on the bows.", scene:"bows"},
+    {id:"q091", num:"95", page:"Exit", when:"House lights up", what:"Exit music with the street under it; the birds stay faint.", scene:"exit"}
   ],
   /* The pad fires the same sounds out of order, without moving standby: an extra doorbell, a phone that rings early. */
   buttons: [
@@ -697,6 +697,9 @@ const $ = id => document.getElementById(id);
 function esc(s){return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
 function deep(o){return JSON.parse(JSON.stringify(o))}
 function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("on"); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("on"),2000); }
+/* SOUND numbers are frozen (Oct 23): a cue keeps its printed number whatever is cut or added around it; a new cue takes the previous number with a letter. */
+function cueNo(i){ const c=show.cues[i]; if(!c) return String(i+1); return c.num ? String(c.num) : String(i+1); }
+function subNo(i){ const base=cueNo(i); for(const L of "abcdefgh"){ if(!show.cues.some(x=>String(x.num)===base+L)) return base+L; } return base+"z"; }
 function entry(e){ return typeof e==="string" ? {id:e, delay:0, gain:0, dur:0, rate:0, fade:0, fadein:0} : {id:e.id, delay:+e.delay||0, gain:+e.gain||0, dur:+e.dur||0, rate:+e.rate||0, fade:+e.fade||0, fadein:+e.fadein||0}; }
 function lbl(id){ return show.sounds[id]?.label || id; }
 function sceneOf(id){ return show.scenes.find(s=>s.id===id); }
@@ -1048,7 +1051,7 @@ function fire(){
   const gb=$("goBtn"); gb.classList.remove("flash"); void gb.offsetWidth; gb.classList.add("flash");
   const c = show.cues[sb];
   if(ctx.state!=="running"){ ctx.resume().catch(()=>{}); }
-  const safe=(f)=>{ try{ f(); }catch(e){ log("Cue "+(sb+1)+" error: "+(e&&e.message||e)); } };
+  const safe=(f)=>{ try{ f(); }catch(e){ log("Cue "+cueNo(sb)+" error: "+(e&&e.message||e)); } };
   for(const e of (c.stop||[]).map(entry)) safe(()=>stopSound(e.id, e.fade||0.05));
   if(c.scene) safe(()=>goScene(c.scene, c.fade));
   for(const e of (c.play||[]).map(entry)) safe(()=>play(e.id, {delay:e.delay, gain:e.gain, dur:e.dur, rate:e.rate||undefined, fadein:e.fadein}));
@@ -1056,7 +1059,7 @@ function fire(){
   if(c.cut) safe(()=>{ throttle(null, 0.04); heartStop(0.04); });
   lastFired = sb; sb = Math.min(sb+1, show.cues.length);
   try{ localStorage.setItem("wud-pos", JSON.stringify({sb, t:Date.now()})); }catch(e){}
-  log(`GO  cue ${lastFired+1}  ${c.when}`);
+  log(`GO  cue ${cueNo(lastFired)}  ${c.when}`);
   if(isNumPage(c.page)) setPage(+c.page, "cues");
   renderCues(); renderStandby();
 }
@@ -1069,8 +1072,8 @@ function rehearseFrom(){
   for(const k of playing.keys()) stopKey(k, 0.3);
   if(sc) goScene(sc, 1); else { for(const L of show.layers) setLayer(L.id,0,1); currentScene=null; renderMixer(); }
   lastFired = sb-1; renderCues(); renderStandby();
-  toast(sc ? "Mix set to "+sceneOf(sc).name+". Standby cue "+(sb+1) : "Silence. Standby cue "+(sb+1));
-  log(`Rehearse from cue ${sb+1}`);
+  toast(sc ? "Mix set to "+sceneOf(sc).name+". Standby cue "+cueNo(sb) : "Silence. Standby cue "+cueNo(sb));
+  log(`Rehearse from cue ${cueNo(sb)}`);
 }
 
 /* page flipper */
@@ -1079,7 +1082,7 @@ function setPage(n, src){
   const inp = $("pgNum"); if(inp && document.activeElement!==inp) inp.value = n||"";
   const parts = [];
   for(const b of show.buttons){ const k=(b.pages||[]).filter(x=>x===n).length; if(k) parts.push(`<b>${esc(b.label)}</b>${k>1?" ×"+k:""}`); }
-  const cuesHere = show.cues.map((c,i)=>({c,i})).filter(x=>+x.c.page===n).map(x=>"cue "+(x.i+1));
+  const cuesHere = show.cues.map((c,i)=>({c,i})).filter(x=>+x.c.page===n).map(x=>"cue "+cueNo(x.i));
   const sec = sectionFor(n);
   const w = $("pgWhat");
   if(w){
@@ -1098,7 +1101,7 @@ function renderStandby(){
   $("goBtn").disabled=false;
   const c = show.cues[sb], sec = sectionFor(c.page);
   const pg = isNumPage(c.page) ? "p. "+c.page : c.page;
-  el.innerHTML = `<div class="lbl">Standby<span class="plain num" id="sinceGo" style="color:var(--faint);font-size:11px;letter-spacing:0;text-transform:none;font-weight:400"></span><span class="sec">${esc(sec?sec.name:"")}</span></div><div class="q">Cue ${sb+1}<span>${esc(pg)}</span></div><div class="when">${esc(c.when)}</div><div class="what">${esc(c.what)}</div>${chips(c)}`;
+  el.innerHTML = `<div class="lbl">Standby<span class="plain num" id="sinceGo" style="color:var(--faint);font-size:11px;letter-spacing:0;text-transform:none;font-weight:400"></span><span class="sec">${esc(sec?sec.name:"")}</span></div><div class="q">Cue ${cueNo(sb)}<span>${esc(pg)}</span></div><div class="when">${esc(c.when)}</div><div class="what">${esc(c.what)}</div>${chips(c)}`;
 }
 function renderCues(keepScroll){
   const ol = $("cueList"); ol.innerHTML="";
@@ -1108,7 +1111,7 @@ function renderCues(keepScroll){
     if(secName && secName!==lastSec){ const h=document.createElement("li"); h.className="sec-head"+(sec && page && page>=sec.from && page<=sec.to ? " onpage":""); h.textContent=secName; ol.appendChild(h); lastSec=secName; }
     const li = document.createElement("li");
     li.className = "cue" + (i<sb?" done":"") + (i===sb?" sb":"") + (i===lastFired?" last":"") + (page && +c.page===page?" onpage":"");
-    li.innerHTML = `<span class="n">${i+1}</span><span class="pg">${esc(isNumPage(c.page)?"p. "+c.page:c.page)}</span><div class="t"><b>${esc(c.when)}</b><div>${esc(c.what)}</div>${chips(c)}</div>`;
+    li.innerHTML = `<span class="n">${cueNo(i)}</span><span class="pg">${esc(isNumPage(c.page)?"p. "+c.page:c.page)}</span><div class="t"><b>${esc(c.when)}</b><div>${esc(c.what)}</div>${chips(c)}</div>`;
     li.addEventListener("click",()=>{ sb=i; if(isNumPage(c.page)) setPage(+c.page,"cues"); renderCues(); renderStandby(); });
     ol.appendChild(li);
   });
@@ -1220,7 +1223,7 @@ let lastLive = "";
 setInterval(()=>{ const sig=JSON.stringify(liveLevels)+[...playing.keys()].join()+(heartOn?"h"+heartBpm():""); if(sig!==lastLive){ lastLive=sig; if(ctx) renderLive(); } }, 300);
 setInterval(()=>{ const d=new Date(); $("clock").textContent = d.toTimeString().slice(0,5);
   const sg=$("sinceGo"); if(sg && lastGoWall){ const t=Math.floor((Date.now()-lastGoWall)/1000); sg.textContent = `last GO ${Math.floor(t/60)}:${String(t%60).padStart(2,"0")} ago`; }
-  document.title = (ctx && sb<show.cues.length) ? `Q${sb+1} standby · Wait Until Dark` : "Wait Until Dark Sound Board";
+  document.title = (ctx && sb<show.cues.length) ? `Q${cueNo(sb)} standby · Wait Until Dark` : "Wait Until Dark Sound Board";
 }, 1000);
 window.addEventListener("beforeunload", e=>{ if(ctx && (playing.size || Object.values(liveLevels).some(v=>v>0))){ e.preventDefault(); e.returnValue=""; } });
 
@@ -1243,7 +1246,7 @@ function renderCueEditor(){
         <select data-add="${i}:${kind}"><option value="">+ add</option>${Object.keys(show.sounds).map(id=>`<option value="${id}">${esc(show.sounds[id].label)}</option>`).join("")}</select></div>
         ${arr.map((e,j)=> openChip===`${i}:${kind}:${j}` ? `<div class="mini">delay <input type="number" step="0.5" min="0" value="${e.delay}" data-dl="${i}:${kind}:${j}"> s &nbsp; level <input type="number" step="1" min="-30" max="12" value="${e.gain}" data-gn="${i}:${kind}:${j}"> dB</div>` : "").join("")}`;
     };
-    row.innerHTML = `<span class="n">${i+1}</span>
+    row.innerHTML = `<span class="n">${cueNo(i)}</span>
       <input type="text" value="${esc(c.page)}" data-f="page" aria-label="Page">
       <div><input type="text" value="${esc(c.when)}" data-f="when" aria-label="When"><label class="mini"><input type="checkbox" data-f="lx" ${c.lx?"checked":""} style="width:auto"> with lights</label></div>
       <input type="text" value="${esc(c.what)}" data-f="what" aria-label="What we hear">
@@ -1270,7 +1273,7 @@ function renderCueEditor(){
       c[kind][+j] = (e.delay||e.gain) ? e : e.id; save(); renderCueEditor(); renderCues(true); renderStandby();
     }));
     row.querySelector("[data-del]").addEventListener("click",()=>{ show.cues.splice(i,1); if(sb>show.cues.length) sb=show.cues.length; save(); renderCueEditor(); renderCues(); renderStandby(); });
-    row.querySelector("[data-ins]").addEventListener("click",()=>{ show.cues.splice(i+1,0,{id:"c"+Date.now().toString(36), page:c.page, when:"New cue", what:""}); save(); renderCueEditor(); renderCues(); renderStandby(); });
+    row.querySelector("[data-ins]").addEventListener("click",()=>{ show.cues.splice(i+1,0,{id:"c"+Date.now().toString(36), num:subNo(i), page:c.page, when:"New cue", what:""}); save(); renderCueEditor(); renderCues(); renderStandby(); });
     row.querySelectorAll("[data-mv]").forEach(b=>b.addEventListener("click",()=>{ const j=i+(+b.dataset.mv); if(j<0||j>=show.cues.length) return; [show.cues[i],show.cues[j]]=[show.cues[j],show.cues[i]]; save(); renderCueEditor(); renderCues(); renderStandby(); }));
   });
   renderButtonEditor();
@@ -1303,7 +1306,7 @@ $("copySheetBtn").addEventListener("click", async()=>{
   const lines = ["WAIT UNTIL DARK  ·  SOUND CUES  ·  Redline Performing Arts", ""];
   let lastSec=null;
   show.cues.forEach((c,i)=>{ const sec=sectionFor(c.page); const nm=sec?sec.name:(isNumPage(c.page)?"":(/pre/i.test(c.page)?"Pre-show":"Curtain call")); if(nm && nm!==lastSec){ lines.push(nm.toUpperCase()); lastSec=nm; }
-    lines.push(`SQ ${String(i+1).padStart(2)}  p.${String(c.page).padEnd(5)} ${c.lx?"[with LX] ":""}${c.when}`); lines.push(`        ${c.what}  (${cueDoes(c).map(d=>d.t).join("; ")})`); });
+    lines.push(`SQ ${cueNo(i).padStart(3)}  p.${String(c.page).padEnd(5)} ${c.lx?"[with LX] ":""}${c.when}`); lines.push(`        ${c.what}  (${cueDoes(c).map(d=>d.t).join("; ")})`); });
   lines.push("", "BUTTONS (pressed when called)"); show.buttons.forEach(b=>lines.push(`  ${b.key}  ${b.label.padEnd(10)} ${b.note||""}${b.pages&&b.pages.length?"  p. "+[...new Set(b.pages)].join(", "):""}`));
   const txt = lines.join("\n");
   try{ await navigator.clipboard.writeText(txt); toast("Cue sheet copied, paste it into a doc"); }catch(e){ $("ioBox").hidden=false; $("ioText").value=txt; showTab("setup"); toast("Copy the text in the box"); }
