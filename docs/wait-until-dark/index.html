@@ -424,8 +424,8 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
    ============================================================ */
 const BASE = {
   version: 2,
-  rev: 36,
-  stamp: "2026-10-23d",
+  rev: 37,
+  stamp: "2026-10-23e",
   settings: {master:0, duck:3, breathe:true, midi:{}, life:40, heart:72},
   sections: [
     {name:"Pre-show", from:0, to:6},
@@ -473,7 +473,7 @@ const BASE = {
     fx_fridge:    {label:"Icebox hum (loop)",          group:"Atmosphere",      pan:0.7,   gain:0,  space:"dry",  duck:0},
     amb_hum:      {label:"Scene 1 under (loop)",       group:"Atmosphere",      pan:0,     gain:-4, space:"dry",  duck:0},
     amb_city:     {label:"City, wet night (loop)",     group:"Atmosphere",      pan:0.45,  gain:0,  space:"dry",  duck:0},
-    fx_doll_tease:{label:"Doll notes, a distant memory (over the under)", group:"Score", pan:0.1, gain:-36, space:"dry", duck:1, vary:true},
+    fx_doll_tease:{label:"Doll notes, a distant memory (over the under)", group:"Score", pan:0.1, gain:-20, space:"dry", duck:1, vary:true},
     fx_tap:       {label:"Faucet on and off (sink)",   group:"Effects",         pan:0.55,  gain:-14, space:"room", duck:0, vary:true},
     fx_wash:      {label:"Faucet running, washing (loop)", group:"Effects",    pan:0.55,  gain:-16, space:"room", duck:0, loop:true},
     fx_bottles:   {label:"Bottles knocked over (bedroom)", group:"Effects",     pan:-0.6,  gain:-12, space:"room", duck:0, vary:true},
@@ -757,7 +757,7 @@ function applyShowFile(obj, persist=true){
 }
 /* bring a show saved by an older build up to date, touching only what the operator never changed */
 function migrate(from){
-  if(from < 36){
+  if(from < 37){
     const keepLife = show.settings.life, keepHeart = show.settings.heart;
     show.layers = deep(BASE.layers); show.scenes = deep(BASE.scenes); show.cues = deep(BASE.cues); show.drops = deep(BASE.drops); show.sections = deep(BASE.sections);
     for(const b of BASE.buttons) if(!show.buttons.some(x=>x.sound===b.sound)) show.buttons.push(deep(b));

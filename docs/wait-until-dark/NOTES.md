@@ -39,6 +39,7 @@ The Jeffrey Hatcher adaptation (Dramatists Play Service; Susan, Mike, Sam, Carli
 - Oct 23 evening (David, after the run): the doll tune (both lengths), the doll notes and every phone sound (the rings, the two-ring signal, the emergency alert) are cut a further 10 dB on top of the Oct 21 cut: doll -18, doll notes -36, rings -26, alert -23. Buzzer, icebox and the rest untouched.
 - Oct 23 evening (David): nothing after the plug. The break-in, Sam's music and the police siren with the street (the old 94, 95, 96) are cut, with their two scenes and two sounds; after the icebox winds down the stage is silent until the curtain call (birds). 95 GOs.
 - Oct 23 evening (David): the doll's full tune is -22 dB and the first-notes version -18 dB, both placed 75% into the left speaker (the doll sits stage left).
+- Oct 23 evening (David): the doll notes, the distant memory (cue 9 and the D key), are -20 dB.
 
 ## Operator keys
 Space GO. 1 to 0 buttons (9 flourish, 0 hit). P punctuation. D doll notes. K the stab (cuts heartbeat and tension). H heartbeat, with , and . for pace. = and - tension. [ ] script page. Esc fade everything.
