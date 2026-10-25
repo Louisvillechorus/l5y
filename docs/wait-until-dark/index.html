@@ -424,8 +424,8 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
    ============================================================ */
 const BASE = {
   version: 2,
-  rev: 40,
-  stamp: "2026-10-25",
+  rev: 41,
+  stamp: "2026-10-25b",
   settings: {master:0, duck:3, breathe:true, midi:{}, life:40, heart:72},
   sections: [
     {name:"Pre-show", from:0, to:6},
@@ -538,6 +538,7 @@ const BASE = {
   scenes: [
     {id:"pre",     name:"Pre-show",             fade:5,    levels:{music:62, street:40}},
     {id:"s11",     name:"House to half",        fade:8,    levels:{street:40}},
+    {id:"preback", name:"Music back after the call", fade:6, levels:{music:62, street:40}},
     {id:"fridge",  name:"Sc 1 at rise: icebox", fade:0.1,  levels:{street:40, under:55, fridge:65}},
     {id:"s11b",    name:"Sc 1 settles",         fade:3,    levels:{street:40, under:55, fridge:40}},
     {id:"s11c",    name:"Sc 1: just the street", fade:4,    levels:{street:40}},
@@ -581,6 +582,7 @@ const BASE = {
     {id:"q001", num:"1", page:"Pre", when:"House opens", what:"Warm, comfortable house music over a quiet night street. Nothing is wrong. The street drops slider can come up here.", scene:"pre"},
     {id:"q002", num:"2", page:"Pre", when:"House to half", what:"Music fades out and the night street comes up to take its place. We are outside now, on the way to the house.", scene:"s11"},
     {id:"q003", num:"3", page:"Pre", when:"Two minutes to curtain (SM calls it)", what:"The announcement, with the street kept under it the whole way.", play:["ann_welcome"]},
+    {id:"q003b", num:"3a", page:"Pre", when:"The announcement is over", what:"The house music fades back in over the street and stays until the lights go down; the at-rise cue takes it out.", scene:"preback"},
     {id:"q010", num:"4", page:"7",  when:"Lights up, Act One Scene 1 (the icebox is humming)", what:"The icebox hum, loud, and under it the Scene 1 under: a low, unplaceable drone that runs the whole scene.", scene:"fridge", lx:true},
     {id:"q011", num:"5", page:"7",  when:"\"The sliver of light from under the door goes out\" (Carlino unscrews the hall bulb)", what:"The bulb screwed out of the hall socket. No street door for him; his footstep is live.", play:["fx_bulb_in"], prac:true},
     {id:"q012", num:"6", page:"8",  when:"Carlino puts the meatloaf back in the icebox (Roat at the street door)", what:"The street door, GO on the meatloaf going back.", play:["fx_door"], prac:true},
@@ -758,7 +760,7 @@ function applyShowFile(obj, persist=true){
 }
 /* bring a show saved by an older build up to date, touching only what the operator never changed */
 function migrate(from){
-  if(from < 40){
+  if(from < 41){
     const keepLife = show.settings.life, keepHeart = show.settings.heart;
     show.layers = deep(BASE.layers); show.scenes = deep(BASE.scenes); show.cues = deep(BASE.cues); show.drops = deep(BASE.drops); show.sections = deep(BASE.sections);
     for(const b of BASE.buttons) if(!show.buttons.some(x=>x.sound===b.sound)) show.buttons.push(deep(b));
@@ -902,6 +904,7 @@ function startLayer(L){
 }
 function releaseIdle(){
   if(!ctx) return;
+  const last = show.cues[lastFired]; if(last && last.page==="Pre") return;   // still in the pre-show: the bed may be asked for again in a moment
   for(const L of show.layers){
     const snd = show.sounds[L.sound]; if(!snd || !snd.release) continue;
     if((liveLevels[L.id]||0) > 0 || !layerNodes[L.id]) continue;
