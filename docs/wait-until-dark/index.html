@@ -424,8 +424,8 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
    ============================================================ */
 const BASE = {
   version: 2,
-  rev: 38,
-  stamp: "2026-10-23f",
+  rev: 39,
+  stamp: "2026-10-24",
   settings: {master:0, duck:3, breathe:true, midi:{}, life:40, heart:72},
   sections: [
     {name:"Pre-show", from:0, to:6},
@@ -463,7 +463,6 @@ const BASE = {
     fx_theremin:  {label:"Theremin",                   group:"Score",           pan:-0.2,  gain:-3, space:"room", duck:2, vary:true},
     fx_punct:     {label:"Punctuation (metal hit)",    group:"Score",           pan:0,     gain:0,  space:"room", duck:6, vary:true},
     ann_welcome:  {label:"Pre-show announcement",      group:"Music and voice", pan:0,     gain:0,  space:"dry",  duck:4},
-    ann_two:      {label:"Intermission: two minutes",   group:"Music and voice", pan:0,     gain:0,  space:"dry",  duck:9},
     mus_doll:     {label:"Doll's tune, full",          group:"Music and voice", pan:-0.75, gain:-22,  space:"room", duck:2},
     mus_doll_short:{label:"Doll's tune, first notes",  group:"Music and voice", pan:-0.75, gain:-18,  space:"room", duck:0},
     amb_street:   {label:"Night street (loop)",        group:"Atmosphere",      pan:0.45,  gain:0,  space:"dry",  duck:0},
@@ -498,7 +497,7 @@ const BASE = {
     fx_ice_hit:   {label:"Icebox hit: violin stab and scraped strings", group:"Score", pan:0, gain:-1, space:"room", duck:3, vary:true},
     fx_fl_violin: {label:"Flourish: violin stab",      group:"Score",           pan:0,     gain:-1, space:"room", duck:3, vary:true},
     fx_fl_piano:  {label:"Flourish: short key, held key", group:"Score",        pan:0.1,   gain:-8, space:"hall", duck:2, vary:true},
-    fx_breaker:   {label:"Breaker flips off",           group:"Effects",         pan:0.15,  gain:-12, space:"room", duck:0, vary:true},
+    fx_breaker:   {label:"Breaker flip",           group:"Effects",         pan:0.15,  gain:-12, space:"room", duck:0, vary:true},
     fx_fl_metal:  {label:"Flourish: metal scrape",     group:"Score",           pan:-0.2,  gain:-2, space:"hall", duck:3, vary:true},
     fx_fl_rattle: {label:"Flourish: rattlesnake",      group:"Score",           pan:0.2,   gain:-2, space:"room", duck:3, vary:true},
     fx_fl_cluster:{label:"Flourish: piano cluster (the hit)", group:"Score",    pan:0,     gain:0,  space:"room", duck:4, vary:true},
@@ -619,7 +618,6 @@ const BASE = {
     {id:"q037b", num:"39", page:"32", when:"Roat drops the phone, runs up the steps and out", what:"The street door closes behind him. He runs past the window.", play:["fx_door"], prac:true},
     {id:"q038", num:"40", page:"33", when:"Susan rushes into the bedroom and knocks over bottles (visual: SM calls it)", what:"Bottles, off, in the bedroom.", play:["fx_bottles"], prac:true},
     {id:"q039", num:"41", page:"34", when:"Mike pulls the blinds once, \"shunk\". End of Act One", what:"Intermission music: a slow dark piano that settles into a key and then loses it, over and over, rain faint under. Out with the lights.", scene:"inter", play:["tex_change"], lx:true},
-    {id:"q040", num:"42", page:"35", when:"Two minutes to Act Two (SM calls it)", what:"The intermission announcement, over the music.", play:["ann_two"]},
     {id:"q040m", num:"43", page:"35", when:"The Money Minute: the speaker picks up the mic (SM calls it)", what:"The intermission music dips right down under the speaker.", scene:"money"},
     {id:"q040s", num:"44", page:"35", when:"The speaker cues the song", what:"The song, on its own: the intermission music and the rain go out as it starts.", scene:"silent", play:["mus_money"]},
     {id:"q040x", num:"45", page:"35", when:"The song is over for us (SM calls it)", what:"The song fades out over six seconds. Silence until Act Two.", stop:[{id:"mus_money", fade:6}]},
@@ -649,6 +647,7 @@ const BASE = {
     {id:"q063b2", num:"69", page:"49", when:"\"Bathroom out!\"", what:"Breaker flips off.", play:["fx_breaker"], prac:true},
     {id:"q063b3", num:"70", page:"49", when:"\"Ceiling out!\"", what:"Breaker flips off.", play:["fx_breaker"], prac:true},
     {id:"q063b4", num:"71", page:"49", when:"\"Lamp out!\"", what:"Breaker flips off.", play:["fx_breaker"], prac:true},
+    {id:"q063b4a", num:"71a", page:"49", when:"Susan screws the lamp fuse back in: \"The table lamp comes back on\"", what:"Breaker flips on.", play:["fx_breaker"], prac:true},
     {id:"q063b5", num:"72", page:"49", when:"\"Wall lights out.\"", what:"Breaker flips off.", play:["fx_breaker"], prac:true},
     {id:"q064", num:"73", page:"50", when:"\"Then there's a bang and the light goes out\" (Gloria, after three swings at it)", what:"Glass, off in the hall.", play:["fx_glass"], prac:true},
     {id:"q065", num:"74", page:"50", when:"\"Another bang and the hall is completely dark\"", what:"Glass, off.", play:["fx_glass"], prac:true},
@@ -758,16 +757,16 @@ function applyShowFile(obj, persist=true){
 }
 /* bring a show saved by an older build up to date, touching only what the operator never changed */
 function migrate(from){
-  if(from < 38){
+  if(from < 39){
     const keepLife = show.settings.life, keepHeart = show.settings.heart;
     show.layers = deep(BASE.layers); show.scenes = deep(BASE.scenes); show.cues = deep(BASE.cues); show.drops = deep(BASE.drops); show.sections = deep(BASE.sections);
     for(const b of BASE.buttons) if(!show.buttons.some(x=>x.sound===b.sound)) show.buttons.push(deep(b));
     show.buttons = BASE.buttons.map(b => show.buttons.find(x=>x.sound===b.sound) || deep(b));
     for(const id in BASE.sounds) if(!show.sounds[id]) show.sounds[id] = deep(BASE.sounds[id]);
-    for(const id of ["fx_cane","fx_fridge","fx_fridge_off","fx_alley","fx_fl_piano","fx_doll_tease","fx_fl_metal","drp_car","drp_horn","drp_dog","drp_bus","drp_siren"]) if(show.sounds[id] && BASE.sounds[id]) show.sounds[id].label = BASE.sounds[id].label;
+    for(const id of ["fx_cane","fx_fridge","fx_fridge_off","fx_alley","fx_fl_piano","fx_doll_tease","fx_fl_metal","fx_breaker","drp_car","drp_horn","drp_dog","drp_bus","drp_siren"]) if(show.sounds[id] && BASE.sounds[id]) show.sounds[id].label = BASE.sounds[id].label;
     for(const id of ["fx_fl_metal","fx_doll_tease","fx_phone","fx_two_rings","fx_truck","mus_doll_short","mus_doll","fx_tap","fx_wash","fx_bottles","fx_breaker","drp_car","drp_horn","drp_dog","drp_bus","drp_siren","mus_v1","mus_v2"]) if(show.sounds[id] && BASE.sounds[id]){ show.sounds[id].gain = BASE.sounds[id].gain; show.sounds[id].space = BASE.sounds[id].space; show.sounds[id].loop = BASE.sounds[id].loop; show.sounds[id].loopStart = BASE.sounds[id].loopStart; }
     for(const id of ["mus_doll","mus_doll_short"]) if(show.sounds[id] && BASE.sounds[id]) show.sounds[id].pan = BASE.sounds[id].pan;
-    delete show.sounds.mus_stab; delete show.sounds.fx_breakin; delete show.sounds.fx_siren; delete show.sounds.fx_sos;
+    delete show.sounds.mus_stab; delete show.sounds.fx_breakin; delete show.sounds.fx_siren; delete show.sounds.fx_sos; delete show.sounds.ann_two;
     show.settings.life = keepLife; show.settings.heart = keepHeart;
   }
   if(from < 3){

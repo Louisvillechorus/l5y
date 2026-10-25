@@ -146,12 +146,6 @@
   "sounds/ann_joseph_3_m.mp3",
   "sounds/ann_joseph_4_m.mp3"
  ],
- "ann_two": [
-  "sounds/ann_two_1_m.mp3",
-  "sounds/ann_two_2_m.mp3",
-  "sounds/ann_two_3_m.mp3",
-  "sounds/ann_two_4_m.mp3"
- ],
  "fx_slam": [
   "sounds/fx_slam_1.mp3",
   "sounds/fx_slam_2.mp3",
@@ -269,12 +263,6 @@
    "Take 14",
    "Take 15",
    "Take 16"
-  ],
-  "ann_two": [
-   "Take 1",
-   "Take 2",
-   "Take 3",
-   "Take 4"
   ],
   "fx_heart": [
    "Take 1",
