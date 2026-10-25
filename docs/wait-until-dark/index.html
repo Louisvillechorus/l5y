@@ -424,8 +424,8 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
    ============================================================ */
 const BASE = {
   version: 2,
-  rev: 39,
-  stamp: "2026-10-24",
+  rev: 40,
+  stamp: "2026-10-25",
   settings: {master:0, duck:3, breathe:true, midi:{}, life:40, heart:72},
   sections: [
     {name:"Pre-show", from:0, to:6},
@@ -457,7 +457,7 @@ const BASE = {
     {id:"tension", label:"Tension",       sound:"tex_tension", manual:true}
   ],
   sounds: {
-    mus_house:    {label:"House music (loop)",        group:"Music and voice", pan:0,     gain:0,  space:"dry",  duck:0},
+    mus_house:    {label:"House music (loop)",        group:"Music and voice", pan:0,     gain:0,  space:"dry",  duck:0, release:true},
     tex_change:   {label:"Scene-change texture",       group:"Score",           pan:0,     gain:0,  space:"dry",  duck:4},
     tex_strings:  {label:"Scraped strings",            group:"Score",           pan:0.2,   gain:-2, space:"room", duck:2, vary:true},
     fx_theremin:  {label:"Theremin",                   group:"Score",           pan:-0.2,  gain:-3, space:"room", duck:2, vary:true},
@@ -752,12 +752,13 @@ function applyShowFile(obj, persist=true){
     if(obj.pans) for(const k in obj.pans) if(show.sounds[k]) show.sounds[k].pan=+obj.pans[k]||0;
   }
   if(obj.choice) choice = obj.choice;
+  if((+obj.rev||2) < 40 && choice.mus_house!==undefined && choice.mus_house!=="custom") delete choice.mus_house;   // the new house bed is take 1 of a longer list
   baseStamp = obj.base || BASE.stamp;
   if(persist) save();
 }
 /* bring a show saved by an older build up to date, touching only what the operator never changed */
 function migrate(from){
-  if(from < 39){
+  if(from < 40){
     const keepLife = show.settings.life, keepHeart = show.settings.heart;
     show.layers = deep(BASE.layers); show.scenes = deep(BASE.scenes); show.cues = deep(BASE.cues); show.drops = deep(BASE.drops); show.sections = deep(BASE.sections);
     for(const b of BASE.buttons) if(!show.buttons.some(x=>x.sound===b.sound)) show.buttons.push(deep(b));
@@ -766,6 +767,7 @@ function migrate(from){
     for(const id of ["fx_cane","fx_fridge","fx_fridge_off","fx_alley","fx_fl_piano","fx_doll_tease","fx_fl_metal","fx_breaker","drp_car","drp_horn","drp_dog","drp_bus","drp_siren"]) if(show.sounds[id] && BASE.sounds[id]) show.sounds[id].label = BASE.sounds[id].label;
     for(const id of ["fx_fl_metal","fx_doll_tease","fx_phone","fx_two_rings","fx_truck","mus_doll_short","mus_doll","fx_tap","fx_wash","fx_bottles","fx_breaker","drp_car","drp_horn","drp_dog","drp_bus","drp_siren","mus_v1","mus_v2"]) if(show.sounds[id] && BASE.sounds[id]){ show.sounds[id].gain = BASE.sounds[id].gain; show.sounds[id].space = BASE.sounds[id].space; show.sounds[id].loop = BASE.sounds[id].loop; show.sounds[id].loopStart = BASE.sounds[id].loopStart; }
     for(const id of ["mus_doll","mus_doll_short"]) if(show.sounds[id] && BASE.sounds[id]) show.sounds[id].pan = BASE.sounds[id].pan;
+    if(show.sounds.mus_house){ show.sounds.mus_house.release = true; }
     delete show.sounds.mus_stab; delete show.sounds.fx_breakin; delete show.sounds.fx_siren; delete show.sounds.fx_sos; delete show.sounds.ann_two;
     show.settings.life = keepLife; show.settings.heart = keepHeart;
   }
@@ -888,6 +890,32 @@ function startLayers(){
     layerNodes[L.id] = {src, gain:g};
   }
 }
+/* a big bed (release:true) is let go once its level has sat at zero past the fade, and decoded again if a scene asks for it later */
+let releaseTimer = null;
+function startLayer(L){
+  const buf = buffers[L.sound]; if(!buf) return;
+  const old = layerNodes[L.id]; const cur = old ? old.gain.gain.value : 0; if(old){ try{old.src.stop()}catch(e){} }
+  const src = ctx.createBufferSource(); src.buffer = buf; src.loop = true;
+  const g = chain(show.sounds[L.sound], atmosBus); g.gain.value = cur; src.connect(g);
+  src.start(ctx.currentTime, Math.random()*Math.max(0, buf.duration-1));
+  layerNodes[L.id] = {src, gain:g};
+}
+function releaseIdle(){
+  if(!ctx) return;
+  for(const L of show.layers){
+    const snd = show.sounds[L.sound]; if(!snd || !snd.release) continue;
+    if((liveLevels[L.id]||0) > 0 || !layerNodes[L.id]) continue;
+    try{ layerNodes[L.id].src.stop(); }catch(e){}
+    delete layerNodes[L.id]; delete buffers[L.sound];
+    log("Released "+lbl(L.sound)+" to free memory (it reloads if a scene asks for it)");
+  }
+}
+async function ensureLayer(L, v, fade){
+  if(buffers[L.sound]) { if(!layerNodes[L.id]) startLayer(L); return; }
+  try{ await loadSound(L.sound); }catch(e){ log("Could not reload "+lbl(L.sound)); return; }
+  if(!buffers[L.sound]) return;
+  startLayer(L); setLayer(L.id, liveLevels[L.id] ?? v, fade);
+}
 function layerGainTarget(id, v){ const L = show.layers.find(l=>l.id===id); return lvlToGain(v) * dbToGain(show.sounds[L.sound].gain||0); }
 function setLayer(id, v, fade){
   liveLevels[id] = v; const n = layerNodes[id]; if(!n) return;
@@ -898,7 +926,8 @@ function setLayer(id, v, fade){
 function goScene(sceneId, fadeOverride){
   const s = sceneOf(sceneId); if(!s) return;
   const f = (fadeOverride!==undefined && fadeOverride!==null && fadeOverride!=="") ? +fadeOverride : s.fade;
-  for(const L of show.layers){ if(L.manual && s.levels[L.id]===undefined) continue; const lf=(s.fades && s.fades[L.id]!==undefined && (fadeOverride===undefined||fadeOverride===null||fadeOverride==="")) ? +s.fades[L.id] : f; setLayer(L.id, s.levels[L.id]||0, lf); }
+  for(const L of show.layers){ if(L.manual && s.levels[L.id]===undefined) continue; const lf=(s.fades && s.fades[L.id]!==undefined && (fadeOverride===undefined||fadeOverride===null||fadeOverride==="")) ? +s.fades[L.id] : f; const v=s.levels[L.id]||0; if(v>0 && !layerNodes[L.id] && show.sounds[L.sound]?.release){ liveLevels[L.id]=v; ensureLayer(L, v, lf); continue; } setLayer(L.id, v, lf); }
+  clearTimeout(releaseTimer); releaseTimer = setTimeout(releaseIdle, (f+25)*1000);
   currentScene = s.id; sceneDirty=false; scheduleDrops(true); renderMixer();
 }
 

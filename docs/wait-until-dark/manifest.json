@@ -18,6 +18,7 @@
   "sounds/fx_fridge_4.mp3"
  ],
  "mus_house": [
+  "sounds/mus_house_lofi_1.mp3",
   "sounds/mus_house_1_m.mp3",
   "sounds/mus_house_2_m.mp3",
   "sounds/mus_house_3_m.mp3",
@@ -196,6 +197,7 @@
  ],
  "_names": {
   "mus_house": [
+   "Lo-fi jazz, 15 min (loops)",
    "Full bed (3.5 min)",
    "Loop 1",
    "Loop 2",
