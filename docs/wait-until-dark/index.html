@@ -424,8 +424,8 @@ textarea.io{width:100%;min-height:120px;font-family:var(--mono);font-size:12px}
    ============================================================ */
 const BASE = {
   version: 2,
-  rev: 41,
-  stamp: "2026-10-25b",
+  rev: 42,
+  stamp: "2026-10-26",
   settings: {master:0, duck:3, breathe:true, midi:{}, life:40, heart:72},
   sections: [
     {name:"Pre-show", from:0, to:6},
@@ -673,7 +673,7 @@ const BASE = {
     {id:"q076b", num:"92", page:"58", when:"Roat lunges in from the bedroom and goes down on his knees, dragging himself toward her", what:"The Roat underscore fades out over eight seconds. Only the fight music is left, building to the plug.", stop:[{id:"mus_v1", fade:8}], prac:true},
     {id:"q077", num:"93", page:"59", when:"Susan finds the plug and pulls it. Blackout", what:"The fight music, the doll and the underscore die at once; the icebox winds down over three seconds into silence. Nothing else until the curtain call: the break-in, Sam and the police are played in silence.", scene:"cut", play:["fx_fridge_wind"], stop:["mus_doll","mus_v2","mus_v1"], lx:true, cut:true},
     {id:"q090", num:"94", page:"Bows", when:"Curtain call", what:"No music. Birds, morning, as the lights come up on the bows.", scene:"bows"},
-    {id:"q091", num:"95", page:"Exit", when:"House lights up", what:"Exit music with the street under it; the birds stay faint.", scene:"exit"}
+    {id:"q091", num:"95", page:"Exit", when:"House lights up", what:"The pre-show music again, with the street under it; the birds stay faint.", scene:"exit"}
   ],
   /* The pad fires the same sounds out of order, without moving standby: an extra doorbell, a phone that rings early. */
   buttons: [
@@ -760,7 +760,7 @@ function applyShowFile(obj, persist=true){
 }
 /* bring a show saved by an older build up to date, touching only what the operator never changed */
 function migrate(from){
-  if(from < 41){
+  if(from < 42){
     const keepLife = show.settings.life, keepHeart = show.settings.heart;
     show.layers = deep(BASE.layers); show.scenes = deep(BASE.scenes); show.cues = deep(BASE.cues); show.drops = deep(BASE.drops); show.sections = deep(BASE.sections);
     for(const b of BASE.buttons) if(!show.buttons.some(x=>x.sound===b.sound)) show.buttons.push(deep(b));
@@ -904,7 +904,7 @@ function startLayer(L){
 }
 function releaseIdle(){
   if(!ctx) return;
-  const last = show.cues[lastFired]; if(last && last.page==="Pre") return;   // still in the pre-show: the bed may be asked for again in a moment
+  const last = show.cues[lastFired]; if(last && (last.page==="Pre" || last.page==="Bows" || last.page==="Exit")) return;   // the pre-show and the curtain call both want the bed back within moments
   for(const L of show.layers){
     const snd = show.sounds[L.sound]; if(!snd || !snd.release) continue;
     if((liveLevels[L.id]||0) > 0 || !layerNodes[L.id]) continue;
@@ -912,6 +912,9 @@ function releaseIdle(){
     delete layerNodes[L.id]; delete buffers[L.sound];
     log("Released "+lbl(L.sound)+" to free memory (it reloads if a scene asks for it)");
   }
+}
+function preloadReleased(){   // the bows are the moment to bring the house bed back, so the exit music starts the instant it is asked for
+  for(const L of show.layers){ const snd=show.sounds[L.sound]; if(snd && snd.release && !buffers[L.sound]) ensureLayer(L, 0, 0.02); }
 }
 async function ensureLayer(L, v, fade){
   if(buffers[L.sound]) { if(!layerNodes[L.id]) startLayer(L); return; }
@@ -1085,6 +1088,7 @@ function fire(){
   const safe=(f)=>{ try{ f(); }catch(e){ log("Cue "+cueNo(sb)+" error: "+(e&&e.message||e)); } };
   for(const e of (c.stop||[]).map(entry)) safe(()=>stopSound(e.id, e.fade||0.05));
   if(c.scene) safe(()=>goScene(c.scene, c.fade));
+  if(c.page==="Bows" || c.page==="Exit") safe(preloadReleased);
   for(const e of (c.play||[]).map(entry)) safe(()=>play(e.id, {delay:e.delay, gain:e.gain, dur:e.dur, rate:e.rate||undefined, fadein:e.fadein}));
   if(c.heart) safe(()=>{ if(c.bpm) heartSet(c.bpm); if(!heartOn) heartStart(); });
   if(c.cut) safe(()=>{ throttle(null, 0.04); heartStop(0.04); });
