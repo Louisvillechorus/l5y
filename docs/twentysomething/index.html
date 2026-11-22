@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TwentySomething · Sound Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --bg:#0c0e11; --panel:#14171c; --panel2:#1b1f26; --line:#2a3039;
+    --text:#dde1e7; --dim:#8d95a1; --faint:#5c6470;
+    --go:#bfe3ff; --go-d:#7fa9c9; --go-ink:#06121c; --sb:#e8a33d; --live:#b39dff; --warn:#f0645a; --play:#58d68d;
+    --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+    --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--text);
+    font-family:var(--body);
+    -webkit-user-select:none;user-select:none}
+  body{display:grid;grid-template-rows:auto 1fr;overflow:hidden}
+  header{display:flex;align-items:center;gap:16px;padding:12px 24px;border-bottom:1px solid var(--line);background:var(--bg)}
+  .brand h1{font-family:var(--display);font-size:24px;letter-spacing:.02em;text-transform:uppercase;margin:0;font-weight:700;line-height:1}
+  .brand div{font-family:var(--display);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-top:3px}
+  header .sub{color:var(--dim);font-size:12px;border:1px solid var(--line);border-radius:999px;padding:5px 11px}
+  header .sp{flex:1}
+  header .clock{font-family:var(--mono);font-size:13px;color:var(--dim)}
+  .vol{display:flex;align-items:center;gap:8px;color:var(--dim);font-size:12px}
+  .vol input{width:140px;accent-color:var(--sb)}
+  .vol b{color:var(--text);font-variant-numeric:tabular-nums;width:38px;display:inline-block}
+  main{display:grid;grid-template-columns:minmax(380px,46%) 1fr;min-height:0}
+  /* left: control */
+  .ctl{padding:18px;display:flex;flex-direction:column;gap:14px;border-right:1px solid var(--line);min-height:0;overflow:auto}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+  .lbl{font-family:var(--display);font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-bottom:6px;display:flex;gap:8px;align-items:center}
+  .now .title{font-family:var(--display);font-size:32px;font-weight:700;line-height:1.1;text-transform:uppercase;letter-spacing:.01em}
+  .now .who{font-size:15px;color:var(--dim);margin-top:2px}
+  .now.idle .title{color:var(--faint)}
+  .big{font-family:var(--mono);font-size:54px;font-weight:500;font-variant-numeric:tabular-nums;letter-spacing:.02em;line-height:1;margin-top:10px}
+  .big small{font-size:16px;color:var(--dim);font-weight:500;margin-left:10px}
+  .bar{height:12px;background:#24242c;border-radius:6px;margin-top:12px;position:relative;cursor:pointer;overflow:hidden}
+  .bar i{position:absolute;left:0;top:0;bottom:0;background:var(--play);width:0}
+  .liveBanner{margin-top:12px;padding:10px 12px;border-radius:8px;background:rgba(179,157,255,.13);color:var(--live);font-family:var(--display);font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:18px;display:none}
+  .liveBanner.warn{background:rgba(240,100,90,.14);color:var(--warn)}
+  .sb .title{font-family:var(--display);font-size:28px;font-weight:700;color:var(--sb);text-transform:uppercase;letter-spacing:.01em}
+  .sb .who{font-size:14px;color:var(--dim);margin-top:2px}
+  .sb .kind{margin-top:8px;font-size:13px;color:var(--dim)}
+  .go{display:block;width:100%;height:150px;border:0;border-radius:10px;background:var(--go);color:var(--go-ink);
+      font-family:var(--display);font-size:72px;font-weight:700;letter-spacing:.08em;cursor:pointer;box-shadow:0 6px 0 var(--go-d)}
+  .go small{display:block;font-size:13px;letter-spacing:.14em;font-weight:600;opacity:.6;margin-top:-4px}
+  .go:active{transform:translateY(4px);box-shadow:0 2px 0 var(--go-d)}
+  .go[disabled]{background:var(--panel2);color:var(--faint);box-shadow:none;cursor:default}
+  .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+  .btn{height:56px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);color:var(--text);font-family:var(--display);font-size:19px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;cursor:pointer}
+  .btn:hover{border-color:#3a3a46}
+  .btn.stop{color:var(--warn)}
+  .btn kbd{display:block;font-size:10px;color:var(--dim);font-weight:500;margin-top:1px;font-family:var(--mono);text-transform:none;letter-spacing:0}
+  .keys{font-size:12px;color:var(--dim);line-height:1.7}
+  .keys kbd{background:var(--panel2);border:1px solid var(--line);border-radius:4px;padding:1px 6px;color:var(--text);font-family:var(--mono);font-size:11px}
+  /* right: running order */
+  .list{overflow:auto;min-height:0;padding:10px 0}
+  .cue{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;padding:10px 24px 10px 18px;border-left:4px solid transparent;cursor:pointer;border-bottom:1px solid #171a20}
+  .cue:hover{background:#111418}
+  .cue .n{font-family:var(--display);font-size:26px;font-weight:700;color:var(--dim);font-variant-numeric:tabular-nums;text-align:right}
+  .cue .t{font-family:var(--display);font-size:21px;font-weight:600;letter-spacing:.01em}
+  .cue .p{font-size:13px;color:var(--dim);margin-top:1px}
+  .cue .r{display:flex;align-items:center;gap:10px}
+  .tag{font-family:var(--display);font-size:13px;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:4px;font-weight:700;white-space:nowrap}
+  .tag.track{background:rgba(88,214,141,.12);color:var(--play)}
+  .tag.live{background:rgba(179,157,255,.13);color:var(--live)}
+  .tag.missing{background:rgba(240,100,90,.15);color:var(--warn)}
+  .dur{font-family:var(--mono);font-size:13px;color:var(--dim);font-variant-numeric:tabular-nums;width:44px;text-align:right}
+  .load{font-size:11px;color:var(--dim);background:none;border:1px solid var(--line);border-radius:5px;padding:3px 7px;cursor:pointer}
+  .load:hover{color:var(--text)}
+  .cue.done{opacity:.42}
+  .cue.standby{border-left-color:var(--sb);background:rgba(232,163,61,.07)}
+  .cue.standby .n{color:var(--sb)}
+  .cue.current{border-left-color:var(--play);background:rgba(88,214,141,.08);opacity:1}
+  .cue.current .n{color:var(--play)}
+  .cue.current.isLive{border-left-color:var(--live);background:rgba(179,157,255,.08)}
+  .cue.current.isLive .n{color:var(--live)}
+  .note{font-size:12px;color:var(--warn);margin-top:3px}
+  .pill{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--faint)}
+  .pill.ok{background:var(--play)} .pill.bad{background:var(--warn)}
+  .foot{font-size:11px;color:var(--faint);padding:8px 18px}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><h1>TwentySomething</h1><div>Sound board · The Broadway Theater</div></div>
+  <span class="sub">Sat Nov 28 · 7:00 PM</span>
+  <span class="sp"></span>
+  <span class="sub" id="loadStat">Loading tracks…</span>
+  <div class="vol">Master <input id="vol" type="range" min="0" max="100" value="100"><b id="volV">100%</b></div>
+  <span class="clock" id="clock"></span>
+</header>
+<main>
+  <section class="ctl">
+    <div class="card now idle" id="now">
+      <div class="lbl">Now</div>
+      <div class="title" id="nowTitle">Nothing playing</div>
+      <div class="who" id="nowWho">&nbsp;</div>
+      <div class="big" id="nowTime">--:--<small id="nowSub"></small></div>
+      <div class="bar" id="bar" title="Click to jump within the track"><i id="barFill"></i></div>
+      <div class="liveBanner" id="liveBanner"></div>
+    </div>
+    <div class="card sb">
+      <div class="lbl">Standby <span class="pill" id="sbPill"></span></div>
+      <div class="title" id="sbTitle">-</div>
+      <div class="who" id="sbWho">&nbsp;</div>
+      <div class="kind" id="sbKind"></div>
+    </div>
+    <button class="go" id="go">GO<small>SPACE BAR</small></button>
+    <div class="row3">
+      <button class="btn" id="pause">Pause<kbd>P</kbd></button>
+      <button class="btn" id="fade">Fade out<kbd>Esc</kbd></button>
+      <button class="btn stop" id="stop">Stop now<kbd>Shift + Esc</kbd></button>
+    </div>
+    <div class="keys">
+      <kbd>Space</kbd> GO &nbsp;·&nbsp; <kbd>↑</kbd> <kbd>↓</kbd> move standby &nbsp;·&nbsp; click any song to put it on standby<br>
+      GO while a track is playing fades it out and starts the standby. Tracks never auto-advance; each song waits for GO.<br>
+      Purple cues are live (piano, instruments, host): GO marks them current and plays nothing.
+    </div>
+  </section>
+  <section class="list" id="list"></section>
+</main>
+<input type="file" id="picker" accept="audio/*" hidden>
+<script>
+/* ---------- Running order ----------
+   kind: track | live | missing
+   start/end: seconds; trims leading silence and karaoke sound logos, and trailing silence */
+const CUES = [
+  {n:1,  who:"Aliyah",              title:"Opening / Welcome",                        kind:"live", liveLabel:"Host · no sound"},
+  {n:2,  who:"Kevin",               title:"Corner of the Sky · Pippin",               kind:"track", file:"tracks/02-corner-of-the-sky.mp3", start:0.44, end:193.6},
+  {n:3,  who:"Hallie",              title:"Vienna · Billy Joel",                      kind:"track", file:"tracks/03-vienna.mp3", start:0, end:193.9},
+  {n:4,  who:"Nyeema",              title:"A Million Dreams · The Greatest Showman",  kind:"track", file:"tracks/04-a-million-dreams.mp3", start:9.05, end:285.1},
+  {n:5,  who:"Jacob",               title:"First Began · PJ Morton",                  kind:"track", file:"tracks/05-first-began.mp3", start:0, end:233.9},
+  {n:6,  who:"Paris",               title:"As Soon as I Get Home · The Wiz",          kind:"missing", note:"No track received yet. Use Load to add it."},
+  {n:7,  who:"Em",                  title:"On My Own · Les Misérables",               kind:"track", file:"tracks/07-on-my-own.mp3", start:0.39, end:180.4},
+  {n:8,  who:"Shiah",               title:"The Worst · Jhené Aiko",                   kind:"track", file:"tracks/08-the-worst.mp3", start:0, end:252.4},
+  {n:9,  who:"Shauntrice",          title:"Song pending",                             kind:"missing", note:"Song TBC. Use Load to add the track."},
+  {n:10, who:"Meghan",              title:"Less · Olivia Rodrigo",                    kind:"live", liveLabel:"Live piano · no sound"},
+  {n:11, who:"Catherine",           title:"Flowers · Hadestown",                      kind:"track", file:"tracks/11-flowers.mp3", start:2.48, end:211.2},
+  {n:12, who:"Paris",               title:"Tell Him · Lauryn Hill",                   kind:"track", file:"tracks/12-tell-him.mp3", start:0.73},
+  {n:13, who:"Steele",              title:"Ordinary People · John Legend",            kind:"track", file:"tracks/13-ordinary-people.m4a", start:2.25, end:280.3},
+  {n:14, who:"Nyeema",              title:"Opportunity · Annie",                      kind:"track", file:"tracks/14-opportunity.mp3", start:3.11, end:184.8},
+  {n:15, who:"Paris & Nyeema",      title:"That’s Life · SMASH",                      kind:"track", file:"tracks/15-thats-life.mp3", start:1.36},
+  {n:16, who:"David",               title:"Song pending",                             kind:"live", liveLabel:"Self-managed · no sound"},
+  {n:17, who:"Shiah",               title:"I Like That · Janelle Monáe",              kind:"track", file:"tracks/17-i-like-that.mp3", start:0, end:214.0},
+  {n:18, who:"Jacob & group",       title:"Perfect People · The Walls Group",         kind:"track", file:"tracks/18-perfect-people.mp3", start:0, end:227.8},
+  {n:19, who:"Javon",               title:"Times Are Hard for Dreamers · Amélie",     kind:"track", file:"tracks/19-times-are-hard-for-dreamers.mp3", start:5.38},
+  {n:20, who:"Catherine & Meghan",  title:"Duet",                                     kind:"live", liveLabel:"Live instruments · no sound"},
+  {n:21, who:"Cooper",              title:"My Way · Frank Sinatra",                   kind:"track", file:"tracks/21-my-way.mp3", start:11.27},
+  {n:22, who:"Full cast",           title:"Finale B · RENT",                          kind:"track", file:"tracks/22-finale-b.mp3", start:1.11, end:160.3},
+];
+
+const $ = id => document.getElementById(id);
+const fmt = s => { if(!isFinite(s)||s<0) s=0; s=Math.round(s); return Math.floor(s/60)+":"+String(s%60).padStart(2,"0"); };
+let master = 1, standby = 0, current = -1, liveStart = 0, lastGo = 0, fading = null;
+
+/* ---------- Audio ---------- */
+function makeAudio(c, src){
+  if(c.audio){ c.audio.pause(); c.audio.src=""; }
+  const a = new Audio(); a.preload = "auto"; a.src = src;
+  c.audio = a; c.ready = false; c.failed = false;
+  a.addEventListener("canplaythrough", ()=>{ c.ready = true; render(); }, {once:true});
+  a.addEventListener("loadedmetadata", ()=>{ c.dur = a.duration; render(); });
+  a.addEventListener("error", ()=>{ c.failed = true; render(); });
+  a.addEventListener("ended", ()=>{ if(CUES[current]===c) finish(); });
+}
+CUES.forEach(c=>{ c.orig = {kind:c.kind, file:c.file, start:c.start, end:c.end, note:c.note}; if(c.kind==="track") makeAudio(c, c.file); });
+const playLen = c => { const e = c.end ?? c.dur ?? 0; return Math.max(0, e - (c.start||0)); };
+
+function fadeOut(c, ms, done){
+  const a = c.audio; if(!a){ done&&done(); return; }
+  const v0 = a.volume, t0 = performance.now();
+  const step = () => { const t = performance.now();
+    const k = Math.max(0, Math.min(1,(t-t0)/ms));
+    a.volume = Math.max(0, Math.min(1, v0*(1-k)));
+    if(k<1 && !a.paused) requestAnimationFrame(step);
+    else { a.pause(); a.volume = master; done&&done(); }
+  };
+  requestAnimationFrame(step);
+}
+
+function go(){
+  const now = performance.now();
+  if(now - lastGo < 600) return;            // double-tap guard
+  if(standby < 0 || standby >= CUES.length) return;
+  lastGo = now;
+  const prev = CUES[current];
+  const c = CUES[standby];
+  if(prev && prev !== c && prev.audio && !prev.audio.paused) fadeOut(prev, 1500);
+  current = standby;
+  c.played = true;
+  if(c.kind==="track" && c.audio){
+    const a = c.audio;
+    a.volume = master;
+    try{ a.currentTime = c.start||0; }catch(e){}
+    a.play().catch(()=>{});
+  } else {
+    liveStart = performance.now();
+  }
+  standby = current + 1 < CUES.length ? current + 1 : -1;
+  render(); scrollTo(current);
+}
+
+function finish(){ const c = CUES[current]; if(c && c.audio) c.audio.pause(); render(); }
+function stopNow(){ const c = CUES[current]; if(c && c.audio){ c.audio.pause(); c.audio.volume = master; } render(); }
+function fade(){ const c = CUES[current]; if(c && c.audio && !c.audio.paused) fadeOut(c, 2500, render); }
+function togglePause(){
+  const c = CUES[current]; if(!c || !c.audio) return;
+  const a = c.audio;
+  if(a.paused){ if(a.currentTime < (c.end ?? Infinity) - 0.2) a.play().catch(()=>{}); }
+  else a.pause();
+  render();
+}
+function setStandby(i){ standby = Math.max(0, Math.min(CUES.length-1, i)); render(); scrollTo(standby); }
+function scrollTo(i){ const el = document.querySelector(`.cue[data-i="${i}"]`); if(el) el.scrollIntoView({block:"nearest",behavior:"smooth"}); }
+
+/* ---------- Load / replace a track (saved on this computer) ---------- */
+let dbp = null;
+function db(){
+  if(dbp) return dbp;
+  dbp = new Promise((res,rej)=>{
+    try{ const r = indexedDB.open("twentysomething-board",1);
+      r.onupgradeneeded = ()=> r.result.createObjectStore("tracks");
+      r.onsuccess = ()=> res(r.result); r.onerror = ()=> rej(r.error);
+    }catch(e){ rej(e); }
+  });
+  return dbp;
+}
+async function saveBlob(n, file){
+  try{ const d = await db(); await new Promise((res,rej)=>{ const tx=d.transaction("tracks","readwrite"); tx.objectStore("tracks").put({blob:file,name:file.name},n); tx.oncomplete=res; tx.onerror=()=>rej(tx.error); }); return true; }
+  catch(e){ return false; }
+}
+async function restoreSaved(){
+  try{ const d = await db();
+    const all = await new Promise((res)=>{ const out={}; const tx=d.transaction("tracks"); const cur=tx.objectStore("tracks").openCursor();
+      cur.onsuccess=e=>{ const k=e.target.result; if(k){ out[k.key]=k.value; k.continue(); } else res(out); }; cur.onerror=()=>res(out); });
+    for(const [n,v] of Object.entries(all)) applyFile(CUES.find(c=>c.n==n), v.blob, v.name, true);
+  }catch(e){}
+}
+function applyFile(c, blob, name, saved){
+  if(!c) return;
+  c.kind = "track"; c.start = 0; c.end = undefined; c.dur = undefined;
+  c.loadedName = name; c.note = saved ? "Loaded on this computer: "+name : "Loaded for this session only: "+name;
+  makeAudio(c, URL.createObjectURL(blob));
+}
+async function revert(c){
+  try{ const d = await db(); await new Promise(res=>{ const tx=d.transaction("tracks","readwrite"); tx.objectStore("tracks").delete(c.n); tx.oncomplete=res; tx.onerror=res; }); }catch(e){}
+  Object.assign(c, c.orig); c.loadedName = undefined; c.dur = undefined;
+  if(c.kind==="track") makeAudio(c, c.file); else { if(c.audio){ c.audio.pause(); } c.audio = null; }
+  render();
+}
+let pickFor = null;
+$("picker").addEventListener("change", async e=>{
+  const f = e.target.files[0]; e.target.value = "";
+  if(!f || !pickFor) return;
+  const ok = await saveBlob(pickFor.n, f);
+  applyFile(pickFor, f, f.name, ok); render();
+});
+
+/* ---------- Render ---------- */
+function render(){
+  const list = $("list");
+  list.innerHTML = CUES.map((c,i)=>{
+    const cls = ["cue"];
+    if(i===current) cls.push("current"); if(i===current && c.kind!=="track") cls.push("isLive");
+    if(i===standby) cls.push("standby");
+    if(c.played && i!==current) cls.push("done");
+    const tag = c.kind==="track" ? `<span class="tag track">Track</span>`
+             : c.kind==="live" ? `<span class="tag live">${c.liveLabel.split(" · ")[0]}</span>`
+             : `<span class="tag missing">No track</span>`;
+    const pill = c.kind==="track" ? `<span class="pill ${c.failed?"bad":c.ready?"ok":""}" title="${c.failed?"File failed to load":c.ready?"Ready":"Loading"}"></span>` : "";
+    const dur = c.kind==="track" && (c.dur||c.end) ? fmt(playLen(c)) : "";
+    const load = (c.kind!=="live" || c.n===16 ? `<button class="load" data-load="${i}">${c.kind==="track"?"Replace":"Load"}</button>` : "")
+               + (c.loadedName ? `<button class="load" data-revert="${i}">Revert</button>` : "");
+    const note = c.note ? `<div class="note" style="${c.kind==="track"&&!c.loadedName?"color:var(--dim)":c.loadedName?"color:var(--sb)":""}">${c.note}</div>` : "";
+    return `<div class="${cls.join(" ")}" data-i="${i}">
+      <div class="n">${c.n}</div>
+      <div><div class="t">${c.title}</div><div class="p">${c.who}</div>${note}</div>
+      <div class="r">${load}${pill}<span class="dur">${dur}</span>${tag}</div></div>`;
+  }).join("") + `<div class="foot">Tracks start past any silence or karaoke sound logo and stop at the end of the music.</div>`;
+
+  const s = CUES[standby];
+  $("sbTitle").textContent = s ? `${s.n}. ${s.title}` : "End of show";
+  $("sbWho").textContent = s ? s.who : " ";
+  $("sbKind").textContent = !s ? "" : s.kind==="track" ? `Track · ${fmt(playLen(s))}` : s.kind==="live" ? s.liveLabel : "NO TRACK LOADED · GO will play nothing";
+  $("sbKind").style.color = s && s.kind==="missing" ? "var(--warn)" : s && s.kind==="live" ? "var(--live)" : "var(--dim)";
+  $("sbPill").className = "pill " + (!s||s.kind!=="track" ? "" : s.failed ? "bad" : s.ready ? "ok" : "");
+  $("go").disabled = !s;
+
+  const tracks = CUES.filter(c=>c.kind==="track");
+  const bad = tracks.filter(c=>c.failed).length, ready = tracks.filter(c=>c.ready).length;
+  $("loadStat").textContent = bad ? `${bad} track(s) failed to load` : ready===tracks.length ? `All ${ready} tracks ready` : `Loading tracks ${ready}/${tracks.length}`;
+  $("loadStat").style.color = bad ? "var(--warn)" : ready===tracks.length ? "var(--play)" : "var(--dim)";
+
+  const c = CUES[current];
+  $("now").classList.toggle("idle", !c);
+  $("nowTitle").textContent = c ? `${c.n}. ${c.title}` : "Nothing playing";
+  $("nowWho").textContent = c ? c.who : " ";
+  const lb = $("liveBanner");
+  if(c && c.kind!=="track"){
+    lb.style.display = "block"; lb.className = "liveBanner" + (c.kind==="missing"?" warn":"");
+    lb.textContent = c.kind==="live" ? c.liveLabel : "No track loaded · nothing is playing";
+    $("bar").style.display = "none";
+  } else { lb.style.display = "none"; $("bar").style.display = c ? "block" : "none"; }
+  $("pause").firstChild.textContent = c && c.audio && c.audio.paused && c.audio.currentTime > (c.start||0)+0.3 && c.audio.currentTime < (c.end??c.dur??1e9)-0.3 ? "Resume" : "Pause";
+}
+
+function tick(){
+  const c = CUES[current];
+  if(c){
+    if(c.kind==="track" && c.audio){
+      const a = c.audio, st = c.start||0, len = playLen(c);
+      const el = Math.min(len, Math.max(0, a.currentTime - st));
+      if(c.end && a.currentTime >= c.end && !a.paused && !c.ending){ c.ending = true; fadeOut(c, 400, ()=>{ c.ending = false; render(); }); }
+      const playing = !a.paused;
+      $("nowTime").firstChild.textContent = "-" + fmt(len - el);
+      $("nowSub").textContent = `${fmt(el)} / ${fmt(len)}` + (playing ? "" : el >= len-0.5 ? "  · ended" : el>0.3 ? "  · paused" : "  · stopped");
+      $("barFill").style.width = (len ? Math.min(100, el/len*100) : 0) + "%";
+      $("barFill").style.background = playing ? "var(--play)" : "var(--faint)";
+    } else {
+      $("nowTime").firstChild.textContent = fmt((performance.now()-liveStart)/1000);
+      $("nowSub").textContent = "elapsed";
+    }
+  } else { $("nowTime").firstChild.textContent = "--:--"; $("nowSub").textContent = ""; }
+  $("clock").textContent = new Date().toLocaleTimeString([], {hour:"numeric", minute:"2-digit"});
+  requestAnimationFrame(tick);
+}
+
+/* ---------- Wiring ---------- */
+$("go").onclick = e=>{ e.currentTarget.blur(); go(); };
+$("pause").onclick = e=>{ e.currentTarget.blur(); togglePause(); };
+$("fade").onclick = e=>{ e.currentTarget.blur(); fade(); };
+$("stop").onclick = e=>{ e.currentTarget.blur(); stopNow(); };
+$("vol").oninput = e=>{
+  master = e.target.value/100; $("volV").textContent = e.target.value+"%";
+  const c = CUES[current]; if(c && c.audio && !c.audio.paused) c.audio.volume = master;
+  try{ localStorage.setItem("ts-vol", e.target.value); }catch(_){}
+};
+try{ const v = localStorage.getItem("ts-vol"); if(v!==null){ $("vol").value=v; $("vol").oninput({target:$("vol")}); } }catch(_){}
+$("list").addEventListener("click", e=>{
+  const rv = e.target.closest("[data-revert]");
+  if(rv){ revert(CUES[+rv.dataset.revert]); return; }
+  const lb = e.target.closest("[data-load]");
+  if(lb){ pickFor = CUES[+lb.dataset.load]; $("picker").click(); return; }
+  const row = e.target.closest(".cue"); if(row) setStandby(+row.dataset.i);
+});
+$("bar").addEventListener("click", e=>{
+  const c = CUES[current]; if(!c || !c.audio) return;
+  const r = e.currentTarget.getBoundingClientRect(), k = (e.clientX-r.left)/r.width;
+  c.audio.currentTime = (c.start||0) + k*playLen(c); render();
+});
+document.addEventListener("keydown", e=>{
+  if(e.target.tagName==="INPUT" && e.target.type!=="range") return;
+  if(e.code==="Space"){ e.preventDefault(); if(!e.repeat) go(); }
+  else if(e.code==="Escape"){ e.preventDefault(); e.shiftKey ? stopNow() : fade(); }
+  else if(e.code==="KeyP"){ e.preventDefault(); togglePause(); }
+  else if(e.code==="ArrowDown"){ e.preventDefault(); setStandby((standby<0?CUES.length-1:standby)+1); }
+  else if(e.code==="ArrowUp"){ e.preventDefault(); setStandby((standby<0?CUES.length:standby)-1); }
+});
+try{ navigator.wakeLock && navigator.wakeLock.request("screen").catch(()=>{}); }catch(_){}
+window.addEventListener("beforeunload", e=>{ const c=CUES[current]; if(c&&c.audio&&!c.audio.paused){ e.preventDefault(); e.returnValue=""; } });
+
+restoreSaved().then(render);
+render(); tick();
+</script>
+</body>
+</html>
