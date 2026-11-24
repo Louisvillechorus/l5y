@@ -112,9 +112,9 @@
   /* ground: two slow glows, one soft white, grain, vignette */
   .glow{position:absolute;left:50%;top:50%;width:96vmax;height:96vmax;margin:-48vmax 0 0 -48vmax;border-radius:50%;
         mix-blend-mode:screen;will-change:transform;transition:opacity 3s ease}
-  .g1{opacity:calc(var(--glow) * var(--ga));background:radial-gradient(closest-side,rgba(215,245,66,.34),rgba(215,245,66,.11) 46%,transparent 76%);animation:d1 61s ease-in-out infinite alternate}
-  .g2{opacity:calc(var(--glow) * var(--gb));background:radial-gradient(closest-side,rgba(255,94,168,.30),rgba(255,94,168,.09) 46%,transparent 76%);animation:d2 79s ease-in-out infinite alternate}
-  .g3{opacity:var(--glow);width:70vmax;height:70vmax;margin:-35vmax 0 0 -35vmax;background:radial-gradient(closest-side,rgba(240,238,225,.13),transparent 72%);animation:d3 97s ease-in-out infinite alternate}
+  .g1{opacity:calc(var(--glow) * var(--ga) * var(--bl,1));background:radial-gradient(closest-side,rgba(215,245,66,.34),rgba(215,245,66,.11) 46%,transparent 76%);animation:d1 61s ease-in-out infinite alternate}
+  .g2{opacity:calc(var(--glow) * var(--gb) * var(--bl,1));background:radial-gradient(closest-side,rgba(255,94,168,.30),rgba(255,94,168,.09) 46%,transparent 76%);animation:d2 79s ease-in-out infinite alternate}
+  .g3{opacity:calc(var(--glow) * var(--bl,1));width:70vmax;height:70vmax;margin:-35vmax 0 0 -35vmax;background:radial-gradient(closest-side,rgba(240,238,225,.13),transparent 72%);animation:d3 97s ease-in-out infinite alternate}
   @keyframes d1{from{transform:translate(-40vw,-24vh) scale(1)}to{transform:translate(30vw,20vh) scale(1.22)}}
   @keyframes d2{from{transform:translate(36vw,-28vh) scale(1.1)}to{transform:translate(-30vw,26vh) scale(.9)}}
   @keyframes d3{from{transform:translate(4vw,34vh)}to{transform:translate(-14vw,-30vh)}}
@@ -123,14 +123,12 @@
   @keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-4%)}60%{transform:translate(-4%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
   .vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 45%,rgba(0,0,0,.62) 100%);pointer-events:none}
 
-  /* the giant outlined numeral: "20" on the main slide, the song number in the show */
+  /* the giant outlined "20": main slide only */
   #bigw{position:absolute;left:50%;top:50%;width:0;height:0;animation:bigd 64s ease-in-out infinite alternate}
   @keyframes bigd{from{transform:translate(23vw,-2vh) rotate(-5deg) scale(1)}to{transform:translate(12vw,3vh) rotate(3deg) scale(1.12)}}
   #big{position:absolute;left:0;top:0;transform:translate(-50%,-50%);font-weight:900;font-stretch:62%;font-size:132vh;line-height:.8;white-space:nowrap;
        color:transparent;-webkit-text-stroke:.32vh var(--acc);opacity:0;transition:opacity 2.6s ease,transform 2s cubic-bezier(.16,1,.3,1)}
-  #big.pre{transform:translate(-24%,-50%)}
   #big.on{opacity:calc(var(--glow) * .2)}
-  #big.on.hero{opacity:calc(var(--glow) * .62)}
 
   /* shared moves */
   .msk{display:block;overflow:hidden;padding-top:.03em;margin-top:-.03em}
@@ -177,13 +175,12 @@
   @keyframes stamp{from{opacity:0;transform:scale(2.4) rotate(-40deg)}55%{opacity:1}to{opacity:1;transform:scale(1) rotate(-14deg)}}
   @keyframes wob{from{transform:rotate(-14deg)}to{transform:rotate(-6deg)}}
 
-  /* ---- song card: big intro, then it tucks into the corner ---- */
+  /* ---- song card: big intro, then it tucks into the corner and stays for the whole song ---- */
   #song{position:absolute;inset:0;pointer-events:none}
   .sk{position:absolute;left:6vw;bottom:9vh;transform-origin:0 100%;transform:translateY(var(--hy,0vh)) scale(1);opacity:0;
       transition:transform 1.8s cubic-bezier(.7,0,.15,1),opacity 1.2s ease}
   .sk.show{opacity:1}
-  .sk.small{transform:translateY(0) scale(.44)}
-  .sk.out{opacity:0;transition:opacity 2.8s ease}
+  .sk.small{transform:translateY(0) scale(.5)}
   .snm{font-weight:900;font-stretch:62%;line-height:.8;color:var(--acc);text-transform:uppercase;white-space:nowrap;margin-left:-.03em}
   .snm .ln{display:inline-block}
   .snm .msk + .msk{margin-top:.02em}
@@ -230,6 +227,7 @@
 <header>
   <div class="brand"><h1>TwentySomething</h1><div>Sound board · The Broadway Theater</div></div>
   <span class="sub">Sat Nov 28 · 7:00 PM</span>
+  <span class="sub" title="Board version">Build Nov 24 · 11:35 AM</span>
   <span class="sp"></span>
   <span class="sub" id="loadStat">Loading tracks…</span>
   <div class="vol">Master <input id="vol" type="range" min="0" max="100" value="100"><b id="volV">100%</b></div>
@@ -566,10 +564,20 @@ const screen = {title:true, names:true, adult:true, black:false, glow:.6};
 try{ const sv = JSON.parse(localStorage.getItem("ts-screen")||"{}");
   ["names","adult"].forEach(k=>{ if(typeof sv[k]==="boolean") screen[k]=sv[k]; });
   if(typeof sv.glow==="number") screen.glow = sv.glow; }catch(_){}
-const SID = Math.random().toString(36).slice(2);
+/* Every board has its own id and its own channel. A screen only ever listens to the board that opened it,
+   so a second copy of the board in another tab can never drive this one's screen. */
+const rid = ()=> Math.random().toString(36).slice(2, 10);
+let SID = null; try{ SID = sessionStorage.getItem("ts-sid"); }catch(_){}
+if(!SID){ SID = rid(); try{ sessionStorage.setItem("ts-sid", SID); }catch(_){} }
+const BOOT = rid();
 let seq = 0, projWin = null, lastProjPing = 0;
 const targets = new Set();
-let bc = null; try{ bc = new BroadcastChannel("twentysomething"); }catch(_){}
+let bc = null;
+function openBC(){
+  try{ if(bc) bc.close(); }catch(_){}
+  try{ bc = new BroadcastChannel("ts-" + SID); bc.onmessage = e=> onMsg(e.data, null); }catch(_){ bc = null; }
+}
+const viewURL = extra => location.href.split("#")[0].split("?")[0] + "?view=projection" + (extra||"") + "&b=" + SID;
 function curInfo(){
   const c = CUES[current]; if(!c) return null;
   const parts = c.title.split(" · ");
@@ -578,18 +586,28 @@ function curInfo(){
 }
 const pct = ()=> current < 0 ? 0 : Math.round((current+1)/CUES.length*100);
 function send(m){
-  m.sid = SID; m.seq = ++seq;
+  m.sid = SID; m.boot = BOOT; m.seq = ++seq;
   for(const w of [...targets]){ try{ if(!w || w.closed){ targets.delete(w); continue; } w.postMessage(m, "*"); }catch(_){ targets.delete(w); } }
   try{ bc && bc.postMessage(m); }catch(_){}
 }
 const sendState = ()=> send({type:"state", screen, cur:curInfo(), pct:pct()});
 function onMsg(d, src){
   if(!d || typeof d!=="object") return;
-  if(d.type==="hello"){ if(src) targets.add(src); if(!d.preview) lastProjPing = Date.now(); sendState(); renderScreen(); }
-  else if(d.type==="key"){ handleKey(d); }
+  if(d.type==="hello"){
+    if(d.b && d.b !== SID) return;                    // that screen belongs to another board
+    if(src) targets.add(src); if(!d.preview) lastProjPing = Date.now(); sendState(); renderScreen();
+  }
+  else if(d.type==="key"){ if(src && targets.has(src)) handleKey(d); }
+  else if(d.type==="board?"){ if(d.sid === SID && d.boot !== BOOT){ try{ bc && bc.postMessage({type:"taken", to:d.boot}); }catch(_){} } }
+  else if(d.type==="taken" && d.to === BOOT){        // this tab is a duplicate of another board: take a fresh id
+    SID = rid(); try{ sessionStorage.setItem("ts-sid", SID); }catch(_){}
+    openBC(); $("pv").src = viewURL("&preview=1");
+  }
 }
 window.addEventListener("message", e=> onMsg(e.data, e.source));
-if(bc) bc.onmessage = e=> onMsg(e.data, null);
+openBC();
+try{ bc && bc.postMessage({type:"board?", sid:SID, boot:BOOT}); }catch(_){}
+try{ const find = new BroadcastChannel("ts-find"); find.onmessage = e=>{ if(e.data && e.data.type==="who") find.postMessage({type:"iam", sid:SID}); }; }catch(_){}
 function toggleScreen(k){
   screen[k] = !screen[k];
   saveScreen(); sendState(); renderScreen();
@@ -607,15 +625,14 @@ function renderScreen(){
 setInterval(renderScreen, 2000);
 $("popout").onclick = e=>{
   e.currentTarget.blur();
-  const url = location.href.split("#")[0].split("?")[0] + "?view=projection";
-  projWin = window.open(url, "ts_projection", "popup=yes,width=1280,height=720");
+  projWin = window.open(viewURL(), "ts_projection_" + SID, "popup=yes,width=1280,height=720");
   if(projWin){ targets.add(projWin); try{ projWin.focus(); }catch(_){} }
 };
 ["tMain","tNames","tAdult","tBlack"].forEach(id=> $(id).onclick = e=>{ e.currentTarget.blur();
   toggleScreen({tMain:"title",tNames:"names",tAdult:"adult",tBlack:"black"}[id]); });
 $("glow").value = Math.round(screen.glow*100); $("glowV").textContent = $("glow").value + "%";
 $("glow").oninput = e=>{ screen.glow = e.target.value/100; $("glowV").textContent = e.target.value + "%"; saveScreen(); sendState(); };
-$("pv").src = location.href.split("#")[0].split("?")[0] + "?view=projection&preview=1";
+$("pv").src = viewURL("&preview=1");
 window.CUES = CUES;
 try{ navigator.wakeLock && navigator.wakeLock.request("screen").catch(()=>{}); }catch(_){}
 window.addEventListener("beforeunload", e=>{ const c=CUES[current]; if(c&&c.audio&&!c.audio.paused){ e.preventDefault(); e.returnValue=""; } });
@@ -632,9 +649,7 @@ const P = $("proj");
 if(IS_PREVIEW) document.body.classList.add("pv");
 
 /* timings an operator might want changed */
-const HERO_MS   = 6200;   // how long the big name card holds before it tucks into the corner
-const CORNER_MS = 10000;  // how long the small card stays in the corner before it fades
-const BACK_MS   = 7000;   // small card when coming back from the main slide
+const HERO_MS = 6200;     // how long the big name card holds before it tucks into the corner, where it stays
 
 // film grain: one noise tile, shifted in steps
 (function(){
@@ -686,6 +701,16 @@ function buildSong(c){
   if(c.src){ ssr.appendChild(document.createElement("i")); ssr.appendChild(document.createTextNode(c.src)); }
 }
 
+/* the glow is the background: each scene gets its own arrangement, flooding in and settling */
+const GLOW_DUR = [61, 79, 97];
+function glowScene(n, ga, gb){
+  P.classList.add("nt");
+  P.style.setProperty("--ga", ga); P.style.setProperty("--gb", gb); P.style.setProperty("--bl", 1.5);
+  P.querySelectorAll(".glow").forEach((el,i)=>{ el.style.animationDelay = -((n*29 + i*37) % (GLOW_DUR[i]*2)) + "s"; });
+  void P.offsetWidth; P.classList.remove("nt");
+  setTimeout(()=> P.style.setProperty("--bl", 1), 80);
+}
+
 /* swap what is on stage. Always called while the wipe covers the frame. */
 function setScene(t){
   const my = ++tok;
@@ -696,7 +721,7 @@ function setScene(t){
   $("thost").classList.remove("on");
 
   if(t.mode === "title"){
-    P.style.setProperty("--acc", "var(--lime)"); P.style.setProperty("--ga", 1); P.style.setProperty("--gb", 1);
+    P.style.setProperty("--acc", "var(--lime)"); glowScene(0, 1, 1);
     big.textContent = "20";
     void big.offsetWidth; big.className = "on";
     void ttl.offsetWidth; ttl.classList.add("in");
@@ -706,29 +731,20 @@ function setScene(t){
   if(t.mode === "song"){
     const c = t.cur, lime = c.n % 2 === 0;
     P.style.setProperty("--acc", lime ? "var(--lime)" : "var(--pink)");
-    P.style.setProperty("--ga", lime ? 1.2 : .7); P.style.setProperty("--gb", lime ? .7 : 1.2);
+    glowScene(c.n, lime ? 1.25 : .7, lime ? .7 : 1.25);
     buildSong(c);
-    big.textContent = String(c.n).padStart(2, "0");
     const h = sk.offsetHeight / window.innerHeight * 100;
     sk.style.setProperty("--hy", (-(41 - h/2)).toFixed(2) + "vh");
     if(t.intro){
-      big.className = "nt pre"; void big.offsetWidth; big.className = "on hero";
       void sk.offsetWidth; sk.className = "sk show in";
-      (async()=>{
-        await sleep(HERO_MS); if(my !== tok) return;
-        sk.classList.add("small"); big.classList.remove("hero");
-        await sleep(1800 + CORNER_MS); if(my !== tok) return;
-        sk.classList.add("out");
-      })();
-    } else {
-      big.className = "nt"; void big.offsetWidth; big.className = "on";
+      (async()=>{ await sleep(HERO_MS); if(my !== tok) return; sk.classList.add("small"); })();
+    } else {                       // coming back from the main slide: straight to the corner, no replay
       sk.className = "sk nt small inq"; void sk.offsetWidth; sk.className = "sk small inq show";
-      (async()=>{ await sleep(BACK_MS); if(my !== tok) return; sk.classList.add("out"); })();
     }
     return;
   }
   // background only
-  P.style.setProperty("--ga", 1); P.style.setProperty("--gb", 1);
+  glowScene(0, 1, 1);
 }
 
 /* the wipe: a dark panel with a lime leading edge crosses, the scene swaps under it, it leaves on a pink edge */
@@ -781,10 +797,19 @@ function target(m){
   return {mode:"bg"};
 }
 
-let sid = null, lastSeq = 0;
-function onMsg(m){
+/* One board, and only one, runs this screen: the one that opened it (or the one named in ?b=). */
+const boss = window.opener || (window.parent !== window ? window.parent : null);
+let B = QS.get("b") || null, boot = null, lastSeq = 0, bc = null;
+function openBC(){
+  try{ if(bc) bc.close(); }catch(_){}
+  bc = null; if(!B) return;
+  try{ bc = new BroadcastChannel("ts-" + B); bc.onmessage = e=> onMsg(e.data, false); }catch(_){ bc = null; }
+}
+function onMsg(m, viaBoss){
   if(!m || typeof m!=="object" || (m.type!=="state" && m.type!=="go")) return;
-  if(m.sid !== sid){ sid = m.sid; lastSeq = 0; }
+  if(viaBoss){ if(m.sid && m.sid !== B){ B = m.sid; openBC(); } }
+  else if(!B || m.sid !== B) return;
+  if(m.boot !== boot){ boot = m.boot; lastSeq = 0; }
   if(m.seq <= lastSeq) return;
   lastSeq = m.seq;
   applyLive(m);
@@ -793,11 +818,16 @@ function onMsg(m){
   if(t.mode === "title" && view.mode === "title" && !busy){ view.host = t.host; $("thost").classList.toggle("on", t.host); }
   if(!same(view, t) || t.intro) request(t);
 }
-window.addEventListener("message", e=> onMsg(e.data));
-let bc = null; try{ bc = new BroadcastChannel("twentysomething"); bc.onmessage = e=> onMsg(e.data); }catch(_){}
-const boss = window.opener || (window.parent !== window ? window.parent : null);
+window.addEventListener("message", e=>{ if(boss && e.source === boss) onMsg(e.data, true); });
+openBC();
+if(!B && !boss){   // opened by hand with no board named: ask which board is running and stay with the first to answer
+  try{ const find = new BroadcastChannel("ts-find");
+    find.onmessage = e=>{ if(!B && e.data && e.data.type==="iam"){ B = e.data.sid; openBC(); hello(); } };
+    const ask = ()=>{ if(!B) find.postMessage({type:"who"}); }; ask(); setInterval(ask, 3000);
+  }catch(_){}
+}
 function hello(){
-  const m = {type:"hello", preview: IS_PREVIEW};
+  const m = {type:"hello", preview: IS_PREVIEW, b: B};
   try{ boss && boss.postMessage(m, "*"); }catch(_){}
   try{ bc && bc.postMessage(m); }catch(_){}
 }
