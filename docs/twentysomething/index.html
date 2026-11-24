@@ -4,8 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>TwentySomething · Sound Board</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="fonts.css">
 <style>
   :root{
     --bg:#0c0e11; --panel:#14171c; --panel2:#1b1f26; --line:#2a3039;
@@ -46,8 +45,8 @@
   .sb .title{font-family:var(--display);font-size:28px;font-weight:700;color:var(--sb);text-transform:uppercase;letter-spacing:.01em}
   .sb .who{font-size:14px;color:var(--dim);margin-top:2px}
   .sb .kind{margin-top:8px;font-size:13px;color:var(--dim)}
-  .go{display:block;width:100%;height:150px;border:0;border-radius:10px;background:var(--go);color:var(--go-ink);
-      font-family:var(--display);font-size:72px;font-weight:700;letter-spacing:.08em;cursor:pointer;box-shadow:0 6px 0 var(--go-d)}
+  .go{display:block;width:100%;height:118px;border:0;border-radius:10px;background:var(--go);color:var(--go-ink);
+      font-family:var(--display);font-size:62px;font-weight:700;letter-spacing:.08em;cursor:pointer;box-shadow:0 6px 0 var(--go-d)}
   .go small{display:block;font-size:13px;letter-spacing:.14em;font-weight:600;opacity:.6;margin-top:-4px}
   .go:active{transform:translateY(4px);box-shadow:0 2px 0 var(--go-d)}
   .go[disabled]{background:var(--panel2);color:var(--faint);box-shadow:none;cursor:default}
@@ -84,6 +83,82 @@
   .pill{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--faint)}
   .pill.ok{background:var(--play)} .pill.bad{background:var(--warn)}
   .foot{font-size:11px;color:var(--faint);padding:8px 18px}
+
+  /* ---------- screen controls (presenter) ---------- */
+  .scrrow{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  .btn.sm{height:46px;font-size:15px}
+  .btn.tog.on{background:rgba(88,214,141,.12);border-color:rgba(88,214,141,.5);color:var(--play)}
+  .btn.tog.blk.on{background:rgba(240,100,90,.16);border-color:rgba(240,100,90,.6);color:var(--warn)}
+  .scrbot{display:flex;align-items:center;gap:14px;margin-top:12px}
+  .pv{width:240px;height:135px;border-radius:6px;overflow:hidden;border:1px solid var(--line);background:#000;flex:none;position:relative}
+  .pv iframe{width:1280px;height:720px;border:0;transform:scale(.1875);transform-origin:0 0;pointer-events:none}
+  .scrbot .vol{flex-direction:column;align-items:flex-start;gap:6px}
+  .scrbot .vol input{width:180px}
+  .pstat{font-family:var(--body);font-size:11px;letter-spacing:0;text-transform:none;color:var(--faint)}
+  .pstat.ok{color:var(--play)}
+
+  /* ---------- projection ---------- */
+  #proj{display:none}
+  body.v-proj{display:block;background:#0b0b0d;cursor:default}
+  body.v-proj.idle{cursor:none}
+  body.v-proj > header, body.v-proj > main{display:none}
+  body.v-proj #proj{display:block;position:fixed;inset:0;overflow:hidden;background:#0b0b0d;--glow:.6;
+    --lime:#d7f542;--pink:#ff5ea8;font-family:"Archivo",var(--body);color:#f3f1ea}
+  .glow{position:absolute;left:50%;top:50%;width:96vmax;height:96vmax;margin:-48vmax 0 0 -48vmax;border-radius:50%;
+        opacity:var(--glow);mix-blend-mode:screen;will-change:transform;transition:opacity 2s}
+  .g1{background:radial-gradient(closest-side,rgba(215,245,66,.34),rgba(215,245,66,.11) 46%,transparent 76%);animation:d1 83s ease-in-out infinite alternate}
+  .g2{background:radial-gradient(closest-side,rgba(255,94,168,.30),rgba(255,94,168,.09) 46%,transparent 76%);animation:d2 107s ease-in-out infinite alternate}
+  .g3{width:70vmax;height:70vmax;margin:-35vmax 0 0 -35vmax;background:radial-gradient(closest-side,rgba(240,238,225,.13),transparent 72%);animation:d3 131s ease-in-out infinite alternate}
+  @keyframes d1{from{transform:translate(-40vw,-24vh) scale(1)}to{transform:translate(30vw,20vh) scale(1.22)}}
+  @keyframes d2{from{transform:translate(36vw,-28vh) scale(1.1)}to{transform:translate(-30vw,26vh) scale(.9)}}
+  @keyframes d3{from{transform:translate(4vw,34vh)}to{transform:translate(-14vw,-30vh)}}
+  .tags{position:absolute;inset:0;opacity:calc(var(--glow) * .45);transition:opacity 2.4s;
+        -webkit-mask-image:linear-gradient(to top,transparent 0,transparent 32%,#000 50%,#000 78%,transparent 96%);
+                mask-image:linear-gradient(to top,transparent 0,transparent 32%,#000 50%,#000 78%,transparent 96%)}
+  #proj.t-on .tags{opacity:calc(var(--glow) * .18)}
+  .tag2{position:absolute;bottom:-8vh;border:.18vh solid rgba(243,241,234,.55);border-radius:999px;padding:.9vh 2.2vh;
+        font-weight:600;font-stretch:110%;font-size:2.1vh;letter-spacing:.12em;color:rgba(243,241,234,.7);white-space:nowrap;
+        animation:rise linear infinite;will-change:transform}
+  .tag2.pk{border-color:rgba(255,94,168,.7);color:rgba(255,94,168,.85)}
+  @keyframes rise{from{transform:translateY(0) rotate(var(--r))}to{transform:translateY(-118vh) rotate(calc(var(--r) * -1))}}
+  .grain{position:absolute;inset:-50%;opacity:.07;mix-blend-mode:overlay;animation:grain 1s steps(6) infinite;pointer-events:none}
+  @keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-4%)}60%{transform:translate(-4%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
+  .vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 45%,rgba(0,0,0,.62) 100%);pointer-events:none}
+
+  #ttl{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transform:translateY(2vh) scale(.985);
+       transition:opacity 1.8s ease,transform 2.4s cubic-bezier(.2,.7,.2,1)}
+  #ttl.on{opacity:1;transform:none}
+  .tbox{position:relative;width:min(86vw,150vh)}
+  .tpre{font-weight:600;font-stretch:112%;font-size:2.6vh;letter-spacing:.14em;text-transform:uppercase;margin-bottom:1.4vh}
+  .tdate{position:absolute;right:0;top:0;font-weight:700;font-stretch:112%;font-size:2.6vh;letter-spacing:.14em;color:var(--lime);text-transform:uppercase}
+  .tbig{font-weight:900;font-stretch:62%;font-size:36vh;line-height:.8;letter-spacing:-.01em;color:var(--lime);margin-left:-.4vh}
+  .tsome{font-family:"Instrument Serif",Georgia,serif;font-style:italic;font-size:24vh;line-height:.8;margin:-3.4vh 0 0 18vh;color:#f3f1ea;letter-spacing:-.01em}
+  .tsub{font-family:"Instrument Serif",Georgia,serif;font-size:5.4vh;margin-top:3.6vh}
+  .stk{position:absolute;right:4vh;top:8vh;width:21vh;height:21vh;border-radius:50%;background:var(--pink);color:#141414;display:flex;align-items:center;
+       justify-content:center;text-align:center;font-weight:800;font-stretch:100%;font-size:2.7vh;line-height:1.08;letter-spacing:.04em;text-transform:uppercase;
+       animation:wob 9s ease-in-out infinite alternate}
+  @keyframes wob{from{transform:rotate(-14deg)}to{transform:rotate(-6deg)}}
+
+  #nc{position:absolute;left:6vw;bottom:10vh;max-width:70vw;opacity:0;transform:translateY(1.6vh);transition:opacity 1.4s ease,transform 1.8s cubic-bezier(.2,.7,.2,1)}
+  #nc.on{opacity:1;transform:none}
+  #nc.off{transition:opacity 2.6s ease,transform 2.6s ease}
+  .ncw{display:inline-block;border:.2vh solid rgba(243,241,234,.8);border-radius:999px;padding:1vh 2.6vh;font-weight:700;font-stretch:110%;font-size:2.6vh;letter-spacing:.14em;text-transform:uppercase}
+  .ncs{font-family:"Instrument Serif",Georgia,serif;font-style:italic;font-size:9.5vh;line-height:1;margin-top:2vh}
+  .ncr{font-weight:500;font-stretch:110%;font-size:2.3vh;letter-spacing:.14em;text-transform:uppercase;color:rgba(243,241,234,.6);margin-top:1.6vh}
+  .ncr::before{content:"";display:inline-block;width:5vh;height:.25vh;background:var(--lime);vertical-align:middle;margin-right:1.6vh}
+
+  #adult{position:absolute;right:6vw;bottom:6vh;width:26vw;opacity:0;transition:opacity 1.6s}
+  #adult.on{opacity:.85}
+  .adt{display:flex;justify-content:space-between;font-weight:600;font-stretch:112%;font-size:1.9vh;letter-spacing:.16em;text-transform:uppercase;margin-bottom:1vh}
+  .adt b{color:var(--lime);font-weight:700}
+  .adb{height:1.3vh;border:.18vh solid rgba(243,241,234,.75);border-radius:999px;padding:.25vh;box-sizing:content-box}
+  .adb i{display:block;height:100%;width:0;background:var(--lime);border-radius:999px;transition:width 2.6s cubic-bezier(.3,.7,.2,1)}
+
+  #blk{position:absolute;inset:0;background:#000;opacity:0;transition:opacity 1.6s;pointer-events:none}
+  #blk.on{opacity:1}
+  #fsh{position:absolute;left:50%;bottom:3vh;transform:translateX(-50%);font-family:var(--body);font-size:13px;color:rgba(255,255,255,.55);
+       background:rgba(0,0,0,.5);padding:6px 12px;border-radius:999px;transition:opacity 1s}
+  #fsh.gone{opacity:0}
 </style>
 </head>
 <body>
@@ -122,11 +197,48 @@
       GO while a track is playing fades it out and starts the standby. Tracks never auto-advance; each song waits for GO.<br>
       Purple cues are live (piano, instruments, host): GO marks them current and plays nothing.
     </div>
+    <div class="card">
+      <div class="lbl">Screen <span class="pstat" id="pstat">Projection not open</span></div>
+      <div class="scrrow">
+        <button class="btn sm" id="popout">Open<kbd>projection</kbd></button>
+        <button class="btn sm tog" id="tTitle">Title<kbd>T</kbd></button>
+        <button class="btn sm tog" id="tNames">Names<kbd>N</kbd></button>
+        <button class="btn sm tog" id="tAdult">Adulting<kbd>A</kbd></button>
+        <button class="btn sm tog blk" id="tBlack">Black<kbd>B</kbd></button>
+      </div>
+      <div class="scrbot">
+        <div class="pv"><iframe id="pv" title="Projection preview"></iframe></div>
+        <div class="vol">Background glow <input id="glow" type="range" min="0" max="100" value="60"><b id="glowV">60%</b></div>
+      </div>
+    </div>
   </section>
   <section class="list" id="list"></section>
 </main>
+<div id="proj">
+  <div class="glow g1"></div><div class="glow g2"></div><div class="glow g3"></div>
+  <div class="tags" id="tags"></div>
+  <div class="grain" id="grain"></div>
+  <div class="vig"></div>
+  <div id="ttl"><div class="tbox">
+    <div class="tpre">Redline Performing Arts presents</div><div class="tdate">Sat · 11.28</div>
+    <div class="tbig">TWENTY</div>
+    <div class="tsome">something</div>
+    <div class="tsub">A coming-of-age cabaret.</div>
+    <div class="stk">Still<br>figuring<br>it out</div>
+  </div></div>
+  <div id="nc"><div class="ncw" id="ncw"></div><div class="ncs" id="ncs"></div><div class="ncr" id="ncr"></div></div>
+  <div id="adult"><div class="adt"><span>Adulting…</span><b id="adp">0%</b></div><div class="adb"><i id="adf"></i></div></div>
+  <div id="blk"></div>
+  <div id="fsh">Double-click or press F for full screen</div>
+</div>
 <input type="file" id="picker" accept="audio/*" hidden>
 <script>
+const QS = new URLSearchParams(location.search);
+const IS_PROJ = QS.get("view")==="projection", IS_PREVIEW = QS.has("preview");
+if(IS_PROJ) document.body.classList.add("v-proj");
+</script>
+<script>
+(function(){ if(IS_PROJ) return;
 /* ---------- Running order ----------
    kind: track | live | missing
    start/end: seconds; trims leading silence and karaoke sound logos, and trailing silence */
@@ -203,7 +315,9 @@ function go(){
     liveStart = performance.now();
   }
   standby = current + 1 < CUES.length ? current + 1 : -1;
-  render(); scrollTo(current);
+  if(screen.titleAuto && current >= 1){ screen.title = false; screen.titleAuto = false; }
+  send({type:"go", screen, cur:curInfo(), pct:pct()});
+  render(); renderScreen(); scrollTo(current);
 }
 
 function finish(){ const c = CUES[current]; if(c && c.audio) c.audio.pause(); render(); }
@@ -354,19 +468,177 @@ $("bar").addEventListener("click", e=>{
   const r = e.currentTarget.getBoundingClientRect(), k = (e.clientX-r.left)/r.width;
   c.audio.currentTime = (c.start||0) + k*playLen(c); render();
 });
+function handleKey(k){
+  if(k.code==="Space"){ if(!k.repeat) go(); }
+  else if(k.code==="Escape"){ k.shiftKey ? stopNow() : fade(); }
+  else if(k.code==="KeyP"){ togglePause(); }
+  else if(k.code==="ArrowDown"){ setStandby((standby<0?CUES.length-1:standby)+1); }
+  else if(k.code==="ArrowUp"){ setStandby((standby<0?CUES.length:standby)-1); }
+  else if(k.code==="KeyT"){ toggleScreen("title"); }
+  else if(k.code==="KeyN"){ toggleScreen("names"); }
+  else if(k.code==="KeyA"){ toggleScreen("adult"); }
+  else if(k.code==="KeyB"){ toggleScreen("black"); }
+  else return false;
+  return true;
+}
 document.addEventListener("keydown", e=>{
   if(e.target.tagName==="INPUT" && e.target.type!=="range") return;
-  if(e.code==="Space"){ e.preventDefault(); if(!e.repeat) go(); }
-  else if(e.code==="Escape"){ e.preventDefault(); e.shiftKey ? stopNow() : fade(); }
-  else if(e.code==="KeyP"){ e.preventDefault(); togglePause(); }
-  else if(e.code==="ArrowDown"){ e.preventDefault(); setStandby((standby<0?CUES.length-1:standby)+1); }
-  else if(e.code==="ArrowUp"){ e.preventDefault(); setStandby((standby<0?CUES.length:standby)-1); }
+  if(e.metaKey || e.ctrlKey || e.altKey) return;
+  if(handleKey({code:e.code, shiftKey:e.shiftKey, repeat:e.repeat})) e.preventDefault();
 });
+
+/* ---------- Screen: projection window + preview, kept in sync with GO ---------- */
+const screen = {title:true, titleAuto:true, names:true, adult:true, black:false, glow:.6};
+try{ const sv = JSON.parse(localStorage.getItem("ts-screen")||"{}");
+  ["names","adult"].forEach(k=>{ if(typeof sv[k]==="boolean") screen[k]=sv[k]; });
+  if(typeof sv.glow==="number") screen.glow = sv.glow; }catch(_){}
+const SID = Math.random().toString(36).slice(2);
+let seq = 0, projWin = null, lastProjPing = 0;
+const targets = new Set();
+let bc = null; try{ bc = new BroadcastChannel("twentysomething"); }catch(_){}
+function curInfo(){
+  const c = CUES[current]; if(!c) return null;
+  const parts = c.title.split(" · ");
+  const pending = /^(Song pending|Duet|Opening \/ Welcome)$/.test(c.title);
+  return {i:current, n:c.n, who:c.who, song: pending ? "" : parts[0], src: pending ? "" : (parts[1]||""), kind:c.kind};
+}
+const pct = ()=> current < 0 ? 0 : Math.round((current+1)/CUES.length*100);
+function send(m){
+  m.sid = SID; m.seq = ++seq;
+  for(const w of [...targets]){ try{ if(!w || w.closed){ targets.delete(w); continue; } w.postMessage(m, "*"); }catch(_){ targets.delete(w); } }
+  try{ bc && bc.postMessage(m); }catch(_){}
+}
+const sendState = ()=> send({type:"state", screen, cur:curInfo(), pct:pct()});
+function onMsg(d, src){
+  if(!d || typeof d!=="object") return;
+  if(d.type==="hello"){ if(src) targets.add(src); if(!d.preview) lastProjPing = Date.now(); sendState(); renderScreen(); }
+  else if(d.type==="key"){ handleKey(d); }
+}
+window.addEventListener("message", e=> onMsg(e.data, e.source));
+if(bc) bc.onmessage = e=> onMsg(e.data, null);
+function toggleScreen(k){
+  screen[k] = !screen[k];
+  if(k==="title") screen.titleAuto = false;
+  saveScreen(); sendState(); renderScreen();
+}
+function saveScreen(){ try{ localStorage.setItem("ts-screen", JSON.stringify({names:screen.names, adult:screen.adult, glow:screen.glow})); }catch(_){} }
+function renderScreen(){
+  [["tTitle","title"],["tNames","names"],["tAdult","adult"],["tBlack","black"]].forEach(([id,k])=> $(id).classList.toggle("on", !!screen[k]));
+  const ok = Date.now() - lastProjPing < 7000;
+  $("pstat").textContent = ok ? "Projection connected" : "Projection not open";
+  $("pstat").className = "pstat" + (ok ? " ok" : "");
+}
+setInterval(renderScreen, 2000);
+$("popout").onclick = e=>{
+  e.currentTarget.blur();
+  const url = location.href.split("#")[0].split("?")[0] + "?view=projection";
+  projWin = window.open(url, "ts_projection", "popup=yes,width=1280,height=720");
+  if(projWin){ targets.add(projWin); try{ projWin.focus(); }catch(_){} }
+};
+["tTitle","tNames","tAdult","tBlack"].forEach(id=> $(id).onclick = e=>{ e.currentTarget.blur();
+  toggleScreen({tTitle:"title",tNames:"names",tAdult:"adult",tBlack:"black"}[id]); });
+$("glow").value = Math.round(screen.glow*100); $("glowV").textContent = $("glow").value + "%";
+$("glow").oninput = e=>{ screen.glow = e.target.value/100; $("glowV").textContent = e.target.value + "%"; saveScreen(); sendState(); };
+$("pv").src = location.href.split("#")[0].split("?")[0] + "?view=projection&preview=1";
+window.CUES = CUES;
 try{ navigator.wakeLock && navigator.wakeLock.request("screen").catch(()=>{}); }catch(_){}
 window.addEventListener("beforeunload", e=>{ const c=CUES[current]; if(c&&c.audio&&!c.audio.paused){ e.preventDefault(); e.returnValue=""; } });
 
 restoreSaved().then(render);
-render(); tick();
+render(); renderScreen(); tick();
+})();
+</script>
+<script>
+/* ---------- Projection view (?view=projection) ---------- */
+(function(){ if(!IS_PROJ) return;
+const $ = id => document.getElementById(id);
+const P = $("proj");
+
+// film grain: one noise tile, shifted in steps
+(function(){
+  const c = document.createElement("canvas"); c.width = c.height = 220;
+  const x = c.getContext("2d"), im = x.createImageData(220,220);
+  for(let i=0;i<im.data.length;i+=4){ const v = Math.random()*255|0; im.data[i]=im.data[i+1]=im.data[i+2]=v; im.data[i+3]=255; }
+  x.putImageData(im,0,0);
+  $("grain").style.backgroundImage = `url(${c.toDataURL()})`;
+})();
+
+// the poster's genre pills, drifting up very slowly
+(function(){
+  const words = [["SHOW TUNES",""],["POP",""],["R&B",""],["COUNTRY","pk"],["SHOW TUNES",""],["R&B",""]];
+  const lanes = [8,24,41,58,74,88];
+  words.forEach(([w,c],i)=>{
+    const d = document.createElement("div"); d.className = "tag2 " + c; d.textContent = w;
+    const dur = 95 + (i*17)%40;
+    d.style.left = lanes[i] + "vw";
+    d.style.setProperty("--r", ((i%2?1:-1)*(4+i%3*2)) + "deg");
+    d.style.animationDuration = dur + "s";
+    d.style.animationDelay = (-dur * ((i*0.37)%1)) + "s";
+    $("tags").appendChild(d);
+  });
+})();
+
+let sid = null, lastSeq = 0, ncTimer = null, ncOff = null;
+function apply(m){
+  const sc = m.screen || {};
+  P.style.setProperty("--glow", sc.glow ?? .6);
+  $("ttl").classList.toggle("on", !!sc.title); P.classList.toggle("t-on", !!sc.title);
+  $("blk").classList.toggle("on", !!sc.black);
+  $("adult").classList.toggle("on", !!sc.adult);
+  $("adp").textContent = (m.pct||0) + "%";
+  $("adf").style.width = (m.pct||0) + "%";
+  if(!sc.names || sc.title) hideName(true);
+}
+function hideName(now){
+  clearTimeout(ncTimer); clearTimeout(ncOff);
+  const nc = $("nc"); nc.classList.remove("on"); if(now) nc.classList.remove("off");
+}
+function showName(c){
+  hideName(true);
+  const nc = $("nc");
+  $("ncw").textContent = c.who; $("ncs").textContent = c.song; $("ncr").textContent = c.src;
+  $("ncs").style.display = c.song ? "" : "none"; $("ncr").style.display = c.src ? "" : "none";
+  void nc.offsetWidth;
+  ncTimer = setTimeout(()=>{ nc.classList.add("on"); }, 700);
+  ncOff = setTimeout(()=>{ nc.classList.add("off"); nc.classList.remove("on"); }, 700 + 11000);
+}
+function onMsg(m){
+  if(!m || typeof m!=="object" || (m.type!=="state" && m.type!=="go")) return;
+  if(m.sid !== sid){ sid = m.sid; lastSeq = 0; }
+  if(m.seq <= lastSeq) return;
+  lastSeq = m.seq;
+  apply(m);
+  if(m.type==="go" && m.cur && m.cur.i >= 1 && m.screen.names && !m.screen.title) showName(m.cur);
+}
+window.addEventListener("message", e=> onMsg(e.data));
+let bc = null; try{ bc = new BroadcastChannel("twentysomething"); bc.onmessage = e=> onMsg(e.data); }catch(_){}
+const boss = window.opener || (window.parent !== window ? window.parent : null);
+function hello(){
+  const m = {type:"hello", preview: IS_PREVIEW};
+  try{ boss && boss.postMessage(m, "*"); }catch(_){}
+  try{ bc && bc.postMessage(m); }catch(_){}
+}
+hello(); setInterval(hello, 3000);
+apply({screen:{title:true, adult:true, glow:.6}, pct:0});
+
+if(IS_PREVIEW){ $("fsh").remove(); return; }
+document.title = "TwentySomething · Projection";
+const fs = ()=>{ if(!document.fullscreenElement) document.documentElement.requestFullscreen().catch(()=>{}); else document.exitFullscreen(); };
+document.addEventListener("dblclick", fs);
+setTimeout(()=> $("fsh").classList.add("gone"), 8000);
+document.addEventListener("fullscreenchange", ()=> $("fsh").classList.add("gone"));
+let idle; const wake = ()=>{ document.body.classList.remove("idle"); clearTimeout(idle); idle = setTimeout(()=> document.body.classList.add("idle"), 2000); };
+document.addEventListener("mousemove", wake); wake();
+// keys pressed while this window has focus still run the board
+document.addEventListener("keydown", e=>{
+  if(e.code==="KeyF"){ e.preventDefault(); fs(); return; }
+  if(["Space","KeyP","ArrowUp","ArrowDown","KeyT","KeyN","KeyA","KeyB"].includes(e.code)){
+    e.preventDefault();
+    try{ boss && boss.postMessage({type:"key", code:e.code, shiftKey:e.shiftKey, repeat:e.repeat}, "*"); }catch(_){}
+  }
+});
+try{ navigator.wakeLock && navigator.wakeLock.request("screen").catch(()=>{}); }catch(_){}
+})();
 </script>
 </body>
 </html>
