@@ -95,7 +95,10 @@
   .meter i{display:block;height:100%;width:0;background:var(--play)}
   .lvstat{font-size:11px;color:var(--faint)}
   .btn.tog.bad{border-color:rgba(240,100,90,.6);color:var(--warn)}
-  .row2{display:grid;grid-template-columns:2fr 1fr;gap:10px}
+  .row2{display:grid;grid-template-columns:2fr 1.1fr 1fr;gap:10px}
+  .btn.hit:active,.btn.hit.flash{background:rgba(255,94,168,.2);border-color:rgba(255,94,168,.7);color:#ff8cc0}
+  .curt{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--dim)}
+  .curt input{background:var(--panel2);border:1px solid var(--line);border-radius:6px;color:var(--text);font-family:var(--mono);font-size:12px;padding:3px 6px;color-scheme:dark}
   .btn.tog.main.on{background:rgba(232,163,61,.16);border-color:rgba(232,163,61,.7);color:var(--sb)}
   .btn kbd.w{font-family:var(--body);font-size:11px}
   .btn.sm{height:46px;font-size:15px}
@@ -124,9 +127,9 @@
          background:radial-gradient(58vmax 58vmax at 30% 62%,rgba(215,245,66,.36),transparent 70%),radial-gradient(58vmax 58vmax at 72% 40%,rgba(255,94,168,.34),transparent 70%)}
   .glow{position:absolute;left:50%;top:50%;width:96vmax;height:96vmax;margin:-48vmax 0 0 -48vmax;border-radius:50%;
         mix-blend-mode:screen;will-change:transform;transition:opacity 3s ease}
-  .g1{opacity:calc(var(--glow) * var(--ga) * var(--bl,1));background:radial-gradient(closest-side,rgba(215,245,66,.34),rgba(215,245,66,.11) 46%,transparent 76%);animation:d1 61s ease-in-out infinite alternate}
-  .g2{opacity:calc(var(--glow) * var(--gb) * var(--bl,1));background:radial-gradient(closest-side,rgba(255,94,168,.30),rgba(255,94,168,.09) 46%,transparent 76%);animation:d2 79s ease-in-out infinite alternate}
-  .g3{opacity:calc(var(--glow) * var(--bl,1));width:70vmax;height:70vmax;margin:-35vmax 0 0 -35vmax;background:radial-gradient(closest-side,rgba(240,238,225,.13),transparent 72%);animation:d3 97s ease-in-out infinite alternate}
+  .g1{opacity:calc(var(--gr,1) * var(--glow) * var(--ga) * var(--bl,1));background:radial-gradient(closest-side,rgba(215,245,66,.34),rgba(215,245,66,.11) 46%,transparent 76%);animation:d1 61s ease-in-out infinite alternate}
+  .g2{opacity:calc(var(--gr,1) * var(--glow) * var(--gb) * var(--bl,1));background:radial-gradient(closest-side,rgba(255,94,168,.30),rgba(255,94,168,.09) 46%,transparent 76%);animation:d2 79s ease-in-out infinite alternate}
+  .g3{opacity:calc(var(--gr,1) * var(--glow) * var(--bl,1));width:70vmax;height:70vmax;margin:-35vmax 0 0 -35vmax;background:radial-gradient(closest-side,rgba(240,238,225,.13),transparent 72%);animation:d3 97s ease-in-out infinite alternate}
   @keyframes d1{from{transform:translate(-40vw,-24vh) scale(1)}to{transform:translate(30vw,20vh) scale(1.22)}}
   @keyframes d2{from{transform:translate(36vw,-28vh) scale(1.1)}to{transform:translate(-30vw,26vh) scale(.9)}}
   @keyframes d3{from{transform:translate(4vw,34vh)}to{transform:translate(-14vw,-30vh)}}
@@ -167,6 +170,12 @@
   @keyframes sway{from{transform:translate(0,0) rotate(0)}to{transform:translate(.8vh,-.5vh) rotate(-.6deg)}}
   .tsub{font-family:"Instrument Serif",Georgia,serif;font-size:5.4vh;margin-top:3.6vh;opacity:0}
   #ttl.in .tsub{animation:fup 1.1s 1.7s both cubic-bezier(.2,.7,.2,1)}
+  .tnext{position:absolute;right:0;bottom:-.4vh;text-align:right;opacity:0;transform:translateY(1.4vh);transition:opacity .9s ease,transform 1.1s cubic-bezier(.2,.7,.2,1)}
+  .tnext.on{opacity:1;transform:none;transition-delay:.6s}
+  .tnl{display:inline-block;background:var(--pink);color:#141414;font-weight:800;font-stretch:105%;font-size:2.1vh;letter-spacing:.12em;text-transform:uppercase;padding:.8vh 1.8vh .7vh}
+  .tnw{display:block;font-weight:900;font-stretch:62%;font-size:8.5vh;line-height:.85;color:var(--lime);text-transform:uppercase;text-shadow:.55vh .55vh 0 var(--pink);margin-top:1.4vh;white-space:nowrap}
+  .tns{display:block;font-family:"Instrument Serif",Georgia,serif;font-style:italic;font-size:4.4vh;line-height:1;margin-top:.6vh;white-space:nowrap}
+  #ttl.side .tnext{display:none}
   .thost{position:absolute;right:0;bottom:.5vh;background:var(--pink);color:#141414;font-weight:800;font-stretch:105%;font-size:2.3vh;letter-spacing:.12em;
          text-transform:uppercase;padding:1vh 2.2vh;opacity:0;transform:translateY(1.2vh);transition:opacity 1s ease .5s,transform 1.2s cubic-bezier(.2,.7,.2,1) .5s}
   .thost.on{opacity:1;transform:none}
@@ -206,12 +215,14 @@
   /* ---- the wipe between slides ---- */
   #wipew{position:absolute;inset:0;pointer-events:none}
   #wipew.rev{transform:scaleX(-1)}
-  #wipe{position:absolute;top:-20vh;left:0;height:140vh;display:flex;transform:translateX(-232vw) skewX(-14deg);will-change:transform}
+  #wipe{position:absolute;top:-20vh;left:0;height:140vh;display:flex;transform:translateX(-236vw) skewX(-14deg);will-change:transform}
   #wipe i{display:block;height:100%;flex:none}
   #wipe .w1{width:2.2vw;background:var(--pink)}
   #wipe .w2{width:200vw;background:#0b0b0d}
   #wipe .w2b{width:4.6vw;background:var(--pink)}
-  #wipe .w3{width:9vw;background:var(--lime)}
+  #wipe .w3{width:12vw;background:var(--lime);display:flex;align-items:center;justify-content:center;overflow:hidden}
+  #wipe .w3 span{display:block;white-space:nowrap;transform:rotate(-90deg);font-weight:900;font-stretch:62%;line-height:.8;color:#0b0b0d;text-transform:uppercase;padding-top:.08em}
+  #wipew.rev #wipe .w3 span{transform:rotate(-90deg) scaleY(-1)}
 
   /* ---- adulting ---- */
   #adult{position:absolute;right:6vw;bottom:6vh;width:26vw;opacity:0;transition:opacity 1.6s}
@@ -223,6 +234,7 @@
   .adb i.ind{width:16% !important;transition:none;animation:ind 3.2s ease-in-out infinite alternate}
   #adult.hold{opacity:0 !important}
   .adt span.fin{color:var(--pink)}
+  .adt.cd b{font-variant-numeric:tabular-nums}
 
   /* ---- show open: the bar loads in the middle of the screen, then TWENTY lands ---- */
   #boot{position:absolute;left:50%;top:50%;width:52vw;transform:translate(-50%,-50%);opacity:0;transition:opacity .35s ease;pointer-events:none}
@@ -269,7 +281,7 @@
 <header>
   <div class="brand"><h1>TwentySomething</h1><div>Sound board · The Broadway Theater</div></div>
   <span class="sub">Sat Nov 28 · 7:00 PM</span>
-  <span class="sub" title="Board version">Build Nov 24 · 12:45 PM</span>
+  <span class="sub" title="Board version">Build Nov 24 · 1:30 PM</span>
   <span class="sp"></span>
   <span class="sub" id="loadStat">Loading tracks…</span>
   <div class="vol">Master <input id="vol" type="range" min="0" max="100" value="100"><b id="volV">100%</b></div>
@@ -299,6 +311,7 @@
     </div>
     <div class="row2">
       <button class="btn tog main" id="tMain"><span id="tMainT">Main slide</span><kbd class="w" id="tMainK">M</kbd></button>
+      <button class="btn hit" id="tHit">Big note<kbd>H</kbd></button>
       <button class="btn tog blk" id="tBlack">Black<kbd>B</kbd></button>
     </div>
     <div class="card">
@@ -316,6 +329,7 @@
           <div class="vol"><span class="t">Background glow</span><input id="glow" type="range" min="0" max="100" value="60"><b id="glowV">60%</b></div>
           <div class="vol"><span class="t">Mic sensitivity</span><input id="micS" type="range" min="0" max="100" value="50"><span class="meter" title="What the mic hears"><i id="micM"></i></span></div>
           <div class="lvstat" id="lvStat">Glow is resting</div>
+          <label class="curt">Curtain <input type="time" id="curt" value="19:00"> <span id="curtS"></span></label>
         </div>
       </div>
     </div>
@@ -339,6 +353,7 @@
     <div class="tsome">something</div>
     <div class="tsub">A coming-of-age cabaret.</div>
     <div class="thost" id="thost">Aliyah · Host</div>
+    <div class="tnext" id="tnext"><span class="tnl">Up next</span><span class="tnw" id="tnw"></span><span class="tns" id="tns"></span></div>
     <div class="stkw"><div class="stk">Still<br>figuring<br>it out</div></div>
   </div></div>
   <div id="song"><div class="sk" id="sk">
@@ -349,7 +364,7 @@
   <div id="bows"><div class="roll" id="roll"></div></div>
   <div id="boot"><div class="adt"><span>Adulting…</span><b id="bootp">0%</b></div><div class="adb"><i id="bootf"></i></div></div>
   <div id="adult"><div class="adt"><span id="adl">Adulting…</span><b id="adp">0%</b></div><div class="adb"><i id="adf"></i></div></div>
-  <div id="wipew"><div id="wipe"><i class="w1"></i><i class="w2"></i><i class="w2b"></i><i class="w3"></i></div></div>
+  <div id="wipew"><div id="wipe"><i class="w1"></i><i class="w2"></i><i class="w2b"></i><i class="w3"><span id="wname"></span></i></div></div>
   <div id="blk"></div>
   <div id="fsh">Double-click or press F for full screen</div>
 </div>
@@ -440,7 +455,8 @@ function go(){
   }
   standby = current + 1 < CUES.length ? current + 1 : -1;
   screen.title = current < 1;          // the host's welcome plays on the main slide; every song leaves it
-  send({type:"go", screen, cur:curInfo(), pct:pct()});
+  bigFired = false; bigPrev = -1;
+  send({type:"go", screen:Object.assign({}, screen, {curtain:curtainAt()}), cur:curInfo(), pct:pct(), next:nextInfo()});
   render(); renderScreen(); scrollTo(current);
 }
 
@@ -454,7 +470,7 @@ function togglePause(){
   else a.pause();
   render();
 }
-function setStandby(i){ standby = Math.max(0, Math.min(CUES.length-1, i)); render(); scrollTo(standby); }
+function setStandby(i){ standby = Math.max(0, Math.min(CUES.length-1, i)); render(); scrollTo(standby); if(screen.title && current >= 1) sendState(); }
 function scrollTo(i){ const el = document.querySelector(`.cue[data-i="${i}"]`); if(el) el.scrollIntoView({block:"nearest",behavior:"smooth"}); }
 
 /* ---------- Load / replace a track (saved on this computer) ---------- */
@@ -604,6 +620,7 @@ function handleKey(k){
   else if(k.code==="KeyA"){ toggleScreen("adult"); }
   else if(k.code==="KeyB"){ toggleScreen("black"); }
   else if(k.code==="KeyR"){ toggleScreen("react"); }
+  else if(k.code==="KeyH"){ if(!k.repeat) bigNote(); }
   else return false;
   return true;
 }
@@ -655,7 +672,20 @@ function send(m){
   for(const w of [...targets]){ try{ if(!w || w.closed){ targets.delete(w); continue; } w.postMessage(m, "*"); }catch(_){ targets.delete(w); } }
   try{ bc && bc.postMessage(m); }catch(_){}
 }
-const sendState = ()=> send({type:"state", screen, cur:curInfo(), pct:pct()});
+/* who is on standby, for the "Up next" line while the main slide holds */
+function nextInfo(){
+  if(!screen.title || current < 1 || standby < 0) return null;
+  const c = CUES[standby]; if(!c) return null;
+  if(c.bows) return {who:"Bows", song:""};
+  const parts = c.title.split(" · "), pending = /^(Song pending|Duet|Opening \/ Welcome)$/.test(c.title);
+  return {who:c.who, song: pending ? "" : parts[0]};
+}
+/* today at the curtain time on the board */
+function curtainAt(){
+  const v = ($("curt").value || "19:00").split(":"), d = new Date();
+  d.setHours(+v[0]||19, +v[1]||0, 0, 0); return d.getTime();
+}
+const sendState = ()=> send({type:"state", screen:Object.assign({}, screen, {curtain:curtainAt()}), cur:curInfo(), pct:pct(), next:nextInfo()});
 function onMsg(d, src){
   if(!d || typeof d!=="object") return;
   if(d.type==="hello"){
@@ -766,7 +796,19 @@ function sendLvl(v){
   for(const w of [...targets]){ try{ if(!w || w.closed){ targets.delete(w); continue; } w.postMessage(m, "*"); }catch(_){ targets.delete(w); } }
   try{ bc && bc.postMessage(m); }catch(_){}
 }
-let lvLast = null, lvSrc = "-";
+let lvLast = null, lvSrc = "-", bigFired = false, bigPrev = -1;
+function bigNote(){
+  bigFired = true;
+  const m = {type:"big", sid:SID};
+  for(const w of [...targets]){ try{ if(!w || w.closed){ targets.delete(w); continue; } w.postMessage(m, "*"); }catch(_){ targets.delete(w); } }
+  try{ bc && bc.postMessage(m); }catch(_){}
+  const b = $("tHit"); b.classList.add("flash"); setTimeout(()=> b.classList.remove("flash"), 900);
+}
+$("tHit").onclick = e=>{ e.currentTarget.blur(); bigNote(); };
+try{ const v = localStorage.getItem("ts-curt"); if(v) $("curt").value = v; }catch(_){}
+function curtLabel(){ const d = new Date(curtainAt()); $("curtS").textContent = "today " + d.toLocaleTimeString([], {hour:"numeric", minute:"2-digit"}); }
+$("curt").onchange = e=>{ try{ localStorage.setItem("ts-curt", e.target.value); }catch(_){} curtLabel(); sendState(); };
+curtLabel();
 setInterval(()=>{
   const c = CUES[current]; let v = null, src = "";
   const mic = micOn ? micRead() : 0;
@@ -774,6 +816,12 @@ setInterval(()=>{
   if(screen.react && c){
     if(c.kind === "track" && c.audio && !c.audio.paused){ const e = envAt(c, c.audio.currentTime); if(e !== null){ v = e; src = "the track"; } else if(micOn){ v = mic; src = "the mic"; } }
     else if(c.kind !== "track" && micOn){ v = mic; src = "the mic"; }
+  }
+  // the big note: a track with a clear peak fires it on its own as the playhead crosses it
+  if(c && c.kind === "track" && c.audio && !c.audio.paused && !c.loadedName && ENV[c.n] && ENV[c.n].big){
+    const t = c.audio.currentTime, at = ENV[c.n].big;
+    if(!bigFired && bigPrev >= 0 && bigPrev < at && t >= at && t - at < 1) bigNote();
+    bigPrev = t;
   }
   if(src !== lvSrc){ lvSrc = src; $("lvStat").textContent = src ? "Glow is following " + src : "Glow is resting"; }
   if(v === null && lvLast === null) return;
@@ -882,10 +930,12 @@ function setScene(t){
   $("boot").classList.remove("on"); $("adult").classList.remove("hold");
   $("thost").classList.remove("on");
 
+  if(t.mode !== "title") setNext(null);
   if(t.mode === "title"){
     setAcc(true); glowScene(0, 1, 1);
     void ttl.offsetWidth; ttl.className = "in";
     $("thost").classList.toggle("on", !!t.host);
+    if(lastM) setNext(lastM.screen && lastM.screen.title ? lastM.next : null);
     return;
   }
   if(t.mode === "song"){
@@ -950,10 +1000,19 @@ async function openSeq(t){
 }
 
 /* the wipe: lime and pink bands lead a dark panel across, the scene swaps under it, it leaves on a pink edge */
+/* the lime band carries a name: the performer coming up, or the show's own */
+function wipeName(t){
+  const el = $("wname");
+  el.textContent = t.mode === "song" ? t.cur.who : (t.mode === "title" || t.mode === "bows") ? "TwentySomething" : "";
+  el.style.fontSize = "11.5vw";
+  const max = window.innerHeight * .92;
+  if(el.textContent && el.offsetWidth > max) el.style.fontSize = (11.5 * max / el.offsetWidth).toFixed(2) + "vw";
+}
 async function wipe(t){
   const w = $("wipe"); $("wipew").classList.toggle("rev", t.mode === "title");
+  wipeName(t);
   const k = x => ({transform:`translateX(${x}vw) skewX(-14deg)`});
-  const a1 = w.animate([k(-232), k(-52)], {duration:700, easing:"cubic-bezier(.55,.085,.68,.53)", fill:"forwards"});
+  const a1 = w.animate([k(-236), k(-52)], {duration:700, easing:"cubic-bezier(.55,.085,.68,.53)", fill:"forwards"});
   await done(a1, 700);
   setScene(t);
   await sleep(110);
@@ -974,13 +1033,15 @@ async function request(t){
 let shownPct = 0, tgtPct = -1, pctAnim = 0;
 function setPct(p){
   tgtPct = p;
+  P.style.setProperty("--gr", (.62 + .5 * p / 100).toFixed(3));        // the night grows up: more light with every song
+  if(cdOn) return;
   const f = $("adf"); f.classList.toggle("ind", p === 0);
   f.style.width = p + "%";
   const from = shownPct, id = ++pctAnim, t0 = performance.now();
   (function step(now){
     if(id !== pctAnim) return;
     const k = Math.min(1, (now - t0) / 1800), e = 1 - Math.pow(1-k, 3);
-    $("adp").textContent = Math.round(from + (p - from) * e) + "%";
+    if(!cdOn) $("adp").textContent = Math.round(from + (p - from) * e) + "%";
     if(k < 1) requestAnimationFrame(step); else shownPct = p;
   })(t0);
   if(document.hidden){ $("adp").textContent = p + "%"; shownPct = p; }
@@ -1002,27 +1063,72 @@ function setFin(on){
 /* the music moves the glow: quiet passages pull it back, loud ones bring it up and add a bloom on top */
 let lvT = null, lvAt = 0, lv = 0, lvOn = 0, GLOW = .6;
 const glows = $("glows"), pulse = $("pulse");
+let bigAt = -1e9;
+function bigK(){
+  const t = (performance.now() - bigAt) / 1000;
+  if(t < 0 || t > 5) return 0;
+  return t < .35 ? t / .35 : Math.exp(-(t - .35) * 1.05);
+}
 function lvLoop(){
-  const live = lvT !== null && performance.now() - lvAt < 700;
+  const live = lvT !== null && performance.now() - lvAt < 700, bk = bigK();
   lvOn += ((live ? 1 : 0) - lvOn) * .05;
   const tg = live ? lvT : 0;
   lv += (tg - lv) * (tg > lv ? .4 : .07);                 // quick up, slow down: it breathes, it doesn't flicker
-  if(lvOn > .003){
-    glows.style.opacity = (1 - lvOn * (1 - lv) * .5).toFixed(3);
-    glows.style.transform = "scale(" + (1 + lvOn * lv * .07).toFixed(4) + ")";
-    pulse.style.opacity = (lvOn * Math.pow(lv, 1.7) * .6 * GLOW).toFixed(3);
+  if(lvOn > .003 || bk > .003){
+    glows.style.opacity = Math.min(1, 1 - lvOn * (1 - lv) * .5 + bk).toFixed(3);
+    glows.style.transform = "scale(" + (1 + lvOn * lv * .07 + bk * .16).toFixed(4) + ")";
+    pulse.style.opacity = Math.min(1, lvOn * Math.pow(lv, 1.7) * .6 * GLOW + bk * (.55 + GLOW * .6)).toFixed(3);
   } else if(glows.style.opacity !== ""){ glows.style.opacity = ""; glows.style.transform = ""; pulse.style.opacity = "0"; }
   requestAnimationFrame(lvLoop);
 }
 requestAnimationFrame(lvLoop);
 
+/* pre-show: the bar counts down to the curtain; past it, it admits we're late */
+let cdOn = false, lastM = null;
+const CD_WIN = 60 * 60000;
+function cdTick(){
+  const m = lastM; let on = false;
+  if(m && !m.cur && m.screen && m.screen.curtain){
+    const rem = m.screen.curtain - Date.now();
+    if(rem <= CD_WIN && rem > -3 * 3600000){
+      on = true;
+      const el = $("adl"), pc = $("adp"), f = $("adf"), s = Math.abs(Math.round(rem / 1000));
+      const clock = (s >= 3600 ? Math.floor(s/3600) + ":" + String(Math.floor(s/60)%60).padStart(2,"0") : Math.floor(s/60)) + ":" + String(s%60).padStart(2,"0");
+      f.classList.remove("ind"); el.parentNode.classList.add("cd");
+      if(rem > 0){ el.textContent = "Curtain in"; el.classList.remove("fin"); pc.textContent = clock; f.style.width = (100 * (1 - rem / CD_WIN)).toFixed(2) + "%"; }
+      else { el.textContent = "Still figuring it out"; el.classList.add("fin"); pc.textContent = "+" + clock; f.style.width = "100%"; }
+    }
+  }
+  if(on !== cdOn){
+    cdOn = on;
+    if(!on){ const el = $("adl"); el.parentNode.classList.remove("cd");
+      if(!finOn){ el.textContent = "Adulting…"; el.classList.remove("fin"); }
+      const p = tgtPct; tgtPct = -1; shownPct = 0; setPct(p < 0 ? 0 : p); }
+  }
+}
+setInterval(cdTick, 500);
+function setNext(n){
+  const el = $("tnext");
+  if(!n){ el.classList.remove("on"); return; }
+  const key = n.who + "|" + n.song;
+  if(el.dataset.k === key && el.classList.contains("on")) return;
+  el.dataset.k = key;
+  const apply = ()=>{ $("tnw").textContent = n.who; $("tns").textContent = n.song || ""; $("tns").style.display = n.song ? "" : "none";
+    const w = $("tnw"); w.style.fontSize = ""; const max = window.innerWidth * .34; if(w.offsetWidth > max) w.style.fontSize = (8.5 * max / w.offsetWidth).toFixed(2) + "vh";
+    el.classList.add("on"); };
+  if(el.classList.contains("on")){ el.classList.remove("on"); setTimeout(apply, 500); } else apply();
+}
+
 function applyLive(m){
+  lastM = m;
   const sc = m.screen || {};
   GLOW = sc.glow ?? .6; setFin(!!(m.cur && m.cur.last));
   P.style.setProperty("--glow", sc.glow ?? .6);
   $("blk").classList.toggle("on", !!sc.black);
   $("adult").classList.toggle("on", !!sc.adult);
   if((m.pct||0) !== tgtPct) setPct(m.pct||0);
+  cdTick();
+  if(view.mode === "title" || (sc.title && busy)) setNext(sc.title ? m.next : null); else setNext(null);
 }
 function target(m){
   const sc = m.screen || {};
@@ -1042,6 +1148,7 @@ function openBC(){
 }
 function onMsg(m, viaBoss){
   if(m && m.type === "lvl"){ if(viaBoss || (B && m.sid === B)){ lvT = m.v; lvAt = performance.now(); } return; }
+  if(m && m.type === "big"){ if(viaBoss || (B && m.sid === B)) bigAt = performance.now(); return; }
   if(!m || typeof m!=="object" || (m.type!=="state" && m.type!=="go")) return;
   if(viaBoss){ if(m.sid && m.sid !== B){ B = m.sid; openBC(); } }
   else if(!B || m.sid !== B) return;
@@ -1073,7 +1180,7 @@ function hello(){
 function start(){
   view = {mode:"title", host:false};
   setScene(view);
-  applyLive({screen:{adult:true, glow:.6}, pct:0});
+  applyLive({screen:{adult:true, glow:.6}, pct:0}); lastM = null;
   hello(); setInterval(hello, 3000);
 }
 const fontsIn = (document.fonts && document.fonts.load)
@@ -1093,7 +1200,7 @@ document.addEventListener("mousemove", wake); wake();
 document.addEventListener("keydown", e=>{
   if(e.metaKey || e.ctrlKey || e.altKey) return;
   if(e.code==="KeyF"){ e.preventDefault(); fs(); return; }
-  if(["Space","KeyP","ArrowUp","ArrowDown","KeyM","KeyT","KeyN","KeyA","KeyB","KeyR"].includes(e.code)){
+  if(["Space","KeyP","ArrowUp","ArrowDown","KeyM","KeyT","KeyN","KeyA","KeyB","KeyR","KeyH"].includes(e.code)){
     e.preventDefault();
     try{ boss && boss.postMessage({type:"key", code:e.code, shiftKey:e.shiftKey, repeat:e.repeat}, "*"); }catch(_){}
   }
