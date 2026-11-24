@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>TwentySomething · Sound Board</title>
 <link rel="stylesheet" href="fonts.css">
+<script src="env.js"></script>
 <style>
   :root{
     --bg:#0c0e11; --panel:#14171c; --panel2:#1b1f26; --line:#2a3039;
@@ -85,9 +86,17 @@
   .foot{font-size:11px;color:var(--faint);padding:8px 18px}
 
   /* ---------- screen controls (presenter) ---------- */
-  .scrrow{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .scrrow{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  .scrs{display:flex;flex-direction:column;gap:9px;min-width:0}
+  .scrs .vol{flex-direction:row !important;align-items:center !important;gap:8px}
+  .scrs .vol .t{width:104px;flex:none}
+  .scrs .vol input{width:120px !important}
+  .meter{display:inline-block;width:38px;height:8px;border:1px solid var(--line);border-radius:4px;overflow:hidden;flex:none}
+  .meter i{display:block;height:100%;width:0;background:var(--play)}
+  .lvstat{font-size:11px;color:var(--faint)}
+  .btn.tog.bad{border-color:rgba(240,100,90,.6);color:var(--warn)}
   .row2{display:grid;grid-template-columns:2fr 1fr;gap:10px}
-  .btn.main.on{background:rgba(232,163,61,.16);border-color:rgba(232,163,61,.7);color:var(--sb)}
+  .btn.tog.main.on{background:rgba(232,163,61,.16);border-color:rgba(232,163,61,.7);color:var(--sb)}
   .btn kbd.w{font-family:var(--body);font-size:11px}
   .btn.sm{height:46px;font-size:15px}
   .btn.tog.on{background:rgba(88,214,141,.12);border-color:rgba(88,214,141,.5);color:var(--play)}
@@ -106,10 +115,13 @@
   body.v-proj.idle{cursor:none}
   body.v-proj > header, body.v-proj > main{display:none}
   body.v-proj #proj{display:block;position:fixed;inset:0;overflow:hidden;background:#0b0b0d;--glow:.6;--ga:1;--gb:1;
-    --lime:#d7f542;--pink:#ff5ea8;--acc:var(--lime);font-family:"Archivo",var(--body);color:#f3f1ea}
+    --lime:#d7f542;--pink:#ff5ea8;--acc:var(--lime);--acc2:var(--pink);font-family:"Archivo",var(--body);color:#f3f1ea}
   .nt,.nt *{transition:none !important}
 
-  /* ground: two slow glows, one soft white, grain, vignette */
+  /* ground: two slow glows, one soft white, grain, vignette. #glows and #pulse are what the music moves. */
+  #glows{position:absolute;inset:0;mix-blend-mode:screen;will-change:opacity,transform}
+  #pulse{position:absolute;inset:-12%;opacity:0;mix-blend-mode:screen;pointer-events:none;will-change:opacity;
+         background:radial-gradient(58vmax 58vmax at 30% 62%,rgba(215,245,66,.36),transparent 70%),radial-gradient(58vmax 58vmax at 72% 40%,rgba(255,94,168,.34),transparent 70%)}
   .glow{position:absolute;left:50%;top:50%;width:96vmax;height:96vmax;margin:-48vmax 0 0 -48vmax;border-radius:50%;
         mix-blend-mode:screen;will-change:transform;transition:opacity 3s ease}
   .g1{opacity:calc(var(--glow) * var(--ga) * var(--bl,1));background:radial-gradient(closest-side,rgba(215,245,66,.34),rgba(215,245,66,.11) 46%,transparent 76%);animation:d1 61s ease-in-out infinite alternate}
@@ -123,15 +135,9 @@
   @keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-4%)}60%{transform:translate(-4%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
   .vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 45%,rgba(0,0,0,.62) 100%);pointer-events:none}
 
-  /* the giant outlined "20": main slide only */
-  #bigw{position:absolute;left:50%;top:50%;width:0;height:0;animation:bigd 64s ease-in-out infinite alternate}
-  @keyframes bigd{from{transform:translate(23vw,-2vh) rotate(-5deg) scale(1)}to{transform:translate(12vw,3vh) rotate(3deg) scale(1.12)}}
-  #big{position:absolute;left:0;top:0;transform:translate(-50%,-50%);font-weight:900;font-stretch:62%;font-size:132vh;line-height:.8;white-space:nowrap;
-       color:transparent;-webkit-text-stroke:.32vh var(--acc);opacity:0;transition:opacity 2.6s ease,transform 2s cubic-bezier(.16,1,.3,1)}
-  #big.on{opacity:calc(var(--glow) * .2)}
 
   /* shared moves */
-  .msk{display:block;overflow:hidden;padding-top:.03em;margin-top:-.03em}
+  .msk{display:block;overflow:hidden;padding:.03em .12em .06em 0;margin:-.03em 0 -.06em 0}
   .l{display:inline-block;transform:translateY(114%)}
   .l b{font-weight:inherit;display:inline-block}
   @keyframes lrise{from{transform:translateY(114%)}to{transform:none}}
@@ -147,7 +153,7 @@
   .tpre{font-weight:600;font-stretch:112%;font-size:2.6vh;letter-spacing:.14em;text-transform:uppercase;margin-bottom:1.4vh;opacity:0}
   .tdate{position:absolute;right:0;top:0;font-weight:700;font-stretch:112%;font-size:2.6vh;letter-spacing:.14em;color:var(--lime);text-transform:uppercase;opacity:0}
   #ttl.in .tpre,#ttl.in .tdate{animation:fdn 1s .15s both cubic-bezier(.2,.7,.2,1)}
-  .tbig{font-weight:900;font-stretch:62%;font-size:36vh;line-height:.8;color:var(--lime);margin-left:-.4vh;white-space:nowrap}
+  .tbig{font-weight:900;font-stretch:62%;font-size:36vh;line-height:.8;color:var(--lime);margin-left:-.4vh;white-space:nowrap;text-shadow:1.05vh 1.05vh 0 var(--pink)}
   #ttl.in .tbig .l{animation:lrise 1.15s both cubic-bezier(.16,1,.3,1);animation-delay:calc(.3s + var(--i) * .08s)}
   /* the word breathes: each letter swells in width in turn, a slow wave through TWENTY */
   #ttl.in .tbig .l b{animation:wdth 9s ease-in-out infinite;animation-delay:calc(2.6s + var(--i) * .8s)}
@@ -181,7 +187,7 @@
       transition:transform 1.8s cubic-bezier(.7,0,.15,1),opacity 1.2s ease}
   .sk.show{opacity:1}
   .sk.small{transform:translateY(0) scale(.5)}
-  .snm{font-weight:900;font-stretch:62%;line-height:.8;color:var(--acc);text-transform:uppercase;white-space:nowrap;margin-left:-.03em}
+  .snm{font-weight:900;font-stretch:62%;line-height:.8;color:var(--acc);text-transform:uppercase;white-space:nowrap;margin-left:-.03em;text-shadow:.9vh .9vh 0 var(--acc2)}
   .snm .ln{display:inline-block}
   .snm .msk + .msk{margin-top:.02em}
   .sk.in .snm .l{animation:lrise 1.05s both cubic-bezier(.16,1,.3,1);animation-delay:calc(.3s + var(--i) * .055s)}
@@ -192,18 +198,19 @@
   .sk.inq .stt{clip-path:none}
   .ssw{transition:opacity .9s ease}
   .sk.small .ssw{opacity:0}
-  .ssr{font-weight:600;font-stretch:112%;font-size:2.5vh;letter-spacing:.16em;text-transform:uppercase;color:rgba(243,241,234,.72);margin:1.6vh 0 0 7.4vh;opacity:0}
-  .sk.in .ssr{animation:fup .9s 1.75s both}
-  .ssr i{display:inline-block;width:6vh;height:.3vh;background:var(--acc);vertical-align:middle;margin-right:1.6vh;transform-origin:0 50%}
-  .sk.in .ssr i{animation:draw .9s 1.95s both cubic-bezier(.6,0,.2,1)}
+  .ssr{display:inline-block;font-weight:800;font-stretch:112%;font-size:2.5vh;letter-spacing:.12em;text-transform:uppercase;background:var(--acc2);color:#141414;
+       padding:.9vh 1.9vh .8vh;margin:2.6vh 0 0 7.4vh;opacity:0}
+  .sk.in .ssr{animation:tagin .7s 1.75s both cubic-bezier(.2,1.2,.4,1)}
+  @keyframes tagin{from{opacity:0;transform:translateX(-2vh) rotate(-3deg)}to{opacity:1;transform:none}}
 
   /* ---- the wipe between slides ---- */
   #wipew{position:absolute;inset:0;pointer-events:none}
   #wipew.rev{transform:scaleX(-1)}
-  #wipe{position:absolute;top:-20vh;left:0;height:140vh;display:flex;transform:translateX(-224vw) skewX(-14deg);will-change:transform}
+  #wipe{position:absolute;top:-20vh;left:0;height:140vh;display:flex;transform:translateX(-232vw) skewX(-14deg);will-change:transform}
   #wipe i{display:block;height:100%;flex:none}
   #wipe .w1{width:2.2vw;background:var(--pink)}
   #wipe .w2{width:200vw;background:#0b0b0d}
+  #wipe .w2b{width:4.6vw;background:var(--pink)}
   #wipe .w3{width:9vw;background:var(--lime)}
 
   /* ---- adulting ---- */
@@ -214,6 +221,41 @@
   .adb{height:1.3vh;border:.18vh solid rgba(243,241,234,.75);border-radius:999px;padding:.25vh;box-sizing:content-box}
   .adb i{display:block;height:100%;width:0;background:var(--lime);border-radius:999px;transition:width 2.6s cubic-bezier(.3,.7,.2,1)}
   .adb i.ind{width:16% !important;transition:none;animation:ind 3.2s ease-in-out infinite alternate}
+  #adult.hold{opacity:0 !important}
+  .adt span.fin{color:var(--pink)}
+
+  /* ---- show open: the bar loads in the middle of the screen, then TWENTY lands ---- */
+  #boot{position:absolute;left:50%;top:50%;width:52vw;transform:translate(-50%,-50%);opacity:0;transition:opacity .35s ease;pointer-events:none}
+  #boot.on{opacity:1}
+  #boot .adt{font-size:3vh;margin-bottom:1.7vh}
+  #boot .adb{height:2.4vh;border-width:.26vh;padding:.4vh}
+  #boot .adb i{transition:none}
+  #ttl.in.leave .tbig .l{animation:ldrop .55s both cubic-bezier(.7,0,.84,0);animation-delay:calc(var(--i) * .035s)}
+  @keyframes ldrop{from{transform:none}to{transform:translateY(118%)}}
+  #ttl.in.leave .tsome{animation:unwr .55s both cubic-bezier(.6,0,.8,.2)}
+  @keyframes unwr{from{clip-path:inset(-30% -8% -40% -5%)}to{clip-path:inset(-30% -8% -40% 105%)}}
+  #ttl.in.leave .tpre,#ttl.in.leave .tdate,#ttl.in.leave .tsub,#ttl.in.leave .stkw,#ttl.in.leave .thost{animation:fout .4s both}
+  @keyframes fout{from{opacity:1}to{opacity:0}}
+  #ttl.slam .tbig .msk{overflow:visible}
+  #ttl.in.slam .tbig .l{animation:slam .62s both cubic-bezier(.2,1.25,.3,1);animation-delay:calc(var(--i) * .045s)}
+  @keyframes slam{from{opacity:0;transform:translateY(-12%) scale(1.75)}45%{opacity:1}to{opacity:1;transform:none}}
+  #ttl.in.slam .tsome{animation-delay:.6s,4.5s,2.4s}
+  #ttl.in.slam .tsub{animation-delay:1.3s}
+  #ttl.in.slam .stk{animation-delay:1.5s,2.4s}
+
+  /* ---- bows: every name rolls, the title sits beside them ---- */
+  #bows{position:absolute;inset:0;visibility:hidden;overflow:hidden;
+        -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 16%,#000 84%,transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 16%,#000 84%,transparent 100%)}
+  #bows.in{visibility:visible}
+  .roll{position:absolute;left:6vw;top:0;font-weight:900;font-stretch:62%;font-size:17vh;line-height:.92;text-transform:uppercase;white-space:nowrap;will-change:transform}
+  #bows.in .roll{animation:roll var(--rt,28s) linear infinite}
+  @keyframes roll{from{transform:translateY(0)}to{transform:translateY(-50%)}}
+  .roll div{color:var(--lime);text-shadow:.6vh .6vh 0 var(--pink);padding:.3vh 0 1vh}
+  .roll div.p{color:var(--pink);text-shadow:.6vh .6vh 0 var(--lime)}
+  .roll .hst{display:inline-block;vertical-align:middle;font-stretch:112%;font-weight:800;font-size:2.4vh;line-height:1;letter-spacing:.12em;background:var(--pink);color:#141414;
+             text-shadow:none;padding:.9vh 1.8vh .8vh;margin-left:2.4vh;transform:translateY(-1vh)}
+  #ttl.side{justify-content:flex-end}
+  #ttl.side .tbox{transform:scale(.4);transform-origin:100% 50%;margin-right:6vw}
   @keyframes ind{from{margin-left:0}to{margin-left:84%}}
 
   #blk{position:absolute;inset:0;background:#000;opacity:0;transition:opacity 1.6s;pointer-events:none}
@@ -227,7 +269,7 @@
 <header>
   <div class="brand"><h1>TwentySomething</h1><div>Sound board · The Broadway Theater</div></div>
   <span class="sub">Sat Nov 28 · 7:00 PM</span>
-  <span class="sub" title="Board version">Build Nov 24 · 11:35 AM</span>
+  <span class="sub" title="Board version">Build Nov 24 · 12:45 PM</span>
   <span class="sp"></span>
   <span class="sub" id="loadStat">Loading tracks…</span>
   <div class="vol">Master <input id="vol" type="range" min="0" max="100" value="100"><b id="volV">100%</b></div>
@@ -265,10 +307,16 @@
         <button class="btn sm" id="popout">Open<kbd>projection</kbd></button>
         <button class="btn sm tog" id="tNames">Song cards<kbd>N</kbd></button>
         <button class="btn sm tog" id="tAdult">Adulting<kbd>A</kbd></button>
+        <button class="btn sm tog" id="tReact">Glow moves<kbd>R</kbd></button>
+        <button class="btn sm tog" id="tMic">Mic<kbd id="micK">for live songs</kbd></button>
       </div>
       <div class="scrbot">
         <div class="pv"><iframe id="pv" title="Projection preview"></iframe></div>
-        <div class="vol">Background glow <input id="glow" type="range" min="0" max="100" value="60"><b id="glowV">60%</b></div>
+        <div class="scrs">
+          <div class="vol"><span class="t">Background glow</span><input id="glow" type="range" min="0" max="100" value="60"><b id="glowV">60%</b></div>
+          <div class="vol"><span class="t">Mic sensitivity</span><input id="micS" type="range" min="0" max="100" value="50"><span class="meter" title="What the mic hears"><i id="micM"></i></span></div>
+          <div class="lvstat" id="lvStat">Glow is resting</div>
+        </div>
       </div>
     </div>
     <div class="keys">
@@ -281,8 +329,8 @@
   <section class="list" id="list"></section>
 </main>
 <div id="proj">
-  <div class="glow g1"></div><div class="glow g2"></div><div class="glow g3"></div>
-  <div id="bigw"><div id="big"></div></div>
+  <div id="glows"><div class="glow g1"></div><div class="glow g2"></div><div class="glow g3"></div></div>
+  <div id="pulse"></div>
   <div class="grain" id="grain"></div>
   <div class="vig"></div>
   <div id="ttl"><div class="tbox">
@@ -298,8 +346,10 @@
     <div class="stt" id="stt"></div>
     <div class="ssw"><div class="ssr" id="ssr"></div></div>
   </div></div>
-  <div id="adult"><div class="adt"><span>Adulting…</span><b id="adp">0%</b></div><div class="adb"><i id="adf"></i></div></div>
-  <div id="wipew"><div id="wipe"><i class="w1"></i><i class="w2"></i><i class="w3"></i></div></div>
+  <div id="bows"><div class="roll" id="roll"></div></div>
+  <div id="boot"><div class="adt"><span>Adulting…</span><b id="bootp">0%</b></div><div class="adb"><i id="bootf"></i></div></div>
+  <div id="adult"><div class="adt"><span id="adl">Adulting…</span><b id="adp">0%</b></div><div class="adb"><i id="adf"></i></div></div>
+  <div id="wipew"><div id="wipe"><i class="w1"></i><i class="w2"></i><i class="w2b"></i><i class="w3"></i></div></div>
   <div id="blk"></div>
   <div id="fsh">Double-click or press F for full screen</div>
 </div>
@@ -337,9 +387,11 @@ const CUES = [
   {n:20, who:"Catherine & Meghan",  title:"Duet",                                     kind:"live", liveLabel:"Live instruments · no sound"},
   {n:21, who:"Cooper",              title:"My Way · Frank Sinatra",                   kind:"track", file:"tracks/21-my-way.mp3", start:11.27},
   {n:22, who:"Full cast",           title:"Finale B · RENT",                          kind:"track", file:"tracks/22-finale-b.mp3", start:1.11, end:160.3},
+  {n:23, who:"Full cast",           title:"Bows",                                     kind:"live", liveLabel:"Bows · cast names roll, no sound", bows:true},
 ];
 
 const $ = id => document.getElementById(id);
+const envCache = {};
 const fmt = s => { if(!isFinite(s)||s<0) s=0; s=Math.round(s); return Math.floor(s/60)+":"+String(s%60).padStart(2,"0"); };
 let master = 1, standby = 0, current = -1, liveStart = 0, lastGo = 0, fading = null;
 
@@ -433,10 +485,11 @@ function applyFile(c, blob, name, saved){
   c.kind = "track"; c.start = 0; c.end = undefined; c.dur = undefined;
   c.loadedName = name; c.note = saved ? "Loaded on this computer: "+name : "Loaded for this session only: "+name;
   makeAudio(c, URL.createObjectURL(blob));
+  delete envCache[c.n]; analyze(c, blob);
 }
 async function revert(c){
   try{ const d = await db(); await new Promise(res=>{ const tx=d.transaction("tracks","readwrite"); tx.objectStore("tracks").delete(c.n); tx.oncomplete=res; tx.onerror=res; }); }catch(e){}
-  Object.assign(c, c.orig); c.loadedName = undefined; c.dur = undefined;
+  Object.assign(c, c.orig); c.loadedName = undefined; c.dur = undefined; delete envCache[c.n];
   if(c.kind==="track") makeAudio(c, c.file); else { if(c.audio){ c.audio.pause(); } c.audio = null; }
   render();
 }
@@ -550,6 +603,7 @@ function handleKey(k){
   else if(k.code==="KeyN"){ toggleScreen("names"); }
   else if(k.code==="KeyA"){ toggleScreen("adult"); }
   else if(k.code==="KeyB"){ toggleScreen("black"); }
+  else if(k.code==="KeyR"){ toggleScreen("react"); }
   else return false;
   return true;
 }
@@ -560,9 +614,9 @@ document.addEventListener("keydown", e=>{
 });
 
 /* ---------- Screen: projection window + preview, kept in sync with GO ---------- */
-const screen = {title:true, names:true, adult:true, black:false, glow:.6};
+const screen = {title:true, names:true, adult:true, black:false, glow:.6, react:true};
 try{ const sv = JSON.parse(localStorage.getItem("ts-screen")||"{}");
-  ["names","adult"].forEach(k=>{ if(typeof sv[k]==="boolean") screen[k]=sv[k]; });
+  ["names","adult","react"].forEach(k=>{ if(typeof sv[k]==="boolean") screen[k]=sv[k]; });
   if(typeof sv.glow==="number") screen.glow = sv.glow; }catch(_){}
 /* Every board has its own id and its own channel. A screen only ever listens to the board that opened it,
    so a second copy of the board in another tab can never drive this one's screen. */
@@ -582,9 +636,20 @@ function curInfo(){
   const c = CUES[current]; if(!c) return null;
   const parts = c.title.split(" · ");
   const pending = /^(Song pending|Duet|Opening \/ Welcome)$/.test(c.title);
-  return {i:current, n:c.n, who:c.who, song: pending ? "" : parts[0], src: pending ? "" : (parts[1]||""), kind:c.kind};
+  if(c.bows) return {i:current, n:c.n, bows:true, last:true, who:c.who, song:"", src:"", kind:c.kind, cast:castList()};
+  return {i:current, n:c.n, who:c.who, song: pending ? "" : parts[0], src: pending ? "" : (parts[1]||""), kind:c.kind, last: current >= LAST - 1};
 }
-const pct = ()=> current < 0 ? 0 : Math.round((current+1)/CUES.length*100);
+/* the bar reaches 100% on the last song; the bows come after it */
+const LAST = CUES.filter(c=> !c.bows).length;
+const pct = ()=> current < 0 ? 0 : Math.min(100, Math.round((current+1)/LAST*100));
+/* everyone who sings, in order of first appearance, host last */
+function castList(){
+  const seen = new Set(), out = [];
+  CUES.forEach((c,i)=>{ if(c.bows) return; c.who.split(" & ").forEach(nm=>{ nm = nm.trim();
+    if(/^(full cast|group)$/i.test(nm) || seen.has(nm)) return; seen.add(nm); out.push({name:nm, host:i===0}); }); });
+  const h = out.findIndex(q=> q.host); if(h >= 0) out.push(out.splice(h,1)[0]);
+  return out;
+}
 function send(m){
   m.sid = SID; m.boot = BOOT; m.seq = ++seq;
   for(const w of [...targets]){ try{ if(!w || w.closed){ targets.delete(w); continue; } w.postMessage(m, "*"); }catch(_){ targets.delete(w); } }
@@ -612,9 +677,11 @@ function toggleScreen(k){
   screen[k] = !screen[k];
   saveScreen(); sendState(); renderScreen();
 }
-function saveScreen(){ try{ localStorage.setItem("ts-screen", JSON.stringify({names:screen.names, adult:screen.adult, glow:screen.glow})); }catch(_){} }
+function saveScreen(){ try{ localStorage.setItem("ts-screen", JSON.stringify({names:screen.names, adult:screen.adult, glow:screen.glow, react:screen.react})); }catch(_){} }
 function renderScreen(){
-  [["tMain","title"],["tNames","names"],["tAdult","adult"],["tBlack","black"]].forEach(([id,k])=> $(id).classList.toggle("on", !!screen[k]));
+  [["tMain","title"],["tNames","names"],["tAdult","adult"],["tBlack","black"],["tReact","react"]].forEach(([id,k])=> $(id).classList.toggle("on", !!screen[k]));
+  $("tMic").classList.toggle("on", micOn); $("tMic").classList.toggle("bad", !!micErr);
+  $("micK").textContent = micErr ? micErr : micOn ? "listening" : "for live songs";
   const cc = CUES[current];
   $("tMainT").textContent = screen.title ? "Main slide is up" : "Main slide";
   $("tMainK").textContent = !screen.title ? "M" : (cc && current >= 1 ? `M goes back to ${cc.n}. ${cc.title.split(" · ")[0]}` : "M takes it down");
@@ -628,12 +695,90 @@ $("popout").onclick = e=>{
   projWin = window.open(viewURL(), "ts_projection_" + SID, "popup=yes,width=1280,height=720");
   if(projWin){ targets.add(projWin); try{ projWin.focus(); }catch(_){} }
 };
-["tMain","tNames","tAdult","tBlack"].forEach(id=> $(id).onclick = e=>{ e.currentTarget.blur();
-  toggleScreen({tMain:"title",tNames:"names",tAdult:"adult",tBlack:"black"}[id]); });
+["tMain","tNames","tAdult","tBlack","tReact"].forEach(id=> $(id).onclick = e=>{ e.currentTarget.blur();
+  toggleScreen({tMain:"title",tNames:"names",tAdult:"adult",tBlack:"black",tReact:"react"}[id]); });
 $("glow").value = Math.round(screen.glow*100); $("glowV").textContent = $("glow").value + "%";
 $("glow").oninput = e=>{ screen.glow = e.target.value/100; $("glowV").textContent = e.target.value + "%"; saveScreen(); sendState(); };
 $("pv").src = viewURL("&preview=1");
 window.CUES = CUES;
+
+/* ---------- The glow follows the music ----------
+   Bundled tracks carry a loudness map (env.js). A track loaded on this computer is mapped here when it loads.
+   Songs with no track follow the microphone, if it is on. Nothing here touches what the audience hears. */
+const ENV = window.TS_ENV || {}, A64 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_";
+function envAt(c, t){
+  let e = envCache[c.n];
+  if(!e){
+    const b = ENV[c.n]; if(c.loadedName || !b) return null;
+    e = envCache[c.n] = {a: Uint8Array.from(b.e, ch=> A64.indexOf(ch)), t0: b.t0, hz: b.hz};
+  }
+  const x = (t - e.t0) * e.hz, a = e.a; if(!a.length) return null;
+  if(x <= 0) return a[0] / 63;
+  const i = Math.floor(x); if(i >= a.length - 1) return a[a.length-1] / 63;
+  return (a[i] + (a[i+1] - a[i]) * (x - i)) / 63;
+}
+async function analyze(c, blob){
+  try{
+    const AC = window.OfflineAudioContext || window.webkitOfflineAudioContext; if(!AC) return;
+    const buf = await new AC(1, 2, 22050).decodeAudioData(await blob.arrayBuffer());
+    const hz = 20, hop = Math.floor(buf.sampleRate / hz), n = Math.floor(buf.length / hop);
+    const d0 = buf.getChannelData(0), d1 = buf.numberOfChannels > 1 ? buf.getChannelData(1) : null, db = new Float32Array(n);
+    for(let i=0;i<n;i++){ let q = 0; const o = i*hop; for(let j=0;j<hop;j+=2){ const v = d1 ? (d0[o+j]+d1[o+j])*.5 : d0[o+j]; q += v*v; } db[i] = 10*Math.log10(q/(hop/2) + 1e-10); }
+    const srt = Array.from(db).sort((x,y)=> x-y), lo = srt[Math.floor(n*.08)], hi = srt[Math.floor(n*.97)], a = new Uint8Array(n);
+    for(let i=0;i<n;i++) a[i] = Math.max(0, Math.min(63, Math.round((db[i]-lo)/(hi-lo+1e-6)*63)));
+    if(c.loadedName) envCache[c.n] = {a, t0:0, hz};
+  }catch(_){}
+}
+let micOn = false, micErr = "", micCtx = null, micAn = null, micBuf = null, micStream = null;
+async function micStart(){
+  micErr = "";
+  try{
+    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error("unavailable");
+    micStream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false, noiseSuppression:false, autoGainControl:false}});
+    micCtx = new (window.AudioContext || window.webkitAudioContext)();
+    micAn = micCtx.createAnalyser(); micAn.fftSize = 1024; micAn.smoothingTimeConstant = 0;
+    micCtx.createMediaStreamSource(micStream).connect(micAn);      // listening only: this is never connected to the speakers
+    micBuf = new Float32Array(micAn.fftSize); micOn = true;
+    try{ localStorage.setItem("ts-mic", "1"); }catch(_){}
+  }catch(e){ micOn = false; micErr = e && e.name === "NotAllowedError" ? "blocked" : "no mic found"; }
+  renderScreen();
+}
+function micStop(){
+  try{ micStream && micStream.getTracks().forEach(t=> t.stop()); micCtx && micCtx.close(); }catch(_){}
+  micOn = false; micCtx = micAn = micStream = null; $("micM").style.width = "0%";
+  try{ localStorage.setItem("ts-mic", "0"); }catch(_){}
+  renderScreen();
+}
+function micRead(){
+  if(!micOn || !micAn) return 0;
+  micAn.getFloatTimeDomainData(micBuf);
+  let q = 0; for(let i=0;i<micBuf.length;i++) q += micBuf[i]*micBuf[i];
+  const db = 10*Math.log10(q/micBuf.length + 1e-10), floor = -28 - ($("micS").value/100) * 36;   // more sensitive = lower floor
+  return Math.max(0, Math.min(1, (db - floor) / 26));
+}
+$("tMic").onclick = e=>{ e.currentTarget.blur(); micOn ? micStop() : micStart(); };
+try{ const v = localStorage.getItem("ts-micS"); if(v !== null) $("micS").value = v; }catch(_){}
+$("micS").oninput = e=>{ try{ localStorage.setItem("ts-micS", e.target.value); }catch(_){} };
+["pointerdown","keydown"].forEach(ev=> document.addEventListener(ev, ()=>{ if(micCtx && micCtx.state === "suspended") micCtx.resume().catch(()=>{}); }));
+try{ if(localStorage.getItem("ts-mic") === "1" && navigator.permissions) navigator.permissions.query({name:"microphone"}).then(q=>{ if(q.state === "granted") micStart(); }).catch(()=>{}); }catch(_){}
+function sendLvl(v){
+  const m = {type:"lvl", sid:SID, v};
+  for(const w of [...targets]){ try{ if(!w || w.closed){ targets.delete(w); continue; } w.postMessage(m, "*"); }catch(_){ targets.delete(w); } }
+  try{ bc && bc.postMessage(m); }catch(_){}
+}
+let lvLast = null, lvSrc = "-";
+setInterval(()=>{
+  const c = CUES[current]; let v = null, src = "";
+  const mic = micOn ? micRead() : 0;
+  if(micOn) $("micM").style.width = Math.round(mic*100) + "%";
+  if(screen.react && c){
+    if(c.kind === "track" && c.audio && !c.audio.paused){ const e = envAt(c, c.audio.currentTime); if(e !== null){ v = e; src = "the track"; } else if(micOn){ v = mic; src = "the mic"; } }
+    else if(c.kind !== "track" && micOn){ v = mic; src = "the mic"; }
+  }
+  if(src !== lvSrc){ lvSrc = src; $("lvStat").textContent = src ? "Glow is following " + src : "Glow is resting"; }
+  if(v === null && lvLast === null) return;
+  lvLast = v; sendLvl(v === null ? null : Math.round(v*100)/100);
+}, 50);
 try{ navigator.wakeLock && navigator.wakeLock.request("screen").catch(()=>{}); }catch(_){}
 window.addEventListener("beforeunload", e=>{ const c=CUES[current]; if(c&&c.audio&&!c.audio.paused){ e.preventDefault(); e.returnValue=""; } });
 
@@ -650,6 +795,8 @@ if(IS_PREVIEW) document.body.classList.add("pv");
 
 /* timings an operator might want changed */
 const HERO_MS = 6200;     // how long the big name card holds before it tucks into the corner, where it stays
+const FIN_MS  = 5200;     // on the last song: how long after the bar fills before its label changes
+const BOOT_MS = 3400;     // show open: how long the bar takes to load
 
 // film grain: one noise tile, shifted in steps
 (function(){
@@ -675,7 +822,7 @@ const sleep = ms => new Promise(r=> setTimeout(r, ms));
 const done = (a, ms) => Promise.race([a.finished.catch(()=>{}), sleep(ms + 500)]);
 let tok = 0;                       // cancels a running song timeline
 let view = {mode:"none"};          // what is on screen now
-let busy = false, queued = null;
+let busy = false, queued = null, opening = false;
 
 /* build the song card for a cue and size it to the frame */
 function buildSong(c){
@@ -697,8 +844,7 @@ function buildSong(c){
   stt.textContent = c.song || ""; stt.style.display = c.song ? "" : "none";
   let ts = 13; stt.style.fontSize = ts + "vh";
   if(c.song && stt.offsetWidth > W * .8){ ts *= W * .8 / stt.offsetWidth; stt.style.fontSize = ts + "vh"; }
-  ssr.textContent = ""; ssr.style.display = c.src ? "" : "none";
-  if(c.src){ ssr.appendChild(document.createElement("i")); ssr.appendChild(document.createTextNode(c.src)); }
+  ssr.textContent = c.src || ""; ssr.style.display = c.src ? "" : "none";
 }
 
 /* the glow is the background: each scene gets its own arrangement, flooding in and settling */
@@ -711,26 +857,40 @@ function glowScene(n, ga, gb){
   setTimeout(()=> P.style.setProperty("--bl", 1), 80);
 }
 
+/* lime leads and pink backs it, or the other way round */
+function setAcc(lime){ P.style.setProperty("--acc", lime ? "var(--lime)" : "var(--pink)"); P.style.setProperty("--acc2", lime ? "var(--pink)" : "var(--lime)"); }
+
+function buildRoll(cast){
+  const r = $("roll"); r.textContent = ""; r.style.fontSize = "";
+  for(let k=0;k<2;k++) cast.forEach((q,i)=>{
+    const d = document.createElement("div"); if(i % 2) d.className = "p"; d.textContent = q.name;
+    if(q.host){ const h = document.createElement("span"); h.className = "hst"; h.textContent = "Host"; d.appendChild(h); }
+    r.appendChild(d);
+  });
+  const max = window.innerWidth * .5;
+  if(r.offsetWidth > max) r.style.fontSize = (17 * max / r.offsetWidth).toFixed(2) + "vh";
+  r.style.setProperty("--rt", Math.max(16, cast.length * 1.9) + "s");
+}
+
 /* swap what is on stage. Always called while the wipe covers the frame. */
 function setScene(t){
   const my = ++tok;
-  const ttl = $("ttl"), sk = $("sk"), big = $("big");
-  ttl.classList.remove("in");
+  const ttl = $("ttl"), sk = $("sk"), bows = $("bows");
+  ttl.className = "";
   sk.className = "sk nt";
-  big.className = "nt";
+  bows.classList.remove("in");
+  $("boot").classList.remove("on"); $("adult").classList.remove("hold");
   $("thost").classList.remove("on");
 
   if(t.mode === "title"){
-    P.style.setProperty("--acc", "var(--lime)"); glowScene(0, 1, 1);
-    big.textContent = "20";
-    void big.offsetWidth; big.className = "on";
-    void ttl.offsetWidth; ttl.classList.add("in");
+    setAcc(true); glowScene(0, 1, 1);
+    void ttl.offsetWidth; ttl.className = "in";
     $("thost").classList.toggle("on", !!t.host);
     return;
   }
   if(t.mode === "song"){
     const c = t.cur, lime = c.n % 2 === 0;
-    P.style.setProperty("--acc", lime ? "var(--lime)" : "var(--pink)");
+    setAcc(lime);
     glowScene(c.n, lime ? 1.25 : .7, lime ? .7 : 1.25);
     buildSong(c);
     const h = sk.offsetHeight / window.innerHeight * 100;
@@ -743,15 +903,57 @@ function setScene(t){
     }
     return;
   }
+  if(t.mode === "bows"){
+    setAcc(true); glowScene(23, 1.15, 1.15);
+    buildRoll(t.cast || []);
+    void ttl.offsetWidth; ttl.className = "in side";
+    void bows.offsetWidth; bows.classList.add("in");
+    return;
+  }
   // background only
   glowScene(0, 1, 1);
 }
 
-/* the wipe: a dark panel with a lime leading edge crosses, the scene swaps under it, it leaves on a pink edge */
+/* the show open: the main slide clears, the bar loads in the middle of the screen, TWENTY lands */
+const BOOT_KEYS = [[0,0],[.12,18],[.34,31],[.43,31],[.62,64],[.70,64],[.90,97],[.95,97],[1,100]];
+async function openSeq(t){
+  const my = ++tok;
+  const ttl = $("ttl"), boot = $("boot"), adult = $("adult"), f = $("bootf"), pc = $("bootp");
+  const end = ()=>{ boot.classList.remove("on"); adult.classList.remove("hold"); };
+  adult.classList.add("hold"); $("thost").classList.remove("on");
+  $("sk").className = "sk nt"; $("bows").classList.remove("in");
+  if(ttl.classList.contains("in")) ttl.classList.add("leave");
+  P.style.setProperty("--bl", .2);
+  await sleep(950); if(my !== tok) return end();
+  ttl.className = ""; setAcc(true);
+  f.classList.remove("ind"); f.style.width = "0%"; pc.textContent = "0%";
+  boot.classList.add("on");
+  P.style.setProperty("--bl", 1.9);                      // the glow comes up with the bar
+  const t0 = performance.now();
+  await Promise.race([sleep(BOOT_MS + 900), new Promise(res=>{ (function step(now){
+    if(my !== tok) return res();
+    const k = Math.min(1, (now - t0) / BOOT_MS); let v = 100;
+    for(let i=1;i<BOOT_KEYS.length;i++){ const [k0,v0] = BOOT_KEYS[i-1], [k1,v1] = BOOT_KEYS[i]; if(k <= k1){ v = v0 + (v1 - v0) * (k - k0) / (k1 - k0); break; } }
+    f.style.width = v + "%"; pc.textContent = Math.round(v) + "%";
+    if(k < 1) requestAnimationFrame(step); else res();
+  })(t0); })]);
+  if(my !== tok) return end();
+  f.style.width = "100%"; pc.textContent = "100%";
+  await sleep(280); if(my !== tok) return end();
+  boot.classList.remove("on");
+  void ttl.offsetWidth; ttl.className = "in slam";
+  setTimeout(()=>{ if(my !== tok) return; try{ P.animate([{transform:"none"},{transform:"translate(.5vh,-.4vh)"},{transform:"translate(-.4vh,.3vh)"},{transform:"translate(.2vh,-.15vh)"},{transform:"none"}], {duration:300, easing:"ease-out"}); }catch(_){} }, 330);
+  setTimeout(()=>{ if(my === tok) P.style.setProperty("--bl", 1); }, 600);
+  await sleep(2400); if(my !== tok) return end();
+  $("thost").classList.toggle("on", !!view.host);
+  end();
+}
+
+/* the wipe: lime and pink bands lead a dark panel across, the scene swaps under it, it leaves on a pink edge */
 async function wipe(t){
   const w = $("wipe"); $("wipew").classList.toggle("rev", t.mode === "title");
   const k = x => ({transform:`translateX(${x}vw) skewX(-14deg)`});
-  const a1 = w.animate([k(-224), k(-52)], {duration:700, easing:"cubic-bezier(.55,.085,.68,.53)", fill:"forwards"});
+  const a1 = w.animate([k(-232), k(-52)], {duration:700, easing:"cubic-bezier(.55,.085,.68,.53)", fill:"forwards"});
   await done(a1, 700);
   setScene(t);
   await sleep(110);
@@ -761,11 +963,11 @@ async function wipe(t){
 }
 const same = (a,b)=> a.mode === b.mode && (a.mode !== "song" || a.cur.i === b.cur.i);
 async function request(t){
-  if(busy){ queued = t; return; }
+  if(busy){ queued = t; if(opening) tok++; return; }      // a GO during the show open cuts it short
   busy = true; view = t;
-  try{ await wipe(t); }catch(_){ setScene(t); }
-  busy = false;
-  if(queued){ const q = queued; queued = null; if(!same(view,q) || q.intro) request(q); }
+  try{ if(t.open){ opening = true; await openSeq(t); } else await wipe(t); }catch(_){ setScene(t); }
+  busy = false; opening = false;
+  if(queued){ const q = queued; queued = null; if(!same(view,q) || q.intro || q.open) request(q); }
 }
 
 /* live values that never need a wipe */
@@ -783,8 +985,40 @@ function setPct(p){
   })(t0);
   if(document.hidden){ $("adp").textContent = p + "%"; shownPct = p; }
 }
+/* the bar's label on the last song: it types itself out and types the show's line back in */
+let lblTok = 0, finOn = false;
+async function retype(el, text, fin){
+  const my = ++lblTok; let cur = el.textContent;
+  while(cur.length){ cur = cur.slice(0, -1); el.textContent = cur || "\u00a0"; await sleep(30); if(my !== lblTok) return; }
+  el.classList.toggle("fin", !!fin);
+  for(let i=1;i<=text.length;i++){ el.textContent = text.slice(0, i); await sleep(48); if(my !== lblTok) return; }
+}
+function setFin(on){
+  if(on === finOn) return; finOn = on; const my = ++lblTok, el = $("adl");
+  if(!on){ el.textContent = "Adulting…"; el.classList.remove("fin"); return; }
+  setTimeout(()=>{ if(my === lblTok && finOn) retype(el, "Still figuring it out", true); }, FIN_MS);
+}
+
+/* the music moves the glow: quiet passages pull it back, loud ones bring it up and add a bloom on top */
+let lvT = null, lvAt = 0, lv = 0, lvOn = 0, GLOW = .6;
+const glows = $("glows"), pulse = $("pulse");
+function lvLoop(){
+  const live = lvT !== null && performance.now() - lvAt < 700;
+  lvOn += ((live ? 1 : 0) - lvOn) * .05;
+  const tg = live ? lvT : 0;
+  lv += (tg - lv) * (tg > lv ? .4 : .07);                 // quick up, slow down: it breathes, it doesn't flicker
+  if(lvOn > .003){
+    glows.style.opacity = (1 - lvOn * (1 - lv) * .5).toFixed(3);
+    glows.style.transform = "scale(" + (1 + lvOn * lv * .07).toFixed(4) + ")";
+    pulse.style.opacity = (lvOn * Math.pow(lv, 1.7) * .6 * GLOW).toFixed(3);
+  } else if(glows.style.opacity !== ""){ glows.style.opacity = ""; glows.style.transform = ""; pulse.style.opacity = "0"; }
+  requestAnimationFrame(lvLoop);
+}
+requestAnimationFrame(lvLoop);
+
 function applyLive(m){
   const sc = m.screen || {};
+  GLOW = sc.glow ?? .6; setFin(!!(m.cur && m.cur.last));
   P.style.setProperty("--glow", sc.glow ?? .6);
   $("blk").classList.toggle("on", !!sc.black);
   $("adult").classList.toggle("on", !!sc.adult);
@@ -793,6 +1027,7 @@ function applyLive(m){
 function target(m){
   const sc = m.screen || {};
   if(sc.title) return {mode:"title", host: !!(sc.names && m.cur && m.cur.i === 0)};
+  if(sc.names && m.cur && m.cur.bows) return {mode:"bows", cast:m.cur.cast};
   if(sc.names && m.cur && m.cur.i >= 1) return {mode:"song", cur:m.cur};
   return {mode:"bg"};
 }
@@ -806,6 +1041,7 @@ function openBC(){
   try{ bc = new BroadcastChannel("ts-" + B); bc.onmessage = e=> onMsg(e.data, false); }catch(_){ bc = null; }
 }
 function onMsg(m, viaBoss){
+  if(m && m.type === "lvl"){ if(viaBoss || (B && m.sid === B)){ lvT = m.v; lvAt = performance.now(); } return; }
   if(!m || typeof m!=="object" || (m.type!=="state" && m.type!=="go")) return;
   if(viaBoss){ if(m.sid && m.sid !== B){ B = m.sid; openBC(); } }
   else if(!B || m.sid !== B) return;
@@ -815,8 +1051,9 @@ function onMsg(m, viaBoss){
   applyLive(m);
   const t = target(m);
   t.intro = m.type === "go" && t.mode === "song";
-  if(t.mode === "title" && view.mode === "title" && !busy){ view.host = t.host; $("thost").classList.toggle("on", t.host); }
-  if(!same(view, t) || t.intro) request(t);
+  t.open = m.type === "go" && t.mode === "title" && !!m.cur && m.cur.i === 0;      // the first GO of the night
+  if(!t.open && t.mode === "title" && view.mode === "title" && !busy){ view.host = t.host; $("thost").classList.toggle("on", t.host); }
+  if(!same(view, t) || t.intro || t.open) request(t);
 }
 window.addEventListener("message", e=>{ if(boss && e.source === boss) onMsg(e.data, true); });
 openBC();
@@ -856,7 +1093,7 @@ document.addEventListener("mousemove", wake); wake();
 document.addEventListener("keydown", e=>{
   if(e.metaKey || e.ctrlKey || e.altKey) return;
   if(e.code==="KeyF"){ e.preventDefault(); fs(); return; }
-  if(["Space","KeyP","ArrowUp","ArrowDown","KeyM","KeyT","KeyN","KeyA","KeyB"].includes(e.code)){
+  if(["Space","KeyP","ArrowUp","ArrowDown","KeyM","KeyT","KeyN","KeyA","KeyB","KeyR"].includes(e.code)){
     e.preventDefault();
     try{ boss && boss.postMessage({type:"key", code:e.code, shiftKey:e.shiftKey, repeat:e.repeat}, "*"); }catch(_){}
   }
