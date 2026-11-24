@@ -85,7 +85,10 @@
   .foot{font-size:11px;color:var(--faint);padding:8px 18px}
 
   /* ---------- screen controls (presenter) ---------- */
-  .scrrow{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  .scrrow{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .row2{display:grid;grid-template-columns:2fr 1fr;gap:10px}
+  .btn.main.on{background:rgba(232,163,61,.16);border-color:rgba(232,163,61,.7);color:var(--sb)}
+  .btn kbd.w{font-family:var(--body);font-size:11px}
   .btn.sm{height:46px;font-size:15px}
   .btn.tog.on{background:rgba(88,214,141,.12);border-color:rgba(88,214,141,.5);color:var(--play)}
   .btn.tog.blk.on{background:rgba(240,100,90,.16);border-color:rgba(240,100,90,.6);color:var(--warn)}
@@ -102,57 +105,119 @@
   body.v-proj{display:block;background:#0b0b0d;cursor:default}
   body.v-proj.idle{cursor:none}
   body.v-proj > header, body.v-proj > main{display:none}
-  body.v-proj #proj{display:block;position:fixed;inset:0;overflow:hidden;background:#0b0b0d;--glow:.6;
-    --lime:#d7f542;--pink:#ff5ea8;font-family:"Archivo",var(--body);color:#f3f1ea}
+  body.v-proj #proj{display:block;position:fixed;inset:0;overflow:hidden;background:#0b0b0d;--glow:.6;--ga:1;--gb:1;
+    --lime:#d7f542;--pink:#ff5ea8;--acc:var(--lime);font-family:"Archivo",var(--body);color:#f3f1ea}
+  .nt,.nt *{transition:none !important}
+
+  /* ground: two slow glows, one soft white, grain, vignette */
   .glow{position:absolute;left:50%;top:50%;width:96vmax;height:96vmax;margin:-48vmax 0 0 -48vmax;border-radius:50%;
-        opacity:var(--glow);mix-blend-mode:screen;will-change:transform;transition:opacity 2s}
-  .g1{background:radial-gradient(closest-side,rgba(215,245,66,.34),rgba(215,245,66,.11) 46%,transparent 76%);animation:d1 83s ease-in-out infinite alternate}
-  .g2{background:radial-gradient(closest-side,rgba(255,94,168,.30),rgba(255,94,168,.09) 46%,transparent 76%);animation:d2 107s ease-in-out infinite alternate}
-  .g3{width:70vmax;height:70vmax;margin:-35vmax 0 0 -35vmax;background:radial-gradient(closest-side,rgba(240,238,225,.13),transparent 72%);animation:d3 131s ease-in-out infinite alternate}
+        mix-blend-mode:screen;will-change:transform;transition:opacity 3s ease}
+  .g1{opacity:calc(var(--glow) * var(--ga));background:radial-gradient(closest-side,rgba(215,245,66,.34),rgba(215,245,66,.11) 46%,transparent 76%);animation:d1 61s ease-in-out infinite alternate}
+  .g2{opacity:calc(var(--glow) * var(--gb));background:radial-gradient(closest-side,rgba(255,94,168,.30),rgba(255,94,168,.09) 46%,transparent 76%);animation:d2 79s ease-in-out infinite alternate}
+  .g3{opacity:var(--glow);width:70vmax;height:70vmax;margin:-35vmax 0 0 -35vmax;background:radial-gradient(closest-side,rgba(240,238,225,.13),transparent 72%);animation:d3 97s ease-in-out infinite alternate}
   @keyframes d1{from{transform:translate(-40vw,-24vh) scale(1)}to{transform:translate(30vw,20vh) scale(1.22)}}
   @keyframes d2{from{transform:translate(36vw,-28vh) scale(1.1)}to{transform:translate(-30vw,26vh) scale(.9)}}
   @keyframes d3{from{transform:translate(4vw,34vh)}to{transform:translate(-14vw,-30vh)}}
-  .tags{position:absolute;inset:0;opacity:calc(var(--glow) * .45);transition:opacity 2.4s;
-        -webkit-mask-image:linear-gradient(to top,transparent 0,transparent 32%,#000 50%,#000 78%,transparent 96%);
-                mask-image:linear-gradient(to top,transparent 0,transparent 32%,#000 50%,#000 78%,transparent 96%)}
-  #proj.t-on .tags{opacity:calc(var(--glow) * .18)}
-  .tag2{position:absolute;bottom:-8vh;border:.18vh solid rgba(243,241,234,.55);border-radius:999px;padding:.9vh 2.2vh;
-        font-weight:600;font-stretch:110%;font-size:2.1vh;letter-spacing:.12em;color:rgba(243,241,234,.7);white-space:nowrap;
-        animation:rise linear infinite;will-change:transform}
-  .tag2.pk{border-color:rgba(255,94,168,.7);color:rgba(255,94,168,.85)}
-  @keyframes rise{from{transform:translateY(0) rotate(var(--r))}to{transform:translateY(-118vh) rotate(calc(var(--r) * -1))}}
   .grain{position:absolute;inset:-50%;opacity:.07;mix-blend-mode:overlay;animation:grain 1s steps(6) infinite;pointer-events:none}
+  body.pv .grain{animation:none}
   @keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-4%)}60%{transform:translate(-4%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
   .vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 45%,rgba(0,0,0,.62) 100%);pointer-events:none}
 
-  #ttl{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transform:translateY(2vh) scale(.985);
-       transition:opacity 1.8s ease,transform 2.4s cubic-bezier(.2,.7,.2,1)}
-  #ttl.on{opacity:1;transform:none}
+  /* the giant outlined numeral: "20" on the main slide, the song number in the show */
+  #bigw{position:absolute;left:50%;top:50%;width:0;height:0;animation:bigd 64s ease-in-out infinite alternate}
+  @keyframes bigd{from{transform:translate(23vw,-2vh) rotate(-5deg) scale(1)}to{transform:translate(12vw,3vh) rotate(3deg) scale(1.12)}}
+  #big{position:absolute;left:0;top:0;transform:translate(-50%,-50%);font-weight:900;font-stretch:62%;font-size:132vh;line-height:.8;white-space:nowrap;
+       color:transparent;-webkit-text-stroke:.32vh var(--acc);opacity:0;transition:opacity 2.6s ease,transform 2s cubic-bezier(.16,1,.3,1)}
+  #big.pre{transform:translate(-24%,-50%)}
+  #big.on{opacity:calc(var(--glow) * .2)}
+  #big.on.hero{opacity:calc(var(--glow) * .62)}
+
+  /* shared moves */
+  .msk{display:block;overflow:hidden;padding-top:.03em;margin-top:-.03em}
+  .l{display:inline-block;transform:translateY(114%)}
+  .l b{font-weight:inherit;display:inline-block}
+  @keyframes lrise{from{transform:translateY(114%)}to{transform:none}}
+  @keyframes wr{from{clip-path:inset(-30% 105% -40% -5%)}to{clip-path:inset(-30% -8% -40% -5%)}}
+  @keyframes fdn{from{opacity:0;transform:translateY(-1.4vh)}to{opacity:1;transform:none}}
+  @keyframes fup{from{opacity:0;transform:translateY(1.6vh)}to{opacity:1;transform:none}}
+  @keyframes draw{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+  /* ---- main slide ---- */
+  #ttl{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;visibility:hidden}
+  #ttl.in{visibility:visible}
   .tbox{position:relative;width:min(86vw,150vh)}
-  .tpre{font-weight:600;font-stretch:112%;font-size:2.6vh;letter-spacing:.14em;text-transform:uppercase;margin-bottom:1.4vh}
-  .tdate{position:absolute;right:0;top:0;font-weight:700;font-stretch:112%;font-size:2.6vh;letter-spacing:.14em;color:var(--lime);text-transform:uppercase}
-  .tbig{font-weight:900;font-stretch:62%;font-size:36vh;line-height:.8;letter-spacing:-.01em;color:var(--lime);margin-left:-.4vh}
-  .tsome{font-family:"Instrument Serif",Georgia,serif;font-style:italic;font-size:24vh;line-height:.8;margin:-3.4vh 0 0 18vh;color:#f3f1ea;letter-spacing:-.01em}
-  .tsub{font-family:"Instrument Serif",Georgia,serif;font-size:5.4vh;margin-top:3.6vh}
-  .stk{position:absolute;right:4vh;top:8vh;width:21vh;height:21vh;border-radius:50%;background:var(--pink);color:#141414;display:flex;align-items:center;
-       justify-content:center;text-align:center;font-weight:800;font-stretch:100%;font-size:2.7vh;line-height:1.08;letter-spacing:.04em;text-transform:uppercase;
-       animation:wob 9s ease-in-out infinite alternate}
+  .tpre{font-weight:600;font-stretch:112%;font-size:2.6vh;letter-spacing:.14em;text-transform:uppercase;margin-bottom:1.4vh;opacity:0}
+  .tdate{position:absolute;right:0;top:0;font-weight:700;font-stretch:112%;font-size:2.6vh;letter-spacing:.14em;color:var(--lime);text-transform:uppercase;opacity:0}
+  #ttl.in .tpre,#ttl.in .tdate{animation:fdn 1s .15s both cubic-bezier(.2,.7,.2,1)}
+  .tbig{font-weight:900;font-stretch:62%;font-size:36vh;line-height:.8;color:var(--lime);margin-left:-.4vh;white-space:nowrap}
+  #ttl.in .tbig .l{animation:lrise 1.15s both cubic-bezier(.16,1,.3,1);animation-delay:calc(.3s + var(--i) * .08s)}
+  /* the word breathes: each letter swells in width in turn, a slow wave through TWENTY */
+  #ttl.in .tbig .l b{animation:wdth 9s ease-in-out infinite;animation-delay:calc(2.6s + var(--i) * .8s)}
+  @keyframes wdth{0%,27%,100%{font-stretch:62%}13%{font-stretch:78%}}
+  .tsome{font-family:"Instrument Serif",Georgia,serif;font-style:italic;font-size:24vh;line-height:.8;letter-spacing:-.01em;display:inline-block;
+         padding:.22em .16em .34em .06em;margin:calc(-3.4vh - .22em) 0 -.34em calc(18vh - .06em);position:relative;
+         color:transparent;background:linear-gradient(100deg,#f3f1ea 0 44%,#e9ff86 50%,#f3f1ea 56% 100%) 90% 0/300% 100%;-webkit-background-clip:text;background-clip:text;
+         clip-path:inset(-30% 105% -40% -5%)}
+  #ttl.in .tsome{animation:wr 1.4s .85s both cubic-bezier(.6,0,.2,1),shim 11s 4.5s infinite linear,sway 13s 2.4s ease-in-out infinite alternate}
+  @keyframes shim{0%{background-position:90% 0}24%,100%{background-position:10% 0}}
+  @keyframes sway{from{transform:translate(0,0) rotate(0)}to{transform:translate(.8vh,-.5vh) rotate(-.6deg)}}
+  .tsub{font-family:"Instrument Serif",Georgia,serif;font-size:5.4vh;margin-top:3.6vh;opacity:0}
+  #ttl.in .tsub{animation:fup 1.1s 1.7s both cubic-bezier(.2,.7,.2,1)}
+  .thost{position:absolute;right:0;bottom:.5vh;background:var(--pink);color:#141414;font-weight:800;font-stretch:105%;font-size:2.3vh;letter-spacing:.12em;
+         text-transform:uppercase;padding:1vh 2.2vh;opacity:0;transform:translateY(1.2vh);transition:opacity 1s ease .5s,transform 1.2s cubic-bezier(.2,.7,.2,1) .5s}
+  .thost.on{opacity:1;transform:none}
+  .stkw{position:absolute;right:0;top:8vh;width:21vh;height:21vh;animation:bob 7s ease-in-out infinite alternate}
+  @keyframes bob{from{transform:translateY(-.9vh)}to{transform:translateY(1.1vh)}}
+  .stkw::before{content:"";position:absolute;inset:0;border-radius:50%;border:.28vh solid var(--pink);opacity:0}
+  #ttl.in .stkw::before{animation:ping 7s 3.2s infinite cubic-bezier(.2,.6,.3,1)}
+  @keyframes ping{0%{transform:scale(1);opacity:.75}38%,100%{transform:scale(1.7);opacity:0}}
+  .stk{position:relative;width:100%;height:100%;border-radius:50%;background:var(--pink);color:#141414;display:flex;align-items:center;justify-content:center;text-align:center;
+       font-weight:800;font-stretch:100%;font-size:2.7vh;line-height:1.08;letter-spacing:.04em;text-transform:uppercase;opacity:0}
+  #ttl.in .stk{animation:stamp .75s 1.9s both cubic-bezier(.2,1.35,.4,1),wob 9s 2.7s ease-in-out infinite alternate}
+  @keyframes stamp{from{opacity:0;transform:scale(2.4) rotate(-40deg)}55%{opacity:1}to{opacity:1;transform:scale(1) rotate(-14deg)}}
   @keyframes wob{from{transform:rotate(-14deg)}to{transform:rotate(-6deg)}}
 
-  #nc{position:absolute;left:6vw;bottom:10vh;max-width:70vw;opacity:0;transform:translateY(1.6vh);transition:opacity 1.4s ease,transform 1.8s cubic-bezier(.2,.7,.2,1)}
-  #nc.on{opacity:1;transform:none}
-  #nc.off{transition:opacity 2.6s ease,transform 2.6s ease}
-  .ncw{display:inline-block;border:.2vh solid rgba(243,241,234,.8);border-radius:999px;padding:1vh 2.6vh;font-weight:700;font-stretch:110%;font-size:2.6vh;letter-spacing:.14em;text-transform:uppercase}
-  .ncs{font-family:"Instrument Serif",Georgia,serif;font-style:italic;font-size:9.5vh;line-height:1;margin-top:2vh}
-  .ncr{font-weight:500;font-stretch:110%;font-size:2.3vh;letter-spacing:.14em;text-transform:uppercase;color:rgba(243,241,234,.6);margin-top:1.6vh}
-  .ncr::before{content:"";display:inline-block;width:5vh;height:.25vh;background:var(--lime);vertical-align:middle;margin-right:1.6vh}
+  /* ---- song card: big intro, then it tucks into the corner ---- */
+  #song{position:absolute;inset:0;pointer-events:none}
+  .sk{position:absolute;left:6vw;bottom:9vh;transform-origin:0 100%;transform:translateY(var(--hy,0vh)) scale(1);opacity:0;
+      transition:transform 1.8s cubic-bezier(.7,0,.15,1),opacity 1.2s ease}
+  .sk.show{opacity:1}
+  .sk.small{transform:translateY(0) scale(.44)}
+  .sk.out{opacity:0;transition:opacity 2.8s ease}
+  .snm{font-weight:900;font-stretch:62%;line-height:.8;color:var(--acc);text-transform:uppercase;white-space:nowrap;margin-left:-.03em}
+  .snm .ln{display:inline-block}
+  .snm .msk + .msk{margin-top:.02em}
+  .sk.in .snm .l{animation:lrise 1.05s both cubic-bezier(.16,1,.3,1);animation-delay:calc(.3s + var(--i) * .055s)}
+  .sk.inq .snm .l{transform:none}
+  .stt{font-family:"Instrument Serif",Georgia,serif;font-style:italic;line-height:1;white-space:nowrap;color:#f3f1ea;display:inline-block;position:relative;
+       margin:-.3em 0 0 7vh;padding:0 .14em .12em 0;clip-path:inset(-30% 105% -40% -5%)}
+  .sk.in .stt{animation:wr 1.25s 1s both cubic-bezier(.6,0,.2,1)}
+  .sk.inq .stt{clip-path:none}
+  .ssw{transition:opacity .9s ease}
+  .sk.small .ssw{opacity:0}
+  .ssr{font-weight:600;font-stretch:112%;font-size:2.5vh;letter-spacing:.16em;text-transform:uppercase;color:rgba(243,241,234,.72);margin:1.6vh 0 0 7.4vh;opacity:0}
+  .sk.in .ssr{animation:fup .9s 1.75s both}
+  .ssr i{display:inline-block;width:6vh;height:.3vh;background:var(--acc);vertical-align:middle;margin-right:1.6vh;transform-origin:0 50%}
+  .sk.in .ssr i{animation:draw .9s 1.95s both cubic-bezier(.6,0,.2,1)}
 
+  /* ---- the wipe between slides ---- */
+  #wipew{position:absolute;inset:0;pointer-events:none}
+  #wipew.rev{transform:scaleX(-1)}
+  #wipe{position:absolute;top:-20vh;left:0;height:140vh;display:flex;transform:translateX(-224vw) skewX(-14deg);will-change:transform}
+  #wipe i{display:block;height:100%;flex:none}
+  #wipe .w1{width:2.2vw;background:var(--pink)}
+  #wipe .w2{width:200vw;background:#0b0b0d}
+  #wipe .w3{width:9vw;background:var(--lime)}
+
+  /* ---- adulting ---- */
   #adult{position:absolute;right:6vw;bottom:6vh;width:26vw;opacity:0;transition:opacity 1.6s}
   #adult.on{opacity:.85}
   .adt{display:flex;justify-content:space-between;font-weight:600;font-stretch:112%;font-size:1.9vh;letter-spacing:.16em;text-transform:uppercase;margin-bottom:1vh}
   .adt b{color:var(--lime);font-weight:700}
   .adb{height:1.3vh;border:.18vh solid rgba(243,241,234,.75);border-radius:999px;padding:.25vh;box-sizing:content-box}
   .adb i{display:block;height:100%;width:0;background:var(--lime);border-radius:999px;transition:width 2.6s cubic-bezier(.3,.7,.2,1)}
+  .adb i.ind{width:16% !important;transition:none;animation:ind 3.2s ease-in-out infinite alternate}
+  @keyframes ind{from{margin-left:0}to{margin-left:84%}}
 
   #blk{position:absolute;inset:0;background:#000;opacity:0;transition:opacity 1.6s;pointer-events:none}
   #blk.on{opacity:1}
@@ -192,42 +257,51 @@
       <button class="btn" id="fade">Fade out<kbd>Esc</kbd></button>
       <button class="btn stop" id="stop">Stop now<kbd>Shift + Esc</kbd></button>
     </div>
-    <div class="keys">
-      <kbd>Space</kbd> GO &nbsp;·&nbsp; <kbd>↑</kbd> <kbd>↓</kbd> move standby &nbsp;·&nbsp; click any song to put it on standby<br>
-      GO while a track is playing fades it out and starts the standby. Tracks never auto-advance; each song waits for GO.<br>
-      Purple cues are live (piano, instruments, host): GO marks them current and plays nothing.
+    <div class="row2">
+      <button class="btn tog main" id="tMain"><span id="tMainT">Main slide</span><kbd class="w" id="tMainK">M</kbd></button>
+      <button class="btn tog blk" id="tBlack">Black<kbd>B</kbd></button>
     </div>
     <div class="card">
       <div class="lbl">Screen <span class="pstat" id="pstat">Projection not open</span></div>
       <div class="scrrow">
         <button class="btn sm" id="popout">Open<kbd>projection</kbd></button>
-        <button class="btn sm tog" id="tTitle">Title<kbd>T</kbd></button>
-        <button class="btn sm tog" id="tNames">Names<kbd>N</kbd></button>
+        <button class="btn sm tog" id="tNames">Song cards<kbd>N</kbd></button>
         <button class="btn sm tog" id="tAdult">Adulting<kbd>A</kbd></button>
-        <button class="btn sm tog blk" id="tBlack">Black<kbd>B</kbd></button>
       </div>
       <div class="scrbot">
         <div class="pv"><iframe id="pv" title="Projection preview"></iframe></div>
         <div class="vol">Background glow <input id="glow" type="range" min="0" max="100" value="60"><b id="glowV">60%</b></div>
       </div>
     </div>
+    <div class="keys">
+      <kbd>Space</kbd> GO &nbsp;·&nbsp; <kbd>↑</kbd> <kbd>↓</kbd> move standby &nbsp;·&nbsp; click any song to put it on standby<br>
+      GO while a track is playing fades it out and starts the standby. Tracks never auto-advance; each song waits for GO.<br>
+      Purple cues are live (piano, instruments, host): GO marks them current and plays nothing.<br>
+      <kbd>M</kbd> puts the main slide on the screen and holds it. <kbd>M</kbd> again goes back to where the show is; GO goes on to the next song.
+    </div>
   </section>
   <section class="list" id="list"></section>
 </main>
 <div id="proj">
   <div class="glow g1"></div><div class="glow g2"></div><div class="glow g3"></div>
-  <div class="tags" id="tags"></div>
+  <div id="bigw"><div id="big"></div></div>
   <div class="grain" id="grain"></div>
   <div class="vig"></div>
   <div id="ttl"><div class="tbox">
     <div class="tpre">Redline Performing Arts presents</div><div class="tdate">Sat · 11.28</div>
-    <div class="tbig">TWENTY</div>
+    <div class="tbig"><span class="msk" id="tbig"></span></div>
     <div class="tsome">something</div>
     <div class="tsub">A coming-of-age cabaret.</div>
-    <div class="stk">Still<br>figuring<br>it out</div>
+    <div class="thost" id="thost">Aliyah · Host</div>
+    <div class="stkw"><div class="stk">Still<br>figuring<br>it out</div></div>
   </div></div>
-  <div id="nc"><div class="ncw" id="ncw"></div><div class="ncs" id="ncs"></div><div class="ncr" id="ncr"></div></div>
+  <div id="song"><div class="sk" id="sk">
+    <div class="snm" id="snm"></div>
+    <div class="stt" id="stt"></div>
+    <div class="ssw"><div class="ssr" id="ssr"></div></div>
+  </div></div>
   <div id="adult"><div class="adt"><span>Adulting…</span><b id="adp">0%</b></div><div class="adb"><i id="adf"></i></div></div>
+  <div id="wipew"><div id="wipe"><i class="w1"></i><i class="w2"></i><i class="w3"></i></div></div>
   <div id="blk"></div>
   <div id="fsh">Double-click or press F for full screen</div>
 </div>
@@ -315,7 +389,7 @@ function go(){
     liveStart = performance.now();
   }
   standby = current + 1 < CUES.length ? current + 1 : -1;
-  if(screen.titleAuto && current >= 1){ screen.title = false; screen.titleAuto = false; }
+  screen.title = current < 1;          // the host's welcome plays on the main slide; every song leaves it
   send({type:"go", screen, cur:curInfo(), pct:pct()});
   render(); renderScreen(); scrollTo(current);
 }
@@ -474,7 +548,7 @@ function handleKey(k){
   else if(k.code==="KeyP"){ togglePause(); }
   else if(k.code==="ArrowDown"){ setStandby((standby<0?CUES.length-1:standby)+1); }
   else if(k.code==="ArrowUp"){ setStandby((standby<0?CUES.length:standby)-1); }
-  else if(k.code==="KeyT"){ toggleScreen("title"); }
+  else if(k.code==="KeyM" || k.code==="KeyT"){ toggleScreen("title"); }
   else if(k.code==="KeyN"){ toggleScreen("names"); }
   else if(k.code==="KeyA"){ toggleScreen("adult"); }
   else if(k.code==="KeyB"){ toggleScreen("black"); }
@@ -488,7 +562,7 @@ document.addEventListener("keydown", e=>{
 });
 
 /* ---------- Screen: projection window + preview, kept in sync with GO ---------- */
-const screen = {title:true, titleAuto:true, names:true, adult:true, black:false, glow:.6};
+const screen = {title:true, names:true, adult:true, black:false, glow:.6};
 try{ const sv = JSON.parse(localStorage.getItem("ts-screen")||"{}");
   ["names","adult"].forEach(k=>{ if(typeof sv[k]==="boolean") screen[k]=sv[k]; });
   if(typeof sv.glow==="number") screen.glow = sv.glow; }catch(_){}
@@ -518,12 +592,14 @@ window.addEventListener("message", e=> onMsg(e.data, e.source));
 if(bc) bc.onmessage = e=> onMsg(e.data, null);
 function toggleScreen(k){
   screen[k] = !screen[k];
-  if(k==="title") screen.titleAuto = false;
   saveScreen(); sendState(); renderScreen();
 }
 function saveScreen(){ try{ localStorage.setItem("ts-screen", JSON.stringify({names:screen.names, adult:screen.adult, glow:screen.glow})); }catch(_){} }
 function renderScreen(){
-  [["tTitle","title"],["tNames","names"],["tAdult","adult"],["tBlack","black"]].forEach(([id,k])=> $(id).classList.toggle("on", !!screen[k]));
+  [["tMain","title"],["tNames","names"],["tAdult","adult"],["tBlack","black"]].forEach(([id,k])=> $(id).classList.toggle("on", !!screen[k]));
+  const cc = CUES[current];
+  $("tMainT").textContent = screen.title ? "Main slide is up" : "Main slide";
+  $("tMainK").textContent = !screen.title ? "M" : (cc && current >= 1 ? `M goes back to ${cc.n}. ${cc.title.split(" · ")[0]}` : "M takes it down");
   const ok = Date.now() - lastProjPing < 7000;
   $("pstat").textContent = ok ? "Projection connected" : "Projection not open";
   $("pstat").className = "pstat" + (ok ? " ok" : "");
@@ -535,8 +611,8 @@ $("popout").onclick = e=>{
   projWin = window.open(url, "ts_projection", "popup=yes,width=1280,height=720");
   if(projWin){ targets.add(projWin); try{ projWin.focus(); }catch(_){} }
 };
-["tTitle","tNames","tAdult","tBlack"].forEach(id=> $(id).onclick = e=>{ e.currentTarget.blur();
-  toggleScreen({tTitle:"title",tNames:"names",tAdult:"adult",tBlack:"black"}[id]); });
+["tMain","tNames","tAdult","tBlack"].forEach(id=> $(id).onclick = e=>{ e.currentTarget.blur();
+  toggleScreen({tMain:"title",tNames:"names",tAdult:"adult",tBlack:"black"}[id]); });
 $("glow").value = Math.round(screen.glow*100); $("glowV").textContent = $("glow").value + "%";
 $("glow").oninput = e=>{ screen.glow = e.target.value/100; $("glowV").textContent = e.target.value + "%"; saveScreen(); sendState(); };
 $("pv").src = location.href.split("#")[0].split("?")[0] + "?view=projection&preview=1";
@@ -553,6 +629,12 @@ render(); renderScreen(); tick();
 (function(){ if(!IS_PROJ) return;
 const $ = id => document.getElementById(id);
 const P = $("proj");
+if(IS_PREVIEW) document.body.classList.add("pv");
+
+/* timings an operator might want changed */
+const HERO_MS   = 6200;   // how long the big name card holds before it tucks into the corner
+const CORNER_MS = 10000;  // how long the small card stays in the corner before it fades
+const BACK_MS   = 7000;   // small card when coming back from the main slide
 
 // film grain: one noise tile, shifted in steps
 (function(){
@@ -563,52 +645,153 @@ const P = $("proj");
   $("grain").style.backgroundImage = `url(${c.toDataURL()})`;
 })();
 
-// the poster's genre pills, drifting up very slowly
-(function(){
-  const words = [["SHOW TUNES",""],["POP",""],["R&B",""],["COUNTRY","pk"],["SHOW TUNES",""],["R&B",""]];
-  const lanes = [8,24,41,58,74,88];
-  words.forEach(([w,c],i)=>{
-    const d = document.createElement("div"); d.className = "tag2 " + c; d.textContent = w;
-    const dur = 95 + (i*17)%40;
-    d.style.left = lanes[i] + "vw";
-    d.style.setProperty("--r", ((i%2?1:-1)*(4+i%3*2)) + "deg");
-    d.style.animationDuration = dur + "s";
-    d.style.animationDelay = (-dur * ((i*0.37)%1)) + "s";
-    $("tags").appendChild(d);
+function letters(el, text, from){
+  let i = from || 0;
+  [...text].forEach(ch=>{
+    const s = document.createElement("span"); s.className = "l"; s.style.setProperty("--i", i++);
+    const b = document.createElement("b"); b.textContent = ch===" " ? " " : ch;
+    s.appendChild(b); el.appendChild(s);
   });
-})();
+  return i;
+}
+letters($("tbig"), "TWENTY");
 
-let sid = null, lastSeq = 0, ncTimer = null, ncOff = null;
-function apply(m){
+const sleep = ms => new Promise(r=> setTimeout(r, ms));
+const done = (a, ms) => Promise.race([a.finished.catch(()=>{}), sleep(ms + 500)]);
+let tok = 0;                       // cancels a running song timeline
+let view = {mode:"none"};          // what is on screen now
+let busy = false, queued = null;
+
+/* build the song card for a cue and size it to the frame */
+function buildSong(c){
+  const snm = $("snm"), stt = $("stt"), ssr = $("ssr");
+  snm.textContent = "";
+  const parts = c.who.split(" & ");
+  const lines = parts.length > 1 ? [parts[0], "& " + parts.slice(1).join(" & ")] : [c.who];
+  let i = 0;
+  lines.forEach(t=>{
+    const m = document.createElement("span"); m.className = "msk";
+    const ln = document.createElement("span"); ln.className = "ln";
+    i = letters(ln, t, i); m.appendChild(ln); snm.appendChild(m);
+  });
+  const W = window.innerWidth;
+  let fs = lines.length > 1 ? 21 : 30;                 // vh
+  snm.style.fontSize = fs + "vh";
+  const widest = Math.max(...[...snm.querySelectorAll(".ln")].map(e=> e.offsetWidth));
+  if(widest > W * .84){ fs *= W * .84 / widest; snm.style.fontSize = fs + "vh"; }
+  stt.textContent = c.song || ""; stt.style.display = c.song ? "" : "none";
+  let ts = 13; stt.style.fontSize = ts + "vh";
+  if(c.song && stt.offsetWidth > W * .8){ ts *= W * .8 / stt.offsetWidth; stt.style.fontSize = ts + "vh"; }
+  ssr.textContent = ""; ssr.style.display = c.src ? "" : "none";
+  if(c.src){ ssr.appendChild(document.createElement("i")); ssr.appendChild(document.createTextNode(c.src)); }
+}
+
+/* swap what is on stage. Always called while the wipe covers the frame. */
+function setScene(t){
+  const my = ++tok;
+  const ttl = $("ttl"), sk = $("sk"), big = $("big");
+  ttl.classList.remove("in");
+  sk.className = "sk nt";
+  big.className = "nt";
+  $("thost").classList.remove("on");
+
+  if(t.mode === "title"){
+    P.style.setProperty("--acc", "var(--lime)"); P.style.setProperty("--ga", 1); P.style.setProperty("--gb", 1);
+    big.textContent = "20";
+    void big.offsetWidth; big.className = "on";
+    void ttl.offsetWidth; ttl.classList.add("in");
+    $("thost").classList.toggle("on", !!t.host);
+    return;
+  }
+  if(t.mode === "song"){
+    const c = t.cur, lime = c.n % 2 === 0;
+    P.style.setProperty("--acc", lime ? "var(--lime)" : "var(--pink)");
+    P.style.setProperty("--ga", lime ? 1.2 : .7); P.style.setProperty("--gb", lime ? .7 : 1.2);
+    buildSong(c);
+    big.textContent = String(c.n).padStart(2, "0");
+    const h = sk.offsetHeight / window.innerHeight * 100;
+    sk.style.setProperty("--hy", (-(41 - h/2)).toFixed(2) + "vh");
+    if(t.intro){
+      big.className = "nt pre"; void big.offsetWidth; big.className = "on hero";
+      void sk.offsetWidth; sk.className = "sk show in";
+      (async()=>{
+        await sleep(HERO_MS); if(my !== tok) return;
+        sk.classList.add("small"); big.classList.remove("hero");
+        await sleep(1800 + CORNER_MS); if(my !== tok) return;
+        sk.classList.add("out");
+      })();
+    } else {
+      big.className = "nt"; void big.offsetWidth; big.className = "on";
+      sk.className = "sk nt small inq"; void sk.offsetWidth; sk.className = "sk small inq show";
+      (async()=>{ await sleep(BACK_MS); if(my !== tok) return; sk.classList.add("out"); })();
+    }
+    return;
+  }
+  // background only
+  P.style.setProperty("--ga", 1); P.style.setProperty("--gb", 1);
+}
+
+/* the wipe: a dark panel with a lime leading edge crosses, the scene swaps under it, it leaves on a pink edge */
+async function wipe(t){
+  const w = $("wipe"); $("wipew").classList.toggle("rev", t.mode === "title");
+  const k = x => ({transform:`translateX(${x}vw) skewX(-14deg)`});
+  const a1 = w.animate([k(-224), k(-52)], {duration:700, easing:"cubic-bezier(.55,.085,.68,.53)", fill:"forwards"});
+  await done(a1, 700);
+  setScene(t);
+  await sleep(110);
+  const a2 = w.animate([k(-52), k(112)], {duration:680, easing:"cubic-bezier(.25,.46,.45,.94)", fill:"forwards"});
+  await done(a2, 680);
+  a2.cancel(); a1.cancel();
+}
+const same = (a,b)=> a.mode === b.mode && (a.mode !== "song" || a.cur.i === b.cur.i);
+async function request(t){
+  if(busy){ queued = t; return; }
+  busy = true; view = t;
+  try{ await wipe(t); }catch(_){ setScene(t); }
+  busy = false;
+  if(queued){ const q = queued; queued = null; if(!same(view,q) || q.intro) request(q); }
+}
+
+/* live values that never need a wipe */
+let shownPct = 0, tgtPct = -1, pctAnim = 0;
+function setPct(p){
+  tgtPct = p;
+  const f = $("adf"); f.classList.toggle("ind", p === 0);
+  f.style.width = p + "%";
+  const from = shownPct, id = ++pctAnim, t0 = performance.now();
+  (function step(now){
+    if(id !== pctAnim) return;
+    const k = Math.min(1, (now - t0) / 1800), e = 1 - Math.pow(1-k, 3);
+    $("adp").textContent = Math.round(from + (p - from) * e) + "%";
+    if(k < 1) requestAnimationFrame(step); else shownPct = p;
+  })(t0);
+  if(document.hidden){ $("adp").textContent = p + "%"; shownPct = p; }
+}
+function applyLive(m){
   const sc = m.screen || {};
   P.style.setProperty("--glow", sc.glow ?? .6);
-  $("ttl").classList.toggle("on", !!sc.title); P.classList.toggle("t-on", !!sc.title);
   $("blk").classList.toggle("on", !!sc.black);
   $("adult").classList.toggle("on", !!sc.adult);
-  $("adp").textContent = (m.pct||0) + "%";
-  $("adf").style.width = (m.pct||0) + "%";
-  if(!sc.names || sc.title) hideName(true);
+  if((m.pct||0) !== tgtPct) setPct(m.pct||0);
 }
-function hideName(now){
-  clearTimeout(ncTimer); clearTimeout(ncOff);
-  const nc = $("nc"); nc.classList.remove("on"); if(now) nc.classList.remove("off");
+function target(m){
+  const sc = m.screen || {};
+  if(sc.title) return {mode:"title", host: !!(sc.names && m.cur && m.cur.i === 0)};
+  if(sc.names && m.cur && m.cur.i >= 1) return {mode:"song", cur:m.cur};
+  return {mode:"bg"};
 }
-function showName(c){
-  hideName(true);
-  const nc = $("nc");
-  $("ncw").textContent = c.who; $("ncs").textContent = c.song; $("ncr").textContent = c.src;
-  $("ncs").style.display = c.song ? "" : "none"; $("ncr").style.display = c.src ? "" : "none";
-  void nc.offsetWidth;
-  ncTimer = setTimeout(()=>{ nc.classList.add("on"); }, 700);
-  ncOff = setTimeout(()=>{ nc.classList.add("off"); nc.classList.remove("on"); }, 700 + 11000);
-}
+
+let sid = null, lastSeq = 0;
 function onMsg(m){
   if(!m || typeof m!=="object" || (m.type!=="state" && m.type!=="go")) return;
   if(m.sid !== sid){ sid = m.sid; lastSeq = 0; }
   if(m.seq <= lastSeq) return;
   lastSeq = m.seq;
-  apply(m);
-  if(m.type==="go" && m.cur && m.cur.i >= 1 && m.screen.names && !m.screen.title) showName(m.cur);
+  applyLive(m);
+  const t = target(m);
+  t.intro = m.type === "go" && t.mode === "song";
+  if(t.mode === "title" && view.mode === "title" && !busy){ view.host = t.host; $("thost").classList.toggle("on", t.host); }
+  if(!same(view, t) || t.intro) request(t);
 }
 window.addEventListener("message", e=> onMsg(e.data));
 let bc = null; try{ bc = new BroadcastChannel("twentysomething"); bc.onmessage = e=> onMsg(e.data); }catch(_){}
@@ -618,8 +801,18 @@ function hello(){
   try{ boss && boss.postMessage(m, "*"); }catch(_){}
   try{ bc && bc.postMessage(m); }catch(_){}
 }
-hello(); setInterval(hello, 3000);
-apply({screen:{title:true, adult:true, glow:.6}, pct:0});
+
+/* start on the main slide once the type is in, then ask the board where the show is */
+function start(){
+  view = {mode:"title", host:false};
+  setScene(view);
+  applyLive({screen:{adult:true, glow:.6}, pct:0});
+  hello(); setInterval(hello, 3000);
+}
+const fontsIn = (document.fonts && document.fonts.load)
+  ? Promise.all([document.fonts.load('900 40px "Archivo"'), document.fonts.load('italic 40px "Instrument Serif"')]).catch(()=>{})
+  : Promise.resolve();
+Promise.race([fontsIn, sleep(2500)]).then(start);
 
 if(IS_PREVIEW){ $("fsh").remove(); return; }
 document.title = "TwentySomething · Projection";
@@ -631,8 +824,9 @@ let idle; const wake = ()=>{ document.body.classList.remove("idle"); clearTimeou
 document.addEventListener("mousemove", wake); wake();
 // keys pressed while this window has focus still run the board
 document.addEventListener("keydown", e=>{
+  if(e.metaKey || e.ctrlKey || e.altKey) return;
   if(e.code==="KeyF"){ e.preventDefault(); fs(); return; }
-  if(["Space","KeyP","ArrowUp","ArrowDown","KeyT","KeyN","KeyA","KeyB"].includes(e.code)){
+  if(["Space","KeyP","ArrowUp","ArrowDown","KeyM","KeyT","KeyN","KeyA","KeyB"].includes(e.code)){
     e.preventDefault();
     try{ boss && boss.postMessage({type:"key", code:e.code, shiftKey:e.shiftKey, repeat:e.repeat}, "*"); }catch(_){}
   }
